@@ -1,0 +1,606 @@
+package datasets.generic;
+
+import controle.arff.DataToARFF;
+import controle.arff.FilePatternARFF;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import constants.ConstDataset;
+import util.FileUtil;
+import util.Messages;
+import util.Validation;
+
+/**
+ *
+ * @author Wesllen Sousa
+ */
+public class HandleGenericDataset {
+
+    public static LinkedHashSet<GenericRowBean> bufferFileInMemory(String separador, String inputSource) {
+        LinkedHashSet<GenericRowBean> list = new LinkedHashSet<>();
+        GenericRowBean nameColumns = new GenericRowBean();
+        nameColumns.setTupla(extractNamesColumnFromFile(separador, inputSource));
+        list.add(nameColumns);
+
+        try (BufferedReader buffer = FileUtil.readFile(inputSource)) {
+            String linha = buffer.readLine();
+
+            if (FileUtil.getFileExtension(inputSource).equals("arff")) {
+                while (linha != null) {
+                    if (linha.contains("@") || linha.isEmpty()) {
+                        linha = buffer.readLine();
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if (Validation.hasLetraAlfabeto(linha)) {
+                linha = buffer.readLine();
+            }
+
+            int cont = 0; //current timestamp 1477325697
+            while (linha != null) {
+                String[] colunas = linha.split(separador);
+
+                LinkedList<String> columns = new LinkedList<>();
+                for (int i = 0; i < colunas.length; i++) {
+                    columns.add(colunas[i]);
+                }
+
+                GenericRowBean bean = new GenericRowBean();
+                bean.setTupla(columns);
+                bean.setId((long) cont);
+                list.add(bean);
+
+                linha = buffer.readLine();
+                cont++;
+            }
+
+            buffer.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        return list;
+    }
+
+    public static Boolean saveBufferToCSV(String diretorio, String nameFile, LinkedHashSet<GenericRowBean> data) {
+        try (OutputStream output = new FileOutputStream(new File(diretorio + File.separator + nameFile + ".csv"));
+                OutputStreamWriter osw = new OutputStreamWriter(output);
+                BufferedWriter write = new BufferedWriter(osw)) {
+            String lastClass = null;
+            for (GenericRowBean bean : data) {
+                String linha = "";
+                Iterator<String> tuplas = bean.getTupla().iterator();
+                while (tuplas.hasNext()) {
+                    String value = tuplas.next();
+                    if (tuplas.hasNext()) {
+                        linha += value + ",";
+                    } else {
+                        linha += value;
+                    }
+                }
+                if (bean.getClasse() != null) {
+                    linha += "," + bean.getClasse();
+                    lastClass = bean.getClasse();
+                } else if (lastClass != null) {
+                    linha += "," + lastClass;
+                }
+                write.write(linha + "\n");
+            }
+            write.close();
+            osw.close();
+            output.close();
+            return true;
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        return false;
+    }
+
+    public static Boolean saveBufferToARFF(String diretorio, String nameFile, LinkedHashSet<GenericRowBean> data) {
+        FilePatternARFF arffFile = new FilePatternARFF();
+
+        //Prepare HEAD
+        LinkedHashMap<String, String> columnTitleType = new LinkedHashMap<>();
+        LinkedHashMap<String, LinkedList<String>> nominalValues = new LinkedHashMap<>();
+
+        Iterator<GenericRowBean> beanIterHEAD = data.iterator();
+        if (beanIterHEAD.hasNext()) {
+            GenericRowBean beanFirst = beanIterHEAD.next();
+            for (String value : beanFirst.getTupla()) {
+                columnTitleType.put(value, DataToARFF.NUMERIC);
+            }
+            if (beanFirst.getClasse() != null) {
+                columnTitleType.put(ConstDataset.CLASS, DataToARFF.NOMINAL);
+                nominalValues.put(ConstDataset.CLASS, new LinkedList<>());
+            }
+        }
+
+        //Prepare DATA
+        LinkedHashMap<Integer, LinkedList<String>> row = new LinkedHashMap<>();
+
+        Iterator<GenericRowBean> beanIterDATA = data.iterator();
+        beanIterDATA.next(); //Pula o nome das colunas
+
+        String lastClass = null;
+        int contRow = 0;
+        while (beanIterDATA.hasNext()) {
+            GenericRowBean bean = beanIterDATA.next();
+
+            LinkedList<String> novaTupla = new LinkedList<>();
+            for (String value : bean.getTupla()) {
+                novaTupla.add(value);
+            }
+
+            if (bean.getClasse() != null) {
+                novaTupla.add(bean.getClasse());
+                //Captura os diferentes valores para o tipo de dados nominal
+                LinkedList<String> list = nominalValues.get(ConstDataset.CLASS);
+                if (!list.contains(bean.getClasse())) {
+                    list.add(bean.getClasse());
+                }
+                lastClass = bean.getClasse();
+            } else if (lastClass != null) {
+                novaTupla.add(lastClass);
+            }
+
+            row.put(++contRow, novaTupla);
+        }
+
+        //Record file
+        arffFile.setColumnTitleType(columnTitleType);
+        arffFile.setNominalValues(nominalValues);
+        arffFile.setRow(row);
+        DataToARFF arff = new DataToARFF();
+        arff.createARFFile(diretorio, nameFile, arffFile);
+        return true;
+    }
+
+    public static Boolean saveFileBytes(String texto, File diretorio) {
+        byte bytes[] = texto.getBytes();
+        try (FileOutputStream local = new FileOutputStream(diretorio)) {
+            local.write(bytes);
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
+    }
+
+    public static void replaceInFile(String source, String fileInput, String fileOutput, String oldString, String newString) {
+        try (BufferedReader buffer = FileUtil.readFile(source + fileInput);
+                OutputStream output = new FileOutputStream(new File(source + fileOutput));
+                OutputStreamWriter osw = new OutputStreamWriter(output);
+                BufferedWriter write = new BufferedWriter(osw)) {
+            String linha = buffer.readLine();
+            while (linha != null) {
+                String novaLinha = linha.replace(oldString, newString) + "\n";
+                write.write(novaLinha);
+                linha = buffer.readLine();
+            }
+            write.close();
+            osw.close();
+            output.close();
+            buffer.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public static void replaceInBuffer(LinkedHashSet<GenericRowBean> data, String word, String newWord) {
+        for (GenericRowBean bean : data) {
+            int i = 0;
+            for (String value : bean.getTupla()) {
+                if (value.equals(word)) {
+                    bean.getTupla().set(i, newWord);
+                }
+                i++;
+            }
+            if (bean.getClasse() != null) {
+                if (bean.getClasse().equals(word)) {
+                    bean.setClasse(newWord);
+                }
+            }
+        }
+    }
+
+    public static LinkedList<GenericRowBean> merge(LinkedHashSet<GenericRowBean> data1, LinkedHashSet<GenericRowBean> data2) {
+        int numberRows = 0;
+        if (data1.size() < data2.size()) {
+            numberRows = data1.size();
+        } else {
+            numberRows = data2.size();
+        }
+        LinkedList<GenericRowBean> newBuffer = new LinkedList<>();
+
+        Iterator<GenericRowBean> beanIter1 = data1.iterator();
+        Iterator<GenericRowBean> beanIter2 = data2.iterator();
+
+        for (int i = 0; i < numberRows; i++) {
+            GenericRowBean bean1 = beanIter1.next();
+            GenericRowBean bean2 = beanIter2.next();
+
+            LinkedList<String> newColumns = new LinkedList<>();
+            for (String column : bean1.getTupla()) {
+                newColumns.add(column);
+            }
+            if (bean1.getClasse() != null) {
+                newColumns.add(bean1.getClasse());
+            }
+            for (String column : bean2.getTupla()) {
+                newColumns.add(column);
+            }
+            if (bean2.getClasse() != null) {
+                newColumns.add(bean2.getClasse());
+            }
+
+            GenericRowBean newSample = new GenericRowBean();
+            newSample.setId((long) i);
+            newSample.setTupla(newColumns);
+            newBuffer.add(newSample);
+        }
+        return newBuffer;
+    }
+
+    public static void removeColumnFromFile(String separador, String source, String inputFile, String outputFile, int coluna) {
+        try (BufferedReader buffer = FileUtil.readFile(source + inputFile);
+                OutputStream output = new FileOutputStream(new File(source + outputFile));
+                OutputStreamWriter osw = new OutputStreamWriter(output);
+                BufferedWriter write = new BufferedWriter(osw)) {
+
+            String novaLinha = "";
+            int cont = 1;
+            String linha = buffer.readLine();
+
+            if (FileUtil.getFileExtension(inputFile).equals("arff")) {
+                while (linha != null) {
+                    if (linha.contains("@ATTRIBUTE")) {
+                        if (cont == coluna) {
+                            continue;
+                        }
+                        novaLinha = linha + "\n";
+                        linha = buffer.readLine();
+                        cont += 1;
+                    } else if (linha.contains("@DATA")) {
+                        novaLinha = linha + "\n";
+                        linha = buffer.readLine();
+                        break;
+                    } else {
+                        novaLinha = linha + "\n";
+                        linha = buffer.readLine();
+                    }
+                }
+            }
+
+            while (linha != null) {
+                String[] colunas = linha.split(separador);
+                for (int i = 0; i < colunas.length; i++) {
+                    if (i == (coluna - 1)) {
+                        continue;
+                    }
+                    if ((i + 1) == colunas.length) {
+                        novaLinha += colunas[i] + "\n";
+                    } else if (coluna == colunas.length && (i + 2) == colunas.length) {
+                        novaLinha += colunas[i] + "\n";
+                    } else {
+                        novaLinha += colunas[i] + ",";
+                    }
+                }
+
+                write.write(novaLinha);
+                linha = buffer.readLine();
+            }
+            write.close();
+            osw.close();
+            output.close();
+            buffer.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public static void removeColumnFromBuffer(LinkedHashSet<GenericRowBean> data, Integer column) {
+        for (GenericRowBean bean : data) {
+            for (int i = 0; i < bean.getTupla().size(); i++) {
+                if (i == (column - 1)) {
+                    bean.getTupla().remove(i);
+                }
+            }
+        }
+    }
+
+    public static LinkedList<String> extractNamesColumnFromFile(String separador, String inputSource) {
+        try (BufferedReader buffer = FileUtil.readFile(inputSource)) {
+            LinkedList<String> nameColumns = new LinkedList<>();
+
+            String linha = buffer.readLine();
+            if (FileUtil.getFileExtension(inputSource).equals("arff")) {
+                while (linha != null) {
+                    if (linha.contains("@ATTRIBUTE")) {
+                        String[] column = linha.split(" ")[1].replace(".", ",").split(","); // Need Review for char '\t'
+                        nameColumns.add(column[column.length - 1]);
+                        linha = buffer.readLine();
+                    } else if (linha.contains("@DATA")) {
+                        break;
+                    } else {
+                        linha = buffer.readLine();
+                    }
+                }
+            } else {
+                for (String s : linha.split(separador)) {
+                    nameColumns.add(s);
+                }
+            }
+
+            buffer.close();
+            return nameColumns;
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        return null;
+    }
+
+    public static LinkedList<String> extractNamesColumnFromBuffer(LinkedHashSet<GenericRowBean> data) {
+        LinkedList<String> nameColumns = new LinkedList<>();
+        Iterator<GenericRowBean> beanIter = data.iterator();
+        if (beanIter.hasNext()) {
+            GenericRowBean bean = beanIter.next();
+            for (String value : bean.getTupla()) {
+                nameColumns.add(value);
+            }
+            if (bean.getClasse() != null) {
+                nameColumns.add(bean.getClasse());
+            }
+        }
+        return nameColumns;
+    }
+
+    public static Boolean containColumn(LinkedHashSet<GenericRowBean> data, String column) {
+        Iterator<GenericRowBean> beanIter = data.iterator();
+        if (beanIter.hasNext()) {
+            GenericRowBean bean = beanIter.next();
+            for (String value : bean.getTupla()) {
+                if (column.equals(value)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static Integer getCountColumn(LinkedHashSet<GenericRowBean> data) {
+        int cont = 0;
+        Iterator<GenericRowBean> beanIter = data.iterator();
+        if (beanIter.hasNext()) {
+            GenericRowBean bean = beanIter.next();
+            Iterator<String> tupla = bean.getTupla().iterator();
+            while (tupla.hasNext()) {
+                cont++;
+                tupla.next();
+            }
+        }
+        return cont;
+    }
+
+    public static Integer getNumberColumnByName(LinkedHashSet<GenericRowBean> data, String column) {
+        int cont = 1;
+        Iterator<GenericRowBean> beanIter = data.iterator();
+        if (beanIter.hasNext()) {
+            GenericRowBean bean = beanIter.next();
+            Iterator<String> tupla = bean.getTupla().iterator();
+            while (tupla.hasNext()) {
+                String value = tupla.next();
+                if (column.equals(value)) {
+                    return cont;
+                }
+                cont++;
+            }
+        }
+        return -1;
+    }
+
+    public static LinkedHashSet<String> getColumnByName(LinkedHashSet<GenericRowBean> data, String name) {
+        LinkedHashSet<String> classe = new LinkedHashSet<>();
+        int numberColumn = getNumberColumnByName(data, name);
+        if (numberColumn != -1) {
+            for (GenericRowBean bean : data) {
+                int col = 1;
+                for (String value : bean.getTupla()) {
+                    if (col == numberColumn) {
+                        classe.add(value);
+                    }
+                    col++;
+                }
+            }
+        }
+        return classe;
+    }
+
+    public static String getColumnNameByNumber(LinkedHashSet<GenericRowBean> data, Integer column) {
+        Iterator<GenericRowBean> beanIter = data.iterator();
+        if (beanIter.hasNext()) {
+            GenericRowBean bean = beanIter.next();
+            int cont = 1;
+            for (String value : bean.getTupla()) {
+                if (cont == column) {
+                    return value;
+                }
+                cont++;
+            }
+        }
+        return "";
+    }
+
+    public static void setColumnClass(LinkedHashSet<GenericRowBean> data) {
+        int numberColumn = getNumberColumnByName(data, ConstDataset.CLASS);
+        if (numberColumn != -1) {
+            for (GenericRowBean bean : data) {
+                int col = 1;
+                for (String value : bean.getTupla()) {
+                    if (col == numberColumn) {
+                        bean.setClasse(value);
+                    }
+                    col++;
+                }
+            }
+        }
+        removeColumnFromBuffer(data, numberColumn);
+    }
+
+    public static void setColumnTimestamp(LinkedHashSet<GenericRowBean> data) {
+        int numberColumn = getNumberColumnByName(data, ConstDataset.TIMESTAMP);
+        if (numberColumn != -1) {
+            for (GenericRowBean bean : data) {
+                int col = 1;
+                for (String value : bean.getTupla()) {
+                    if (col == numberColumn) {
+                        bean.setTimestamp(value);
+                    }
+                    col++;
+                }
+            }
+        }
+        removeColumnFromBuffer(data, numberColumn);
+    }
+
+    public static void addClassToTupla(LinkedHashSet<GenericRowBean> data) {
+        Iterator<GenericRowBean> beanIter = data.iterator();
+        if (beanIter.hasNext()) {
+            GenericRowBean beanFirst = beanIter.next();
+            if (beanFirst.getClasse() != null && !containColumn(data, ConstDataset.CLASS)) {
+                for (GenericRowBean bean : data) {
+                    bean.getTupla().add(bean.getClasse());
+                }
+            }
+        }
+    }
+
+    public static LinkedHashSet<Long> getTimestampColumn(LinkedHashSet<GenericRowBean> data) {
+        LinkedHashSet<Long> timestamp = new LinkedHashSet<>();
+        for (int i = 0; i < data.size(); i++) {
+            timestamp.add((long) i);
+        }
+        return timestamp;
+    }
+
+    public static String valueMoreFrequency(LinkedList<String> vector) {
+        HashMap<String, Integer> frequency = new HashMap<>();
+        for (String value : vector) {
+            if (frequency.containsKey(value)) {
+                int cont = frequency.get(value);
+                frequency.put(value, cont++);
+            } else {
+                frequency.put(value, 1);
+            }
+        }
+        int maior = 0;
+        String classe = "";
+        for (String value : frequency.keySet()) {
+            if (frequency.get(value) > maior) {
+                maior = frequency.get(value);
+                classe = value;
+            }
+        }
+        return classe;
+    }
+
+    public static LinkedHashSet<Float> getColumnFloatByNumber(LinkedHashSet<GenericRowBean> data, Integer numberColumn) {
+        LinkedHashSet<Float> column = new LinkedHashSet<>();
+        for (GenericRowBean bean : data) {
+            int col = 1;
+            for (String value : bean.getTupla()) {
+                if (col == numberColumn) {
+                    try {
+                        column.add(Float.parseFloat(value));
+                    } catch (NumberFormatException ex) {
+                        Messages msg = new Messages();
+                        msg.aviso("This column is not a numeric column!");
+                        break;
+                    }
+                }
+                col++;
+            }
+        }
+        return column;
+    }
+
+    public static LinkedHashSet<GenericRowBean> convertLineColumnsToGenericData(LinkedHashSet<LinkedList<String>> lineColumns) {
+        System.out.println("Convert line columns to generic data...");
+        LinkedHashSet<GenericRowBean> newData = new LinkedHashSet<>();
+        Iterator<LinkedList<String>> lineColIter = lineColumns.iterator();
+        if (lineColIter.hasNext()) {
+            LinkedList<String> lineColumnFist = lineColIter.next();
+            int i = 0;
+            for (String row : lineColumnFist) {
+                GenericRowBean newRow = new GenericRowBean();
+                LinkedList<String> newColumns = new LinkedList<>();
+                newColumns.add(row);
+                newRow.setTupla(newColumns);
+                newRow.setId((long) i);
+                newData.add(newRow);
+                i++;
+            }
+        }
+        while (lineColIter.hasNext()) {
+            LinkedList<String> lineColumn = lineColIter.next();
+            Iterator<GenericRowBean> genericIter = newData.iterator();
+            for (String row : lineColumn) {
+                GenericRowBean bean = genericIter.next();
+                bean.getTupla().add(row);
+            }
+        }
+        return newData;
+    }
+
+    public static LinkedHashSet<GenericRowBean> convertColumnToGenericData(LinkedHashSet<String> column) {
+        LinkedHashSet<GenericRowBean> newData = new LinkedHashSet<>();
+        for (String value : column) {
+            GenericRowBean newRow = new GenericRowBean();
+            LinkedList<String> newColumns = new LinkedList<>();
+            newColumns.add(value);
+            newRow.setTupla(newColumns);
+            newData.add(newRow);
+        }
+        return newData;
+    }
+
+    public static void addClassToGenericData(LinkedHashSet<GenericRowBean> data, LinkedList<String> classes) {
+        System.out.println("Adding class to generic data...");
+        if (data.size() <= classes.size()) {
+            Iterator<String> classesIter = classes.iterator();
+            if (classesIter.hasNext()) {
+                for (GenericRowBean bean : data) {
+                    bean.setClasse(classesIter.next());
+                }
+            }
+        }
+    }
+
+    public static LinkedList<GenericRowBean> converHashSetToLinkedList(LinkedHashSet<GenericRowBean> data) {
+        LinkedList<GenericRowBean> novo = new LinkedList();
+        for (GenericRowBean bean : data) {
+            novo.add(bean);
+        }
+        return novo;
+    }
+
+    public static LinkedHashSet<GenericRowBean> converLinkedlistToHashset(LinkedList<GenericRowBean> data) {
+        LinkedHashSet<GenericRowBean> novo = new LinkedHashSet();
+        for (GenericRowBean bean : data) {
+            novo.add(bean);
+        }
+        return novo;
+    }
+
+}

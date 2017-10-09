@@ -1,0 +1,32 @@
+
+Afazeres de implementação
+1) SFAWordsWindowing.java adicionar o SFA na view
+2) Talvez fazer um conversor de formatos de bases de dados
+3) Implementar o RSSA 
+4) Implementar o PCA
+
+Notas de Inovação
+1) Filtrar o sinal (SSA e RSSA)
+2) Substituir FFT por Wavelet no SFA
+2) Implementar fusao no inicio (Hendrio) e fusao das caracteristicas (Kevin)
+3) Fazer o alinhamento das palavras (Sequitur, MED)
+4) Criar o MCB toda vez que o sinal mudar de padrao, guardar os MCB's de sinais anteriores (Datastreaming)
+5) Aplicar ideias de modelos n-gramas (PLN)
+6) utilizar a gramatica (repair) para descobrir n-gramas. Melhor do que o weasel cujo limite é bigrama?
+7) Os motifs podem ser utilizados para agrupar palavras.
+8) Adicionar informação de contexto a cada palavra. Exemplo, media do Page Hinkley.
+
+Experimentos
+1) Reproduzir os testes incluindo o SAX-VSM, BOSS VS e WEASEL para ver as acurácias
+
+Duvidas
+1) O SAX olha a forma da serie independente da amplitude, o SFA tambem?
+2) Verificar se o codigo do SFA aplica o lowpass filter. Se sim, motificar o codigo para o RSSA. 
+   (The use of the first Fourier coefficients is equal to a low-pass filter and as such has a noise 
+    canceling effect by smoothening a time series.)
+3) O SFA trie é utilizada pelo classificador?
+4) O BOSS utiliza o shotgun distance? (Alingment free)
+
+Notas
+1) O SFA funciona como o iSAX trabalhando com palavras de diferentes tamanhos SFAWordsVariableLength.java
+
