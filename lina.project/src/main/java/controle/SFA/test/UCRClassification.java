@@ -2,6 +2,7 @@
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
 package controle.SFA.test;
 
+import constants.ConstDataset;
 import controle.SFA.classification.BOSSEnsembleClassifier;
 import controle.SFA.classification.BOSSVSClassifier;
 import controle.SFA.classification.Classifier;
@@ -34,7 +35,7 @@ public class UCRClassification {
     public static void main(String argv[]) throws IOException {
         try {
             // the relative path to the datasets
-            File dir = new File("samples/SFAdatasets/");
+            File dir = new File(ConstDataset.DS_TEMP + "SFAdatasets/");
 
             for (String s : datasets) {
                 File d = new File(dir.getAbsolutePath() + "/" + s);

@@ -5,6 +5,7 @@
  */
 package controle.Sequitur;
 
+import constants.ConstDataset;
 import controle.SAX.Params;
 import controle.SAX.SAX;
 import net.seninp.gi.logic.GrammarRules;
@@ -21,7 +22,7 @@ import net.seninp.jmotif.sax.datastructure.SAXRecords;
 public class SequiturExample {
 
     public static void main(String[] args) {
-        
+
         int WINDOW_SIZE = 28;
         int SAX_PAA = 7;
         int SAX_ALPHABET = 4;
@@ -30,12 +31,12 @@ public class SequiturExample {
                 NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.NONE);
 
         //0 = all lines
-        TimeSeries timeSeries = TimeSeriesLoader.loadVerticalData("0", "samples/TimeSeries/sinusoid.csv", false);
+        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "sinusoid.csv", false, ",");
 
-        SAXRecords saxRecords = SAX.slideWindow(timeSeries.getData(), params);
+        SAXRecords saxRecords = SAX.slideWindow(timeSeries[0].getData(), params);
         GrammarRules grammarRules = Sequitur.run(saxRecords.getSAXString(" "));
 
-        GrammarRules grammarRulesPruned = RulePrunerFactory.performPruning(timeSeries.getData(), grammarRules);
+        GrammarRules grammarRulesPruned = RulePrunerFactory.performPruning(timeSeries[0].getData(), grammarRules);
 
         System.out.println("Normal Rules");
         System.out.println(grammarRules);

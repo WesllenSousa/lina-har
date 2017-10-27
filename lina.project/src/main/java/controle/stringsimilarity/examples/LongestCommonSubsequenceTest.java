@@ -38,6 +38,17 @@ public class LongestCommonSubsequenceTest {
     /**
      * Test of distance method, of class LongestCommonSubsequence.
      */
+    public static void main(String[] args) {
+        System.out.println("distance");
+        LongestCommonSubsequence instance = new LongestCommonSubsequence();
+        // LCS = GA or GC => distance = 4 (remove 3 letters and add 1)
+        System.out.println(instance.distance("AGCAT", "GAC"));
+
+        System.out.println(instance.distance("AGCAT", "AGCT"));
+        
+        System.out.println("Maior " + instance.length("AGCAT", "T"));
+    }
+
     @Test
     public void testDistance() {
         System.out.println("distance");

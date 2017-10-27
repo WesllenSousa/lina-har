@@ -1,5 +1,6 @@
 package controle.SFA.test;
 
+import constants.ConstDataset;
 import controle.SFA.index.SFATrie;
 import controle.SFA.index.SortedListMap;
 import datasets.timeseries.TimeSeries;
@@ -18,7 +19,7 @@ public class SFATrieTest {
     public static void testWholeMatching() throws IOException {
         int N = 10000;
 
-        TimeSeries[] timeSeries2 = TimeSeriesLoader.readSamplesQuerySeries(new File("samples/SFAdatasets/indexing/query_lightcurves.txt"));
+        TimeSeries[] timeSeries2 = TimeSeriesLoader.readSamplesQuerySeries(new File(ConstDataset.DS_TEMP + "SFAdatasets/indexing/query_lightcurves.txt"));
         int n = timeSeries2[0].getLength();
         System.out.println("Queries: " + timeSeries2.length);
 

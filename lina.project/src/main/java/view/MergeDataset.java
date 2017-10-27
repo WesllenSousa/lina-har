@@ -321,7 +321,7 @@ public class MergeDataset extends javax.swing.JDialog {
         if (!Validation.isEmptyString(name)) {
             LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_mergedData.getModel()).getLinhas();
             if (HandleGenericDataset.saveBufferToCSV(dir, name, HandleGenericDataset.converLinkedlistToHashset(dataTable))) {
-                ConstGeneral.TELA_PRINCIPAL.handleTabedPane();
+                ConstGeneral.TELA_PRINCIPAL.updateHandleTabedPane();
                 messages.sucesso("File saved!");
             }
         } else {

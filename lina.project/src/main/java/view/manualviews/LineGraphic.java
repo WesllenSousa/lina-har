@@ -1,6 +1,7 @@
 package view.manualviews;
 
 import datasets.generic.GenericRowBean;
+import datasets.timeseries.TimeSeries;
 import java.awt.BorderLayout;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -29,20 +30,21 @@ import org.jfree.ui.TextAnchor;
  * Wesllen Sousa
  */
 public class LineGraphic extends JPanel implements ChartProgressListener {
-    
+
     private JFreeChart chart;
     private XYPlot timeseriesPlot;
     private final XYSeriesCollection seriesCollection = new XYSeriesCollection();
-    
+
     private boolean autoRange = true;
-    
-    public LineGraphic(String title) {
+
+    public LineGraphic(String title, boolean autoRange) {
         this.setLayout(new BorderLayout());
         createChart(title);
         final ChartPanel chartPanel = new ChartPanel(chart);
         this.add(chartPanel, BorderLayout.CENTER);
+        this.autoRange = autoRange;
     }
-    
+
     private void createChart(String title) {
         // set the renderer
         XYLineAndShapeRenderer xyRenderer = new XYLineAndShapeRenderer(true, false);
@@ -55,19 +57,18 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
         // Y axis
         NumberAxis valueAxis = new NumberAxis("Values");
         valueAxis.setAutoRangeIncludesZero(false);
-        
+
         timeseriesPlot = new XYPlot(seriesCollection, timeAxis, valueAxis, xyRenderer);
         timeseriesPlot.setDomainPannable(true);
         timeseriesPlot.setRangePannable(true);
-        timeseriesPlot.setDomainGridlinesVisible(false); 
-        
+        timeseriesPlot.setDomainGridlinesVisible(false);
+
         chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, timeseriesPlot, false);
         chart.addProgressListener(this);
         chart.setNotify(true);
     }
-    
-    public void prepareStream(LinkedHashSet<GenericRowBean> data, boolean autoRange) {
-        this.autoRange = autoRange;
+
+    public void prepareStream(LinkedHashSet<GenericRowBean> data) {
         if (!data.isEmpty()) {
             LinkedList<XYSeries> timeSeries = new LinkedList<>();
             //Cria timeseries vazias
@@ -85,17 +86,32 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
             fitAxis();
         }
     }
-    
+
+    public void prepareStream(TimeSeries[] data) {
+        if (data.length > 0) {
+            LinkedList<XYSeries> timeSeries = new LinkedList<>();
+            //Cria timeseries vazias
+            for (TimeSeries ts : data) {
+                timeSeries.add(new XYSeries(ts.getData(0)));
+            }
+            //Adiciona a time series a coleção de time series 
+            seriesCollection.removeAllSeries();
+            for (XYSeries time : timeSeries) {
+                seriesCollection.addSeries(time);
+            }
+            fitAxis();
+        }
+    }
+
     private void fitAxis() {
         ValueAxis valueAxis = timeseriesPlot.getDomainAxis();
         valueAxis.setAutoRange(autoRange);
     }
-    
+
     @Override
     public void chartProgress(ChartProgressEvent cpe) {
-        
     }
-    
+
     public void addMarker(int startVal, int endVal, Color color) {
         IntervalMarker marker = new IntervalMarker(startVal, endVal);
         marker.setLabelOffsetType(LengthAdjustmentType.EXPAND);
@@ -105,15 +121,15 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
         marker.setLabelPaint(Color.green);
         marker.setLabelAnchor(RectangleAnchor.TOP_LEFT);
         marker.setLabelTextAnchor(TextAnchor.TOP_LEFT);
-        
+
         timeseriesPlot.addDomainMarker(marker, Layer.BACKGROUND);
-        
+
         ValueMarker markStart = new ValueMarker(startVal, color, new BasicStroke(2.0f));
         ValueMarker markEnd = new ValueMarker(endVal, color, new BasicStroke(2.0f));
         timeseriesPlot.addDomainMarker(markStart, Layer.BACKGROUND);
         timeseriesPlot.addDomainMarker(markEnd, Layer.BACKGROUND);
     }
-    
+
     public void addData(GenericRowBean bean) {
         for (int i = 0; i < seriesCollection.getSeriesCount(); i++) {
             XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(i);
@@ -124,7 +140,39 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
             //addMarker(nextItem, nextItem, Color.CYAN);
         }
     }
-    
+
+    public void addData(double[] values) {
+        for (int i = 0; i < seriesCollection.getSeriesCount(); i++) {
+            XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(i);
+            int nextItem = timeSerie.getItemCount() + 1;
+            timeSerie.add(nextItem, values[i]);
+
+            //addMarker(nextItem, nextItem, Color.CYAN);
+        }
+    }
+
+    public void addData(double[] values, int axi) {
+        XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(axi);
+        int nextItem = timeSerie.getItemCount() + 1;
+        for (int i = 0; i < values.length; i++) {
+            timeSerie.add(nextItem, values[i]);
+        }
+
+        //addMarker(nextItem, nextItem, Color.CYAN);
+    }
+
+    public void addSubsequenceData(TimeSeries[] subTs) {
+        for (int position = 0; position < subTs[0].getLength(); position++) {
+            double[] values = new double[subTs.length];
+            int col = 0;
+            for (TimeSeries ts : subTs) {
+                values[col] = ts.getData(position);
+                col++;
+            }
+            addData(values);
+        }
+    }
+
     public void espera(int miliSec) {
         try {
             Thread.sleep(miliSec);
@@ -135,5 +183,9 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
     public XYPlot getTimeseriesPlot() {
         return timeseriesPlot;
     }
-      
+
+    public XYSeriesCollection getSeriesCollection() {
+        return seriesCollection;
+    }
+
 }

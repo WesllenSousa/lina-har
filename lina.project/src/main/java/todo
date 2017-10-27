@@ -4,29 +4,43 @@ Afazeres de implementação
 2) Talvez fazer um conversor de formatos de bases de dados
 3) Implementar o RSSA 
 4) Implementar o PCA
+5) Fazer uma tela de configuracao, para usar SAX ou SFA, normalizacao ou não...
+6) Aproveitar as estruturas de dados do BOSS para programar a tela.
+7) Fazer com que o Page Hinkley se adapte seu theshold de disparo maseado no histórico de disparo.
 
 Notas de Inovação
-1) Filtrar o sinal (SSA e RSSA)
-2) Substituir FFT por Wavelet no SFA
-2) Implementar fusao no inicio (Hendrio) e fusao das caracteristicas (Kevin)
-3) Fazer o alinhamento das palavras (Sequitur, MED)
-4) Criar o MCB toda vez que o sinal mudar de padrao, guardar os MCB's de sinais anteriores (Datastreaming)
-5) Aplicar ideias de modelos n-gramas (PLN)
-6) utilizar a gramatica (repair) para descobrir n-gramas. Melhor do que o weasel cujo limite é bigrama?
-7) Os motifs podem ser utilizados para agrupar palavras.
-8) Adicionar informação de contexto a cada palavra. Exemplo, media do Page Hinkley.
+
+1) Fase
+    1) Filtrar o sinal (SSA e RSSA)
+    2) Substituir FFT por Wavelet no SFA
+    3) Implementar fusao no inicio (Hendrio) e fusao das caracteristicas (Kevin)
+
+2) Fase
+    1) Alinhamento das palavras (Sequitur, MED - PNL, palavras com letras iguais e ordenadas, shotgun)
+        - O simples fato dos histogramas não se preocuparem com a ordem das palavras o autor fala que é livre de alinhamento, o que não é verdade!
+    2) Adicionar informação de contexto a cada palavra. Exemplo, media do Page Hinkley.    
+    3) Implementar fusao das caracteristicas (Kevin)
+    4) Aplicar ideias de modelos n-gramas (PLN)
+    5) utilizar a gramatica (repair) para descobrir n-gramas. Melhor do que o weasel cujo limite é bigrama?
+    6) Atualizar os indices da redução de numerisidade
+    7) Prestar atenção no melhor tamanho de janela para no contexto de HAR
+    8) Discords podem ser considerados transição entre atividades.
+    
+3) Fase
+    1) Criar o MCB toda vez que o sinal mudar de padrao, guardar os MCB's de sinais anteriores (Datastreaming)
+    2) Os motifs podem ser utilizados para agrupar palavras.
+    3) guardar em uma base de dados a parte as palavras desconhecidas (OOV's) out of vocabulary
 
 Experimentos
-1) Reproduzir os testes incluindo o SAX-VSM, BOSS VS e WEASEL para ver as acurácias
+    1) Reproduzir os testes incluindo o SAX-VSM, BOSS VS e WEASEL para ver as acurácias e comparar com as caracteristicas de tempo e frequencia
 
 Duvidas
-1) O SAX olha a forma da serie independente da amplitude, o SFA tambem?
-2) Verificar se o codigo do SFA aplica o lowpass filter. Se sim, motificar o codigo para o RSSA. 
+    1) Verificar se o codigo do SFA aplica o lowpass filter. Se sim, motificar o codigo para o RSSA. 
    (The use of the first Fourier coefficients is equal to a low-pass filter and as such has a noise 
     canceling effect by smoothening a time series.)
-3) O SFA trie é utilizada pelo classificador?
-4) O BOSS utiliza o shotgun distance? (Alingment free)
+    2) O SFA trie é utilizada pelo classificador?
+    3) O BOSS utiliza o shotgun distance? (Alingment free)
 
 Notas
 1) O SFA funciona como o iSAX trabalhando com palavras de diferentes tamanhos SFAWordsVariableLength.java
-
+2) Procurar entender bem como funciona o PCA

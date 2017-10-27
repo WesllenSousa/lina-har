@@ -21,7 +21,6 @@ public class ConstDataset {
     public static String DS_TEST = CURRENT_DIR + "\\Lina\\Datasets\\Test\\";
     public static String DS_FUNF = CURRENT_DIR + "\\Lina\\Datasets\\Funf\\";
     public static String DS_RAW = CURRENT_DIR + "\\Lina\\Datasets\\Raw\\";
-    public static String DS_SEQUENCE = CURRENT_DIR + "\\Lina\\Datasets\\Routine\\";
     public static String DS_TEMP = CURRENT_DIR + "\\Lina\\Datasets\\Temp\\";
     public static String DS_TIME_SERIES = CURRENT_DIR + "\\Lina\\Datasets\\TimeSeries\\";
 

@@ -75,4 +75,8 @@ public class BarGraphic extends JPanel implements ChartProgressListener {
         }
     }
 
+    public DefaultCategoryDataset getDatasetCollection() {
+        return datasetCollection;
+    }
+
 }

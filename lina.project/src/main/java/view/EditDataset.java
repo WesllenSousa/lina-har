@@ -360,7 +360,7 @@ public class EditDataset extends javax.swing.JDialog {
         if (!Validation.isEmptyString(name)) {
             LinkedHashSet<GenericRowBean> dataTable = HandleGenericDataset.converLinkedlistToHashset(((GenericTableModel) tb_data.getModel()).getLinhas());
             if (HandleGenericDataset.saveBufferToCSV(dir, name, dataTable)) {
-                ConstGeneral.TELA_PRINCIPAL.handleTabedPane();
+                ConstGeneral.TELA_PRINCIPAL.updateHandleTabedPane();
                 messages.sucesso("File saved!");
             }
         } else {
@@ -374,7 +374,7 @@ public class EditDataset extends javax.swing.JDialog {
         if (!Validation.isEmptyString(name)) {
             LinkedHashSet<GenericRowBean> dataTable = HandleGenericDataset.converLinkedlistToHashset(((GenericTableModel) tb_data.getModel()).getLinhas());
             if (HandleGenericDataset.saveBufferToARFF(dir, name, dataTable)) {
-                ConstGeneral.TELA_PRINCIPAL.handleTabedPane();
+                ConstGeneral.TELA_PRINCIPAL.updateHandleTabedPane();
                 messages.sucesso("File saved!");
             }
         } else {

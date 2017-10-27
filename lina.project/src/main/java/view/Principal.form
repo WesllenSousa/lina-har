@@ -117,6 +117,18 @@
         </MenuItem>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.ButtonGroup" name="gp_settings">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="gp_pageHinkley">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="gp_numerosityReduction">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="gp_alingment">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="gp_model">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="gp_algDiscretization">
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenu3">
@@ -310,7 +322,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane13" alignment="0" pref="658" max="32767" attributes="0"/>
+                          <Component id="jScrollPane13" alignment="0" pref="761" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -1332,12 +1344,12 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="659" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="724" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="628" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="731" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -1406,7 +1418,7 @@
                               <Component id="jPanel31" linkSize="2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel36" linkSize="2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="296" max="32767" attributes="0"/>
+                              <EmptySpace pref="399" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1563,7 +1575,7 @@
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane12" alignment="0" pref="607" max="32767" attributes="0"/>
+                              <Component id="jScrollPane12" alignment="0" pref="710" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -1609,7 +1621,7 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane7" pref="419" max="32767" attributes="0"/>
+                              <Component id="jScrollPane7" pref="484" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Component id="jButton1" min="-2" pref="85" max="-2" attributes="0"/>
@@ -1713,7 +1725,7 @@
                               <Component id="jPanel30" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel29" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="296" max="32767" attributes="0"/>
+                              <EmptySpace pref="399" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1854,12 +1866,12 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane11" alignment="0" pref="652" max="32767" attributes="0"/>
+                              <Component id="jScrollPane11" alignment="0" pref="717" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane11" alignment="0" pref="633" max="32767" attributes="0"/>
+                              <Component id="jScrollPane11" alignment="0" pref="736" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -1872,236 +1884,6 @@
                           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                           <SubComponents>
                             <Component class="javax.swing.JTextPane" name="tp_resultClassification">
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                      </SubComponents>
-                    </Container>
-                  </SubComponents>
-                </Container>
-              </SubComponents>
-            </Container>
-          </SubComponents>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel4">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Routine">
-                <Property name="tabTitle" type="java.lang.String" value="Routine"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jSplitPane7" alignment="1" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jSplitPane7" alignment="1" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-          <SubComponents>
-            <Container class="javax.swing.JSplitPane" name="jSplitPane7">
-              <Properties>
-                <Property name="dividerLocation" type="int" value="300"/>
-              </Properties>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
-              <SubComponents>
-                <Container class="javax.swing.JPanel" name="jPanel21">
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-                      <JSplitPaneConstraints position="left"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout>
-                    <DimensionLayout dim="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jPanel33" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="jPanel37" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                    <DimensionLayout dim="1">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel33" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel37" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="289" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                  </Layout>
-                  <SubComponents>
-                    <Container class="javax.swing.JPanel" name="jPanel33">
-                      <Properties>
-                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Sequence Datasets"/>
-                          </Border>
-                        </Property>
-                      </Properties>
-
-                      <Layout>
-                        <DimensionLayout dim="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane15" alignment="0" pref="263" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                        <DimensionLayout dim="1">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane15" alignment="0" pref="153" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                      </Layout>
-                      <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane15">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JList" name="lt_sequenceData">
-                              <Properties>
-                                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                                  <StringArray count="4">
-                                    <StringItem index="0" value="Sequence 1"/>
-                                    <StringItem index="1" value="Sequence 2"/>
-                                    <StringItem index="2" value="Sequence 3"/>
-                                    <StringItem index="3" value="Sequence 4"/>
-                                  </StringArray>
-                                </Property>
-                              </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                              </AuxValues>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JPanel" name="jPanel37">
-                      <Properties>
-                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Sequence Algorithms"/>
-                          </Border>
-                        </Property>
-                      </Properties>
-
-                      <Layout>
-                        <DimensionLayout dim="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane23" alignment="0" pref="263" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                        <DimensionLayout dim="1">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane23" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                      </Layout>
-                      <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane23">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JList" name="lt_sequenceAlgorithms">
-                              <Properties>
-                                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                                  <StringArray count="2">
-                                    <StringItem index="0" value="HMM"/>
-                                    <StringItem index="1" value="CRF"/>
-                                  </StringArray>
-                                </Property>
-                              </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                              </AuxValues>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                      </SubComponents>
-                    </Container>
-                  </SubComponents>
-                </Container>
-                <Container class="javax.swing.JPanel" name="jPanel38">
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-                      <JSplitPaneConstraints position="right"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout>
-                    <DimensionLayout dim="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel11" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                    <DimensionLayout dim="1">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel11" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                  </Layout>
-                  <SubComponents>
-                    <Container class="javax.swing.JPanel" name="jPanel11">
-                      <Properties>
-                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Result"/>
-                          </Border>
-                        </Property>
-                      </Properties>
-
-                      <Layout>
-                        <DimensionLayout dim="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane8" alignment="0" pref="628" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                        <DimensionLayout dim="1">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane8" alignment="0" pref="607" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                      </Layout>
-                      <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane8">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JTextPane" name="tp_resultRoutine">
-                              <Properties>
-                                <Property name="editable" type="boolean" value="false"/>
-                              </Properties>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -2152,239 +1934,526 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jPanel23" max="32767" attributes="0"/>
-                                  <Component id="jPanel26" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jScrollPane4" alignment="0" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel23" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel26" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="243" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="jScrollPane4" alignment="0" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Container class="javax.swing.JPanel" name="jPanel23">
-                      <Properties>
-                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Time Series"/>
-                          </Border>
-                        </Property>
-                      </Properties>
+                    <Container class="javax.swing.JScrollPane" name="jScrollPane4">
 
-                      <Layout>
-                        <DimensionLayout dim="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane2" alignment="1" pref="263" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                        <DimensionLayout dim="1">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane2" alignment="0" pref="158" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                      </Layout>
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JList" name="lt_timeSeriesData">
-                              <Properties>
-                                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                                  <StringArray count="2">
-                                    <StringItem index="0" value="Time Series 1"/>
-                                    <StringItem index="1" value="Time Series 2"/>
-                                  </StringArray>
-                                </Property>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_timeSeriesDataMouseClicked"/>
-                              </Events>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                              </AuxValues>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JPanel" name="jPanel26">
-                      <Properties>
-                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Streaming Algorithm"/>
-                          </Border>
-                        </Property>
-                      </Properties>
-
-                      <Layout>
-                        <DimensionLayout dim="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jPanel28" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                        <DimensionLayout dim="1">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jPanel28" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                      </Layout>
-                      <SubComponents>
-                        <Container class="javax.swing.JPanel" name="jPanel28">
+                        <Container class="javax.swing.JPanel" name="jPanel11">
 
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane26" pref="98" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="bt_timeSeriesLeftRightAll" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="bt_timeSeriesRightLeftAll" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="bt_timeSeriesLeftRight" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="bt_timeSeriesRightLeft" alignment="0" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="jPanel4" max="32767" attributes="0"/>
+                                          <Component id="jPanel26" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jPanel28" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jPanel23" alignment="0" max="32767" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jScrollPane28" pref="99" max="32767" attributes="0"/>
+                                      <EmptySpace pref="30" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="bt_timeSeriesLeftRightAll" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="bt_timeSeriesLeftRight" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jPanel23" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="bt_timeSeriesRightLeft" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jPanel28" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="bt_timeSeriesRightLeftAll" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="jScrollPane28" alignment="0" max="32767" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jScrollPane26" min="-2" pref="155" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="jPanel26" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                                      <Component id="jPanel4" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
                           </Layout>
                           <SubComponents>
-                            <Container class="javax.swing.JScrollPane" name="jScrollPane26">
-                              <AuxValues>
-                                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                              </AuxValues>
+                            <Container class="javax.swing.JPanel" name="jPanel23">
+                              <Properties>
+                                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                                    <TitledBorder title="Time Series"/>
+                                  </Border>
+                                </Property>
+                              </Properties>
 
-                              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                              <Layout>
+                                <DimensionLayout dim="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
+                                  </Group>
+                                </DimensionLayout>
+                                <DimensionLayout dim="1">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jScrollPane2" alignment="0" pref="158" max="32767" attributes="0"/>
+                                  </Group>
+                                </DimensionLayout>
+                              </Layout>
                               <SubComponents>
-                                <Component class="javax.swing.JList" name="lt_timeSeriesLeft">
+                                <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+                                  <AuxValues>
+                                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                                  </AuxValues>
+
+                                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                                  <SubComponents>
+                                    <Component class="javax.swing.JList" name="lt_timeSeriesData">
+                                      <Properties>
+                                        <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                                          <StringArray count="2">
+                                            <StringItem index="0" value="Time Series 1"/>
+                                            <StringItem index="1" value="Time Series 2"/>
+                                          </StringArray>
+                                        </Property>
+                                      </Properties>
+                                      <Events>
+                                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_timeSeriesDataMouseClicked"/>
+                                      </Events>
+                                      <AuxValues>
+                                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                                      </AuxValues>
+                                    </Component>
+                                  </SubComponents>
+                                </Container>
+                              </SubComponents>
+                            </Container>
+                            <Container class="javax.swing.JPanel" name="jPanel28">
+                              <Properties>
+                                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                                    <TitledBorder title="Settings"/>
+                                  </Border>
+                                </Property>
+                              </Properties>
+
+                              <Layout>
+                                <DimensionLayout dim="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="jLabel6" min="-2" pref="57" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jRadioButton3" max="32767" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" attributes="0">
+                                                  <Component id="jLabel8" min="-2" pref="87" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jRadioButton6" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jRadioButton7" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              </Group>
+                                              <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                </DimensionLayout>
+                                <DimensionLayout dim="1">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jRadioButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jRadioButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jRadioButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jRadioButton6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jRadioButton7" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                </DimensionLayout>
+                              </Layout>
+                              <SubComponents>
+                                <Component class="javax.swing.JLabel" name="jLabel6">
                                   <Properties>
-                                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                                      <StringArray count="6">
-                                        <StringItem index="0" value="PageHinkley"/>
-                                        <StringItem index="1" value="SAX"/>
-                                        <StringItem index="2" value="iSAX"/>
-                                        <StringItem index="3" value="SFA"/>
-                                        <StringItem index="4" value="Repair"/>
-                                        <StringItem index="5" value="Sequitur"/>
-                                      </StringArray>
+                                    <Property name="text" type="java.lang.String" value="Speed:"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_settings"/>
                                     </Property>
+                                    <Property name="text" type="java.lang.String" value="Slow"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton2">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_settings"/>
+                                    </Property>
+                                    <Property name="selected" type="boolean" value="true"/>
+                                    <Property name="text" type="java.lang.String" value="Fast"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton3">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_settings"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="None"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JButton" name="jButton2">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Show Page Hinkley"/>
                                   </Properties>
                                   <Events>
-                                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_timeSeriesLeftMouseClicked"/>
+                                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
                                   </Events>
-                                  <AuxValues>
-                                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                                  </AuxValues>
+                                </Component>
+                                <Component class="javax.swing.JLabel" name="jLabel8">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Page Hinkley:"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton6">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_pageHinkley"/>
+                                    </Property>
+                                    <Property name="selected" type="boolean" value="true"/>
+                                    <Property name="text" type="java.lang.String" value="Yes"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton7">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_pageHinkley"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="No"/>
+                                  </Properties>
                                 </Component>
                               </SubComponents>
                             </Container>
-                            <Component class="javax.swing.JButton" name="bt_timeSeriesRightLeft">
+                            <Container class="javax.swing.JPanel" name="jPanel26">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="&lt;"/>
+                                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                                    <TitledBorder title="Discretization"/>
+                                  </Border>
+                                </Property>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_timeSeriesRightLeftActionPerformed"/>
-                              </Events>
-                            </Component>
-                            <Component class="javax.swing.JButton" name="bt_timeSeriesLeftRight">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="&gt;"/>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_timeSeriesLeftRightActionPerformed"/>
-                              </Events>
-                            </Component>
-                            <Container class="javax.swing.JScrollPane" name="jScrollPane28">
-                              <AuxValues>
-                                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                              </AuxValues>
 
-                              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                              <Layout>
+                                <DimensionLayout dim="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="jLabel9" min="-2" pref="99" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jRadioButton8" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jRadioButton9" max="32767" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" attributes="0">
+                                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                                      <Component id="jLabel4" max="32767" attributes="0"/>
+                                                      <Component id="jLabel7" max="32767" attributes="0"/>
+                                                      <Component id="jLabel1" max="32767" attributes="0"/>
+                                                      <Component id="jLabel2" max="32767" attributes="0"/>
+                                                      <Component id="jLabel3" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Group type="102" alignment="0" attributes="0">
+                                                          <Component id="jRadioButton4" min="-2" pref="60" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="jRadioButton5" max="32767" attributes="0"/>
+                                                      </Group>
+                                                      <Component id="tf_symWindow" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="tf_symSymbol" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="tf_symAlphabet" max="32767" attributes="0"/>
+                                                      <Component id="tf_symOffset" alignment="0" max="32767" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="jLabel10" min="-2" pref="99" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jRadioButton10" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jRadioButton11" max="32767" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                </DimensionLayout>
+                                <DimensionLayout dim="1">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="jRadioButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jRadioButton5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel7" alignment="3" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="tf_symWindow" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel1" alignment="3" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="jLabel2" alignment="3" max="32767" attributes="0"/>
+                                              <Component id="tf_symSymbol" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="jLabel3" alignment="3" max="32767" attributes="0"/>
+                                              <Component id="tf_symAlphabet" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="jLabel4" alignment="3" max="32767" attributes="0"/>
+                                              <Component id="tf_symOffset" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="jLabel9" alignment="3" max="32767" attributes="0"/>
+                                              <Component id="jRadioButton8" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jRadioButton9" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                                  <Component id="jLabel10" alignment="3" max="32767" attributes="0"/>
+                                                  <Component id="jRadioButton10" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="jRadioButton11" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                </DimensionLayout>
+                              </Layout>
                               <SubComponents>
-                                <Component class="javax.swing.JList" name="lt_timeSeriesRight">
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton4">
                                   <Properties>
-                                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                                      <StringArray count="0"/>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_algDiscretization"/>
                                     </Property>
+                                    <Property name="selected" type="boolean" value="true"/>
+                                    <Property name="text" type="java.lang.String" value="SAX"/>
                                   </Properties>
-                                  <Events>
-                                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_timeSeriesRightMouseClicked"/>
-                                  </Events>
-                                  <AuxValues>
-                                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                                  </AuxValues>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton5">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_algDiscretization"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="SFA"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JLabel" name="jLabel4">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Offset:"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JTextField" name="tf_symOffset">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="1"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JTextField" name="tf_symAlphabet">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="4"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JLabel" name="jLabel3">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Word length:"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JLabel" name="jLabel2">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Symbols:"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JTextField" name="tf_symSymbol">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="8"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JTextField" name="tf_symWindow">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="25"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JLabel" name="jLabel1">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Windows:"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JLabel" name="jLabel9">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Num. reduction:"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton8">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_numerosityReduction"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="Yes"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton9">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_numerosityReduction"/>
+                                    </Property>
+                                    <Property name="selected" type="boolean" value="true"/>
+                                    <Property name="text" type="java.lang.String" value="No"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JLabel" name="jLabel10">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Alingment:"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton10">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_alingment"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="Yes"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton11">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_alingment"/>
+                                    </Property>
+                                    <Property name="selected" type="boolean" value="true"/>
+                                    <Property name="text" type="java.lang.String" value="No"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JLabel" name="jLabel7">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Algoritmos:"/>
+                                  </Properties>
                                 </Component>
                               </SubComponents>
                             </Container>
-                            <Component class="javax.swing.JButton" name="bt_timeSeriesLeftRightAll">
+                            <Container class="javax.swing.JPanel" name="jPanel4">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
+                                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                                    <TitledBorder title="Models"/>
+                                  </Border>
+                                </Property>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_timeSeriesLeftRightAllActionPerformed"/>
-                              </Events>
-                            </Component>
-                            <Component class="javax.swing.JButton" name="bt_timeSeriesRightLeftAll">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="&lt;&lt;"/>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_timeSeriesRightLeftAllActionPerformed"/>
-                              </Events>
-                            </Component>
+
+                              <Layout>
+                                <DimensionLayout dim="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jLabel11" min="-2" pref="79" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jRadioButton15" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="jRadioButton12" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="jRadioButton13" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="jRadioButton14" alignment="0" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                </DimensionLayout>
+                                <DimensionLayout dim="1">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="jLabel11" alignment="3" max="32767" attributes="0"/>
+                                              <Component id="jRadioButton15" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jRadioButton12" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jRadioButton13" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jRadioButton14" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                </DimensionLayout>
+                              </Layout>
+                              <SubComponents>
+                                <Component class="javax.swing.JLabel" name="jLabel11">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Algoritmos:"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton12">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_model"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="SAX-VSM"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton13">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_model"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="BOSS"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton14">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_model"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="BOSS-VS"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JRadioButton" name="jRadioButton15">
+                                  <Properties>
+                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                      <ComponentRef name="gp_model"/>
+                                    </Property>
+                                    <Property name="selected" type="boolean" value="true"/>
+                                    <Property name="text" type="java.lang.String" value="None"/>
+                                  </Properties>
+                                </Component>
+                              </SubComponents>
+                            </Container>
                           </SubComponents>
                         </Container>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JButton" name="jButton2">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Page Hinkley"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
-                      </Events>
-                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="jPanel8">
@@ -2453,7 +2522,7 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <EmptySpace min="0" pref="342" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="407" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
@@ -2486,17 +2555,14 @@
                                 <Property name="columns" type="int" value="20"/>
                                 <Property name="rows" type="int" value="5"/>
                               </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-                              </AuxValues>
                             </Component>
                           </SubComponents>
                         </Container>
                         <Container class="javax.swing.JPanel" name="jPanel17">
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                              <JTabbedPaneConstraints tabName="Table">
-                                <Property name="tabTitle" type="java.lang.String" value="Table"/>
+                              <JTabbedPaneConstraints tabName="Words">
+                                <Property name="tabTitle" type="java.lang.String" value="Words"/>
                               </JTabbedPaneConstraints>
                             </Constraint>
                           </Constraints>
@@ -2511,7 +2577,7 @@
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jScrollPane3" pref="408" max="32767" attributes="0"/>
+                                      <Component id="jScrollPane3" pref="511" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="lb_tableInfo" min="-2" max="-2" attributes="0"/>
                                   </Group>
@@ -2699,20 +2765,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btt_resetActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btt_play">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/images/play36.png"/>
-            </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Execute in a new windows"/>
-            <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="verticalTextPosition" type="int" value="3"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btt_playActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btt_pause">

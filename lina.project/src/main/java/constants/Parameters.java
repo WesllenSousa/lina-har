@@ -11,6 +11,15 @@ package constants;
  */
 public class Parameters {
 
+    public static int WINDOW_SIZE = 50;
+
+    /**
+     * SAX Parameters
+     */
+    public static int SAX_PAA = 7;
+    public static int SAX_ALPHABET = 4;
+    public static double NORMALIZATION_THRESHOLD = 0.05;
+
     /**
      * iSAX Parameters
      */

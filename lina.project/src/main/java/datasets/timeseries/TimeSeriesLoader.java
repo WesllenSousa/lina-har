@@ -23,18 +23,20 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import net.seninp.util.StackTrace;
 
 public class TimeSeriesLoader {
 
     final static Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-    public static TimeSeries loadVerticalData(String limitStr, String dataFileName) {
-        return loadVerticalData(limitStr, dataFileName, false);
+    public static TimeSeries[] loadVerticalData(String limitStr, String dataFileName, String separator) {
+        return loadVerticalData(limitStr, dataFileName, false, separator);
     }
 
-    public static TimeSeries loadVerticalData(String limitStr, String dataFileName, Boolean normalize) {
+    public static TimeSeries[] loadVerticalData(String limitStr, String dataFileName, Boolean normalize, String separator) {
 
+        ArrayList<TimeSeries> samples = new ArrayList<>();
         double[] ts = new double[]{};
         String label = null;
 
@@ -52,12 +54,9 @@ public class TimeSeriesLoader {
         }
 
         // read the input
-        //
-        ArrayList<Double> data = new ArrayList<Double>();
+        ArrayList<LinkedList<Double>> dataset = new ArrayList<>();
 
-        // lets go
         try {
-
             // set the lines limit
             long loadLimit = 0l;
             if (!(null == limitStr) && !(limitStr.isEmpty())) {
@@ -70,25 +69,43 @@ public class TimeSeriesLoader {
             // read by the line in the loop from reader
             String line = null;
             long lineCounter = 0;
+            int colCount = 1;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("@")) {
+                //ingnore line
+                if (line.startsWith("@") || !isNonEmptyColumn(line)) {
                     continue;
                 }
 
-                String[] lineSplit = line.trim().split("\\s+");
+                String[] lineSplit = line.trim().split(separator);
 
-                if (lineCounter == 0 && isNonEmptyColumn(lineSplit[0])) {
-                    label = lineSplit[0];
+                if (lineCounter == 0) {
                     lineCounter++;
+                    if (isNonEmptyColumn(lineSplit[0])) {
+                        //Cria a quantidade de objetos TS para o numero igual de colunas
+                        colCount = lineSplit.length;
+                        for (int i = 0; i < colCount; i++) {
+                            LinkedList<Double> newTs = new LinkedList<>();
+                            dataset.add(i, newTs);
+                        }
+                        continue;
+                    }
+                }
+
+                //check if data os consistent
+                if (lineSplit.length != colCount) {
+                    lineCounter++;
+                    System.out.println("Data inconsistent, line: " + lineCounter);
                     continue;
                 }
 
                 // we read only first column
-                // for (int i = 0; i < lineSplit.length; i++) {
-                double value = new BigDecimal(lineSplit[0]).doubleValue();
-                data.add(value);
-                // }
+                for (int i = 0; i < colCount; i++) {
+                    double value = new BigDecimal(lineSplit[i]).doubleValue();
+                    dataset.get(i).add(value);
+                }
+
                 lineCounter++;
+
                 // break the load if needed
                 if ((loadLimit > 0) && (lineCounter > loadLimit)) {
                     break;
@@ -104,23 +121,22 @@ public class TimeSeriesLoader {
         }
 
         // convert to simple doubles array and clean the variable
-        if (!(data.isEmpty())) {
-            ts = new double[data.size()];
-            for (int i = 0; i < data.size(); i++) {
-                ts[i] = data.get(i);
+        if (!(dataset.isEmpty())) {
+            for (LinkedList<Double> coluna : dataset) {
+                ts = new double[coluna.size()];
+                int i = 0;
+                for (Double value : coluna) {
+                    ts[i] = value;
+                    i++;
+                }
+                TimeSeries timeSeries = new TimeSeries(ts, label);
+                timeSeries.norm(normalize);
+                samples.add(timeSeries);
             }
         }
-        data = new ArrayList<Double>();
-
-        System.out.println("loaded " + ts.length + " points....");
-
-        // notify that the process finished
         System.out.println("loaded " + ts.length + " points from " + dataFileName);
 
-        TimeSeries timeSeries = new TimeSeries(ts, label);
-        timeSeries.norm(normalize);
-
-        return timeSeries;
+        return samples.toArray(new TimeSeries[]{});
     }
 
     /**

@@ -2,6 +2,7 @@
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
 package controle.SFA.test;
 
+import constants.ConstDataset;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
 import controle.SFA.transformation.SFA;
@@ -25,8 +26,8 @@ public class SFAMinDistance {
         SFADistance sfaDistance = new SFADistance(sfa);
 
         // Load the train/test splits
-        TimeSeries[] train = TimeSeriesLoader.loadHorizontalData("samples/SFAdatasets/CBF/CBF_TRAIN", " ", true);
-        TimeSeries[] test = TimeSeriesLoader.loadHorizontalData("samples/SFAdatasets/CBF/CBF_TEST", " ", true);
+        TimeSeries[] train = TimeSeriesLoader.loadHorizontalData(ConstDataset.DS_TEMP + "SFAdatasets/CBF/CBF_TRAIN", " ", true);
+        TimeSeries[] test = TimeSeriesLoader.loadHorizontalData(ConstDataset.DS_TEMP + "SFAdatasets/CBF/CBF_TEST", " ", true);
 
         // train SFA representation
         short[][] wordsTrain = sfa.fitTransform(train, wordLength, symbols, normMean);

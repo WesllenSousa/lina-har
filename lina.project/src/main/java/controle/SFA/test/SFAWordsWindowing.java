@@ -2,6 +2,7 @@
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
 package controle.SFA.test;
 
+import constants.ConstDataset;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
 import controle.SFA.transformation.SFA;
@@ -24,8 +25,8 @@ public class SFAWordsWindowing {
         SFA sfa = new SFA(HistogramType.EQUI_DEPTH);
 
         // Load the train/test splits
-        TimeSeries[] train = TimeSeriesLoader.loadHorizontalData("samples/SFAdatasets/CBF/CBF_TRAIN", " ", true);
-        TimeSeries[] test = TimeSeriesLoader.loadHorizontalData("samples/SFAdatasets/CBF/CBF_TEST", " ", true);
+        TimeSeries[] train = TimeSeriesLoader.loadHorizontalData(ConstDataset.DS_TEMP + "SFAdatasets/CBF/CBF_TRAIN", " ", true);
+        TimeSeries[] test = TimeSeriesLoader.loadHorizontalData(ConstDataset.DS_TEMP + "SFAdatasets/CBF/CBF_TEST", " ", true);
 
         // train SFA representation
         sfa.fitWindowing(train, windowLength, wordLength, symbols, normMean, true);

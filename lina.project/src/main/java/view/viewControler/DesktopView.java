@@ -374,23 +374,6 @@ public class DesktopView {
         list.setModel(defaultListModel);
     }
 
-    public void fillDiscreteFeaturesListLeft(JList list) {
-        DefaultListModel defaultListModel = new DefaultListModel<>();
-        defaultListModel.addElement("");
-        list.setModel(defaultListModel);
-    }
-
-    public void fillStreamListLeft(JList list) {
-        DefaultListModel defaultListModel = new DefaultListModel<>();
-        defaultListModel.addElement("PageHinkley");
-        defaultListModel.addElement("SAX");
-        defaultListModel.addElement("iSAX");
-        defaultListModel.addElement("SFA");
-        defaultListModel.addElement("Sequitur");
-        defaultListModel.addElement("Repair");
-        list.setModel(defaultListModel);
-    }
-
     /*
         Processing
      */

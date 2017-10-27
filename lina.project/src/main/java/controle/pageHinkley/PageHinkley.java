@@ -6,6 +6,7 @@
 package controle.pageHinkley;
 
 import constants.ConstGeneral;
+import java.awt.Color;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 public class PageHinkley {
 
     private ArrayList<PageHinkleyBean> listChanges = new ArrayList<>();
+    private Color cor;
 
     final double PERCENT_ALPHA = 0.25;
 
@@ -24,13 +26,21 @@ public class PageHinkley {
             sumThreshold = 0., countThreshold = 0.;
     private int countChange = 0;
 
-    public ArrayList<PageHinkleyBean> runTs(double[] ts) {
+    public PageHinkley(Color cor) {
+        this.cor = cor;
+    }
 
+    public ArrayList<PageHinkleyBean> runTs(double[] ts) {
         for (int position = 1; position < ts.length; position++) {
             runStreaming(ts[position], position);
         }
-
         return listChanges;
+    }
+
+    public void runStreamingWindow(double[] values, int position) {
+        for (int i = 0; i < values.length; i++) {
+            runStreaming(values[i], i + position);
+        }
     }
 
     public void runStreaming(double value, int position) {
@@ -47,7 +57,7 @@ public class PageHinkley {
 
         sum += value;
         countChange++;
-        mean = sum / countChange;
+        mean = sum / countChange; //média negativa---------------------------------------------------------------------
 
         UT = (((position - 1) * lastUT) / position) + (value - mean - alpha);
         if (UT < minUT) {
@@ -92,17 +102,19 @@ public class PageHinkley {
     }
 
     private boolean analyzeThresould(int position) {
-        //log(" >>> Pos: " + position + " (newThresould " + threshold + " < " + lastThreshold + " lastThresould) \n");
+        //log(" >> Threshold: " + position + " (new: " + threshold + ", old: " + lastThreshold + "\n");
 
         if (lastThreshold == 0.) {
-            lastThreshold = 0.1;
+            lastThreshold = 0.01;
         }
         if (threshold < lastThreshold) {
             double percentThresholdVariation = 100 - (threshold / lastThreshold) * 100;
+            //log(" >>> " + percentThresholdVariation + " \n");
 
-            if (percentThresholdVariation > ConstGeneral.PERCENT_QUEDA_THRESHOULD) {
+            if (percentThresholdVariation > ConstGeneral.PERCENT_QUEDA_THRESHOULD
+                    || percentThresholdVariation < (ConstGeneral.PERCENT_QUEDA_THRESHOULD * -1)) { //--------------
                 listChanges.add(setPageHinkley(position, "down", percentThresholdVariation));
-                //log(" >>> Pos: " + position + " (newThresould " + threshold + " < " + lastThreshold + " lastThresould) (down) \n");
+                //log(" >>>> down \n");
                 return true;
             } else {
                 //Manteve media em torno dos 50% de tolerancia em torno do último threshould relativo
@@ -112,10 +124,12 @@ public class PageHinkley {
             }
         } else if (threshold > lastThreshold) {
             double percentThresholdVariation = ((threshold - lastThreshold) / lastThreshold) * 100;
+            //log(" >>> " + percentThresholdVariation + " \n");
 
-            if (percentThresholdVariation > ConstGeneral.PERCENT_QUEDA_THRESHOULD) {
+            if (percentThresholdVariation > ConstGeneral.PERCENT_QUEDA_THRESHOULD
+                    || percentThresholdVariation < (ConstGeneral.PERCENT_QUEDA_THRESHOULD * -1)) { //--------------
                 listChanges.add(setPageHinkley(position, "up", percentThresholdVariation));
-                //log(" >>> Pos: " + position + " (newThresould " + threshold + " > " + lastThreshold + " lastThresould) (up) \n");
+                //log(" >>>> up \n");
                 return true;
             } else {
                 //Manteve media em torno dos 50% de tolerancia em torno do último threshould relativo
@@ -132,6 +146,7 @@ public class PageHinkley {
         bean.setPosition(position);
         bean.setStatus(status);
         bean.setIntensity(intensity);
+        bean.setCor(cor);
 
         log(bean.toString() + "\n");
         return bean;
@@ -139,7 +154,7 @@ public class PageHinkley {
 
     private void log(String text) {
         if (ConstGeneral.TELA_PRINCIPAL != null) {
-            ConstGeneral.TELA_PRINCIPAL.ta_symbolic.append(text);
+            ConstGeneral.TELA_PRINCIPAL.updatePageHinkleyPlot(text);
         } else {
             System.out.print(text);
         }

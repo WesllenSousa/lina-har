@@ -86,7 +86,7 @@ public class PainelBox extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         ConstGeneral.CURRENT_BOX = this;
-        ConstGeneral.TELA_PRINCIPAL.reverseConfigList(nameDataset, signalSelection,
+        ConstGeneral.TELA_PRINCIPAL.updateConfigList(nameDataset, signalSelection,
                 filters, principalFeatures, timeFeatures, frequencyFeatures);
         if (e.getButton() == MouseEvent.BUTTON3) {
             popup.show(e.getComponent(), e.getX(), e.getY());

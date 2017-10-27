@@ -5,6 +5,7 @@
  */
 package controle.SAX;
 
+import constants.ConstDataset;
 import net.seninp.jmotif.sax.datastructure.SAXRecord;
 import net.seninp.jmotif.sax.datastructure.SAXRecords;
 import datasets.timeseries.TimeSeries;
@@ -28,12 +29,11 @@ public class SAXExample {
 
         //0 = all lines
         //double[] ts = HandleData.loadData("0", "samples/TimeSeries/sinusoid.csv");
-        TimeSeries timeSeries = TimeSeriesLoader.loadVerticalData("0", "C:\\Users\\Wesllen Sousa\\Lina\\Datasets\\TimeSeries\\sinusoid.csv");
+        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "bbb.arff", ",");
 
 //        String test = SAX.serieToWord(timeSeries.getData(), params);
 //        System.out.println(test);
-
-        SAXRecords sAXRecords = SAX.slideWindow(timeSeries.getData(), params);
+        SAXRecords sAXRecords = SAX.slideWindow(timeSeries[3].getData(), params);
         System.out.println(">> " + sAXRecords.getIndexes().size());
         System.out.println(">> " + sAXRecords.getIndexes());
         for (SAXRecord sAXRecord : sAXRecords) {

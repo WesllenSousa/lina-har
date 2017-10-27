@@ -10,6 +10,7 @@ import constants.ConstGeneral;
 import java.util.ArrayList;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
+import java.awt.Color;
 
 /**
  *
@@ -22,10 +23,10 @@ public class PageHinkleyExample {
         ConstGeneral.PERCENT_QUEDA_THRESHOULD = 30;
 
         //0 = all lines
-        TimeSeries timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "215218.csv", false);
+        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "215218.csv", false, ",");
 
-        PageHinkley pageHinkley = new PageHinkley();
-        ArrayList<PageHinkleyBean> list = pageHinkley.runTs(timeSeries.getData());
+        PageHinkley pageHinkley = new PageHinkley(Color.BLACK);
+        ArrayList<PageHinkleyBean> list = pageHinkley.runTs(timeSeries[0].getData());
 
 //        for (PageHinkleyBean page : list) {
 //            System.out.println(page.toString());

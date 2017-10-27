@@ -161,7 +161,7 @@ public class TimeSeries implements Serializable {
     public TimeSeries getSubsequence(int offset, int windowSize) {
         double[] subsequenceData = Arrays.copyOfRange(this.data, offset, Math.min(data.length, offset + windowSize));
         TimeSeries sequence = new TimeSeries(subsequenceData);
-        sequence.norm();
+        //sequence.norm();
         return sequence;
     }
 

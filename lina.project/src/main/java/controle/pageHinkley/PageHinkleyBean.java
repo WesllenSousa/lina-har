@@ -5,6 +5,7 @@
  */
 package controle.pageHinkley;
 
+import java.awt.Color;
 import java.util.Objects;
 
 /**
@@ -16,6 +17,7 @@ public class PageHinkleyBean {
     private int position;
     private String status;
     private double intensity;
+    private Color cor;
 
     public int getPosition() {
         return position;
@@ -39,6 +41,14 @@ public class PageHinkleyBean {
 
     public void setIntensity(double intensity) {
         this.intensity = intensity;
+    }
+
+    public Color getCor() {
+        return cor;
+    }
+
+    public void setCor(Color cor) {
+        this.cor = cor;
     }
 
     @Override

@@ -48,13 +48,13 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
     }
 
     private void generateGraphic() {
-        graphic = new LineGraphic(nameDataset);
+        graphic = new LineGraphic(nameDataset, true);
         addData();
     }
 
     public void updateGraphic(LinkedHashSet<GenericRowBean> data) {
         if (graphic != null) {
-            ((LineGraphic) graphic).prepareStream(data, true);
+            ((LineGraphic) graphic).prepareStream(data);
             addData();
         }
     }
@@ -183,7 +183,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
     @Override
     public void internalFrameActivated(InternalFrameEvent e) {
         ConstGeneral.CURRENT_INTERNAL_FRAME = this;
-        ConstGeneral.TELA_PRINCIPAL.reverseConfigList(nameDataset, signalSelection,
+        ConstGeneral.TELA_PRINCIPAL.updateConfigList(nameDataset, signalSelection,
                 filters, principalFeatures, timeFeatures, frequencyFeatures);
     }
 

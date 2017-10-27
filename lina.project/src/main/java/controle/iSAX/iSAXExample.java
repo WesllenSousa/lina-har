@@ -5,6 +5,7 @@
  */
 package controle.iSAX;
 
+import constants.ConstDataset;
 import ex.AlphabetTooLargeException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,10 +25,10 @@ public class iSAXExample {
             int WINDOW_SIZE = 28;
 
             //0 = all lines
-            TimeSeries timeSeries = TimeSeriesLoader.loadVerticalData("0", "samples/TimeSeries/sinusoid.csv", false);
+            TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "sinusoid.csv", false, ",");
 
             iSAX iSAX = new iSAX();
-            SAXRecords sAXRecords = iSAX.ts2iSaxViaWindow(timeSeries.getData(), WINDOW_SIZE);
+            SAXRecords sAXRecords = iSAX.ts2iSaxViaWindow(timeSeries[0].getData(), WINDOW_SIZE);
 
             for (SAXRecord sAXRecord : sAXRecords) {
                 System.out.println(sAXRecord.toString());
