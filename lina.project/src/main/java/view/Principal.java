@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import constants.ConstDataset;
 import constants.ConstGeneral;
+import constants.Parameters;
 import datasets.memory.WordInterval;
 import datasets.memory.WordRecord;
 import datasets.timeseries.TimeSeries;
@@ -68,6 +69,8 @@ public class Principal extends javax.swing.JFrame {
         desktopView.fillAlgorithmsList(lt_algorithms);
         SwingUtil.listFilesList(lt_rawData, ConstDataset.DS_RAW);
 
+        addLineGraphic();
+        addBarGraphic();
         wordTableModel = new WordTableModel(new ArrayList<>());
         tb_words.setModel(wordTableModel);
     }
@@ -97,6 +100,7 @@ public class Principal extends javax.swing.JFrame {
         gp_alingment = new javax.swing.ButtonGroup();
         gp_model = new javax.swing.ButtonGroup();
         gp_algDiscretization = new javax.swing.ButtonGroup();
+        gp_normalized = new javax.swing.ButtonGroup();
         tb_principal = new javax.swing.JTabbedPane();
         jPanel7 = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -228,18 +232,21 @@ public class Principal extends javax.swing.JFrame {
         tf_symWindow = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jRadioButton8 = new javax.swing.JRadioButton();
-        jRadioButton9 = new javax.swing.JRadioButton();
+        rd_numReductionYes = new javax.swing.JRadioButton();
+        rd_numReductionNo = new javax.swing.JRadioButton();
         jLabel10 = new javax.swing.JLabel();
-        jRadioButton10 = new javax.swing.JRadioButton();
-        jRadioButton11 = new javax.swing.JRadioButton();
+        rd_alingmentYes = new javax.swing.JRadioButton();
+        rd_alingmentNo = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        rd_normYes = new javax.swing.JRadioButton();
+        td_normNo = new javax.swing.JRadioButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jRadioButton12 = new javax.swing.JRadioButton();
-        jRadioButton13 = new javax.swing.JRadioButton();
-        jRadioButton14 = new javax.swing.JRadioButton();
-        jRadioButton15 = new javax.swing.JRadioButton();
+        rd_algSAXVSM = new javax.swing.JRadioButton();
+        rd_algBOSS = new javax.swing.JRadioButton();
+        rd_algNoneBOSSVS = new javax.swing.JRadioButton();
+        rd_algNone = new javax.swing.JRadioButton();
         jPanel8 = new javax.swing.JPanel();
         pn_graphicLine = new javax.swing.JPanel();
         pn_graphicBar = new javax.swing.JPanel();
@@ -983,7 +990,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE)
+            .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 791, Short.MAX_VALUE)
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -1015,7 +1022,7 @@ public class Principal extends javax.swing.JFrame {
         );
         pn_boxLayout.setVerticalGroup(
             pn_boxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 731, Short.MAX_VALUE)
+            .addGap(0, 761, Short.MAX_VALUE)
         );
 
         tb_desktop.addTab("Without Graphic", pn_box);
@@ -1111,7 +1118,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(399, Short.MAX_VALUE))
+                .addContainerGap(429, Short.MAX_VALUE))
         );
 
         jPanel20Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jPanel31, jPanel36});
@@ -1145,7 +1152,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel35Layout.setVerticalGroup(
             jPanel35Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+            .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Result"));
@@ -1283,7 +1290,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(399, Short.MAX_VALUE))
+                .addContainerGap(429, Short.MAX_VALUE))
         );
 
         jSplitPane5.setLeftComponent(jPanel19);
@@ -1300,7 +1307,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
+            .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel32Layout = new javax.swing.GroupLayout(jPanel32);
@@ -1432,10 +1439,10 @@ public class Principal extends javax.swing.JFrame {
         jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder("Discretization"));
 
         gp_algDiscretization.add(jRadioButton4);
-        jRadioButton4.setSelected(true);
         jRadioButton4.setText("SAX");
 
         gp_algDiscretization.add(jRadioButton5);
+        jRadioButton5.setSelected(true);
         jRadioButton5.setText("SFA");
 
         jLabel4.setText("Offset:");
@@ -1454,25 +1461,34 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1.setText("Windows:");
 
-        jLabel9.setText("Num. reduction:");
+        jLabel9.setText("N. reduction:");
 
-        gp_numerosityReduction.add(jRadioButton8);
-        jRadioButton8.setText("Yes");
+        gp_numerosityReduction.add(rd_numReductionYes);
+        rd_numReductionYes.setSelected(true);
+        rd_numReductionYes.setText("Yes");
 
-        gp_numerosityReduction.add(jRadioButton9);
-        jRadioButton9.setSelected(true);
-        jRadioButton9.setText("No");
+        gp_numerosityReduction.add(rd_numReductionNo);
+        rd_numReductionNo.setText("No");
 
         jLabel10.setText("Alingment:");
 
-        gp_alingment.add(jRadioButton10);
-        jRadioButton10.setText("Yes");
+        gp_alingment.add(rd_alingmentYes);
+        rd_alingmentYes.setText("Yes");
 
-        gp_alingment.add(jRadioButton11);
-        jRadioButton11.setSelected(true);
-        jRadioButton11.setText("No");
+        gp_alingment.add(rd_alingmentNo);
+        rd_alingmentNo.setSelected(true);
+        rd_alingmentNo.setText("No");
 
         jLabel7.setText("Algoritmos:");
+
+        jLabel12.setText("Normalized:");
+
+        gp_normalized.add(rd_normYes);
+        rd_normYes.setSelected(true);
+        rd_normYes.setText("Yes");
+
+        gp_normalized.add(td_normNo);
+        td_normNo.setText("No");
 
         javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
         jPanel26.setLayout(jPanel26Layout);
@@ -1480,36 +1496,35 @@ public class Principal extends javax.swing.JFrame {
             jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel26Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel26Layout.createSequentialGroup()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jRadioButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jRadioButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(tf_symWindow)
+                    .addComponent(tf_symSymbol)
+                    .addComponent(tf_symAlphabet)
+                    .addComponent(tf_symOffset)
                     .addGroup(jPanel26Layout.createSequentialGroup()
                         .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(rd_alingmentYes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rd_numReductionYes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rd_normYes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel26Layout.createSequentialGroup()
-                                .addComponent(jRadioButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(tf_symWindow)
-                            .addComponent(tf_symSymbol)
-                            .addComponent(tf_symAlphabet)
-                            .addComponent(tf_symOffset)))
-                    .addGroup(jPanel26Layout.createSequentialGroup()
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(td_normNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rd_numReductionNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rd_alingmentNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel26Layout.setVerticalGroup(
@@ -1537,15 +1552,20 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(tf_symOffset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rd_normYes)
+                    .addComponent(td_normNo))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton8)
-                    .addComponent(jRadioButton9))
+                    .addComponent(rd_numReductionYes)
+                    .addComponent(rd_numReductionNo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jRadioButton10))
-                    .addComponent(jRadioButton11))
+                        .addComponent(rd_alingmentYes))
+                    .addComponent(rd_alingmentNo))
                 .addContainerGap())
         );
 
@@ -1553,18 +1573,18 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel11.setText("Algoritmos:");
 
-        gp_model.add(jRadioButton12);
-        jRadioButton12.setText("SAX-VSM");
+        gp_model.add(rd_algSAXVSM);
+        rd_algSAXVSM.setText("SAX-VSM");
 
-        gp_model.add(jRadioButton13);
-        jRadioButton13.setText("BOSS");
+        gp_model.add(rd_algBOSS);
+        rd_algBOSS.setText("BOSS");
 
-        gp_model.add(jRadioButton14);
-        jRadioButton14.setText("BOSS-VS");
+        gp_model.add(rd_algNoneBOSSVS);
+        rd_algNoneBOSSVS.setText("BOSS-VS");
 
-        gp_model.add(jRadioButton15);
-        jRadioButton15.setSelected(true);
-        jRadioButton15.setText("None");
+        gp_model.add(rd_algNone);
+        rd_algNone.setSelected(true);
+        rd_algNone.setText("None");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1575,10 +1595,10 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(rd_algNone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rd_algSAXVSM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rd_algBOSS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rd_algNoneBOSSVS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -1586,13 +1606,13 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton15))
+                    .addComponent(rd_algNone))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton12)
+                .addComponent(rd_algSAXVSM)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton13)
+                .addComponent(rd_algBOSS)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton14)
+                .addComponent(rd_algNoneBOSSVS)
                 .addGap(64, 64, 64))
         );
 
@@ -1705,7 +1725,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lb_tableInfo))
         );
@@ -2449,12 +2469,7 @@ public class Principal extends javax.swing.JFrame {
                 if (play != null && play.isAlive()) {
                     play.stop();
                 }
-                lineGraphic.getSeriesCollection().removeAllSeries();
-                lineGraphic.repaint();
-                barGraphic.getDatasetCollection().clear();
-                barGraphic.repaint();
-                wordTableModel.getLinhas().clear();
-                tb_words.repaint();
+                clearSymbolicTab();
                 break;
             default:
                 break;
@@ -2518,6 +2533,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.ButtonGroup gp_algDiscretization;
     private javax.swing.ButtonGroup gp_alingment;
     private javax.swing.ButtonGroup gp_model;
+    private javax.swing.ButtonGroup gp_normalized;
     private javax.swing.ButtonGroup gp_numerosityReduction;
     private javax.swing.ButtonGroup gp_pageHinkley;
     private javax.swing.ButtonGroup gp_settings;
@@ -2526,6 +2542,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
@@ -2582,20 +2599,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton10;
-    private javax.swing.JRadioButton jRadioButton11;
-    private javax.swing.JRadioButton jRadioButton12;
-    private javax.swing.JRadioButton jRadioButton13;
-    private javax.swing.JRadioButton jRadioButton14;
-    private javax.swing.JRadioButton jRadioButton15;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JRadioButton jRadioButton6;
     private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.JRadioButton jRadioButton8;
-    private javax.swing.JRadioButton jRadioButton9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
@@ -2668,6 +2677,15 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem ppi_saveClassifier;
     private javax.swing.JMenuItem ppi_sideBySide;
     private javax.swing.JMenuItem ppi_viewDatasetBox;
+    private javax.swing.JRadioButton rd_algBOSS;
+    private javax.swing.JRadioButton rd_algNone;
+    private javax.swing.JRadioButton rd_algNoneBOSSVS;
+    private javax.swing.JRadioButton rd_algSAXVSM;
+    private javax.swing.JRadioButton rd_alingmentNo;
+    private javax.swing.JRadioButton rd_alingmentYes;
+    private javax.swing.JRadioButton rd_normYes;
+    private javax.swing.JRadioButton rd_numReductionNo;
+    private javax.swing.JRadioButton rd_numReductionYes;
     private javax.swing.JSlider sl_overlap;
     private org.jdesktop.swingx.JXBusyLabel sx_busy;
     private javax.swing.JTextArea ta_symbolic;
@@ -2676,7 +2694,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JToggleButton tb_3;
     private javax.swing.JTabbedPane tb_desktop;
     private javax.swing.JTabbedPane tb_principal;
-    public javax.swing.JTable tb_words;
+    private javax.swing.JTable tb_words;
+    private javax.swing.JRadioButton td_normNo;
     private javax.swing.JTextField tf_frequency;
     private javax.swing.JTextField tf_symAlphabet;
     private javax.swing.JTextField tf_symOffset;
@@ -2828,7 +2847,10 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public void updateSymbolicTab(WordRecord wordRecord, int qtdeWords) {
-        wordTableModel.getLinhas().add(wordRecord);
+        if (!wordTableModel.getLinhas().contains(wordRecord)) {
+            wordTableModel.getLinhas().add(wordRecord);
+        }
+        tb_words.updateUI();
         lb_tableInfo.setText(qtdeWords + " words");
     }
 
@@ -3025,18 +3047,35 @@ public class Principal extends javax.swing.JFrame {
      */
     private void executeSymbolic() {
         if (lt_timeSeriesData.getSelectedIndex() != -1) {
-            addLineGraphic();
-            addBarGraphic();
+            clearSymbolicTab();
             ta_symbolic.setText("");
+            setParameters();
 
             TimeSeries[] data = TimeSeriesLoader.loadVerticalData("0",
-                    ConstDataset.DS_TIME_SERIES + lt_timeSeriesData.getSelectedValue(), true,
+                    ConstDataset.DS_TIME_SERIES + lt_timeSeriesData.getSelectedValue(), false,
                     ConstDataset.SEPARATOR);
 
             symbolicView = new SymbolicView(lineGraphic, barGraphic, data);
             symbolicView.runDataset();
         } else {
             messages.aviso("Select a signal!");
+        }
+    }
+
+    private void setParameters() {
+        Parameters.WINDOW_SIZE = Integer.parseInt(tf_symWindow.getText());
+        Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symSymbol.getText());
+        Parameters.ALPHABET = Integer.parseInt(tf_symAlphabet.getText());
+        Parameters.OFFSET = Integer.parseInt(tf_symOffset.getText());
+        if (rd_normYes.isSelected()) {
+            Parameters.NORM = true;
+        } else {
+            Parameters.NORM = false;
+        }
+        if (rd_numReductionYes.isSelected()) {
+            Parameters.NUM_REDUCTION = true;
+        } else {
+            Parameters.NUM_REDUCTION = false;
         }
     }
 
@@ -3066,6 +3105,15 @@ public class Principal extends javax.swing.JFrame {
                 lineGraphic.addMarker(interval.getPositionInit(), interval.getPositionEnd(), Color.blue);
             }
         }
+    }
+
+    private void clearSymbolicTab() {
+        lineGraphic.getSeriesCollection().removeAllSeries();
+        lineGraphic.repaint();
+        barGraphic.getDatasetCollection().clear();
+        barGraphic.repaint();
+        wordTableModel.getLinhas().clear();
+        tb_words.repaint();
     }
 
 }

@@ -41,7 +41,7 @@ public class iSAX {
             // fix the current subsection
             double[] subSection = Arrays.copyOfRange(ts, i, i + windowSize);
 
-            Word iSaxWord = new Word(subSection, Parameters.WORD_LENGTH, Parameters.INITIAL_CARDINALITY);
+            Word iSaxWord = new Word(subSection, Parameters.WORD_LENGTH_PAA, Parameters.INITIAL_CARDINALITY);
             sAXRecords.add(iSAXwordToChar(iSaxWord), i);
 
             processWord(iSaxWord, subSection);
@@ -80,7 +80,7 @@ public class iSAX {
     }
 
     private Word incrementWord(double[] series, int cardinality) throws AlphabetTooLargeException {
-        Word promotedWord = new Word(series, Parameters.WORD_LENGTH, cardinality);
+        Word promotedWord = new Word(series, Parameters.WORD_LENGTH_PAA, cardinality);
 
         if (count.get(cardinality).containsKey(promotedWord)) {
             // increment count.
@@ -141,7 +141,7 @@ public class iSAX {
         ArrayList<Integer> cols = new ArrayList<Integer>();
 
         for (int i = 0; i < b; i++) {
-            int tentativeColumn = r.nextInt(Parameters.WORD_LENGTH);
+            int tentativeColumn = r.nextInt(Parameters.WORD_LENGTH_PAA);
 
             if (!cols.contains(tentativeColumn)) {
                 cols.add(tentativeColumn);

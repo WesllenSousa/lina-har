@@ -5,7 +5,7 @@
  */
 package datasets.memory;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -15,7 +15,8 @@ import java.util.Objects;
 public class WordRecord {
 
     private String word;
-    private LinkedList<WordInterval> intervals = new LinkedList<>();
+    private String classe;
+    private ArrayList<WordInterval> intervals = new ArrayList<>();
     private double frequency;
 
     public String getWord() {
@@ -26,11 +27,19 @@ public class WordRecord {
         this.word = word;
     }
 
-    public LinkedList<WordInterval> getIntervals() {
+    public ArrayList<WordInterval> getIntervals() {
         return intervals;
     }
 
-    public void setIntervals(LinkedList<WordInterval> intervals) {
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public void setIntervals(ArrayList<WordInterval> intervals) {
         this.intervals = intervals;
     }
 
@@ -61,10 +70,7 @@ public class WordRecord {
             return false;
         }
         final WordRecord other = (WordRecord) obj;
-        if (!Objects.equals(this.word, other.word)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.word, other.word);
     }
 
 }

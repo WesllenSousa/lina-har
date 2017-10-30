@@ -12,18 +12,22 @@ package constants;
 public class Parameters {
 
     public static int WINDOW_SIZE = 50;
+    public static int OFFSET = 1;
+    public static boolean NORM = true;
+    public static boolean NUM_REDUCTION = true;
+    
+    public static int WORD_LENGTH_PAA = 10;
+    public static int SYMBOLS_PAA = 8;
+    public static int ALPHABET = 4;
 
     /**
      * SAX Parameters
      */
-    public static int SAX_PAA = 7;
-    public static int SAX_ALPHABET = 4;
     public static double NORMALIZATION_THRESHOLD = 0.05;
 
     /**
      * iSAX Parameters
      */
-    public static int WORD_LENGTH = 10;
     public static int INITIAL_CARDINALITY = 4;
     public static int MAX_CARDINALITY = 32;
     public static int TOP_K = 10;

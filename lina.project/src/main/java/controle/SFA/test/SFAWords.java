@@ -42,7 +42,7 @@ public class SFAWords {
     }
 
     public static String toSfaWord(short[] word) {
-        StringBuffer sfaWord = new StringBuffer();
+        StringBuilder sfaWord = new StringBuilder();
         for (short c : word) {
             sfaWord.append((char) (Character.valueOf('a') + c));
         }
