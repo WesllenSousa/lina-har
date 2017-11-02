@@ -58,13 +58,19 @@ public class BarGraphic extends JPanel implements ChartProgressListener {
         datasetCollection.addValue(frequency, palavra, "category");
         repaint();
     }
+    
+    public void clearData() {
+        datasetCollection.clear();
+        repaint();
+    }
 
-    public double getWordFrequency(String palavra) {
-        double frequency = 0;
+    public int getWordFrequency(String palavra) {
+        Double f = 0.;
         try {
-            frequency = (double) datasetCollection.getValue(palavra, "category");
+            f = (Double) datasetCollection.getValue(palavra, "category");
         } catch (UnknownKeyException ex) {
         }
+        int frequency = f.intValue();
         return ++frequency;
     }
 

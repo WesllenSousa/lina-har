@@ -221,14 +221,14 @@ public class Principal extends javax.swing.JFrame {
         jRadioButton6 = new javax.swing.JRadioButton();
         jRadioButton7 = new javax.swing.JRadioButton();
         jPanel26 = new javax.swing.JPanel();
-        jRadioButton4 = new javax.swing.JRadioButton();
-        jRadioButton5 = new javax.swing.JRadioButton();
+        rd_sax = new javax.swing.JRadioButton();
+        rd_sfa = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         tf_symOffset = new javax.swing.JTextField();
-        tf_symAlphabet = new javax.swing.JTextField();
+        tf_symWordLength = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        tf_symSymbol = new javax.swing.JTextField();
+        tf_symSymbolAlphabet = new javax.swing.JTextField();
         tf_symWindow = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -1438,24 +1438,24 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder("Discretization"));
 
-        gp_algDiscretization.add(jRadioButton4);
-        jRadioButton4.setText("SAX");
+        gp_algDiscretization.add(rd_sax);
+        rd_sax.setText("SAX");
 
-        gp_algDiscretization.add(jRadioButton5);
-        jRadioButton5.setSelected(true);
-        jRadioButton5.setText("SFA");
+        gp_algDiscretization.add(rd_sfa);
+        rd_sfa.setSelected(true);
+        rd_sfa.setText("SFA");
 
         jLabel4.setText("Offset:");
 
         tf_symOffset.setText("1");
 
-        tf_symAlphabet.setText("4");
+        tf_symWordLength.setText("8");
 
         jLabel3.setText("Word length:");
 
         jLabel2.setText("Symbols:");
 
-        tf_symSymbol.setText("8");
+        tf_symSymbolAlphabet.setText("4");
 
         tf_symWindow.setText("25");
 
@@ -1473,10 +1473,10 @@ public class Principal extends javax.swing.JFrame {
         jLabel10.setText("Alingment:");
 
         gp_alingment.add(rd_alingmentYes);
+        rd_alingmentYes.setSelected(true);
         rd_alingmentYes.setText("Yes");
 
         gp_alingment.add(rd_alingmentNo);
-        rd_alingmentNo.setSelected(true);
         rd_alingmentNo.setText("No");
 
         jLabel7.setText("Algoritmos:");
@@ -1508,12 +1508,12 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel26Layout.createSequentialGroup()
-                        .addComponent(jRadioButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(rd_sax, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(rd_sfa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(tf_symWindow)
-                    .addComponent(tf_symSymbol)
-                    .addComponent(tf_symAlphabet)
+                    .addComponent(tf_symSymbolAlphabet)
+                    .addComponent(tf_symWordLength)
                     .addComponent(tf_symOffset)
                     .addGroup(jPanel26Layout.createSequentialGroup()
                         .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -1531,8 +1531,8 @@ public class Principal extends javax.swing.JFrame {
             jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel26Layout.createSequentialGroup()
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton4)
-                    .addComponent(jRadioButton5)
+                    .addComponent(rd_sax)
+                    .addComponent(rd_sfa)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(5, 5, 5)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1541,11 +1541,11 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tf_symSymbol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_symSymbolAlphabet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tf_symAlphabet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_symWordLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -2469,7 +2469,8 @@ public class Principal extends javax.swing.JFrame {
                 if (play != null && play.isAlive()) {
                     play.stop();
                 }
-                clearSymbolicTab();
+                clearLineGraphic();
+                clearBarGraphic();
                 break;
             default:
                 break;
@@ -2601,8 +2602,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JRadioButton jRadioButton6;
     private javax.swing.JRadioButton jRadioButton7;
     private javax.swing.JScrollPane jScrollPane1;
@@ -2686,6 +2685,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JRadioButton rd_normYes;
     private javax.swing.JRadioButton rd_numReductionNo;
     private javax.swing.JRadioButton rd_numReductionYes;
+    private javax.swing.JRadioButton rd_sax;
+    private javax.swing.JRadioButton rd_sfa;
     private javax.swing.JSlider sl_overlap;
     private org.jdesktop.swingx.JXBusyLabel sx_busy;
     private javax.swing.JTextArea ta_symbolic;
@@ -2697,10 +2698,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable tb_words;
     private javax.swing.JRadioButton td_normNo;
     private javax.swing.JTextField tf_frequency;
-    private javax.swing.JTextField tf_symAlphabet;
     private javax.swing.JTextField tf_symOffset;
-    private javax.swing.JTextField tf_symSymbol;
+    private javax.swing.JTextField tf_symSymbolAlphabet;
     private javax.swing.JTextField tf_symWindow;
+    private javax.swing.JTextField tf_symWordLength;
     private javax.swing.JTextField tf_windowSize;
     private javax.swing.JTextPane tp_resultClassification;
     private javax.swing.JTextPane tp_resultTrain;
@@ -3047,7 +3048,8 @@ public class Principal extends javax.swing.JFrame {
      */
     private void executeSymbolic() {
         if (lt_timeSeriesData.getSelectedIndex() != -1) {
-            clearSymbolicTab();
+            clearLineGraphic();
+            clearBarGraphic();
             ta_symbolic.setText("");
             setParameters();
 
@@ -3064,9 +3066,14 @@ public class Principal extends javax.swing.JFrame {
 
     private void setParameters() {
         Parameters.WINDOW_SIZE = Integer.parseInt(tf_symWindow.getText());
-        Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symSymbol.getText());
-        Parameters.ALPHABET = Integer.parseInt(tf_symAlphabet.getText());
+        Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symWordLength.getText());
+        Parameters.SYMBOLS_ALPHABET_SIZE = Integer.parseInt(tf_symSymbolAlphabet.getText());
         Parameters.OFFSET = Integer.parseInt(tf_symOffset.getText());
+        if (rd_sax.isSelected()) {
+            Parameters.SFA = false;
+        } else {
+            Parameters.SFA = true;
+        }
         if (rd_normYes.isSelected()) {
             Parameters.NORM = true;
         } else {
@@ -3076,6 +3083,11 @@ public class Principal extends javax.swing.JFrame {
             Parameters.NUM_REDUCTION = true;
         } else {
             Parameters.NUM_REDUCTION = false;
+        }
+        if (rd_alingmentYes.isSelected()) {
+            Parameters.ALINGMENT = true;
+        } else {
+            Parameters.ALINGMENT = false;
         }
     }
 
@@ -3107,9 +3119,12 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    private void clearSymbolicTab() {
+    private void clearLineGraphic() {
         lineGraphic.getSeriesCollection().removeAllSeries();
         lineGraphic.repaint();
+    }
+
+    public void clearBarGraphic() {
         barGraphic.getDatasetCollection().clear();
         barGraphic.repaint();
         wordTableModel.getLinhas().clear();

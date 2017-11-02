@@ -56,6 +56,9 @@ public abstract class Classifier {
         }
     }
 
+    public Classifier() {
+    }
+
     public Classifier(TimeSeries[] train, TimeSeries[] test) throws IOException {
         this.trainSamples = train;
         this.testSamples = test;

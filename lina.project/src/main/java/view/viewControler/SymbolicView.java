@@ -7,6 +7,13 @@ package view.viewControler;
 
 import constants.ConstGeneral;
 import constants.Parameters;
+import controle.SAX.Params;
+import controle.SAX.SAX;
+import controle.SFA.classification.BOSSEnsembleClassifier;
+import controle.SFA.classification.Classifier;
+import controle.SFA.classification.Classifier.Predictions;
+import controle.SFA.transformation.BOSSModel;
+import controle.SFA.transformation.BOSSModel.BagOfPattern;
 import controle.SFA.transformation.SFA;
 import controle.pageHinkley.PageHinkley;
 import controle.pageHinkley.PageHinkleyBean;
@@ -17,6 +24,7 @@ import datasets.timeseries.TimeSeries;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
+import net.seninp.jmotif.sax.NumerosityReductionStrategy;
 import view.manualviews.BarGraphic;
 import view.manualviews.LineGraphic;
 
@@ -34,6 +42,7 @@ public class SymbolicView {
     private ArrayList<PageHinkley> listPH = new ArrayList<>();
 
     private WordRecord previousWord;
+    private Params params;
 
     public SymbolicView(LineGraphic lineGraphic, BarGraphic barGraphic, TimeSeries[] data) {
         this.lineGraphic = lineGraphic;
@@ -41,6 +50,9 @@ public class SymbolicView {
         this.data = data;
 
         this.lineGraphic.prepareStream(data);
+
+        params = new Params(Parameters.WINDOW_SIZE, Parameters.WORD_LENGTH_PAA,
+                Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.EXACT);
     }
 
     public void runDataset() {
@@ -77,12 +89,15 @@ public class SymbolicView {
                 //Get current value to add in the graphic and calcule the page hinkley
                 double value = ts.getData(position);
                 values[dataColumn] = value;
-                //listPH.get(col).runStreaming(value, position); //Média negativa
+                //listPH.get(col).runStreaming(value, position); //Média negativa **********************
 
                 //Process window 
                 TimeSeries sample = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE);
-                discretization(bufferStreaming.get(dataColumn), sample, position - Parameters.WINDOW_SIZE);
-
+                if (Parameters.SFA) {
+                    SFA(bufferStreaming.get(dataColumn), sample, position - Parameters.WINDOW_SIZE);
+                } else {
+                    SAX(bufferStreaming.get(dataColumn), sample, position - Parameters.WINDOW_SIZE);
+                }
                 dataColumn++;
             }
             //Add values in GUI
@@ -91,61 +106,124 @@ public class SymbolicView {
         }
     }
 
-    private void discretization(BufferStreaming buffer, TimeSeries sample, int position) {
-        //Analyse the MCB
-        if (buffer.getBufferMCB().size() <= 10) {//X?
+    private void SAX(BufferStreaming buffer, TimeSeries sample, int position) {
+        String word = SAX.serieToWord(sample.getData(), params);
+        WordRecord wordRecord = buffer.getWordRecord(word, position);
+        if (validateWord(buffer, wordRecord)) {
+            buffer.getBufferWord().add(wordRecord);
+        }
+        previousWord = wordRecord;
+    }
+
+    private void SFA(BufferStreaming buffer, TimeSeries sample, int position) {
+
+        if (position <= Parameters.MCB_SIZE) {
             buffer.getBufferMCB().add(sample);
-        } else if (buffer.getSfa() == null) {
-            SFA sfa = new SFA(SFA.HistogramType.EQUI_DEPTH);
-            sfa.fitTransform(buffer.getBufferMCB().toArray(new TimeSeries[]{}),
-                    Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_PAA, Parameters.NORM);
 
-            short[] wordQuery = sfa.transform(sample);
-            previousWord = buffer.getWordRecord(wordQuery, position);
+            if (position == Parameters.MCB_SIZE) { //*** change threhold to MCB 
+                buffer.setSfa(createMCBfromSFA(buffer));
 
-            buffer.setSfa(sfa);
+                short[] wordQuery = buffer.getSfa().transform(sample);
+                previousWord = buffer.getWordRecord(wordQuery, position);
+
+                lineGraphic.addMarker(position, position, Color.black);
+            }
         } else {
-            //Apply SFA on word
             short[] wordQuery = buffer.getSfa().transform(sample);
             WordRecord wordRecord = buffer.getWordRecord(wordQuery, position);
 
-            if (Parameters.NUM_REDUCTION) { //Redução de numerozidade por EXACT Strategy
-                if (!previousWord.getWord().equals(wordRecord.getWord())) {
-                    handleWord(buffer, wordRecord);
-                }
-                //Verifiacar alinhamento
-            } else {
-                handleWord(buffer, wordRecord);
+            if (validateWord(buffer, wordRecord)) {
+                buffer.getBufferWord().add(wordRecord);
+                updateGUI(buffer, wordRecord);
             }
             previousWord = wordRecord;
+
+            if (position == Parameters.BOP_SIZE) {//*** change threhold to BOP
+                String label = "1";
+                buffer.getBagOfPatterns().add(createBagOfPattern(buffer, label));
+
+                clearGUI(buffer);
+                lineGraphic.addMarker(position, position, Color.black);
+
+            } else if (position % Parameters.BOP_SIZE == 0) {
+                BagOfPattern bag = createBagOfPattern(buffer, null);
+
+                BOSSEnsembleClassifier classifier = new BOSSEnsembleClassifier();
+                Predictions p = classifier.predictStream(bag, buffer.getBagOfPatterns().toArray(new BagOfPattern[]{}));
+
+                clearGUI(buffer);
+                lineGraphic.addMarker(position, position, Color.black);
+
+                System.out.println(p.labels[0]);
+            }
         }
     }
 
-    private void handleWord(BufferStreaming buffer, WordRecord word) {
-        word.setFrequency(barGraphic.getWordFrequency(word.getWord()));
+    private SFA createMCBfromSFA(BufferStreaming buffer) {
+        SFA sfa = new SFA(SFA.HistogramType.EQUI_DEPTH);
+        sfa.fitTransform(buffer.getBufferMCB().toArray(new TimeSeries[]{}),
+                Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORM);
+        return sfa;
+    }
 
-        if (buffer.getBufferBOP().contains(word)) {
-            for (WordRecord wordRecord : buffer.getBufferBOP()) {
+    private BagOfPattern createBagOfPattern(BufferStreaming buffer, String label) {
+        int[] words = new int[buffer.getBufferWord().size()];
+        for (int wordIndex = 0; wordIndex < buffer.getBufferWord().size(); wordIndex++) {
+            //Get word int value from word bit value
+            int wordInt = (int) Classifier.Words.createWord(buffer.getBufferWord().get(wordIndex).getWordBit(),
+                    Parameters.WORD_LENGTH_PAA, (byte) Classifier.Words.binlog(Parameters.SYMBOLS_ALPHABET_SIZE));
+            //Create column from matrix word equals the frequency of each word 
+            words[wordIndex] = wordInt;
+        }
+        BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
+        return boss.createOneBagOfPattern(words, label, Parameters.WORD_LENGTH_PAA);
+    }
+
+    private boolean validateWord(BufferStreaming buffer, WordRecord word) {
+        if (previousWord == null) {
+            return false;
+        }
+        //Redução de numerozidade por EXACT Strategy 
+        if (Parameters.NUM_REDUCTION && !previousWord.getWord().equals(word.getWord())) {
+            return false;
+        }
+        //update frequency
+        word.setFrequency(barGraphic.getWordFrequency(word.getWord()));
+        //Verify if word is in the buffer BOP
+        if (buffer.getBufferWord().contains(word)) { //Bloco de código passivel de futuras otimizacoes
+            for (WordRecord wordRecord : buffer.getBufferWord()) {
                 if (wordRecord.getWord().equals(word.getWord())) {
-                    if (!overlap(wordRecord, word)) {//Verify interval overlaped
+                    //Verify interval overlaped to same words: alingments
+                    if (Parameters.ALINGMENT == false) {
                         wordRecord.getIntervals().add(word.getIntervals().get(0));
                         wordRecord.setFrequency(word.getFrequency());
-                        updateGUI(buffer, wordRecord);
+                    } else if (Parameters.ALINGMENT && !overlap(wordRecord, word)) {
+                        wordRecord.getIntervals().add(word.getIntervals().get(0));
+                        wordRecord.setFrequency(word.getFrequency());
                     }
+                    updateGUI(buffer, wordRecord);
                 }
             }
         } else {
-            buffer.getBufferBOP().add(word);
-            updateGUI(buffer, word);
+            return true;
         }
+        return false;
     }
 
     private void updateGUI(BufferStreaming buffer, WordRecord word) {
         //Show word in GUI
         barGraphic.addUpdateData(word.getWord(), word.getFrequency());
-        ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, buffer.getBufferBOP().size());
+        ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, buffer.getBufferWord().size());
     }
 
+    private void clearGUI(BufferStreaming buffer) {
+        buffer.getBufferWord().clear();
+        ConstGeneral.TELA_PRINCIPAL.clearBarGraphic();
+    }
+
+    /*
+        O overlap já é uma espécie de alinhamento
+     */
     private boolean overlap(WordRecord words, WordRecord word) {
         int init = word.getIntervals().get(0).getPositionInit();
         int end = word.getIntervals().get(0).getPositionEnd();

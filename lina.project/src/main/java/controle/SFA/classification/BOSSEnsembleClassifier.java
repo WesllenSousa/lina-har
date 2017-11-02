@@ -46,6 +46,10 @@ public class BOSSEnsembleClassifier extends Classifier {
         super(train, test);
     }
 
+    public BOSSEnsembleClassifier() {
+        super();
+    }
+
     public static class BossScore extends Score {
 
         public BossScore(boolean normed, int windowLength) {
@@ -303,6 +307,52 @@ public class BOSSEnsembleClassifier extends Classifier {
         });
 
         return score("BOSS", testSamples, startTime, testLabels, usedLengths);
+    }
+
+    public Predictions predictStream(
+            final BagOfPattern bagOfPatternsTestSample,
+            final BagOfPattern[] bagOfPatternsTrainSamples) {
+
+        Predictions p = new Predictions(new String[1], 0);
+
+        int bestMatch = -1;
+        long minDistance = Integer.MAX_VALUE;
+
+        // Distance if there is no matching word
+        double noMatchDistance = 0.0;
+        for (IntIntCursor key : bagOfPatternsTestSample.bag) {
+            noMatchDistance += key.value * key.value;
+        }
+
+        nnSearch:
+        for (int j = 0; j < bagOfPatternsTrainSamples.length; j++) {
+            if (bagOfPatternsTestSample != bagOfPatternsTrainSamples[j]) {
+                // determine distance
+                long distance = 0;
+                for (IntIntCursor key : bagOfPatternsTestSample.bag) {
+                    long buf = key.value - bagOfPatternsTrainSamples[j].bag.get(key.key);
+                    distance += buf * buf;
+
+                    if (distance >= minDistance) {
+                        continue nnSearch;
+                    }
+                }
+
+                // update nearest neighbor
+                if (distance != noMatchDistance && distance < minDistance) {
+                    minDistance = distance;
+                    bestMatch = j;
+                }
+            }
+        }
+
+        // check if the prediction is correct
+        p.labels[0] = bestMatch > -1 ? bagOfPatternsTrainSamples[bestMatch].label : null;
+//        if (bagOfPatternsTestSample.label.equals(p.labels[0])) {
+//            p.correct.incrementAndGet();
+//        }
+
+        return p;
     }
 
 }

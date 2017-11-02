@@ -130,4 +130,30 @@ public class BOSSModel {
 
         return bagOfPatterns;
     }
+
+    public BagOfPattern createOneBagOfPattern(
+            final int[] words,
+            final String label,
+            final int wordLength) {
+
+        BagOfPattern bagOfPatterns = new BagOfPattern(words.length, label);
+
+        final byte usedBits = (byte) Words.binlog(this.symbols);
+        // FIXME
+        // final long mask = (usedBits << wordLength) - 1l;
+        final long mask = (1l << (usedBits * wordLength)) - 1l;
+
+        // create subsequences
+        long lastWord = Long.MIN_VALUE;
+        for (int offset = 0; offset < words.length; offset++) {
+            // use the words of larger length to get words of smaller lengths
+            long word = words[offset] & mask;
+            if (word != lastWord) { // ignore adjacent samples
+                bagOfPatterns.bag.putOrAdd((int) word, (short) 1, (short) 1);
+            }
+            lastWord = word;
+        }
+
+        return bagOfPatterns;
+    }
 }

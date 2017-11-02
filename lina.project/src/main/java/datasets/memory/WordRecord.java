@@ -15,9 +15,10 @@ import java.util.Objects;
 public class WordRecord {
 
     private String word;
-    private String classe;
+    private short[] wordBit;
+    private String label;
     private ArrayList<WordInterval> intervals = new ArrayList<>();
-    private double frequency;
+    private int frequency;
 
     public String getWord() {
         return word;
@@ -27,27 +28,35 @@ public class WordRecord {
         this.word = word;
     }
 
+    public short[] getWordBit() {
+        return wordBit;
+    }
+
+    public void setWordBit(short[] wordBit) {
+        this.wordBit = wordBit;
+    }
+
     public ArrayList<WordInterval> getIntervals() {
         return intervals;
     }
 
-    public String getClasse() {
-        return classe;
+    public String getLabel() {
+        return label;
     }
 
-    public void setClasse(String classe) {
-        this.classe = classe;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public void setIntervals(ArrayList<WordInterval> intervals) {
         this.intervals = intervals;
     }
 
-    public double getFrequency() {
+    public int getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(double frequency) {
+    public void setFrequency(int frequency) {
         this.frequency = frequency;
     }
 

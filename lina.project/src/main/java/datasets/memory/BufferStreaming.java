@@ -6,6 +6,7 @@
 package datasets.memory;
 
 import constants.Parameters;
+import controle.SFA.transformation.BOSSModel;
 import controle.SFA.transformation.SFA;
 import datasets.timeseries.TimeSeries;
 import java.util.ArrayList;
@@ -19,9 +20,12 @@ import java.util.Objects;
 public class BufferStreaming {
 
     private SFA sfa;
+
     private LinkedList<TimeSeries> bufferMCB = new LinkedList<>();
-    private ArrayList<WordRecord> bufferBOP = new ArrayList<>();
-    private ArrayList<WordRecord> bufferOOV = new ArrayList<>();
+    private ArrayList<WordRecord> bufferWord = new ArrayList<>();
+    private ArrayList<WordRecord> bufferWordOOV = new ArrayList<>();
+
+    private ArrayList<BOSSModel.BagOfPattern> bagOfPatterns = new ArrayList<>();
 
     public SFA getSfa() {
         return sfa;
@@ -35,12 +39,16 @@ public class BufferStreaming {
         return bufferMCB;
     }
 
-    public ArrayList<WordRecord> getBufferBOP() {
-        return bufferBOP;
+    public ArrayList<WordRecord> getBufferWord() {
+        return bufferWord;
     }
 
-    public ArrayList<WordRecord> getBufferOOV() {
-        return bufferOOV;
+    public ArrayList<WordRecord> getBufferWordOOV() {
+        return bufferWordOOV;
+    }
+
+    public ArrayList<BOSSModel.BagOfPattern> getBagOfPatterns() {
+        return bagOfPatterns;
     }
 
     @Override
@@ -62,25 +70,34 @@ public class BufferStreaming {
             return false;
         }
         final BufferStreaming other = (BufferStreaming) obj;
-        if (!Objects.equals(this.sfa, other.sfa)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.sfa, other.sfa);
     }
 
     /*
         Another methods
      */
-    public WordRecord getWordRecord(short[] word, int position) {
+    public WordRecord getWordRecord(String word, int position) {
+        WordRecord wordRecord = new WordRecord();
+        wordRecord.setWord(word);
+        wordRecord.getIntervals().add(getWordInterval(position));
+
+        return wordRecord;
+    }
+
+    public WordRecord getWordRecord(short[] wordBit, int position) {
+        WordRecord wordRecord = new WordRecord();
+        wordRecord.setWordBit(wordBit);
+        wordRecord.setWord(toSfaWord(wordBit));
+        wordRecord.getIntervals().add(getWordInterval(position));
+
+        return wordRecord;
+    }
+
+    private WordInterval getWordInterval(int position) {
         WordInterval wordInterval = new WordInterval();
         wordInterval.setPositionInit(position);
         wordInterval.setPositionEnd(position + Parameters.WINDOW_SIZE);
-
-        WordRecord wordRecord = new WordRecord();
-        wordRecord.setWord(toSfaWord(word));
-        wordRecord.getIntervals().add(wordInterval);
-
-        return wordRecord;
+        return wordInterval;
     }
 
     private String toSfaWord(short[] word) {
