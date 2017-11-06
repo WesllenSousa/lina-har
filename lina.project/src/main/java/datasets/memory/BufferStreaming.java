@@ -6,6 +6,7 @@
 package datasets.memory;
 
 import constants.Parameters;
+import controle.SAX.saxvsm.text.WordBag;
 import controle.SFA.transformation.BOSSModel;
 import controle.SFA.transformation.SFA;
 import datasets.timeseries.TimeSeries;
@@ -25,7 +26,11 @@ public class BufferStreaming {
     private ArrayList<WordRecord> bufferWord = new ArrayList<>();
     private ArrayList<WordRecord> bufferWordOOV = new ArrayList<>();
 
-    private ArrayList<BOSSModel.BagOfPattern> bagOfPatterns = new ArrayList<>();
+    private ArrayList<BOSSModel.BagOfPattern> BOPsfa = new ArrayList<>();
+    private BOSSModel.BagOfPattern currBOPsfa;
+
+    private ArrayList<WordBag> BOPsax = new ArrayList<>();
+    private WordBag currBOPsax;
 
     public SFA getSfa() {
         return sfa;
@@ -47,8 +52,28 @@ public class BufferStreaming {
         return bufferWordOOV;
     }
 
-    public ArrayList<BOSSModel.BagOfPattern> getBagOfPatterns() {
-        return bagOfPatterns;
+    public ArrayList<BOSSModel.BagOfPattern> getBOPsfa() {
+        return BOPsfa;
+    }
+
+    public ArrayList<WordBag> getBOPsax() {
+        return BOPsax;
+    }
+
+    public BOSSModel.BagOfPattern getCurrBOPsfa() {
+        return currBOPsfa;
+    }
+
+    public void setCurrBOPsfa(BOSSModel.BagOfPattern currBOPsfa) {
+        this.currBOPsfa = currBOPsfa;
+    }
+
+    public WordBag getCurrBOPsax() {
+        return currBOPsax;
+    }
+
+    public void setCurrBOPsax(WordBag currBOPsax) {
+        this.currBOPsax = currBOPsax;
     }
 
     @Override

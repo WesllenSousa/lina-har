@@ -5,6 +5,7 @@
  */
 package controle.SAX;
 
+import constants.ConstDataset;
 import net.seninp.jmotif.sax.NumerosityReductionStrategy;
 
 /**
@@ -22,8 +23,8 @@ public class SaxVsmExample {
         Params params = new Params(WINDOW_SIZE, SAX_PAA, SAX_ALPHABET,
                 NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.NONE);
 
-        String train = "samples/SFAdatasets/CBF/CBF_TRAIN";
-        String test = "samples/SFAdatasets/CBF/CBF_TEST";
+        String train = ConstDataset.DS_TEMP + "SFAdatasets/CBF/CBF_TRAIN";
+        String test = ConstDataset.DS_TEMP + "SFAdatasets/CBF/CBF_TEST";
 
         SAX.SAX_VSM(train, test, params);
 

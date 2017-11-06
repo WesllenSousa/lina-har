@@ -23,7 +23,7 @@ public class ProcessingFeatures {
     }
 
     public LinkedHashSet<LinkedList<String>> applyPreprocessing(LinkedHashSet<GenericRowBean> data, LinkedList<String> methods,
-            Float windowsSize, int overlap, int hertz) {
+            Float windowsSize, int offset, int hertz) {
         System.out.println("Applying preprocessing...");
         Iterator<GenericRowBean> beanIter = data.iterator();
         if (beanIter.hasNext()) {
@@ -33,7 +33,7 @@ public class ProcessingFeatures {
                 columnsNames.add(value);
             }
             LinkedHashSet<LinkedList<String>> lineColumns = createNewColumns(methods, columnsNames);
-            populaLineColumns(data, lineColumns, windowsSize, overlap, hertz);
+            populaLineColumns(data, lineColumns, windowsSize, offset, hertz);
             return lineColumns;
         }
         return null;
@@ -83,7 +83,8 @@ public class ProcessingFeatures {
         return lineColumns;
     }
 
-    private void populaLineColumns(LinkedHashSet<GenericRowBean> data, LinkedHashSet<LinkedList<String>> lineColumns, Float windowsSize, int overlap, int hertz) {
+    private void populaLineColumns(LinkedHashSet<GenericRowBean> data, LinkedHashSet<LinkedList<String>> lineColumns, 
+            Float windowsSize, int overlap, int hertz) {
         LinkedList<LinkedList<Float>> dataWindow = new LinkedList<>();
         LinkedList<String> classes = new LinkedList<>();
         LinkedList<String> classWindow = new LinkedList<>();

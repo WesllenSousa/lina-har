@@ -65,6 +65,7 @@ public class Principal extends javax.swing.JFrame {
         menuCollapsed();
         resetSignalSelection();
         resetProcessingLists();
+        sp_trainTest.setVisible(false);
 
         desktopView.fillAlgorithmsList(lt_algorithms);
         SwingUtil.listFilesList(lt_rawData, ConstDataset.DS_RAW);
@@ -182,6 +183,10 @@ public class Principal extends javax.swing.JFrame {
         jPanel36 = new javax.swing.JPanel();
         jScrollPane17 = new javax.swing.JScrollPane();
         lt_algorithms = new javax.swing.JList<>();
+        pn_trainTest = new javax.swing.JPanel();
+        sp_trainTest = new javax.swing.JScrollPane();
+        lt_trainDataTest = new javax.swing.JList<>();
+        ck_trainUserTest = new javax.swing.JCheckBox();
         jPanel34 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jScrollPane12 = new javax.swing.JScrollPane();
@@ -269,6 +274,7 @@ public class Principal extends javax.swing.JFrame {
         btt_executar = new javax.swing.JButton();
         btt_executar2 = new javax.swing.JButton();
         btt_reset = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
         btt_pause = new javax.swing.JButton();
         btt_stop = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
@@ -1073,7 +1079,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel31.setLayout(jPanel31Layout);
         jPanel31Layout.setHorizontalGroup(
             jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane10)
+            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
         );
         jPanel31Layout.setVerticalGroup(
             jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1093,22 +1099,62 @@ public class Principal extends javax.swing.JFrame {
         jPanel36.setLayout(jPanel36Layout);
         jPanel36Layout.setHorizontalGroup(
             jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane17, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+            .addComponent(jScrollPane17)
         );
         jPanel36Layout.setVerticalGroup(
             jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane17)
         );
 
+        pn_trainTest.setBorder(javax.swing.BorderFactory.createTitledBorder("Test Datasets"));
+
+        lt_trainDataTest.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Test 1", "Test 2", "Test 3", "Test 4" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        lt_trainDataTest.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lt_trainDataTestMouseClicked(evt);
+            }
+        });
+        sp_trainTest.setViewportView(lt_trainDataTest);
+
+        ck_trainUserTest.setText("Use test data");
+        ck_trainUserTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ck_trainUserTestActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pn_trainTestLayout = new javax.swing.GroupLayout(pn_trainTest);
+        pn_trainTest.setLayout(pn_trainTestLayout);
+        pn_trainTestLayout.setHorizontalGroup(
+            pn_trainTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(sp_trainTest)
+            .addGroup(pn_trainTestLayout.createSequentialGroup()
+                .addComponent(ck_trainUserTest)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        pn_trainTestLayout.setVerticalGroup(
+            pn_trainTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_trainTestLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ck_trainUserTest)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sp_trainTest))
+        );
+
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
         jPanel20.setLayout(jPanel20Layout);
         jPanel20Layout.setHorizontalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
+            .addGroup(jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel31, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pn_trainTest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel20Layout.setVerticalGroup(
@@ -1117,8 +1163,10 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pn_trainTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(429, Short.MAX_VALUE))
+                .addContainerGap(214, Short.MAX_VALUE))
         );
 
         jPanel20Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jPanel31, jPanel36});
@@ -1876,6 +1924,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btt_reset);
+        jToolBar1.add(jSeparator3);
 
         btt_pause.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pause36.png"))); // NOI18N
         btt_pause.setFocusable(false);
@@ -2403,38 +2452,38 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_lt_timeSeriesDataMouseClicked
 
     private void btt_pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_pauseActionPerformed
-        switch (tb_principal.getSelectedIndex()) {
-            case 3:
-                if (paused) {
-                    play.resume();
-                    paused = false;
-                } else {
-                    play.suspend();
-                    paused = true;
-                }
-                break;
-            default:
-                break;
-        }
+        pausePlay();
     }//GEN-LAST:event_btt_pauseActionPerformed
 
     private void btt_executarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_executarActionPerformed
         switch (tb_principal.getSelectedIndex()) {
             case 0:
-                createInternalfame = true;
-                Thread thread0 = new Thread(this::executeData);
-                thread0.setPriority(Thread.MAX_PRIORITY);
-                thread0.start();
+                if (play == null || !play.isAlive()) {
+                    createInternalfame = true;
+                    play = new Thread(this::executeData);
+                    play.setPriority(Thread.MAX_PRIORITY);
+                    play.start();
+                } else {
+                    messages.aviso("Streaming running!");
+                }
                 break;
             case 1:
-                Thread thread1 = new Thread(this::prepareTrain);
-                thread1.setPriority(Thread.MAX_PRIORITY);
-                thread1.start();
+                if (play == null || !play.isAlive()) {
+                    Thread thread1 = new Thread(this::prepareTrain);
+                    thread1.setPriority(Thread.MAX_PRIORITY);
+                    thread1.start();
+                } else {
+                    messages.aviso("Streaming running!");
+                }
                 break;
             case 2:
-                Thread thread2 = new Thread(this::executeClassification);
-                thread2.setPriority(Thread.MAX_PRIORITY);
-                thread2.start();
+                if (play == null || !play.isAlive()) {
+                    Thread thread2 = new Thread(this::executeClassification);
+                    thread2.setPriority(Thread.MAX_PRIORITY);
+                    thread2.start();
+                } else {
+                    messages.aviso("Streaming running!");
+                }
                 break;
             case 3:
                 if (play == null || !play.isAlive()) {
@@ -2464,11 +2513,14 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btt_executar2ActionPerformed
 
     private void btt_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_stopActionPerformed
+        if (play != null && play.isAlive()) {
+            play.stop();
+        }
         switch (tb_principal.getSelectedIndex()) {
+            case 0:
+                stopInternalFrameProcess();
+                break;
             case 3:
-                if (play != null && play.isAlive()) {
-                    play.stop();
-                }
                 clearLineGraphic();
                 clearBarGraphic();
                 break;
@@ -2496,6 +2548,20 @@ public class Principal extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         updatePageHinkleyPlot(null);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void lt_trainDataTestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lt_trainDataTestMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lt_trainDataTestMouseClicked
+
+    private void ck_trainUserTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ck_trainUserTestActionPerformed
+        if (ck_trainUserTest.isSelected()) {
+            sp_trainTest.setVisible(true);
+            SwingUtil.listFilesList(lt_trainDataTest, ConstDataset.DS_TEST);
+        } else {
+            sp_trainTest.setVisible(false);
+        }
+        pn_trainTest.updateUI();
+    }//GEN-LAST:event_ck_trainUserTestActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bg_graphic;
@@ -2530,6 +2596,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btt_pause;
     private javax.swing.JButton btt_reset;
     private javax.swing.JButton btt_stop;
+    private javax.swing.JCheckBox ck_trainUserTest;
     private javax.swing.JDesktopPane dp_preprocessing;
     private javax.swing.ButtonGroup gp_algDiscretization;
     private javax.swing.ButtonGroup gp_alingment;
@@ -2629,6 +2696,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JSplitPane jSplitPane1;
@@ -2655,6 +2723,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JList<String> lt_timeFeaturesRight;
     private javax.swing.JList<String> lt_timeSeriesData;
     private javax.swing.JList<String> lt_trainData;
+    private javax.swing.JList<String> lt_trainDataTest;
     private javax.swing.JPanel pn_1;
     private javax.swing.JPanel pn_2;
     private javax.swing.JPanel pn_3;
@@ -2662,6 +2731,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel pn_graphicBar;
     private javax.swing.JPanel pn_graphicLine;
     private javax.swing.JPanel pn_menu;
+    private javax.swing.JPanel pn_trainTest;
     private javax.swing.JPopupMenu pp_box;
     private javax.swing.JPopupMenu pp_classifier;
     private javax.swing.JPopupMenu pp_file;
@@ -2688,6 +2758,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JRadioButton rd_sax;
     private javax.swing.JRadioButton rd_sfa;
     private javax.swing.JSlider sl_overlap;
+    private javax.swing.JScrollPane sp_trainTest;
     private org.jdesktop.swingx.JXBusyLabel sx_busy;
     private javax.swing.JTextArea ta_symbolic;
     private javax.swing.JToggleButton tb_1;
@@ -2755,7 +2826,8 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void fillSignalList() {
-        LinkedList<String> columns = HandleGenericDataset.extractNamesColumnFromFile(ConstDataset.SEPARATOR, ConstDataset.DS_RAW + lt_rawData.getSelectedValue());
+        LinkedList<String> columns = HandleGenericDataset.extractNamesColumnFromFile(ConstDataset.SEPARATOR,
+                ConstDataset.DS_RAW + lt_rawData.getSelectedValue());
         SwingUtil.fillList(lt_signalSelectionLeft, columns);
         lt_signalSelectionRight.setModel(new DefaultListModel<>());
     }
@@ -2771,8 +2843,8 @@ public class Principal extends javax.swing.JFrame {
                 btt_executar.setVisible(true);
                 btt_executar2.setVisible(true);
                 btt_reset.setVisible(true);
-                btt_pause.setVisible(false);
-                btt_stop.setVisible(false);
+                btt_pause.setVisible(true);
+                btt_stop.setVisible(true);
                 SwingUtil.listFilesList(lt_rawData, ConstDataset.DS_RAW);
                 break;
             case 1:
@@ -2781,8 +2853,8 @@ public class Principal extends javax.swing.JFrame {
                 btt_executar.setVisible(true);
                 btt_executar2.setVisible(false);
                 btt_reset.setVisible(false);
-                btt_pause.setVisible(false);
-                btt_stop.setVisible(false);
+                btt_pause.setVisible(true);
+                btt_stop.setVisible(true);
                 SwingUtil.listFilesList(lt_trainData, ConstDataset.DS_TRAIN);
                 updateClassifierList();
                 break;
@@ -2792,8 +2864,8 @@ public class Principal extends javax.swing.JFrame {
                 btt_executar.setVisible(true);
                 btt_executar2.setVisible(false);
                 btt_reset.setVisible(false);
-                btt_pause.setVisible(false);
-                btt_stop.setVisible(false);
+                btt_pause.setVisible(true);
+                btt_stop.setVisible(true);
                 SwingUtil.listFilesList(lt_modelClassification, ConstDataset.DS_MODEL);
                 SwingUtil.listFilesList(lt_testData, ConstDataset.DS_TEST);
                 break;
@@ -2890,6 +2962,28 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    private void pausePlay() {
+        if (play != null && play.isAlive()) {
+            if (paused) {
+                play.resume();
+
+                paused = false;
+            } else {
+                play.suspend();
+                paused = true;
+            }
+        }
+    }
+
+    private void stopInternalFrameProcess() {
+        ConstGeneral.CURRENT_INTERNAL_FRAME.cleanLists();
+        ConstGeneral.CURRENT_INTERNAL_FRAME.dispose();
+        createInternalfame = false;
+        menuCollapsed();
+        fillSignalList();
+        sx_busy.setBusy(false);
+    }
+
     /*
         Pre-processing
      */
@@ -2905,14 +2999,16 @@ public class Principal extends javax.swing.JFrame {
     private void executeData() {
         if (lt_rawData.getSelectedIndices().length != 0 && lt_signalSelectionRight.getModel().getSize() != 0) {
             sx_busy.setBusy(true);
-            prepareRawData();
+
             resetProcessingLists();
-            updateInternalFrame();
+            prepareRawData();
+            updateConfigLists();
 
             tb_2.setEnabled(true);
             tb_2.setSelected(false);
             tb_3.setEnabled(true);
             tb_3.setSelected(false);
+
             sx_busy.setBusy(false);
         } else {
             messages.aviso("Select a signal!");
@@ -2935,14 +3031,15 @@ public class Principal extends javax.swing.JFrame {
             }
 
             Integer overlap = sl_overlap.getValue();
-            Integer voltar = Math.round((overlap / 100f) * window * hertz);
+            Integer offset = Math.round((overlap / 100f) * window * hertz);
 
-            desktopView.signalProcessing(lt_filtersRight, window, hertz, voltar);
-            desktopView.principalFeatureProcessing(lt_principalFeaturesRight, window, hertz, voltar);
-            desktopView.featureExtraction(lt_timeFeaturesRight, lt_frequencyFeaturesRight, window, hertz, voltar);
+            desktopView.signalProcessing(lt_filtersRight, window, hertz, offset);
+            desktopView.principalFeatureProcessing(lt_principalFeaturesRight, window, hertz, offset);
+            desktopView.featureExtraction(lt_timeFeaturesRight, lt_frequencyFeaturesRight, window, hertz, offset);
 
-            updateInternalFrame();
-            messages.sucesso("Processing data finished!");
+            desktopView.updateGraphic();
+            updateConfigLists();
+
             sx_busy.setBusy(false);
         }
     }
@@ -2961,33 +3058,22 @@ public class Principal extends javax.swing.JFrame {
 
         if (createInternalfame) {
             if (tb_desktop.getSelectedIndex() == 0) {
-                desktopView.showInternalFrame(dp_preprocessing, lt_rawData.getSelectedValue(), data);
+                desktopView.showInternalFrame(dp_preprocessing, lt_rawData.getSelectedValue());
+                desktopView.addDataInternalFrame(data);
             } else if (tb_desktop.getSelectedIndex() == 1) {
-                desktopView.addBox(pn_box, pp_box, lt_rawData.getSelectedValue(), data);
+                desktopView.addBox(pn_box, pp_box, lt_rawData.getSelectedValue());
+                desktopView.addDataBox(data);
             }
         } else {
             desktopView.setData(data);
         }
     }
 
-    private void updateInternalFrame() {
+    private void updateConfigLists() {
         if (desktopView.isSelectedData()) {
-            if (!desktopView.getDataFeatures().isEmpty()) {
-                desktopView.updateGraphic(desktopView.getDataFeatures());
-                desktopView.updateConfigLists(SwingUtil.getElementsList(lt_signalSelectionRight), SwingUtil.getElementsList(lt_filtersRight),
-                        SwingUtil.getElementsList(lt_principalFeaturesRight), SwingUtil.getElementsList(lt_timeFeaturesRight),
-                        SwingUtil.getElementsList(lt_frequencyFeaturesRight));
-            } else if (!desktopView.getData().isEmpty()) {
-                desktopView.updateGraphic(desktopView.getData());
-                desktopView.updateConfigLists(SwingUtil.getElementsList(lt_signalSelectionRight), SwingUtil.getElementsList(lt_filtersRight),
-                        SwingUtil.getElementsList(lt_principalFeaturesRight), SwingUtil.getElementsList(lt_timeFeaturesRight),
-                        SwingUtil.getElementsList(lt_frequencyFeaturesRight));
-                tb_3.setSelected(false);
-                pn_3.setVisible(false);
-            } else {
-                messages.aviso("Internal frame data empty!");
-                menuCollapsed();
-            }
+            desktopView.updateConfigLists(SwingUtil.getElementsList(lt_signalSelectionRight), SwingUtil.getElementsList(lt_filtersRight),
+                    SwingUtil.getElementsList(lt_principalFeaturesRight), SwingUtil.getElementsList(lt_timeFeaturesRight),
+                    SwingUtil.getElementsList(lt_frequencyFeaturesRight));
         }
     }
 
@@ -2996,21 +3082,28 @@ public class Principal extends javax.swing.JFrame {
      */
     private void prepareTrain() {
         sx_busy.setBusy(true);
-        String dataset, algorithm;
-        if (lt_trainData.getSelectedIndex() != -1) {
-            dataset = lt_trainData.getSelectedValue();
-        } else {
-            messages.aviso("Select a train data!");
+
+        String train, algorithm, test;
+
+        if (lt_trainData.getSelectedIndex() == -1 || lt_algorithms.getSelectedIndex() == -1) {
+            messages.aviso("Select a train data and the classification algorithm!");
             return;
         }
-        if (lt_algorithms.getSelectedIndex() != -1) {
-            algorithm = lt_algorithms.getSelectedValue();
+        train = lt_trainData.getSelectedValue();
+        algorithm = lt_algorithms.getSelectedValue();
+
+        if (sp_trainTest.isVisible()) {
+            if (lt_trainDataTest.getSelectedIndex() == -1) {
+                messages.aviso("Select a test data!");
+                return;
+            }
+            test = lt_trainDataTest.getSelectedValue();
+            trainView.executeTrain(train, test, algorithm);
         } else {
-            messages.aviso("Select a algorithm!");
-            return;
+            trainView.executeTrain(train, algorithm);
         }
-        trainView.executeTrain(dataset, algorithm);
         updateClassifierList();
+
         sx_busy.setBusy(false);
     }
 
@@ -3025,21 +3118,23 @@ public class Principal extends javax.swing.JFrame {
     private void executeClassification() {
         sx_busy.setBusy(true);
 
-        String trainDir = ConstDataset.DS_TEST + lt_testData.getSelectedValue();
+        if (lt_testData.getSelectedValue() == null || lt_modelClassification.getSelectedValue() == null) {
+            messages.aviso("Select one test data and model!");
+            return;
+        }
+
         String testDir = ConstDataset.DS_TEST + lt_testData.getSelectedValue();
         String modelDir = ConstDataset.DS_MODEL + lt_modelClassification.getSelectedValue();
 
         WekaUtil classifySamples = new WekaUtil();
-        classifySamples.readData(trainDir, HandleGenericDataset.extractNamesColumnFromFile(ConstDataset.SEPARATOR, trainDir).size());
+        int numberOfColumns = HandleGenericDataset.extractNamesColumnFromFile(ConstDataset.SEPARATOR, testDir).size();
+        classifySamples.readData(testDir, numberOfColumns);
         Classifier classifier = classifySamples.readModel(modelDir);
 
-        WekaUtil testSamples = new WekaUtil();
-        testSamples.readData(testDir, HIDE_ON_CLOSE);
-
-        for (Instance instance : testSamples.getData()) {
-            instance.setDataset(classifySamples.getData());
+        for (Instance instance : classifySamples.getData()) {
             tp_resultClassification.setText(tp_resultClassification.getText() + "\n" + classifySamples.classify(classifier, instance));
         }
+
         sx_busy.setBusy(false);
     }
 

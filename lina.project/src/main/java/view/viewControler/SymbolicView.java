@@ -9,7 +9,8 @@ import constants.ConstGeneral;
 import constants.Parameters;
 import controle.SAX.Params;
 import controle.SAX.SAX;
-import controle.SFA.classification.BOSSEnsembleClassifier;
+import controle.SAX.saxvsm.text.WordBag;
+import controle.SFA.classification.BOSSClassifier;
 import controle.SFA.classification.Classifier;
 import controle.SFA.classification.Classifier.Predictions;
 import controle.SFA.transformation.BOSSModel;
@@ -93,11 +94,24 @@ public class SymbolicView {
 
                 //Process window 
                 TimeSeries sample = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE);
+                BufferStreaming buffer = bufferStreaming.get(dataColumn);
                 if (Parameters.SFA) {
-                    SFA(bufferStreaming.get(dataColumn), sample, position - Parameters.WINDOW_SIZE);
+                    SFA(buffer, sample, position - Parameters.WINDOW_SIZE);
                 } else {
-                    SAX(bufferStreaming.get(dataColumn), sample, position - Parameters.WINDOW_SIZE);
+                    SAX(buffer, sample, position - Parameters.WINDOW_SIZE);
                 }
+
+                if (position % Parameters.BOP_SIZE == 0) {
+                    String label = "1";
+                    if (Parameters.SFA) {
+                        createBagOfPatternSFA(buffer, label);
+                        analyseBufferBOPsfa(buffer, position);
+                    } else {
+                        createBagOfPatternSAX(buffer, label);
+                        analyseBufferBOPsax(buffer, position);
+                    }
+                }
+
                 dataColumn++;
             }
             //Add values in GUI
@@ -116,12 +130,14 @@ public class SymbolicView {
     }
 
     private void SFA(BufferStreaming buffer, TimeSeries sample, int position) {
-
         if (position <= Parameters.MCB_SIZE) {
             buffer.getBufferMCB().add(sample);
 
             if (position == Parameters.MCB_SIZE) { //*** change threhold to MCB 
-                buffer.setSfa(createMCBfromSFA(buffer));
+                SFA sfa = new SFA(SFA.HistogramType.EQUI_DEPTH);
+                sfa.fitTransform(buffer.getBufferMCB().toArray(new TimeSeries[]{}),
+                        Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORM);
+                buffer.setSfa(sfa);
 
                 short[] wordQuery = buffer.getSfa().transform(sample);
                 previousWord = buffer.getWordRecord(wordQuery, position);
@@ -137,46 +153,7 @@ public class SymbolicView {
                 updateGUI(buffer, wordRecord);
             }
             previousWord = wordRecord;
-
-            if (position == Parameters.BOP_SIZE) {//*** change threhold to BOP
-                String label = "1";
-                buffer.getBagOfPatterns().add(createBagOfPattern(buffer, label));
-
-                clearGUI(buffer);
-                lineGraphic.addMarker(position, position, Color.black);
-
-            } else if (position % Parameters.BOP_SIZE == 0) {
-                BagOfPattern bag = createBagOfPattern(buffer, null);
-
-                BOSSEnsembleClassifier classifier = new BOSSEnsembleClassifier();
-                Predictions p = classifier.predictStream(bag, buffer.getBagOfPatterns().toArray(new BagOfPattern[]{}));
-
-                clearGUI(buffer);
-                lineGraphic.addMarker(position, position, Color.black);
-
-                System.out.println(p.labels[0]);
-            }
         }
-    }
-
-    private SFA createMCBfromSFA(BufferStreaming buffer) {
-        SFA sfa = new SFA(SFA.HistogramType.EQUI_DEPTH);
-        sfa.fitTransform(buffer.getBufferMCB().toArray(new TimeSeries[]{}),
-                Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORM);
-        return sfa;
-    }
-
-    private BagOfPattern createBagOfPattern(BufferStreaming buffer, String label) {
-        int[] words = new int[buffer.getBufferWord().size()];
-        for (int wordIndex = 0; wordIndex < buffer.getBufferWord().size(); wordIndex++) {
-            //Get word int value from word bit value
-            int wordInt = (int) Classifier.Words.createWord(buffer.getBufferWord().get(wordIndex).getWordBit(),
-                    Parameters.WORD_LENGTH_PAA, (byte) Classifier.Words.binlog(Parameters.SYMBOLS_ALPHABET_SIZE));
-            //Create column from matrix word equals the frequency of each word 
-            words[wordIndex] = wordInt;
-        }
-        BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
-        return boss.createOneBagOfPattern(words, label, Parameters.WORD_LENGTH_PAA);
     }
 
     private boolean validateWord(BufferStreaming buffer, WordRecord word) {
@@ -210,20 +187,60 @@ public class SymbolicView {
         return false;
     }
 
-    private void updateGUI(BufferStreaming buffer, WordRecord word) {
-        //Show word in GUI
-        barGraphic.addUpdateData(word.getWord(), word.getFrequency());
-        ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, buffer.getBufferWord().size());
+    private void createBagOfPatternSAX(BufferStreaming buffer, String label) {
+        WordBag bag = new WordBag(label);
+        for (WordRecord word : buffer.getBufferWord()) {
+            bag.addWord(word.getWord(), word.getFrequency());
+        }
+        buffer.setCurrBOPsax(bag);
+
+        //Analisar se é bom adicionar o bop na lista
+        buffer.getBOPsax().add(buffer.getCurrBOPsax()); //*********
+
+        //Criar ou atualizar matriz TF-IDF
     }
 
-    private void clearGUI(BufferStreaming buffer) {
-        buffer.getBufferWord().clear();
-        ConstGeneral.TELA_PRINCIPAL.clearBarGraphic();
+    private void createBagOfPatternSFA(BufferStreaming buffer, String label) {
+        int[] words = new int[buffer.getBufferWord().size()];
+        for (int wordIndex = 0; wordIndex < buffer.getBufferWord().size(); wordIndex++) {
+            //Get word int value from word bit value
+            int wordInt = (int) Classifier.Words.createWord(buffer.getBufferWord().get(wordIndex).getWordBit(),
+                    Parameters.WORD_LENGTH_PAA, (byte) Classifier.Words.binlog(Parameters.SYMBOLS_ALPHABET_SIZE));
+            //Create column from matrix word equals the frequency of each word 
+            words[wordIndex] = wordInt;
+        }
+        BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
+        BagOfPattern bag = boss.createOneBagOfPattern(words, label, Parameters.WORD_LENGTH_PAA);
+        buffer.setCurrBOPsfa(bag);
+
+        //Analisar se é bom adicionar o bop na lista
+        buffer.getBOPsfa().add(buffer.getCurrBOPsfa()); //*********
+
+        //Se for o caso criar ou atualizar matriz do TF-IDF
+    }
+
+    private void analyseBufferBOPsax(BufferStreaming buffer, int position) {
+        //Classificar com SAX-VSM
+    }
+
+    private void analyseBufferBOPsfa(BufferStreaming buffer, int position) {
+
+        //BOSS Model
+        BOSSClassifier classifier = new BOSSClassifier(Parameters.WINDOW_SIZE);
+        Predictions p = classifier.predictStream(buffer.getCurrBOPsfa(), buffer.getBOPsfa().toArray(new BagOfPattern[]{}));
+
+        //BOSS VS
+        System.out.println(p.labels[0]);
+
+        clearGUI(buffer);
+        lineGraphic.addMarker(position, position, Color.black);
+
     }
 
     /*
-        O overlap já é uma espécie de alinhamento
+     *   Other methods
      */
+    //O overlap já é uma espécie de alinhamento de palavras iguais
     private boolean overlap(WordRecord words, WordRecord word) {
         int init = word.getIntervals().get(0).getPositionInit();
         int end = word.getIntervals().get(0).getPositionEnd();
@@ -236,6 +253,19 @@ public class SymbolicView {
             }
         }
         return false;
+    }
+
+    /*
+     *   GUI
+     */
+    private void updateGUI(BufferStreaming buffer, WordRecord word) {
+        barGraphic.addUpdateData(word.getWord(), word.getFrequency());
+        ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, buffer.getBufferWord().size());
+    }
+
+    private void clearGUI(BufferStreaming buffer) {
+        buffer.getBufferWord().clear();
+        ConstGeneral.TELA_PRINCIPAL.clearBarGraphic();
     }
 
     public void showPageHinkleyChanges() {

@@ -1,9 +1,9 @@
 
 Afazeres de implementação
-1) Aproveitar as estruturas de dados do BOSS para programar a tela.
-2) Fazer com que o Page Hinkley se adapte seu theshold de disparo maseado no histórico de disparo.
-3) Resolver o problema da media negativa do PageHinkley
-4) Ler o item de Logistic Regression do livro de PNL
+1) Fazer com que o Page Hinkley se adapte seu theshold de disparo maseado no histórico de disparo.
+2) Resolver o problema da media negativa do PageHinkley
+3) Ler o item de Logistic Regression do livro de PNL
+4) Implementar a parte de classificação dos métodos de discretização
 
 Notas de Inovação
 
@@ -18,23 +18,23 @@ Notas de Inovação
     2) Adicionar informação de contexto a cada palavra. Exemplo, media do Page Hinkley.    
     3) Aplicar ideias de modelos n-gramas (PLN)
     4) utilizar a gramatica (repair) para descobrir n-gramas. Melhor do que o weasel cujo limite é bigrama?
-    5) Prestar atenção no melhor tamanho de janela para no contexto de HAR
+    5) Definir o melhor tamanho de janela para no contexto de HAR
     6) Discords podem ser considerados transição entre atividades.
-    7) Os motifs podem ser utilizados para agrupar palavras.
+    7) Os motifs podem ser utilizados para agrupar palavras (atividades).
     
 3) Fase
     1) Criar ou atualizar o MCB toda vez que o sinal mudar de padrao, guardar os MCB's de sinais anteriores (Datastreaming)    
     2) guardar em uma base de dados a parte as palavras desconhecidas (OOV's) out of vocabulary
+    3) Manter um histograma de referencia e monitorar os histogramas que são similares, mas possuem uma alta variacao.
+    4) O histograma de referencia está pronto quando ele não varia muito.
 
 Experimentos
     1) Reproduzir os testes incluindo o SAX-VSM, BOSS VS e WEASEL para ver as acurácias e comparar com as caracteristicas de tempo e frequencia
 
 Duvidas
-    1) Verificar se o codigo do SFA aplica o lowpass filter. Se sim, motificar o codigo para o RSSA. 
-   (The use of the first Fourier coefficients is equal to a low-pass filter and as such has a noise 
+    1) Verificar se o codigo do SFA aplica o lowpass filter. (The use of the first Fourier coefficients is equal to a low-pass filter and as such has a noise 
     canceling effect by smoothening a time series.)
-    2) O SFA trie é utilizada pelo classificador?
-    3) O BOSS utiliza o shotgun distance? (Alingment free)
+    2) O BOSS utiliza o shotgun distance? Não. mas segundo o autor, o BOSS é naturalmente livre de alinhamento. O que não é verdade.
 
 Notas
 1) O SFA funciona como o iSAX trabalhando com palavras de diferentes tamanhos SFAWordsVariableLength.java

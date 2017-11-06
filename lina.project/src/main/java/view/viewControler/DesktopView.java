@@ -40,13 +40,82 @@ public class DesktopView {
     }
 
     /*
-        INTERNAL FRAME
+     *   Processing
      */
-    public void showInternalFrame(JDesktopPane dp_preprocessing, String dataset, LinkedHashSet<GenericRowBean> data) {
-        InternalFrame internalFrame = new InternalFrame(this);
-        internalFrame.configData(dataset, data);
-        internalFrame.show();
+    public void signalProcessing(JList lt_filtersRight, Float window, Integer hertz, Integer offset) {
+        LinkedList<String> methodsSignals = new LinkedList<>();
+        if (lt_filtersRight.getModel().getSize() != 0) {
+            for (int i = 0; i < lt_filtersRight.getModel().getSize(); i++) {
+                methodsSignals.add(lt_filtersRight.getModel().getElementAt(i).toString());
+            }
+        }
+        if (!methodsSignals.isEmpty()) {
+            LinkedHashSet<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsSignals,
+                    window * hertz, offset, hertz);
+            processingFeatures.ajustLineColumns(lineColumns);
+            if (!lineColumns.isEmpty()) {
+                getData().clear();
+                setData(HandleGenericDataset.convertLineColumnsToGenericData(lineColumns));
+                HandleGenericDataset.addClassToGenericData(getData(), getClasses());
+            }
+        }
+    }
+
+    public void principalFeatureProcessing(JList lt_principalFeaturesRight, Float window, Integer hertz, Integer voltar) {
+        LinkedList<String> principalFeatures = new LinkedList<>();
+        if (lt_principalFeaturesRight.getModel().getSize() != 0) {
+            for (int i = 0; i < lt_principalFeaturesRight.getModel().getSize(); i++) {
+                principalFeatures.add(lt_principalFeaturesRight.getModel().getElementAt(i).toString());
+            }
+        }
+        if (!principalFeatures.isEmpty()) {
+            LinkedHashSet<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), principalFeatures,
+                    window * hertz, voltar, hertz);
+            processingFeatures.ajustLineColumns(lineColumns);
+            if (!lineColumns.isEmpty()) {
+                getData().clear();
+                setData(HandleGenericDataset.convertLineColumnsToGenericData(lineColumns));
+                HandleGenericDataset.addClassToGenericData(getData(), getClasses());
+            }
+        }
+    }
+
+    public void featureExtraction(JList lt_timeFeaturesRight, JList lt_frequencyFeaturesRight, Float window, Integer hertz,
+            Integer voltar) {
+        LinkedList<String> methodsFeatures = new LinkedList<>();
+        if (lt_timeFeaturesRight.getModel().getSize() != 0) {
+            for (int i = 0; i < lt_timeFeaturesRight.getModel().getSize(); i++) {
+                methodsFeatures.add(lt_timeFeaturesRight.getModel().getElementAt(i).toString());
+            }
+        }
+        if (lt_frequencyFeaturesRight.getModel().getSize() != 0) {
+            for (int i = 0; i < lt_frequencyFeaturesRight.getModel().getSize(); i++) {
+                methodsFeatures.add(lt_frequencyFeaturesRight.getModel().getElementAt(i).toString());
+            }
+        }
+        getDataFeatures().clear();
+        if (!methodsFeatures.isEmpty()) {
+            LinkedHashSet<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsFeatures,
+                    window * hertz, voltar, hertz);
+            if (!lineColumns.isEmpty()) {
+                getDataFeatures().clear();
+                setDataFeatures(HandleGenericDataset.convertLineColumnsToGenericData(lineColumns));
+                HandleGenericDataset.addClassToGenericData(getDataFeatures(), getClasses());
+            }
+        }
+    }
+
+    /*
+     *   INTERNAL FRAME
+     */
+    public void addDataInternalFrame(LinkedHashSet<GenericRowBean> data) {
+        ConstGeneral.CURRENT_INTERNAL_FRAME.configData(data);
+    }
+
+    public void showInternalFrame(JDesktopPane dp_preprocessing, String dataset) {
+        InternalFrame internalFrame = new InternalFrame(this, dataset);
         dp_preprocessing.add(internalFrame);
+        internalFrame.show();
 
         frameDistancia = internalFrame.getHeight() - internalFrame.getContentPane().getHeight();
         proxFrameX += frameDistancia;
@@ -128,15 +197,18 @@ public class DesktopView {
     /*
         Painel Box
      */
-    public void addBox(JPanel panel, JPopupMenu popup, String nameDataset, LinkedHashSet<GenericRowBean> data) {
-        PainelBox painelFeature = new PainelBox(popup);
-        painelFeature.configData(nameDataset, data);
-        painelFeature.setName("" + Math.random()); //ID único do painel. Serve para identificação.
-        painelFeature.setSize(largura, altura);
+    public void addDataBox(LinkedHashSet<GenericRowBean> data) {
+        ConstGeneral.CURRENT_BOX.configData(data);
+    }
+
+    public void addBox(JPanel panel, JPopupMenu popup, String nameDataset) {
+        PainelBox painelBox = new PainelBox(popup, nameDataset);
+        painelBox.setName("" + Math.random()); //ID único do painel. Serve para identificação.
+        painelBox.setSize(largura, altura);
         DropComponentes drop = new DropComponentes();
-        painelFeature.addMouseListener(drop);
-        painelFeature.addMouseMotionListener(drop);
-        panel.add(painelFeature);
+        painelBox.addMouseListener(drop);
+        painelBox.addMouseMotionListener(drop);
+        panel.add(painelBox);
         organizarBox(panel);
     }
 
@@ -198,9 +270,9 @@ public class DesktopView {
         }
     }
 
-    public void updateGraphic(LinkedHashSet<GenericRowBean> data) {
+    public void updateGraphic() {
         if (ConstGeneral.CURRENT_INTERNAL_FRAME != null) {
-            ConstGeneral.CURRENT_INTERNAL_FRAME.updateGraphic(data);
+            ConstGeneral.CURRENT_INTERNAL_FRAME.updateGraphic();
         }
     }
 
@@ -292,6 +364,10 @@ public class DesktopView {
         defaultListModel.addElement(ConstGeneral.AL_Logistic);
         defaultListModel.addElement(ConstGeneral.AL_MultilayerPerceptron);
         defaultListModel.addElement(ConstGeneral.AL_AdaBoost);
+        defaultListModel.addElement(ConstGeneral.AL_SAX_VSM);
+        defaultListModel.addElement(ConstGeneral.AL_BOSS_MODEL);
+        defaultListModel.addElement(ConstGeneral.AL_BOSS_VS);
+        defaultListModel.addElement(ConstGeneral.AL_WEASEL);
         list.setModel(defaultListModel);
     }
 
@@ -372,72 +448,6 @@ public class DesktopView {
         defaultListModel.addElement(ConstGeneral.FF_DComponents);
 //        defaultListModel.addElement(ConstGeneral.FF_DominantFrequency);
         list.setModel(defaultListModel);
-    }
-
-    /*
-        Processing
-     */
-    public void signalProcessing(JList lt_filtersRight, Float window, Integer hertz, Integer voltar) {
-        LinkedList<String> methodsSignals = new LinkedList<>();
-        if (lt_filtersRight.getModel().getSize() != 0) {
-            for (int i = 0; i < lt_filtersRight.getModel().getSize(); i++) {
-                methodsSignals.add(lt_filtersRight.getModel().getElementAt(i).toString());
-            }
-        }
-        if (!methodsSignals.isEmpty()) {
-            LinkedHashSet<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsSignals,
-                    window * hertz, voltar, hertz);
-            processingFeatures.ajustLineColumns(lineColumns);
-            if (!lineColumns.isEmpty()) {
-                getData().clear();
-                setData(HandleGenericDataset.convertLineColumnsToGenericData(lineColumns));
-                HandleGenericDataset.addClassToGenericData(getData(), getClasses());
-            }
-        }
-    }
-
-    public void principalFeatureProcessing(JList lt_principalFeaturesRight, Float window, Integer hertz, Integer voltar) {
-        LinkedList<String> principalFeatures = new LinkedList<>();
-        if (lt_principalFeaturesRight.getModel().getSize() != 0) {
-            for (int i = 0; i < lt_principalFeaturesRight.getModel().getSize(); i++) {
-                principalFeatures.add(lt_principalFeaturesRight.getModel().getElementAt(i).toString());
-            }
-        }
-        if (!principalFeatures.isEmpty()) {
-            LinkedHashSet<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), principalFeatures,
-                    window * hertz, voltar, hertz);
-            processingFeatures.ajustLineColumns(lineColumns);
-            if (!lineColumns.isEmpty()) {
-                getData().clear();
-                setData(HandleGenericDataset.convertLineColumnsToGenericData(lineColumns));
-                HandleGenericDataset.addClassToGenericData(getData(), getClasses());
-            }
-        }
-    }
-
-    public void featureExtraction(JList lt_timeFeaturesRight, JList lt_frequencyFeaturesRight, Float window, Integer hertz,
-            Integer voltar) {
-        LinkedList<String> methodsFeatures = new LinkedList<>();
-        if (lt_timeFeaturesRight.getModel().getSize() != 0) {
-            for (int i = 0; i < lt_timeFeaturesRight.getModel().getSize(); i++) {
-                methodsFeatures.add(lt_timeFeaturesRight.getModel().getElementAt(i).toString());
-            }
-        }
-        if (lt_frequencyFeaturesRight.getModel().getSize() != 0) {
-            for (int i = 0; i < lt_frequencyFeaturesRight.getModel().getSize(); i++) {
-                methodsFeatures.add(lt_frequencyFeaturesRight.getModel().getElementAt(i).toString());
-            }
-        }
-        getDataFeatures().clear();
-        if (!methodsFeatures.isEmpty()) {
-            LinkedHashSet<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsFeatures,
-                    window * hertz, voltar, hertz);
-            if (!lineColumns.isEmpty()) {
-                getDataFeatures().clear();
-                setDataFeatures(HandleGenericDataset.convertLineColumnsToGenericData(lineColumns));
-                HandleGenericDataset.addClassToGenericData(getDataFeatures(), getClasses());
-            }
-        }
     }
 
 }

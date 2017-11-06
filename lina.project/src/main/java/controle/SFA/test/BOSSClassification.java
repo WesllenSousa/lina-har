@@ -6,7 +6,7 @@
 package controle.SFA.test;
 
 import constants.ConstDataset;
-import controle.SFA.classification.BOSSEnsembleClassifier;
+import controle.SFA.classification.BOSSClassifier;
 import controle.SFA.classification.Classifier;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
@@ -26,7 +26,8 @@ public class BOSSClassification {
 
         // The BOSS ensemble classifier
         try {
-            Classifier boss = new BOSSEnsembleClassifier(trainSamples, testSamples);
+            int window = 30;
+            Classifier boss = new BOSSClassifier(trainSamples, testSamples, window);
             Classifier.Score scoreBOSS = boss.eval();
             System.out.println(scoreBOSS.toString());
 

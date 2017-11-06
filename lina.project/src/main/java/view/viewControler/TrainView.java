@@ -66,6 +66,8 @@ public class TrainView {
             classifier = wekaUtil.buildClassfy(new MultilayerPerceptron());
         } else if (algorithm.equals(ConstGeneral.AL_AdaBoost)) {
             classifier = wekaUtil.buildClassfy(new AdaBoostM1());
+        } else {
+            messages.aviso("Unsuported algorithm!");
         }
 
         if (classifier != null) {
@@ -74,6 +76,22 @@ public class TrainView {
             listClassiers.put(key, classifier);
             listEvaluation.put(key, result);
         }
+    }
+
+    public void executeTrain(String train, String test, String algorithm) {
+
+        if (algorithm.equals(ConstGeneral.AL_SAX_VSM)) {
+
+        } else if (algorithm.equals(ConstGeneral.AL_BOSS_MODEL)) {
+
+        } else if (algorithm.equals(ConstGeneral.AL_BOSS_VS)) {
+
+        } else if (algorithm.equals(ConstGeneral.AL_WEASEL)) {
+
+        } else {
+            messages.aviso("Unsuported algorithm!");
+        }
+
     }
 
     public void saveModel(String classifier) {

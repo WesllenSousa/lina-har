@@ -35,9 +35,11 @@ public class PainelBox extends JPanel implements MouseListener {
     private String nameDataset;
     private List<String> signalSelection, filters, principalFeatures, timeFeatures, frequencyFeatures;
 
-    public PainelBox(JPopupMenu popup) {
+    public PainelBox(JPopupMenu popup, String nameDataset) {
         ConstGeneral.CURRENT_BOX = this;
         this.popup = popup;
+
+        this.nameDataset = nameDataset;
 
         this.addMouseListener(this);
         this.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
@@ -47,8 +49,7 @@ public class PainelBox extends JPanel implements MouseListener {
         repaint();
     }
 
-    public void configData(String nameDataset, LinkedHashSet<GenericRowBean> data) {
-        this.nameDataset = nameDataset;
+    public void configData(LinkedHashSet<GenericRowBean> data) {
         this.data = data;
     }
 

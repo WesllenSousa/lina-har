@@ -35,31 +35,20 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
     private String nameDataset;
     private List<String> signalSelection, filters, principalFeatures, timeFeatures, frequencyFeatures;
 
-    public InternalFrame(DesktopView desktopView) {
+    public InternalFrame(DesktopView desktopView, String nameDataset) {
         ConstGeneral.CURRENT_INTERNAL_FRAME = this;
         this.desktopView = desktopView;
-    }
-
-    public void configData(String nameDataset, LinkedHashSet<GenericRowBean> data) {
         this.nameDataset = nameDataset;
-        this.data = data;
-        generateGraphic();
         iniciar();
     }
 
-    private void generateGraphic() {
-        graphic = new LineGraphic(nameDataset, true);
+    public void configData(LinkedHashSet<GenericRowBean> data) {
+        this.data = data;
         addData();
     }
 
-    public void updateGraphic(LinkedHashSet<GenericRowBean> data) {
-        if (graphic != null) {
-            ((LineGraphic) graphic).prepareStream(data);
-            addData();
-        }
-    }
-
     private void addData() {
+        ((LineGraphic) graphic).prepareStream(data);
         int row = 0;
         for (GenericRowBean bean : data) {
             if (row == 0) {
@@ -69,6 +58,30 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
                 ((LineGraphic) graphic).addData(bean);
             }
             row++;
+        }
+    }
+
+    private void addDataFeatures() {
+        ((LineGraphic) graphic).prepareStream(dataFeatures);
+        int row = 0;
+        for (GenericRowBean bean : dataFeatures) {
+            if (row == 0) {
+                row++;
+                continue;
+            } else {
+                ((LineGraphic) graphic).addData(bean);
+            }
+            row++;
+        }
+    }
+
+    public void updateGraphic() {
+        if (graphic != null) {
+            if (dataFeatures.isEmpty()) {
+                addData();
+            } else {
+                addDataFeatures();
+            }
         }
     }
 
@@ -106,9 +119,9 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
 
         this.addComponentListener(this);
         this.addInternalFrameListener(this);
-        if (graphic != null) {
-            getContentPane().add(graphic, BorderLayout.CENTER);
-        }
+
+        graphic = new LineGraphic(nameDataset, true);
+        getContentPane().add(graphic, BorderLayout.CENTER);
 
         this.pack();
     }
@@ -122,7 +135,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
         this.frequencyFeatures = frequencyFeatures;
     }
 
-    private void cleanLists() {
+    public void cleanLists() {
         data.clear();
         dataFeatures.clear();
         classes.clear();
