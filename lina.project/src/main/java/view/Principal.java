@@ -247,11 +247,10 @@ public class Principal extends javax.swing.JFrame {
         rd_normYes = new javax.swing.JRadioButton();
         td_normNo = new javax.swing.JRadioButton();
         jPanel4 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
         rd_algSAXVSM = new javax.swing.JRadioButton();
         rd_algBOSS = new javax.swing.JRadioButton();
-        rd_algNoneBOSSVS = new javax.swing.JRadioButton();
-        rd_algNone = new javax.swing.JRadioButton();
+        rd_algBOSSVS = new javax.swing.JRadioButton();
+        rd_algWeasel = new javax.swing.JRadioButton();
         jPanel8 = new javax.swing.JPanel();
         pn_graphicLine = new javax.swing.JPanel();
         pn_graphicBar = new javax.swing.JPanel();
@@ -1619,20 +1618,18 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Models"));
 
-        jLabel11.setText("Algoritmos:");
-
         gp_model.add(rd_algSAXVSM);
         rd_algSAXVSM.setText("SAX-VSM");
 
         gp_model.add(rd_algBOSS);
         rd_algBOSS.setText("BOSS");
 
-        gp_model.add(rd_algNoneBOSSVS);
-        rd_algNoneBOSSVS.setText("BOSS-VS");
+        gp_model.add(rd_algBOSSVS);
+        rd_algBOSSVS.setText("BOSS-VS");
 
-        gp_model.add(rd_algNone);
-        rd_algNone.setSelected(true);
-        rd_algNone.setText("None");
+        gp_model.add(rd_algWeasel);
+        rd_algWeasel.setSelected(true);
+        rd_algWeasel.setText("WEASEL");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1640,28 +1637,26 @@ public class Principal extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(rd_algBOSSVS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rd_algSAXVSM, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rd_algNone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rd_algSAXVSM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(rd_algBOSS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rd_algNoneBOSSVS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(rd_algWeasel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rd_algNone))
+                    .addComponent(rd_algSAXVSM)
+                    .addComponent(rd_algBOSS))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rd_algSAXVSM)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rd_algBOSS)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rd_algNoneBOSSVS)
-                .addGap(64, 64, 64))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rd_algBOSSVS)
+                    .addComponent(rd_algWeasel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -1686,9 +1681,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(118, 118, 118))
         );
 
         jScrollPane4.setViewportView(jPanel11);
@@ -2546,7 +2541,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_tb_wordsMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        updatePageHinkleyPlot(null);
+        symbolicView.showPageHinkleyChanges();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void lt_trainDataTestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lt_trainDataTestMouseClicked
@@ -2609,7 +2604,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -2747,9 +2741,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem ppi_sideBySide;
     private javax.swing.JMenuItem ppi_viewDatasetBox;
     private javax.swing.JRadioButton rd_algBOSS;
-    private javax.swing.JRadioButton rd_algNone;
-    private javax.swing.JRadioButton rd_algNoneBOSSVS;
+    private javax.swing.JRadioButton rd_algBOSSVS;
     private javax.swing.JRadioButton rd_algSAXVSM;
+    private javax.swing.JRadioButton rd_algWeasel;
     private javax.swing.JRadioButton rd_alingmentNo;
     private javax.swing.JRadioButton rd_alingmentYes;
     private javax.swing.JRadioButton rd_normYes;
@@ -2927,12 +2921,9 @@ public class Principal extends javax.swing.JFrame {
         lb_tableInfo.setText(qtdeWords + " words");
     }
 
-    public void updatePageHinkleyPlot(String text) {
-        if (symbolicView != null) {
-            if (text != null) {
-                ta_symbolic.append(text);
-            }
-            symbolicView.showPageHinkleyChanges();
+    public void updateSymbolicLog(String text) {
+        if (text != null) {
+            ta_symbolic.append(text + "\n");
         }
     }
 
@@ -3183,6 +3174,15 @@ public class Principal extends javax.swing.JFrame {
             Parameters.ALINGMENT = true;
         } else {
             Parameters.ALINGMENT = false;
+        }
+        if (rd_algBOSS.isSelected()) {
+            Parameters.MODEL = ConstGeneral.AL_BOSS_MODEL;
+        } else if (rd_algBOSSVS.isSelected()) {
+            Parameters.MODEL = ConstGeneral.AL_BOSS_VS;
+        } else if (rd_algWeasel.isSelected()) {
+            Parameters.MODEL = ConstGeneral.AL_WEASEL;
+        } else if (rd_algSAXVSM.isSelected()) {
+            Parameters.MODEL = ConstGeneral.AL_SAX_VSM;
         }
     }
 

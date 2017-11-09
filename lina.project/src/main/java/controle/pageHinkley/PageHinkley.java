@@ -8,12 +8,15 @@ package controle.pageHinkley;
 import constants.ConstGeneral;
 import java.awt.Color;
 import java.util.ArrayList;
+import view.viewControler.SymbolicView;
 
 /**
  *
  * @author Wesllen Sousa
  */
 public class PageHinkley {
+
+    private SymbolicView symbolicView;
 
     private ArrayList<PageHinkleyBean> listChanges = new ArrayList<>();
     private Color cor;
@@ -26,8 +29,9 @@ public class PageHinkley {
             sumThreshold = 0., countThreshold = 0.;
     private int countChange = 0;
 
-    public PageHinkley(Color cor) {
+    public PageHinkley(Color cor, SymbolicView symbolicView) {
         this.cor = cor;
+        this.symbolicView = symbolicView;
     }
 
     public ArrayList<PageHinkleyBean> runTs(double[] ts) {
@@ -154,7 +158,8 @@ public class PageHinkley {
 
     private void log(String text) {
         if (ConstGeneral.TELA_PRINCIPAL != null) {
-            ConstGeneral.TELA_PRINCIPAL.updatePageHinkleyPlot(text);
+            symbolicView.showPageHinkleyChanges();
+            symbolicView.updateLog(text);
         } else {
             System.out.print(text);
         }

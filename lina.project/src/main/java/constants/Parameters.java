@@ -21,6 +21,7 @@ public class Parameters {
     public static boolean NORM = true;
     public static boolean NUM_REDUCTION = true;
     public static boolean ALINGMENT = true;
+    public static String MODEL = "";
 
     public static int WORD_LENGTH_PAA = 8;
     public static int SYMBOLS_ALPHABET_SIZE = 4;

@@ -50,6 +50,10 @@ public class WEASELClassifier extends Classifier {
         super(train, test);
     }
 
+    public WEASELClassifier() {
+        super();
+    }
+
     public static class WScore extends Score {
 
         public WScore(
@@ -203,6 +207,25 @@ public class WEASELClassifier extends Classifier {
         return correct;
     }
 
+    public int predictStream(
+            final WScore score,
+            final BagOfBigrams bagTest) {
+
+        // chi square changes key mappings => remap
+        score.model.dict.remap(bagTest);
+
+        FeatureNode[][] features = initLibLinear(bagTest, score.linearModel.getNrFeature());
+
+        int correct = 0;
+        for (int ind = 0; ind < features.length; ind++) {
+            double label = Linear.predict(score.linearModel, features[ind]);
+            if (label == Double.valueOf(bagTest.label)) {
+                correct++;
+            }
+        }
+        return correct;
+    }
+
     public static Problem initLibLinearProblem(
             final BagOfBigrams[] bob,
             final Dictionary dict,
@@ -239,6 +262,25 @@ public class WEASELClassifier extends Classifier {
             });
             featuresTrain[j] = featuresArray;
         }
+        return featuresTrain;
+    }
+
+    public static FeatureNode[][] initLibLinear(final BagOfBigrams bob, int max_feature) {
+        FeatureNode[][] featuresTrain = new FeatureNode[1][];
+        BagOfBigrams bop = bob;
+        ArrayList<FeatureNode> features = new ArrayList<>(bop.bob.size());
+        for (IntIntCursor word : bop.bob) {
+            if (word.value > 0 && word.key <= max_feature) {
+                features.add(new FeatureNode(word.key, ((double) word.value)));
+            }
+        }
+        FeatureNode[] featuresArray = features.toArray(new FeatureNode[]{});
+        Arrays.parallelSort(featuresArray, new Comparator<FeatureNode>() {
+            public int compare(FeatureNode o1, FeatureNode o2) {
+                return Integer.compare(o1.index, o2.index);
+            }
+        });
+        featuresTrain[0] = featuresArray;
         return featuresTrain;
     }
 

@@ -165,6 +165,37 @@ public class WEASELModel {
         return bagOfPatterns;
     }
 
+    public BagOfBigrams createOneBagOfPatterns(
+            final int[][] words,
+            final String label,
+            final int wordLength) {
+
+        BagOfBigrams bagOfPattern = new BagOfBigrams(words.length * 6, label);
+
+        final byte usedBits = (byte) Words.binlog(this.alphabetSize);
+
+        // FIXME
+        final long mask = (1l << (usedBits * wordLength)) - 1l;
+
+        // and create a bag of pattern
+        // create subsequences
+        for (int w = 0; w < this.windowLengths.length; w++) {
+            final short factor = 1;
+            for (int offset = 0; offset < words.length; offset++) {
+                int word = this.dict.getWord((long) w << 52 | (words[w][offset] & mask));
+                bagOfPattern.bob.putOrAdd(word, factor, factor);
+
+                // add 2 grams
+                if (offset - this.windowLengths[w] >= 0) {
+                    long prevWord = this.dict.getWord((long) w << 52 | (words[w][offset - this.windowLengths[w]] & mask));
+                    int newWord = this.dict.getWord((long) w << 52 | prevWord << 26 | word);
+                    bagOfPattern.bob.putOrAdd(newWord, factor, factor);
+                }
+            }
+        }
+        return bagOfPattern;
+    }
+
     /**
      *
      * Implementation based on:
@@ -293,5 +324,21 @@ public class WEASELModel {
                 }
             }
         }
+
+        public void remap(final BagOfBigrams bagOfPatterns) {
+            IntIntOpenHashMap oldMap = bagOfPatterns.bob;
+            bagOfPatterns.bob = new IntIntOpenHashMap(oldMap.size());
+            for (IntIntCursor word : oldMap) {
+                if (word.value > 0) {
+                    bagOfPatterns.bob.put(getWordChi(word.key), word.value);
+                }
+            }
+        }
+
     }
+
+    public int[] getWindowLengths() {
+        return windowLengths;
+    }
+
 }

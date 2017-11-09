@@ -104,6 +104,6 @@ public class ConstGeneral {
     public static String AL_SAX_VSM = "SaxVsm";
     public static String AL_BOSS_MODEL = "BossModel";
     public static String AL_BOSS_VS = "BossVS";
-    public static String AL_WEASEL = "Weaseal";
+    public static String AL_WEASEL = "Weasel";
 
 }

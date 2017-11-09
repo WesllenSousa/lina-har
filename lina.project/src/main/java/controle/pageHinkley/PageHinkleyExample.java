@@ -25,7 +25,7 @@ public class PageHinkleyExample {
         //0 = all lines
         TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "215218.csv", false, ",");
 
-        PageHinkley pageHinkley = new PageHinkley(Color.BLACK);
+        PageHinkley pageHinkley = new PageHinkley(Color.BLACK, null);
         ArrayList<PageHinkleyBean> list = pageHinkley.runTs(timeSeries[0].getData());
 
 //        for (PageHinkleyBean page : list) {

@@ -2047,9 +2047,9 @@
                                       <Component id="jPanel28" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jPanel26" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                                      <Component id="jPanel4" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2476,15 +2476,16 @@
                               <Layout>
                                 <DimensionLayout dim="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jLabel11" min="-2" pref="79" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="rd_algBOSSVS" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="rd_algSAXVSM" alignment="0" pref="99" max="32767" attributes="0"/>
+                                          </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="rd_algNone" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="rd_algSAXVSM" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="rd_algBOSS" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="rd_algNoneBOSSVS" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="rd_algBOSS" max="32767" attributes="0"/>
+                                              <Component id="rd_algWeasel" max="32767" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                       </Group>
@@ -2492,28 +2493,22 @@
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="jLabel11" alignment="3" max="32767" attributes="0"/>
-                                              <Component id="rd_algNone" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="rd_algSAXVSM" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="rd_algBOSS" alignment="3" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="rd_algSAXVSM" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="rd_algBOSS" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="rd_algNoneBOSSVS" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="rd_algBOSSVS" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="rd_algWeasel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>
                               </Layout>
                               <SubComponents>
-                                <Component class="javax.swing.JLabel" name="jLabel11">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="Algoritmos:"/>
-                                  </Properties>
-                                </Component>
                                 <Component class="javax.swing.JRadioButton" name="rd_algSAXVSM">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
@@ -2530,7 +2525,7 @@
                                     <Property name="text" type="java.lang.String" value="BOSS"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JRadioButton" name="rd_algNoneBOSSVS">
+                                <Component class="javax.swing.JRadioButton" name="rd_algBOSSVS">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="gp_model"/>
@@ -2538,13 +2533,13 @@
                                     <Property name="text" type="java.lang.String" value="BOSS-VS"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JRadioButton" name="rd_algNone">
+                                <Component class="javax.swing.JRadioButton" name="rd_algWeasel">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="gp_model"/>
                                     </Property>
                                     <Property name="selected" type="boolean" value="true"/>
-                                    <Property name="text" type="java.lang.String" value="None"/>
+                                    <Property name="text" type="java.lang.String" value="WEASEL"/>
                                   </Properties>
                                 </Component>
                               </SubComponents>

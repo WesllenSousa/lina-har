@@ -21,6 +21,7 @@ Notas de Inovação
     5) Definir o melhor tamanho de janela para no contexto de HAR
     6) Discords podem ser considerados transição entre atividades.
     7) Os motifs podem ser utilizados para agrupar palavras (atividades).
+    8) Procurar uma forma de estabelecer uma tag as o histograma de referência?
     
 3) Fase
     1) Criar ou atualizar o MCB toda vez que o sinal mudar de padrao, guardar os MCB's de sinais anteriores (Datastreaming)    

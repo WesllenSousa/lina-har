@@ -469,7 +469,11 @@ public final class TextProcessor {
         }
         double m1 = magnitude(testSample.getWordsAsDoubles().values());
         double m2 = magnitude(weightVector.values());
-        return res / (m1 * m2);
+        if (m1 * m2 == 0) { //evitar divisao por 0
+            return 0.0001;
+        } else {
+            return res / (m1 * m2);
+        }
     }
 
     // private double cosineSimilarity(BigramBag testSample, HashMap<Bigram, Double> weightVector) {

@@ -5,14 +5,20 @@
  */
 package datasets.memory;
 
+import com.carrotsearch.hppc.IntFloatOpenHashMap;
+import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
 import constants.Parameters;
 import controle.SAX.saxvsm.text.WordBag;
-import controle.SFA.transformation.BOSSModel;
+import controle.SFA.classification.WEASELClassifier.WScore;
+import controle.SFA.transformation.BOSSModel.BagOfPattern;
 import controle.SFA.transformation.SFA;
+import controle.SFA.transformation.WEASELModel.BagOfBigrams;
 import datasets.timeseries.TimeSeries;
+import de.bwaldvogel.liblinear.Model;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Objects;
+import java.util.List;
 
 /**
  *
@@ -20,82 +26,74 @@ import java.util.Objects;
  */
 public class BufferStreaming {
 
-    private SFA sfa;
-
     private LinkedList<TimeSeries> bufferMCB = new LinkedList<>();
-    private ArrayList<WordRecord> bufferWord = new ArrayList<>();
-    private ArrayList<WordRecord> bufferWordOOV = new ArrayList<>();
+    private SFA mcb;
 
-    private ArrayList<BOSSModel.BagOfPattern> BOPsfa = new ArrayList<>();
-    private BOSSModel.BagOfPattern currBOPsfa;
+    private List<WordRecord> bufferWord = new ArrayList<>();
+    private List<WordRecord> bufferWordOOV = new ArrayList<>();
 
-    private ArrayList<WordBag> BOPsax = new ArrayList<>();
-    private WordBag currBOPsax;
+    private List<WordBag> BOPSax = new ArrayList<>();
+    private List<BagOfPattern> BOPBoss = new ArrayList<>();
+    private List<BagOfBigrams> BOPWeasel = new ArrayList<>();
 
-    public SFA getSfa() {
-        return sfa;
+    private ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixBossVs;
+    private HashMap<String, HashMap<String, Double>> matrixSaxVsm;
+    private WScore weaselModel;
+
+    public SFA getMcb() {
+        return mcb;
     }
 
-    public void setSfa(SFA sfa) {
-        this.sfa = sfa;
+    public void setMcb(SFA mcb) {
+        this.mcb = mcb;
     }
 
     public LinkedList<TimeSeries> getBufferMCB() {
         return bufferMCB;
     }
 
-    public ArrayList<WordRecord> getBufferWord() {
+    public List<WordRecord> getBufferWord() {
         return bufferWord;
     }
 
-    public ArrayList<WordRecord> getBufferWordOOV() {
+    public List<WordRecord> getBufferWordOOV() {
         return bufferWordOOV;
     }
 
-    public ArrayList<BOSSModel.BagOfPattern> getBOPsfa() {
-        return BOPsfa;
+    public List<WordBag> getBOPSax() {
+        return BOPSax;
     }
 
-    public ArrayList<WordBag> getBOPsax() {
-        return BOPsax;
+    public List<BagOfPattern> getBOPBoss() {
+        return BOPBoss;
     }
 
-    public BOSSModel.BagOfPattern getCurrBOPsfa() {
-        return currBOPsfa;
+    public List<BagOfBigrams> getBOPWeasel() {
+        return BOPWeasel;
     }
 
-    public void setCurrBOPsfa(BOSSModel.BagOfPattern currBOPsfa) {
-        this.currBOPsfa = currBOPsfa;
+    public ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> getMatrixBossVs() {
+        return matrixBossVs;
     }
 
-    public WordBag getCurrBOPsax() {
-        return currBOPsax;
+    public void setMatrixBossVs(ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixBossVs) {
+        this.matrixBossVs = matrixBossVs;
     }
 
-    public void setCurrBOPsax(WordBag currBOPsax) {
-        this.currBOPsax = currBOPsax;
+    public HashMap<String, HashMap<String, Double>> getMatrixSaxVsm() {
+        return matrixSaxVsm;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 41 * hash + Objects.hashCode(this.sfa);
-        return hash;
+    public void setMatrixSaxVsm(HashMap<String, HashMap<String, Double>> matrixSaxVsm) {
+        this.matrixSaxVsm = matrixSaxVsm;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final BufferStreaming other = (BufferStreaming) obj;
-        return Objects.equals(this.sfa, other.sfa);
+    public WScore getWeaselModel() {
+        return weaselModel;
+    }
+
+    public void setWeaselModel(WScore weaselModel) {
+        this.weaselModel = weaselModel;
     }
 
     /*

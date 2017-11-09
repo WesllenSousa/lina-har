@@ -42,6 +42,10 @@ public class BOSSVSClassifier extends Classifier {
         super(train, test);
     }
 
+    public BOSSVSClassifier() {
+        super();
+    }
+
     public static class BossVSScore<E> extends Score {
 
         public BossVSScore(boolean normed, int windowLength) {
@@ -312,4 +316,47 @@ public class BOSSVSClassifier extends Classifier {
 
         return score("BOSS VS", testSamples, startTime, testLabels, usedLengths);
     }
+
+    public Predictions predictStream(
+            final BagOfPattern bagOfPatternsTestSample,
+            final ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixTrain) {
+
+        Predictions p = new Predictions(new String[1], 0);
+
+        double bestDistance = 0.0;
+
+        // for each class
+        for (ObjectObjectCursor<String, IntFloatOpenHashMap> classEntry : matrixTrain) {
+
+            String label = classEntry.key;
+            IntFloatOpenHashMap stat = classEntry.value;
+
+            // determine cosine similarity
+            double distance = 0.0;
+
+            for (IntIntCursor wordFreq : bagOfPatternsTestSample.bag) {
+                double wordInBagFreq = wordFreq.value;
+                double value = stat.get(wordFreq.key);
+                distance += wordInBagFreq * (value + 1.0);
+            }
+
+            // norm by magnitudes
+            if (normMagnitudes) {
+                distance /= magnitude(stat.values());
+            }
+
+            // update nearest neighbor
+            if (distance > bestDistance) {
+                bestDistance = distance;
+                p.labels[0] = label;
+            }
+        }
+
+        // check if the prediction is correct
+//        if (bagOfPatternsTestSample.label.equals(p.labels[0])) {
+//            p.correct.incrementAndGet();
+//        }
+        return p;
+    }
+
 }
