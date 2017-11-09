@@ -14,6 +14,17 @@ public class ConstGeneral {
     public static InternalFrame CURRENT_INTERNAL_FRAME;
     public static PainelBox CURRENT_BOX;
 
+    /**
+     * Screen Parameters
+     */
+    public static boolean SFA = true;
+    public static int OFFSET = 1;
+    public static boolean NORM = true;
+    public static boolean NUM_REDUCTION = true;
+    public static boolean ALINGMENT = true;
+    public static String MODEL = "";
+    public static boolean CLEAR_HIST = true;
+
     public static int PP_EDIT = 2;
     public static int PP_DELETE = 3;
 
@@ -103,7 +114,10 @@ public class ConstGeneral {
 
     public static String AL_SAX_VSM = "SaxVsm";
     public static String AL_BOSS_MODEL = "BossModel";
+    public static String AL_BOSS_ENSEMBLE = "BossEnsemble";
     public static String AL_BOSS_VS = "BossVS";
     public static String AL_WEASEL = "Weasel";
+    public static String AL_SHOTGUN = "Shotgun";
+    public static String AL_SHOTGUN_ENSEMBLE = "ShotgunEnsemble";
 
 }

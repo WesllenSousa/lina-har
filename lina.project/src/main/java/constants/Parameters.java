@@ -12,17 +12,6 @@ package constants;
 public class Parameters {
 
     public static int WINDOW_SIZE = 50;
-
-    /**
-     * Screen Parameters
-     */
-    public static boolean SFA = true;
-    public static int OFFSET = 1;
-    public static boolean NORM = true;
-    public static boolean NUM_REDUCTION = true;
-    public static boolean ALINGMENT = true;
-    public static String MODEL = "";
-
     public static int WORD_LENGTH_PAA = 8;
     public static int SYMBOLS_ALPHABET_SIZE = 4;
 
@@ -37,7 +26,7 @@ public class Parameters {
     public static int INITIAL_CARDINALITY = 4;
     public static int MAX_CARDINALITY = 32;
     public static int TOP_K = 10;
-    
+
     /**
      * SFA Parameters
      */
@@ -49,5 +38,8 @@ public class Parameters {
      */
     public static int MAX_WINDOW_LENGTH = 500;
     public static int MIN_WINDOW_LENGTH = 50;
+    public static int MAX_SYMBOL = 4;
+    public static int MAX_WORD_LENGTH = 12;
+    public static int MIN_WORD_LENGTH = 6;
 
 }

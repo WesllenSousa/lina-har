@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static controle.SFA.classification.Classifier.DEBUG;
-import static controle.SFA.classification.Classifier.MAX_WINDOW_LENGTH;
 import static controle.SFA.classification.Classifier.NORMALIZATION;
 import controle.SFA.classification.Classifier.Pair;
 import controle.SFA.classification.Classifier.Predictions;
@@ -35,10 +34,6 @@ import controle.SFA.transformation.BOSSModel.BagOfPattern;
 public class BOSSEnsembleClassifier extends BOSSClassifier {
 
     public static double factor = 0.92;
-
-    public static int maxF = 16; // 12
-    public static int minF = 6;  // 4
-    public static int maxS = 4;  // 8
 
     public BOSSEnsembleClassifier(TimeSeries[] train, TimeSeries[] test) throws IOException {
         super(train, test);
@@ -93,8 +88,8 @@ public class BOSSEnsembleClassifier extends BOSSClassifier {
     public List<BossScore> fitEnsemble(
             ExecutorService exec,
             final boolean normMean) throws FileNotFoundException {
-        int minWindowLength = 10;
-        int maxWindowLength = MAX_WINDOW_LENGTH;
+        int minWindowLength = this.minWindowLength;
+        int maxWindowLength = getMax(trainSamples, this.maxWindowLength);
         for (TimeSeries ts : this.trainSamples) {
             maxWindowLength = Math.min(ts.getLength(), maxWindowLength);
         }

@@ -34,10 +34,6 @@ import de.bwaldvogel.liblinear.SolverType;
  */
 public class WEASELClassifier extends Classifier {
 
-    public static int maxF = 6; // TODO used to be 6
-    public static int minF = 4;
-    public static int maxS = 4;
-
     public static SolverType solverType = SolverType.L2R_LR_DUAL;
 
     public static double chi = 2;
@@ -129,8 +125,8 @@ public class WEASELClassifier extends Classifier {
             int bestF = -1;
             boolean bestNorm = false;
 
-            int min = 4;
-            int max = getMax(samples, MAX_WINDOW_LENGTH);
+            int min = minWindowLength;
+            int max = getMax(samples, maxWindowLength);
             int[] windowLengths = new int[max - min + 1];
             for (int w = min, a = 0; w <= max; w++, a++) {
                 windowLengths[a] = w;
@@ -138,10 +134,10 @@ public class WEASELClassifier extends Classifier {
 
             optimize:
             for (final boolean mean : NORMALIZATION) {
-                WEASELModel model = new WEASELModel(maxF, maxS, windowLengths, mean, false);
+                WEASELModel model = new WEASELModel(maxWordLength, maxSymbol, windowLengths, mean, false);
                 int[][][] words = model.createWords(samples);
 
-                for (int f = minF; f <= maxF; f += 2) {
+                for (int f = minWordLenth; f <= maxWordLength; f += 2) {
                     model.dict.reset();
                     BagOfBigrams[] bop = model.createBagOfPatterns(words, samples, f);
                     model.filterChiSquared(bop, chi);
@@ -162,7 +158,7 @@ public class WEASELClassifier extends Classifier {
             }
 
             // obtain the final matrix
-            WEASELModel model = new WEASELModel(maxF, maxS, windowLengths, bestNorm, false);
+            WEASELModel model = new WEASELModel(maxWordLength, maxSymbol, windowLengths, bestNorm, false);
             int[][][] words = model.createWords(samples);
             BagOfBigrams[] bob = model.createBagOfPatterns(words, samples, bestF);
             model.filterChiSquared(bob, chi);
@@ -276,6 +272,7 @@ public class WEASELClassifier extends Classifier {
         }
         FeatureNode[] featuresArray = features.toArray(new FeatureNode[]{});
         Arrays.parallelSort(featuresArray, new Comparator<FeatureNode>() {
+            @Override
             public int compare(FeatureNode o1, FeatureNode o2) {
                 return Integer.compare(o1.index, o2.index);
             }
@@ -316,7 +313,7 @@ public class WEASELClassifier extends Classifier {
         ParallelFor.withIndex(threads, new ParallelFor.Each() {
             @Override
             public void run(int id, AtomicInteger processed) {
-                ThreadLocal<Linear> myLinear = new ThreadLocal<Linear>();
+                ThreadLocal<Linear> myLinear = new ThreadLocal<>();
                 myLinear.set(new Linear());
                 myLinear.get().disableDebugOutput();
 

@@ -75,7 +75,7 @@ public class SAX {
         return new SAXRecords();
     }
 
-    public static void SAX_VSM(String train_file, String test_file, Params params) {
+    public static String SAX_VSM(String train_file, String test_file, Params params) {
 
         try {
             Map<String, List<double[]>> trainData = UCRUtils.readUCRData(train_file);
@@ -103,21 +103,24 @@ public class SAX {
             double error = 1.0d - accuracy;
 
             // report results
-            System.out.println("classification results: " + toLogStr(params, accuracy, error));
+            String results = "classification results: \n" + toLogStr(params, accuracy, error);
+            System.out.println(results);
+            
+            return results;
 
         } catch (IOException | NumberFormatException | SAXException ex) {
             Messages msg = new Messages();
             msg.bug("SAX - SAX_VSM: " + ex.toString());
         }
-
+        return null;
     }
 
     private static String toLogStr(Params params, double accuracy, double error) {
         DecimalFormat fmt = new DecimalFormat("0.00###");
         StringBuffer sb = new StringBuffer();
-        sb.append("strategy ").append(params.getNrStartegy().toString()).append(",");
-        sb.append("window ").append(params.getWindowSize()).append(",");
-        sb.append("PAA ").append(params.getPaaSize()).append(",");
+        sb.append(" strategy ").append(params.getNrStartegy().toString()).append(",");
+        sb.append(" window ").append(params.getWindowSize()).append(",");
+        sb.append(" PAA ").append(params.getPaaSize()).append(",");
         sb.append("alphabet ").append(params.getAlphabetSize()).append(",");
         sb.append(" accuracy ").append(fmt.format(accuracy)).append(",");
         sb.append(" error ").append(fmt.format(error));

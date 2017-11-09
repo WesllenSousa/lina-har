@@ -366,8 +366,11 @@ public class DesktopView {
         defaultListModel.addElement(ConstGeneral.AL_AdaBoost);
         defaultListModel.addElement(ConstGeneral.AL_SAX_VSM);
         defaultListModel.addElement(ConstGeneral.AL_BOSS_MODEL);
+        defaultListModel.addElement(ConstGeneral.AL_BOSS_ENSEMBLE);
         defaultListModel.addElement(ConstGeneral.AL_BOSS_VS);
         defaultListModel.addElement(ConstGeneral.AL_WEASEL);
+        defaultListModel.addElement(ConstGeneral.AL_SHOTGUN);
+        defaultListModel.addElement(ConstGeneral.AL_SHOTGUN_ENSEMBLE);
         list.setModel(defaultListModel);
     }
 

@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 /**
  * The Shotgun Ensemble Classifier as published in:
  *
@@ -73,6 +72,25 @@ public class ShotgunEnsembleClassifier extends ShotgunClassifier {
         } finally {
             exec.shutdown();
         }
+    }
+
+    public List<Score> fitEnsemble(
+            final ExecutorService exec,
+            final TimeSeries[] trainSamples,
+            final boolean normMean,
+            final double factor) {
+        int minWindowLength = this.minWindowLength;
+        int maxWindowLength = getMax(trainSamples, this.maxWindowLength);
+        for (TimeSeries ts : trainSamples) {
+            maxWindowLength = Math.min(ts.getLength(), maxWindowLength);
+        }
+
+        ArrayList<Integer> windows = new ArrayList<Integer>();
+        for (int windowLength = maxWindowLength; windowLength >= minWindowLength; windowLength--) {
+            windows.add(windowLength);
+        }
+
+        return fit(windows.toArray(new Integer[]{}), normMean, trainSamples, factor, exec);
     }
 
     public int predictEnsamble(

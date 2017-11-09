@@ -23,10 +23,18 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ShotgunClassifier extends Classifier {
 
+    private ArrayList<Integer> windowsBoss = new ArrayList<>();
+
+    public ShotgunClassifier(TimeSeries[] train, TimeSeries[] test, int windowLength) throws IOException {
+        super(train, test);
+        windowsBoss.add(windowLength);
+    }
+
     public ShotgunClassifier(TimeSeries[] train, TimeSeries[] test) throws IOException {
         super(train, test);
     }
 
+    @Override
     public Score eval() throws IOException {
         ExecutorService exec = Executors.newFixedThreadPool(threads);
         try {
@@ -41,7 +49,7 @@ public class ShotgunClassifier extends Classifier {
 
                 this.correctTraining = new AtomicInteger(0);
 
-                List<Score> scores = fitEnsemble(exec, this.trainSamples, normMean, 1.0);
+                List<Score> scores = fit(windowsBoss.toArray(new Integer[]{}), normMean, this.trainSamples, 1.0, exec);
 
                 // training score
                 Score bestScore = scores.get(0);
@@ -73,32 +81,13 @@ public class ShotgunClassifier extends Classifier {
         }
     }
 
-    public List<Score> fitEnsemble(
-            final ExecutorService exec,
-            final TimeSeries[] trainSamples,
-            final boolean normMean,
-            final double factor) {
-        int minWindowLength = 5;
-        int maxWindowLength = MAX_WINDOW_LENGTH;
-        for (TimeSeries ts : trainSamples) {
-            maxWindowLength = Math.min(ts.getLength(), maxWindowLength);
-        }
-
-        ArrayList<Integer> windows = new ArrayList<Integer>();
-        for (int windowLength = maxWindowLength; windowLength >= minWindowLength; windowLength--) {
-            windows.add(windowLength);
-        }
-
-        return fit(windows.toArray(new Integer[]{}), normMean, trainSamples, factor, exec);
-    }
-
     public List<Score> fit(
             final Integer[] allWindows,
             final boolean normMean,
             final TimeSeries[] samples,
             final double factor,
             ExecutorService exec) {
-        final List<Score> results = new ArrayList<Score>(allWindows.length);
+        final List<Score> results = new ArrayList<>(allWindows.length);
         ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
             Score bestScore = new Score("Shotgun", 0, 0, normMean, 0);
 

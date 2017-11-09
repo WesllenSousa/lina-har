@@ -66,7 +66,6 @@ public class SymbolicView {
 
     private HashSet<String> uniqueLabels = new HashSet<>();
     private WordRecord previousWord;
-    private List<WordRecord> previosBufferWord = new ArrayList<>();
     private Params params;
 
     public SymbolicView(LineGraphic lineGraphic, BarGraphic barGraphic, TimeSeries[] data) {
@@ -107,7 +106,7 @@ public class SymbolicView {
         lineGraphic.addSubsequenceData(initialSample.toArray(new TimeSeries[]{}));
 
         //Remaining of the data for each value - streaming
-        for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position += Parameters.OFFSET) {
+        for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position += ConstGeneral.OFFSET) {
             double[] values = new double[data.length];
             dataColumn = 0;
             for (TimeSeries ts : data) {
@@ -119,13 +118,11 @@ public class SymbolicView {
                 //Process window 
                 TimeSeries sample = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE);
                 BufferStreaming buffer = bufferStreaming.get(dataColumn);
-                if (Parameters.SFA) {
-                    SFA(buffer, sample, position - Parameters.WINDOW_SIZE);
-                    updateModelToSFA(buffer, position);
-                } else {
-                    SAX(buffer, sample, position - Parameters.WINDOW_SIZE);
-                    updateModelToSAX(buffer, position);
-                }
+                //Get word
+                WordRecord word = getWordFromSample(buffer, sample, position);
+                analyseWord(buffer, word);
+                //Handle model
+                analyseModel(buffer, position);
 
                 dataColumn++;
             }
@@ -135,41 +132,49 @@ public class SymbolicView {
         }
     }
 
-    private void SAX(BufferStreaming buffer, TimeSeries sample, int position) {
-        String word = SAX.serieToWord(sample.getData(), params);
-        WordRecord wordRecord = buffer.getWordRecord(word, position);
-        analyseWord(buffer, wordRecord);
-        previousWord = wordRecord;
+    private WordRecord getWordFromSample(BufferStreaming buffer, TimeSeries sample, int position) {
+        if (ConstGeneral.SFA) {
+            return SFA(buffer, sample, position - Parameters.WINDOW_SIZE);
+        } else {
+            return SAX(sample, position - Parameters.WINDOW_SIZE);
+        }
     }
 
-    private void SFA(BufferStreaming buffer, TimeSeries sample, int position) {
+    private WordRecord SAX(TimeSeries sample, int position) {
+        String word = SAX.serieToWord(sample.getData(), params);
+        WordRecord wordRecord = populaWordRecord(word, position);
+        return wordRecord;
+    }
+
+    private WordRecord SFA(BufferStreaming buffer, TimeSeries sample, int position) {
         if (position <= Parameters.MCB_SIZE) {
             buffer.getBufferMCB().add(sample);
-
             if (position == Parameters.MCB_SIZE) { //*** change threhold to MCB 
                 SFA sfa = new SFA(SFA.HistogramType.EQUI_DEPTH);
                 sfa.fitTransform(buffer.getBufferMCB().toArray(new TimeSeries[]{}),
-                        Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORM);
+                        Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, ConstGeneral.NORM);
                 buffer.setMcb(sfa);
                 short[] wordQuery = buffer.getMcb().transform(sample);
-                previousWord = buffer.getWordRecord(wordQuery, position);
+                WordRecord wordRecord = populaWordRecord(wordQuery, position);
 
                 lineGraphic.addMarker(position, position, Color.black);
+                return wordRecord;
             }
         } else {
             short[] wordQuery = buffer.getMcb().transform(sample);
-            WordRecord wordRecord = buffer.getWordRecord(wordQuery, position);
-            analyseWord(buffer, wordRecord);
-            previousWord = wordRecord;
+            WordRecord wordRecord = populaWordRecord(wordQuery, position);
+            return wordRecord;
         }
+        return null;
     }
 
     private void analyseWord(BufferStreaming buffer, WordRecord word) {
-        if (previousWord == null) {
+        if (word == null) {
             return;
         }
         //Redução de numerozidade por EXACT Strategy 
-        if (Parameters.NUM_REDUCTION && previousWord.getWord().equals(word.getWord())) {
+        if (ConstGeneral.NUM_REDUCTION && previousWord != null
+                && previousWord.getWord().equals(word.getWord())) {
             return;
         }
         //update frequency
@@ -179,46 +184,26 @@ public class SymbolicView {
             for (WordRecord wordRecord : buffer.getBufferWord()) {
                 if (wordRecord.getWord().equals(word.getWord())) {
                     //Verify interval overlaped to same words: alingments
-                    if (Parameters.ALINGMENT == false) {
+                    if (ConstGeneral.ALINGMENT == false) {
                         wordRecord.getIntervals().add(word.getIntervals().get(0));
                         wordRecord.setFrequency(word.getFrequency());
-                    } else if (Parameters.ALINGMENT && !overlap(wordRecord, word)) {
+                    } else if (ConstGeneral.ALINGMENT && !overlap(wordRecord, word)) {
                         wordRecord.getIntervals().add(word.getIntervals().get(0));
                         wordRecord.setFrequency(word.getFrequency());
                     }
+                    previousWord = word;
                     updateGUIbar(buffer, wordRecord);
                 }
             }
         } else {
             //Add word in buffer
+            previousWord = word;
             buffer.getBufferWord().add(word);
             updateGUIbar(buffer, word);
         }
     }
 
-    private void updateModelToSAX(BufferStreaming buffer, int position) {
-
-        if (position % Parameters.BOP_SIZE == 0) { //*** change threhold to BOP 
-
-            String label = "1"; //Elaborar uma estratégia pra cá
-            uniqueLabels.add(label);
-
-            switch (Parameters.MODEL) {
-                case "SaxVsm":
-                    WordBag bag1 = createBagOfPatternSAX(buffer.getBufferWord(), label);
-                    buffer.getBOPSax().add(bag1); //verificar e mudar para SAX model?
-                    updateModelSax(buffer);
-                    classifySaxVsm(bag1, buffer.getMatrixSaxVsm());
-                    break;
-                default:
-                    Messages messages = new Messages();
-                    messages.aviso("Need to be choose SAX discretization algorithm!");
-                    break;
-            }
-        }
-    }
-
-    private void updateModelToSFA(BufferStreaming buffer, int position) {
+    private void analyseModel(BufferStreaming buffer, int position) {
 
         if (position % Parameters.BOP_SIZE == 0) { //*** change threhold to BOP 
 
@@ -226,24 +211,46 @@ public class SymbolicView {
             uniqueLabels.add(label);
 
             //Elaborar uma estrategia para atualizar todos os modelos
-            switch (Parameters.MODEL) {
+            switch (ConstGeneral.MODEL) {
+                case "SaxVsm":
+                    if (!ConstGeneral.SFA) {
+                        WordBag bag1 = createBagOfPatternSAX(buffer.getBufferWord(), label);
+                        buffer.getBOPSax().add(bag1); //verificar e mudar para SAX model?
+                        updateModelSax(buffer);
+                        classifySaxVsm(bag1, buffer.getMatrixSaxVsm());
+                    } else {
+                        updateLog("Need to be choose SAX discretization algorithm!");
+                    }
+                    break;
                 case "BossModel":
-                    BagOfPattern bag2 = createBagOfPatternSFA(buffer.getBufferWord(), label);
-                    buffer.getBOPBoss().add(bag2); //Boss model?
-                    classifyBossModel(bag2, buffer.getBOPBoss());
+                    if (ConstGeneral.SFA) {
+                        BagOfPattern bag2 = createBagOfPatternBOSS(buffer.getBufferWord(), label);
+                        buffer.getBOPBoss().add(bag2); //Boss model?
+                        classifyBossModel(bag2, buffer.getBOPBoss());
+                    } else {
+                        updateLog("Need to be choose SFA discretization algorithm!");
+                    }
                     break;
                 case "BossVS":
-                    BagOfPattern bag3 = createBagOfPatternSFA(buffer.getBufferWord(), label);
-                    buffer.getBOPBoss().add(bag3); //Boss model?
-                    updateModelBossVs(buffer);
-                    classifyBossVs(bag3, buffer.getMatrixBossVs());
+                    if (ConstGeneral.SFA) {
+                        BagOfPattern bag3 = createBagOfPatternBOSS(buffer.getBufferWord(), label);
+                        buffer.getBOPBoss().add(bag3); //Boss model?
+                        updateModelBossVs(buffer);
+                        classifyBossVs(bag3, buffer.getMatrixBossVs());
+                    } else {
+                        updateLog("Need to be choose SFA discretization algorithm!");
+                    }
                     break;
                 case "Weasel":
-                    int[] windowLengths = new int[]{Parameters.WINDOW_SIZE}; //Cria diferentes tamanhos de janelas, ver uma solucao pra ca
-                    BagOfBigrams bag4 = createBagOfBigramWEASEL(buffer.getBufferWord(), label, windowLengths);
-                    buffer.getBOPWeasel().add(bag4);
-                    updateModelWeasel(buffer, windowLengths);
-                    classifyWeasel(bag4, buffer);
+                    if (ConstGeneral.SFA) {
+                        int[] windowLengths = new int[]{Parameters.WINDOW_SIZE}; //Cria diferentes tamanhos de janelas, ver uma solucao pra ca
+                        BagOfBigrams bag4 = createBagOfBigramWEASEL(buffer.getBufferWord(), label, windowLengths);
+                        buffer.getBOPWeasel().add(bag4);
+                        updateModelWeasel(buffer, windowLengths);
+                        classifyWeasel(bag4, buffer);
+                    } else {
+                        updateLog("Need to be choose SFA discretization algorithm!");
+                    }
                     break;
                 default:
                     Messages messages = new Messages();
@@ -264,7 +271,7 @@ public class SymbolicView {
         return bag;
     }
 
-    private BagOfPattern createBagOfPatternSFA(List<WordRecord> listWords, String label) {
+    private BagOfPattern createBagOfPatternBOSS(List<WordRecord> listWords, String label) {
         int[] words = new int[listWords.size()];
         for (int wordIndex = 0; wordIndex < listWords.size(); wordIndex++) {
             //Get word int value from word bit value
@@ -322,25 +329,25 @@ public class SymbolicView {
     private void classifySaxVsm(WordBag bag, HashMap<String, HashMap<String, Double>> matrixSaxVsm) {
         TextProcessor tp = new TextProcessor();
         String result = tp.classify(bag, matrixSaxVsm);
-        System.out.println("SAX-VSM - " + result);
+        updateLog("SAX-VSM: " + result);
     }
 
     private void classifyBossModel(BagOfPattern bag, List<BagOfPattern> BOP) {
         BOSSClassifier bossModel = new BOSSClassifier(Parameters.WINDOW_SIZE);
         Predictions pBoss = bossModel.predictStream(bag, BOP.toArray(new BagOfPattern[]{}));
-        updateLog("BOSS - " + pBoss.labels[0]);
+        updateLog("BOSS: " + pBoss.labels[0]);
     }
 
     private void classifyBossVs(BagOfPattern bag, ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixBossVs) {
         BOSSVSClassifier bossVs = new BOSSVSClassifier();
         Predictions pBossVs = bossVs.predictStream(bag, matrixBossVs); //BOSS VS
-        updateLog("BOSS VS - " + pBossVs.labels[0]);
+        updateLog("BOSS VS: " + pBossVs.labels[0]);
     }
 
     private void classifyWeasel(BagOfBigrams bag, BufferStreaming buffer) {
         WEASELClassifier weasel = new WEASELClassifier();
         int result = weasel.predictStream(buffer.getWeaselModel(), bag);
-        updateLog("Weasel - " + result);
+        updateLog("Weasel: " + result);
     }
 
     /*
@@ -370,9 +377,10 @@ public class SymbolicView {
     }
 
     private void clearGUIbar(BufferStreaming buffer) {
-        previosBufferWord = (ArrayList<WordRecord>) buffer.getBufferWord();
-        buffer.getBufferWord().clear();
-        ConstGeneral.TELA_PRINCIPAL.clearBarGraphic();
+        if (ConstGeneral.CLEAR_HIST) {
+            buffer.getBufferWord().clear();
+            ConstGeneral.TELA_PRINCIPAL.clearBarGraphic();
+        }
     }
 
     public void showPageHinkleyChanges() {
@@ -385,6 +393,41 @@ public class SymbolicView {
 
     public void updateLog(String text) {
         ConstGeneral.TELA_PRINCIPAL.updateSymbolicLog(text);
+    }
+
+    /*
+     *   Handle Word Record
+     */
+    private WordRecord populaWordRecord(String word, int position) {
+        WordRecord wordRecord = new WordRecord();
+        wordRecord.setWord(word);
+        wordRecord.getIntervals().add(getWordInterval(position));
+
+        return wordRecord;
+    }
+
+    private WordRecord populaWordRecord(short[] wordBit, int position) {
+        WordRecord wordRecord = new WordRecord();
+        wordRecord.setWordBit(wordBit);
+        wordRecord.setWord(toSfaWord(wordBit));
+        wordRecord.getIntervals().add(getWordInterval(position));
+
+        return wordRecord;
+    }
+
+    private WordInterval getWordInterval(int position) {
+        WordInterval wordInterval = new WordInterval();
+        wordInterval.setPositionInit(position);
+        wordInterval.setPositionEnd(position + Parameters.WINDOW_SIZE);
+        return wordInterval;
+    }
+
+    private String toSfaWord(short[] word) {
+        StringBuilder sfaWord = new StringBuilder();
+        for (short c : word) {
+            sfaWord.append((char) (Character.valueOf('a') + c));
+        }
+        return sfaWord.toString();
     }
 
 }

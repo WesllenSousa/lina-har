@@ -244,7 +244,7 @@ public class SFA implements Serializable {
     public void fitWindowing(TimeSeries[] timeSeries, int windowLength, int wordLength, int symbols, boolean normMean, boolean lowerBounding) {
         this.transformation = new MFT(windowLength, normMean, lowerBounding);
 
-        ArrayList<TimeSeries> sa = new ArrayList<TimeSeries>(timeSeries.length * timeSeries[0].getLength() / windowLength);
+        ArrayList<TimeSeries> sa = new ArrayList<>(timeSeries.length * timeSeries[0].getLength() / windowLength);
         for (TimeSeries t : timeSeries) {
             sa.addAll(Arrays.asList(t.getDisjointSequences(windowLength, normMean)));
         }

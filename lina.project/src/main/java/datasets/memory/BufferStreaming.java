@@ -7,14 +7,12 @@ package datasets.memory;
 
 import com.carrotsearch.hppc.IntFloatOpenHashMap;
 import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
-import constants.Parameters;
 import controle.SAX.saxvsm.text.WordBag;
 import controle.SFA.classification.WEASELClassifier.WScore;
 import controle.SFA.transformation.BOSSModel.BagOfPattern;
 import controle.SFA.transformation.SFA;
 import controle.SFA.transformation.WEASELModel.BagOfBigrams;
 import datasets.timeseries.TimeSeries;
-import de.bwaldvogel.liblinear.Model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -94,41 +92,6 @@ public class BufferStreaming {
 
     public void setWeaselModel(WScore weaselModel) {
         this.weaselModel = weaselModel;
-    }
-
-    /*
-        Another methods
-     */
-    public WordRecord getWordRecord(String word, int position) {
-        WordRecord wordRecord = new WordRecord();
-        wordRecord.setWord(word);
-        wordRecord.getIntervals().add(getWordInterval(position));
-
-        return wordRecord;
-    }
-
-    public WordRecord getWordRecord(short[] wordBit, int position) {
-        WordRecord wordRecord = new WordRecord();
-        wordRecord.setWordBit(wordBit);
-        wordRecord.setWord(toSfaWord(wordBit));
-        wordRecord.getIntervals().add(getWordInterval(position));
-
-        return wordRecord;
-    }
-
-    private WordInterval getWordInterval(int position) {
-        WordInterval wordInterval = new WordInterval();
-        wordInterval.setPositionInit(position);
-        wordInterval.setPositionEnd(position + Parameters.WINDOW_SIZE);
-        return wordInterval;
-    }
-
-    private String toSfaWord(short[] word) {
-        StringBuilder sfaWord = new StringBuilder();
-        for (short c : word) {
-            sfaWord.append((char) (Character.valueOf('a') + c));
-        }
-        return sfaWord.toString();
     }
 
 }

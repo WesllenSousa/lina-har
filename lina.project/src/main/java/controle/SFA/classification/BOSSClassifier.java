@@ -7,9 +7,6 @@ package controle.SFA.classification;
 
 import com.carrotsearch.hppc.cursors.IntIntCursor;
 import static controle.SFA.classification.BOSSEnsembleClassifier.factor;
-import static controle.SFA.classification.BOSSEnsembleClassifier.maxF;
-import static controle.SFA.classification.BOSSEnsembleClassifier.maxS;
-import static controle.SFA.classification.BOSSEnsembleClassifier.minF;
 import static controle.SFA.classification.Classifier.DEBUG;
 import static controle.SFA.classification.Classifier.NORMALIZATION;
 import static controle.SFA.classification.Classifier.formatError;
@@ -31,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class BOSSClassifier extends Classifier {
 
-    private ArrayList<Integer> windowsBoss = new ArrayList<Integer>();
+    private ArrayList<Integer> windowsBoss = new ArrayList<>();
 
     public BOSSClassifier(TimeSeries[] train, TimeSeries[] test, int windowLength) throws IOException {
         super(train, test);
@@ -82,9 +79,9 @@ public class BOSSClassifier extends Classifier {
                 @SuppressWarnings("unchecked")
                 final List<Pair<String, Double>>[] testLabels = new List[testSamples.length];
                 for (int i = 0; i < testLabels.length; i++) {
-                    testLabels[i] = new ArrayList<Pair<String, Double>>();
+                    testLabels[i] = new ArrayList<>();
                 }
-                final List<Integer> usedLengths = new ArrayList<Integer>(results.size());
+                final List<Integer> usedLengths = new ArrayList<>(results.size());
 
                 for (int i = 0; i < results.size(); i++) {
                     final BossScore score = results.get(i);
@@ -135,7 +132,7 @@ public class BOSSClassifier extends Classifier {
             boolean normMean,
             TimeSeries[] samples,
             ExecutorService exec) {
-        final ArrayList<BossScore> results = new ArrayList<BossScore>(allWindows.length);
+        final ArrayList<BossScore> results = new ArrayList<>(allWindows.length);
         ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
             BossScore bestScore = new BossScore(normMean, 0);
 
@@ -145,20 +142,20 @@ public class BOSSClassifier extends Classifier {
                     if (i % threads == id) {
                         BossScore score = new BossScore(normMean, allWindows[i]);
                         try {
-                            BOSSModel boss = new BOSSModel(maxF, maxS, allWindows[i], score.normed);
+                            BOSSModel boss = new BOSSModel(maxWordLength, maxSymbol, allWindows[i], score.normed);
                             int[][] words = boss.createWords(samples);
 
                             optimize:
-                            for (int f = minF; f <= maxF; f += 2) {
+                            for (int wLength = minWordLenth; wLength <= maxWordLength; wLength += 2) {
 
-                                BOSSModel.BagOfPattern[] bag = boss.createBagOfPattern(words, samples, f);
+                                BOSSModel.BagOfPattern[] bag = boss.createBagOfPattern(words, samples, wLength);
 
                                 Predictions p = predict(score.windowLength, bag, bag);
 
                                 if (p.correct.get() > score.training) {
                                     score.training = p.correct.get();
                                     score.testing = p.correct.get();
-                                    score.features = f;
+                                    score.features = wLength;
                                     score.model = boss;
                                     score.bag = bag;
 

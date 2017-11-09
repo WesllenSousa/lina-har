@@ -42,7 +42,11 @@ public abstract class Classifier {
     protected int[][] trainIndices;
     public static int folds = 10;
 
-    protected static int MAX_WINDOW_LENGTH = 250;
+    protected int maxWordLength = 16; // 12
+    protected int minWordLenth = 6;  // 4
+    protected int maxSymbol = 4;  // 8
+    protected int maxWindowLength = 250;
+    protected int minWindowLength = 10;
 
     // Blocks for parallel execution
     public final int BLOCKS = 8;
@@ -433,4 +437,25 @@ public abstract class Classifier {
 
         return setData;
     }
+
+    public void setMaxWordLength(int maxWordLength) {
+        this.maxWordLength = maxWordLength;
+    }
+
+    public void setMinWordLenth(int minWordLenth) {
+        this.minWordLenth = minWordLenth;
+    }
+
+    public void setMaxSymbol(int maxSymbol) {
+        this.maxSymbol = maxSymbol;
+    }
+
+    public void setMaxWindowLength(int maxWindowLength) {
+        this.maxWindowLength = maxWindowLength;
+    }
+
+    public void setMinWindowLength(int minWindowLength) {
+        this.minWindowLength = minWindowLength;
+    }
+
 }

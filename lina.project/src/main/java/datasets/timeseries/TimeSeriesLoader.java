@@ -193,7 +193,12 @@ public class TimeSeriesLoader {
             e.printStackTrace();
         }
 
-        System.out.println("Done reading from " + dataset + " samples " + samples.size() + " length " + samples.get(0).getLength());
+        if (samples.size() > 0) {
+            System.out.println("Done reading from " + dataset + " samples " + samples.size() + " length " + samples.get(0).getLength());
+        } else {
+            System.out.println("Data format incorrect!");
+        }
+
         return samples.toArray(new TimeSeries[]{});
     }
 

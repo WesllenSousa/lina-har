@@ -21,11 +21,11 @@ import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import util.FileUtil;
 import util.Messages;
 import util.SwingUtil;
-import util.Validation;
 import view.manualviews.BarGraphic;
 import view.manualviews.LineGraphic;
 import view.viewControler.ComponentView;
@@ -283,11 +283,6 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -1119,7 +1114,7 @@ public class Principal extends javax.swing.JFrame {
         });
         sp_trainTest.setViewportView(lt_trainDataTest);
 
-        ck_trainUserTest.setText("Use test data");
+        ck_trainUserTest.setText("Use test data (Only for symbolic alg.)");
         ck_trainUserTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ck_trainUserTestActionPerformed(evt);
@@ -1130,10 +1125,8 @@ public class Principal extends javax.swing.JFrame {
         pn_trainTest.setLayout(pn_trainTestLayout);
         pn_trainTestLayout.setHorizontalGroup(
             pn_trainTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(sp_trainTest)
-            .addGroup(pn_trainTestLayout.createSequentialGroup()
-                .addComponent(ck_trainUserTest)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(sp_trainTest, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+            .addComponent(ck_trainUserTest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pn_trainTestLayout.setVerticalGroup(
             pn_trainTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1410,7 +1403,7 @@ public class Principal extends javax.swing.JFrame {
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
         );
 
-        jPanel28.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
+        jPanel28.setBorder(javax.swing.BorderFactory.createTitledBorder("Segmentation"));
 
         jLabel6.setText("Speed:");
 
@@ -1526,7 +1519,7 @@ public class Principal extends javax.swing.JFrame {
         gp_alingment.add(rd_alingmentNo);
         rd_alingmentNo.setText("No");
 
-        jLabel7.setText("Algoritmos:");
+        jLabel7.setText("Algorithms:");
 
         jLabel12.setText("Normalized:");
 
@@ -1714,7 +1707,7 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 165, Short.MAX_VALUE)
         );
 
-        pn_graphicBar.setBorder(javax.swing.BorderFactory.createTitledBorder("."));
+        pn_graphicBar.setBorder(javax.swing.BorderFactory.createTitledBorder("Current histogram"));
 
         javax.swing.GroupLayout pn_graphicBarLayout = new javax.swing.GroupLayout(pn_graphicBar);
         pn_graphicBar.setLayout(pn_graphicBarLayout);
@@ -1960,8 +1953,8 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu3.setText("Options");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem1.setText("Date/Time Format");
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItem1.setText("Settings");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -1969,47 +1962,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem1);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem2.setText("Separator Column");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem2);
-
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem4.setText("Class Name");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem4);
-
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem5.setText("Timestamp Name");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem5);
-
         jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Symbolic");
-
-        jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem6.setText("PageHinkley");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem6);
-
-        jMenuBar1.add(jMenu4);
 
         jMenu2.setText("Help");
 
@@ -2293,10 +2246,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_lt_timeFeaturesLeftMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        String format = messages.inserirDadosComValorInicial("Inform the date format (dd-MM-yyyy HH:mm:ss)", ConstGeneral.DATE_FORMAT);
-        if (!Validation.isEmptyString(format)) {
-            ConstGeneral.DATE_FORMAT = format;
-        }
+        Options options = new Options(this, true);
+        options.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btt_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_editActionPerformed
@@ -2352,20 +2303,6 @@ public class Principal extends javax.swing.JFrame {
         showEvaluation();
     }//GEN-LAST:event_lt_classifierKeyReleased
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        String separator = messages.inserirDadosComValorInicial("Inform the Separator type (','';' ')", ConstDataset.SEPARATOR);
-        if (!Validation.isEmptyString(separator)) {
-            ConstDataset.SEPARATOR = separator;
-        }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        String classe = messages.inserirDadosComValorInicial("Inform the Class column name", ConstDataset.CLASS);
-        if (!Validation.isEmptyString(classe)) {
-            ConstDataset.CLASS = classe;
-        }
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
     private void tb_desktopStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tb_desktopStateChanged
         resetProcessingLists();
     }//GEN-LAST:event_tb_desktopStateChanged
@@ -2392,13 +2329,6 @@ public class Principal extends javax.swing.JFrame {
             FileUtil.saveFile(tp_resultTrain.getText(), currentFile + ".txt");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        String classe = messages.inserirDadosComValorInicial("Inform the Timestamp column name", ConstDataset.TIMESTAMP);
-        if (!Validation.isEmptyString(classe)) {
-            ConstDataset.TIMESTAMP = classe;
-        }
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void bt_signalSelectionLeft1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_signalSelectionLeft1ActionPerformed
         SwingUtil.changePickListLeftRightAll(lt_signalSelectionLeft, lt_signalSelectionRight);
@@ -2524,14 +2454,6 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btt_stopActionPerformed
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        String format = messages.inserirDadosComValorInicial("Inform the percentage to fall threshold",
-                ConstGeneral.PERCENT_QUEDA_THRESHOULD + "");
-        if (format != null && Validation.isDouble(format)) {
-            ConstGeneral.PERCENT_QUEDA_THRESHOULD = Double.parseDouble(format);
-        }
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
-
     private void tb_wordsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tb_wordsKeyReleased
         paintWordInterval();
     }//GEN-LAST:event_tb_wordsKeyReleased
@@ -2617,14 +2539,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -2907,7 +2824,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void updateClassifierList() {
         LinkedList<String> list = new LinkedList<>();
-        for (String classif : trainView.getListClassiers().keySet()) {
+        for (String classif : trainView.getListEvaluation().keySet()) {
             list.add(classif);
         }
         SwingUtil.fillList(lt_classifier, list);
@@ -3074,10 +2991,12 @@ public class Principal extends javax.swing.JFrame {
     private void prepareTrain() {
         sx_busy.setBusy(true);
 
+        tp_resultTrain.setText("");
         String train, algorithm, test;
 
         if (lt_trainData.getSelectedIndex() == -1 || lt_algorithms.getSelectedIndex() == -1) {
-            messages.aviso("Select a train data and the classification algorithm!");
+            messages.aviso("Select a train data and classification algorithm!");
+            sx_busy.setBusy(false);
             return;
         }
         train = lt_trainData.getSelectedValue();
@@ -3089,7 +3008,11 @@ public class Principal extends javax.swing.JFrame {
                 return;
             }
             test = lt_trainDataTest.getSelectedValue();
-            trainView.executeTrain(train, test, algorithm);
+            try {
+                trainView.executeTrain(train, test, algorithm);
+            } catch (IOException ex) {
+                messages.bug("Train: " + ex.toString());
+            }
         } else {
             trainView.executeTrain(train, algorithm);
         }
@@ -3154,35 +3077,35 @@ public class Principal extends javax.swing.JFrame {
         Parameters.WINDOW_SIZE = Integer.parseInt(tf_symWindow.getText());
         Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symWordLength.getText());
         Parameters.SYMBOLS_ALPHABET_SIZE = Integer.parseInt(tf_symSymbolAlphabet.getText());
-        Parameters.OFFSET = Integer.parseInt(tf_symOffset.getText());
+        ConstGeneral.OFFSET = Integer.parseInt(tf_symOffset.getText());
         if (rd_sax.isSelected()) {
-            Parameters.SFA = false;
+            ConstGeneral.SFA = false;
         } else {
-            Parameters.SFA = true;
+            ConstGeneral.SFA = true;
         }
         if (rd_normYes.isSelected()) {
-            Parameters.NORM = true;
+            ConstGeneral.NORM = true;
         } else {
-            Parameters.NORM = false;
+            ConstGeneral.NORM = false;
         }
         if (rd_numReductionYes.isSelected()) {
-            Parameters.NUM_REDUCTION = true;
+            ConstGeneral.NUM_REDUCTION = true;
         } else {
-            Parameters.NUM_REDUCTION = false;
+            ConstGeneral.NUM_REDUCTION = false;
         }
         if (rd_alingmentYes.isSelected()) {
-            Parameters.ALINGMENT = true;
+            ConstGeneral.ALINGMENT = true;
         } else {
-            Parameters.ALINGMENT = false;
+            ConstGeneral.ALINGMENT = false;
         }
         if (rd_algBOSS.isSelected()) {
-            Parameters.MODEL = ConstGeneral.AL_BOSS_MODEL;
+            ConstGeneral.MODEL = ConstGeneral.AL_BOSS_MODEL;
         } else if (rd_algBOSSVS.isSelected()) {
-            Parameters.MODEL = ConstGeneral.AL_BOSS_VS;
+            ConstGeneral.MODEL = ConstGeneral.AL_BOSS_VS;
         } else if (rd_algWeasel.isSelected()) {
-            Parameters.MODEL = ConstGeneral.AL_WEASEL;
+            ConstGeneral.MODEL = ConstGeneral.AL_WEASEL;
         } else if (rd_algSAXVSM.isSelected()) {
-            Parameters.MODEL = ConstGeneral.AL_SAX_VSM;
+            ConstGeneral.MODEL = ConstGeneral.AL_SAX_VSM;
         }
     }
 
@@ -3222,6 +3145,7 @@ public class Principal extends javax.swing.JFrame {
     public void clearBarGraphic() {
         barGraphic.getDatasetCollection().clear();
         barGraphic.repaint();
+        tb_words.clearSelection();
         wordTableModel.getLinhas().clear();
         tb_words.repaint();
     }

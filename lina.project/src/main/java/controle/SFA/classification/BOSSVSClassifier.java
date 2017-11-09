@@ -32,10 +32,6 @@ public class BOSSVSClassifier extends Classifier {
 
     public static double factor = 0.95;
 
-    public static int maxF = 16;
-    public static int minF = 4;
-    public static int maxS = 4;
-
     public static boolean normMagnitudes = false;
 
     public BOSSVSClassifier(TimeSeries[] train, TimeSeries[] test) throws IOException {
@@ -114,8 +110,8 @@ public class BOSSVSClassifier extends Classifier {
     }
 
     public List<BossVSScore<IntFloatOpenHashMap>> fitEnsemble(ExecutorService exec, final boolean normMean) throws FileNotFoundException {
-        int minWindowLength = 10;
-        int maxWindowLength = getMax(trainSamples, MAX_WINDOW_LENGTH);
+        int minWindowLength = this.minWindowLength;
+        int maxWindowLength = getMax(trainSamples, this.maxWindowLength);
 
         // equi-distance sampling of windows
         ArrayList<Integer> windows = new ArrayList<Integer>();
@@ -132,22 +128,22 @@ public class BOSSVSClassifier extends Classifier {
             boolean normMean,
             TimeSeries[] samples,
             ExecutorService exec) {
-        final List<BossVSScore<IntFloatOpenHashMap>> results = new ArrayList<BossVSScore<IntFloatOpenHashMap>>(allWindows.length);
+        final List<BossVSScore<IntFloatOpenHashMap>> results = new ArrayList<>(allWindows.length);
         ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
             HashSet<String> uniqueLabels = uniqueClassLabels(samples);
-            BossVSScore<IntFloatOpenHashMap> bestScore = new BossVSScore<IntFloatOpenHashMap>(normMean, 0);
+            BossVSScore<IntFloatOpenHashMap> bestScore = new BossVSScore<>(normMean, 0);
 
             @Override
             public void run(int id, AtomicInteger processed) {
                 for (int i = 0; i < allWindows.length; i++) {
                     if (i % threads == id) {
-                        BossVSScore<IntFloatOpenHashMap> score = new BossVSScore<IntFloatOpenHashMap>(normMean, allWindows[i]);
+                        BossVSScore<IntFloatOpenHashMap> score = new BossVSScore<>(normMean, allWindows[i]);
                         try {
-                            BOSSVSModel model = new BOSSVSModel(maxF, maxS, score.windowLength, score.normed);
+                            BOSSVSModel model = new BOSSVSModel(maxWordLength, maxSymbol, score.windowLength, score.normed);
                             int[][] words = model.createWords(trainSamples);
 
                             optimize:
-                            for (int f = minF; f <= Math.min(score.windowLength, maxF); f += 2) {
+                            for (int f = minWordLenth; f <= Math.min(score.windowLength, maxWordLength); f += 2) {
                                 BagOfPattern[] bag = model.createBagOfPattern(words, trainSamples, f);
 
                                 // cross validation using folds
@@ -276,10 +272,10 @@ public class BOSSVSClassifier extends Classifier {
         @SuppressWarnings("unchecked")
         final List<Pair<String, Double>>[] testLabels = new List[testSamples.length];
         for (int i = 0; i < testLabels.length; i++) {
-            testLabels[i] = new ArrayList<Pair<String, Double>>();
+            testLabels[i] = new ArrayList<>();
         }
 
-        final List<Integer> usedLengths = new ArrayList<Integer>(results.size());
+        final List<Integer> usedLengths = new ArrayList<>(results.size());
         final int[] indicesTest = createIndices(testSamples.length);
 
         // parallel execution
