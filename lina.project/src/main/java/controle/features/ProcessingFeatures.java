@@ -3,7 +3,6 @@ package controle.features;
 import datasets.generic.GenericRowBean;
 import datasets.generic.HandleGenericDataset;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import constants.ConstDataset;
 import constants.ConstGeneral;
@@ -22,7 +21,7 @@ public class ProcessingFeatures {
         this.desktopView = graphicView;
     }
 
-    public LinkedHashSet<LinkedList<String>> applyPreprocessing(LinkedHashSet<GenericRowBean> data, LinkedList<String> methods,
+    public LinkedList<LinkedList<String>> applyPreprocessing(LinkedList<GenericRowBean> data, LinkedList<String> methods,
             Float windowsSize, int offset, int hertz) {
         System.out.println("Applying preprocessing...");
         Iterator<GenericRowBean> beanIter = data.iterator();
@@ -32,15 +31,15 @@ public class ProcessingFeatures {
             for (String value : beanFirst.getTupla()) {
                 columnsNames.add(value);
             }
-            LinkedHashSet<LinkedList<String>> lineColumns = createNewColumns(methods, columnsNames);
+            LinkedList<LinkedList<String>> lineColumns = createNewColumns(methods, columnsNames);
             populaLineColumns(data, lineColumns, windowsSize, offset, hertz);
             return lineColumns;
         }
         return null;
     }
 
-    private LinkedHashSet<LinkedList<String>> createNewColumns(LinkedList<String> methods, LinkedList<String> tuplas) {
-        LinkedHashSet<LinkedList<String>> lineColumns = new LinkedHashSet<>();
+    private LinkedList<LinkedList<String>> createNewColumns(LinkedList<String> methods, LinkedList<String> tuplas) {
+        LinkedList<LinkedList<String>> lineColumns = new LinkedList<>();
         for (String method : methods) {
             if (method.equals(ConstGeneral.TF_BinnedDistribution)) {
                 for (String tupla : tuplas) {
@@ -83,7 +82,7 @@ public class ProcessingFeatures {
         return lineColumns;
     }
 
-    private void populaLineColumns(LinkedHashSet<GenericRowBean> data, LinkedHashSet<LinkedList<String>> lineColumns, 
+    private void populaLineColumns(LinkedList<GenericRowBean> data, LinkedList<LinkedList<String>> lineColumns,
             Float windowsSize, int overlap, int hertz) {
         LinkedList<LinkedList<Float>> dataWindow = new LinkedList<>();
         LinkedList<String> classes = new LinkedList<>();
@@ -133,7 +132,7 @@ public class ProcessingFeatures {
                 //atualiza coluna classe
                 if (!classWindow.isEmpty()) {
                     if (reduceWindow) {
-                        classes.add(HandleGenericDataset.valueMoreFrequency(classWindow));
+                        classes.add(HandleGenericDataset.stringMoreFrequency(classWindow, false));
                     } else {
                         for (String classe : classWindow) {
                             classes.add(classe);
@@ -164,13 +163,13 @@ public class ProcessingFeatures {
                 }
                 //overlap
                 row = row - overlap;
-
             }
             row++;
         }
     }
 
-    private boolean processDataWindow(LinkedHashSet<LinkedList<String>> lineColumns, LinkedList<LinkedList<Float>> dataWindow, GenericRowBean nameColumns, int hertz) {
+    private boolean processDataWindow(LinkedList<LinkedList<String>> lineColumns, LinkedList<LinkedList<Float>> dataWindow,
+            GenericRowBean nameColumns, int hertz) {
         boolean reduceWindow = false;
         Iterator<LinkedList<String>> lineColumnsIter = lineColumns.iterator();
         while (lineColumnsIter.hasNext()) {
@@ -204,20 +203,28 @@ public class ProcessingFeatures {
                     nameCol++;
                 }
             } //processamento de fusao de colunas 
-            else if (method.equals(ConstGeneral.PF_MAGNITUDE) || method.equals(ConstGeneral.PF_VerticalAxis) || method.equals(ConstGeneral.PF_HorizontalAxis)) {
+            else if (method.equals(ConstGeneral.PF_MAGNITUDE)
+                    || method.equals(ConstGeneral.PF_VerticalAxis)
+                    || method.equals(ConstGeneral.PF_HorizontalAxis)) {
                 addLineColumnsMatrix(method, dataWindow, newColumn);
             } //pricessamento de varias colunas em janelas
-            else if (method.equals(ConstGeneral.TF_AREA) || method.equals(ConstGeneral.TF_AbsoluteArea)
-                    || method.equals(ConstGeneral.TF_SignalMagnitudeMean) || method.equals(ConstGeneral.TF_SignalMagnitudeArea)) {
+            else if (method.equals(ConstGeneral.TF_AREA)
+                    || method.equals(ConstGeneral.TF_AbsoluteArea)
+                    || method.equals(ConstGeneral.TF_SignalMagnitudeMean)
+                    || method.equals(ConstGeneral.TF_SignalMagnitudeArea)) {
                 newColumn.add(getValueMatrix(method, dataWindow, -1));
                 reduceWindow = true;
             } else { //processamento em varias colunas
                 nameCol = 0;
                 for (String nameColumn : nameColumns.getTupla()) {
                     if (nameLineColumn.equals(nameColumn)) {
-                        if (method.equals(ConstGeneral.SP_SingleLowPass) || method.equals(ConstGeneral.SP_FourStageLowPass)
-                                || method.equals(ConstGeneral.SP_bandPass) || method.equals(ConstGeneral.SP_HighPass) || method.equals(ConstGeneral.SP_ButterworthLowpass)
-                                || method.equals(ConstGeneral.PF_FastFourierTrasform) || method.equals(ConstGeneral.PF_HaarWavelet)
+                        if (method.equals(ConstGeneral.SP_SingleLowPass)
+                                || method.equals(ConstGeneral.SP_FourStageLowPass)
+                                || method.equals(ConstGeneral.SP_bandPass)
+                                || method.equals(ConstGeneral.SP_HighPass)
+                                || method.equals(ConstGeneral.SP_ButterworthLowpass)
+                                || method.equals(ConstGeneral.PF_FastFourierTrasform)
+                                || method.equals(ConstGeneral.PF_HaarWavelet)
                                 || method.equals(ConstGeneral.SP_MovingAverageFilter)) {
                             addLineColumnsVector(method, dataWindow.get(nameCol), newColumn, hertz);
                         } else if (method.equals(ConstGeneral.TF_Correlation) || method.equals(ConstGeneral.TF_CrossCorrelation)) {
@@ -423,7 +430,7 @@ public class ProcessingFeatures {
         return "0";
     }
 
-    public void ajustLineColumns(LinkedHashSet<LinkedList<String>> lineColumns) {
+    public void ajustLineColumns(LinkedList<LinkedList<String>> lineColumns) {
         int menorSize = Integer.MAX_VALUE;
         for (LinkedList<String> column : lineColumns) {
             if (column.size() < menorSize) {

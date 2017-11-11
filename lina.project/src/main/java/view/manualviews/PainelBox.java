@@ -8,7 +8,6 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -28,8 +27,8 @@ public class PainelBox extends JPanel implements MouseListener {
     private JPopupMenu popup;
     private BufferedImage bufferedImage;
 
-    private LinkedHashSet<GenericRowBean> data;
-    private LinkedHashSet<GenericRowBean> dataFeatures = new LinkedHashSet<>();
+    private LinkedList<GenericRowBean> data;
+    private LinkedList<GenericRowBean> dataFeatures = new LinkedList<>();
     private LinkedList<String> classes = new LinkedList<>();
 
     private String nameDataset;
@@ -49,7 +48,7 @@ public class PainelBox extends JPanel implements MouseListener {
         repaint();
     }
 
-    public void configData(LinkedHashSet<GenericRowBean> data) {
+    public void configData(LinkedList<GenericRowBean> data) {
         this.data = data;
     }
 
@@ -129,19 +128,19 @@ public class PainelBox extends JPanel implements MouseListener {
     /*
         Getters e Setters
      */
-    public LinkedHashSet<GenericRowBean> getData() {
+    public LinkedList<GenericRowBean> getData() {
         return data;
     }
 
-    public void setData(LinkedHashSet<GenericRowBean> data) {
+    public void setData(LinkedList<GenericRowBean> data) {
         this.data = data;
     }
 
-    public LinkedHashSet<GenericRowBean> getDataFeatures() {
+    public LinkedList<GenericRowBean> getDataFeatures() {
         return dataFeatures;
     }
 
-    public void setDataFeatures(LinkedHashSet<GenericRowBean> dataFeatures) {
+    public void setDataFeatures(LinkedList<GenericRowBean> dataFeatures) {
         this.dataFeatures = dataFeatures;
     }
 

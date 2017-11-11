@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.*;
@@ -28,8 +27,8 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
     private JCheckBoxMenuItem checkBox;
     private JPanel graphic;
 
-    private LinkedHashSet<GenericRowBean> data;
-    private LinkedHashSet<GenericRowBean> dataFeatures = new LinkedHashSet<>();
+    private LinkedList<GenericRowBean> data;
+    private LinkedList<GenericRowBean> dataFeatures = new LinkedList<>();
     private LinkedList<String> classes = new LinkedList<>();
 
     private String nameDataset;
@@ -42,7 +41,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
         iniciar();
     }
 
-    public void configData(LinkedHashSet<GenericRowBean> data) {
+    public void configData(LinkedList<GenericRowBean> data) {
         this.data = data;
         addData();
     }
@@ -211,19 +210,19 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
     /*
         Getters e Setters
      */
-    public LinkedHashSet<GenericRowBean> getData() {
+    public LinkedList<GenericRowBean> getData() {
         return data;
     }
 
-    public void setData(LinkedHashSet<GenericRowBean> data) {
+    public void setData(LinkedList<GenericRowBean> data) {
         this.data = data;
     }
 
-    public LinkedHashSet<GenericRowBean> getDataFeatures() {
+    public LinkedList<GenericRowBean> getDataFeatures() {
         return dataFeatures;
     }
 
-    public void setDataFeatures(LinkedHashSet<GenericRowBean> dataFeatures) {
+    public void setDataFeatures(LinkedList<GenericRowBean> dataFeatures) {
         this.dataFeatures = dataFeatures;
     }
 

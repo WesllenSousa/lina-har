@@ -4,9 +4,9 @@ import datasets.generic.GenericTableModel;
 import datasets.generic.HandleGenericDataset;
 import datasets.generic.GenericRowBean;
 import java.io.File;
-import java.util.LinkedHashSet;
 import constants.ConstDataset;
 import constants.ConstGeneral;
+import java.util.LinkedList;
 import util.FileUtil;
 import util.Messages;
 import util.Validation;
@@ -18,20 +18,17 @@ import util.Validation;
 public class EditDataset extends javax.swing.JDialog {
 
     private final Messages messages = new Messages();
-
-    private LinkedHashSet<GenericRowBean> data;
     private String nameDataset;
 
-    public EditDataset(java.awt.Frame parent, boolean modal, String nameDataset, LinkedHashSet<GenericRowBean> data) {
+    public EditDataset(java.awt.Frame parent, boolean modal, String nameDataset, LinkedList<GenericRowBean> data) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
 
         this.setTitle("View Dataset - " + FileUtil.extractNameFile(nameDataset));
-        this.data = data;
         this.nameDataset = nameDataset;
 
-        populaTabela();
+        populaTabela(data);
     }
 
     @SuppressWarnings("unchecked")
@@ -62,6 +59,11 @@ public class EditDataset extends javax.swing.JDialog {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         mi_saveTrain = new javax.swing.JMenuItem();
         mi_saveStreaming = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        mi_convHorizontal = new javax.swing.JMenuItem();
+        mi_convVertical = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        mi_settings = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("View Dataset");
@@ -237,6 +239,41 @@ public class EditDataset extends javax.swing.JDialog {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu3.setText("Edit");
+
+        mi_convHorizontal.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+        mi_convHorizontal.setText("Convert to horizontal format");
+        mi_convHorizontal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mi_convHorizontalActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mi_convHorizontal);
+
+        mi_convVertical.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
+        mi_convVertical.setText("Converto to vertical format");
+        mi_convVertical.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mi_convVerticalActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mi_convVertical);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu2.setText("Option");
+
+        mi_settings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+        mi_settings.setText("Settings");
+        mi_settings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mi_settingsActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mi_settings);
+
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -291,6 +328,31 @@ public class EditDataset extends javax.swing.JDialog {
         thread.start();
     }//GEN-LAST:event_mi_saveStreamingActionPerformed
 
+    private void mi_settingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_settingsActionPerformed
+        Options options = new Options(null, true);
+        options.setVisible(true);
+    }//GEN-LAST:event_mi_settingsActionPerformed
+
+    private void mi_convHorizontalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_convHorizontalActionPerformed
+        sx_busy.setBusy(true);
+        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
+        if (dataTable.get(0).getTupla().size() <= 2) {
+            LinkedList<GenericRowBean> dataConverted = HandleGenericDataset.convertToHorizontalFormat(dataTable);
+            populaTabela(dataConverted);
+        } else {
+            messages.aviso("Data should be one number column and the class column!");
+        }
+        sx_busy.setBusy(false);
+    }//GEN-LAST:event_mi_convHorizontalActionPerformed
+
+    private void mi_convVerticalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_convVerticalActionPerformed
+        sx_busy.setBusy(true);
+        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
+        LinkedList<GenericRowBean> dataConverted = HandleGenericDataset.convertToVerticalFormat(dataTable);
+        populaTabela(dataConverted);
+        sx_busy.setBusy(false);
+    }//GEN-LAST:event_mi_convVerticalActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_dellColumn;
     private javax.swing.JButton bt_replace;
@@ -298,6 +360,8 @@ public class EditDataset extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -307,10 +371,13 @@ public class EditDataset extends javax.swing.JDialog {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lb_rows;
     private javax.swing.JMenuItem mi_arff;
+    private javax.swing.JMenuItem mi_convHorizontal;
+    private javax.swing.JMenuItem mi_convVertical;
     private javax.swing.JMenuItem mi_csv;
     private javax.swing.JMenuItem mi_save;
     private javax.swing.JMenuItem mi_saveStreaming;
     private javax.swing.JMenuItem mi_saveTrain;
+    private javax.swing.JMenuItem mi_settings;
     private org.jdesktop.swingx.JXBusyLabel sx_busy;
     private javax.swing.JTable tb_data;
     private javax.swing.JTextField tf_newWord;
@@ -318,14 +385,16 @@ public class EditDataset extends javax.swing.JDialog {
     private javax.swing.JTextField tf_word;
     // End of variables declaration//GEN-END:variables
 
-    private void populaTabela() {
-        GenericTableModel model = new GenericTableModel(HandleGenericDataset.converHashSetToLinkedList(data));
+    private void populaTabela(LinkedList<GenericRowBean> data) {
+        GenericTableModel model = new GenericTableModel(data);
         if (!data.isEmpty()) {
             model.setColunas(HandleGenericDataset.extractNamesColumnFromBuffer(data));
             tb_data.setModel(model);
             tb_data.updateUI();
             tb_data.clearSelection();
             updateRowNumber();
+        } else {
+            messages.aviso("Empty data result!");
         }
     }
 
@@ -358,8 +427,8 @@ public class EditDataset extends javax.swing.JDialog {
     private void saveCSV(String dir, String name) {
         sx_busy.setBusy(true);
         if (!Validation.isEmptyString(name)) {
-            LinkedHashSet<GenericRowBean> dataTable = HandleGenericDataset.converLinkedlistToHashset(((GenericTableModel) tb_data.getModel()).getLinhas());
-            if (HandleGenericDataset.saveBufferToCSV(dir, name, dataTable)) {
+            LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
+            if (HandleGenericDataset.saveBufferToCSV(dir, name, dataTable, ConstDataset.SEPARATOR)) {
                 ConstGeneral.TELA_PRINCIPAL.updateHandleTabedPane();
                 messages.sucesso("File saved!");
             }
@@ -372,7 +441,7 @@ public class EditDataset extends javax.swing.JDialog {
     private void saveARFF(String dir, String name) {
         sx_busy.setBusy(true);
         if (!Validation.isEmptyString(name)) {
-            LinkedHashSet<GenericRowBean> dataTable = HandleGenericDataset.converLinkedlistToHashset(((GenericTableModel) tb_data.getModel()).getLinhas());
+            LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
             if (HandleGenericDataset.saveBufferToARFF(dir, name, dataTable)) {
                 ConstGeneral.TELA_PRINCIPAL.updateHandleTabedPane();
                 messages.sucesso("File saved!");
@@ -385,9 +454,9 @@ public class EditDataset extends javax.swing.JDialog {
 
     private void replace() {
         sx_busy.setBusy(true);
-        LinkedHashSet<GenericRowBean> dataTable = HandleGenericDataset.converLinkedlistToHashset(((GenericTableModel) tb_data.getModel()).getLinhas());
+        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
         HandleGenericDataset.replaceInBuffer(dataTable, tf_word.getText(), tf_newWord.getText());
-        populaTabela();
+        populaTabela(dataTable);
         sx_busy.setBusy(false);
     }
 
@@ -396,12 +465,12 @@ public class EditDataset extends javax.swing.JDialog {
         Integer removeColumn = -1;
         if (Validation.isInteger(tf_numberColumn.getText())) {
             removeColumn = Integer.parseInt(tf_numberColumn.getText());
-            LinkedHashSet<GenericRowBean> dataTable = HandleGenericDataset.converLinkedlistToHashset(((GenericTableModel) tb_data.getModel()).getLinhas());
+            LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
             if (removeColumn > dataTable.iterator().next().getTupla().size()) {
                 messages.aviso("Column class can not be removed or invalid column!");
             } else {
                 HandleGenericDataset.removeColumnFromBuffer(dataTable, removeColumn);
-                populaTabela();
+                populaTabela(dataTable);
             }
         } else {
             messages.aviso("Invalid number column!");
@@ -410,7 +479,8 @@ public class EditDataset extends javax.swing.JDialog {
     }
 
     private void updateRowNumber() {
-        lb_rows.setText(data.size() + " rows");
+        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
+        lb_rows.setText(dataTable.size() + " rows");
     }
 
 }

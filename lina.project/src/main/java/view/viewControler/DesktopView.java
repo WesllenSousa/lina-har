@@ -3,7 +3,6 @@ package view.viewControler;
 import datasets.generic.GenericRowBean;
 import java.awt.Component;
 import java.beans.PropertyVetoException;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JDesktopPane;
@@ -50,7 +49,7 @@ public class DesktopView {
             }
         }
         if (!methodsSignals.isEmpty()) {
-            LinkedHashSet<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsSignals,
+            LinkedList<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsSignals,
                     window * hertz, offset, hertz);
             processingFeatures.ajustLineColumns(lineColumns);
             if (!lineColumns.isEmpty()) {
@@ -69,7 +68,7 @@ public class DesktopView {
             }
         }
         if (!principalFeatures.isEmpty()) {
-            LinkedHashSet<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), principalFeatures,
+            LinkedList<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), principalFeatures,
                     window * hertz, voltar, hertz);
             processingFeatures.ajustLineColumns(lineColumns);
             if (!lineColumns.isEmpty()) {
@@ -95,7 +94,7 @@ public class DesktopView {
         }
         getDataFeatures().clear();
         if (!methodsFeatures.isEmpty()) {
-            LinkedHashSet<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsFeatures,
+            LinkedList<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsFeatures,
                     window * hertz, voltar, hertz);
             if (!lineColumns.isEmpty()) {
                 getDataFeatures().clear();
@@ -108,7 +107,7 @@ public class DesktopView {
     /*
      *   INTERNAL FRAME
      */
-    public void addDataInternalFrame(LinkedHashSet<GenericRowBean> data) {
+    public void addDataInternalFrame(LinkedList<GenericRowBean> data) {
         ConstGeneral.CURRENT_INTERNAL_FRAME.configData(data);
     }
 
@@ -197,7 +196,7 @@ public class DesktopView {
     /*
         Painel Box
      */
-    public void addDataBox(LinkedHashSet<GenericRowBean> data) {
+    public void addDataBox(LinkedList<GenericRowBean> data) {
         ConstGeneral.CURRENT_BOX.configData(data);
     }
 
@@ -251,7 +250,7 @@ public class DesktopView {
     }
 
     public void editData() {
-        LinkedHashSet<GenericRowBean> data = new LinkedHashSet<>();
+        LinkedList<GenericRowBean> data = new LinkedList<>();
         if (!getDataFeatures().isEmpty()) {
             data = getDataFeatures();
         } else {
@@ -288,7 +287,7 @@ public class DesktopView {
     /*
         Getters e Setters
      */
-    public LinkedHashSet<GenericRowBean> getData() {
+    public LinkedList<GenericRowBean> getData() {
         if (ConstGeneral.CURRENT_INTERNAL_FRAME != null) {
             return ConstGeneral.CURRENT_INTERNAL_FRAME.getData();
         } else if (ConstGeneral.CURRENT_BOX != null) {
@@ -297,7 +296,7 @@ public class DesktopView {
         return null;
     }
 
-    public void setData(LinkedHashSet<GenericRowBean> data) {
+    public void setData(LinkedList<GenericRowBean> data) {
         if (ConstGeneral.CURRENT_INTERNAL_FRAME != null) {
             ConstGeneral.CURRENT_INTERNAL_FRAME.setData(data);
         } else if (ConstGeneral.CURRENT_BOX != null) {
@@ -305,7 +304,7 @@ public class DesktopView {
         }
     }
 
-    public LinkedHashSet<GenericRowBean> getDataFeatures() {
+    public LinkedList<GenericRowBean> getDataFeatures() {
         if (ConstGeneral.CURRENT_INTERNAL_FRAME != null) {
             return ConstGeneral.CURRENT_INTERNAL_FRAME.getDataFeatures();
         } else if (ConstGeneral.CURRENT_BOX != null) {
@@ -314,7 +313,7 @@ public class DesktopView {
         return null;
     }
 
-    public void setDataFeatures(LinkedHashSet<GenericRowBean> dataFeatures) {
+    public void setDataFeatures(LinkedList<GenericRowBean> dataFeatures) {
         if (ConstGeneral.CURRENT_INTERNAL_FRAME != null) {
             ConstGeneral.CURRENT_INTERNAL_FRAME.setDataFeatures(dataFeatures);
         } else if (ConstGeneral.CURRENT_BOX != null) {

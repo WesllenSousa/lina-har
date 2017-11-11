@@ -6,7 +6,6 @@ import datasets.generic.GenericRowBean;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -125,7 +124,7 @@ public class Principal extends javax.swing.JFrame {
         bt_signalSelectionLeft2 = new javax.swing.JButton();
         jPanel39 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        tf_windowSize = new javax.swing.JTextField();
+        tf_windowSec = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         sl_overlap = new javax.swing.JSlider();
         jLabel5 = new javax.swing.JLabel();
@@ -516,7 +515,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel15.setText("Windows size (sec):");
 
-        tf_windowSize.setText("10");
+        tf_windowSec.setText("5");
 
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel16.setText("Overlap (%):");
@@ -542,7 +541,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tf_windowSize, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(tf_windowSec, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                     .addComponent(tf_frequency)))
             .addComponent(sl_overlap, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -552,7 +551,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel39Layout.createSequentialGroup()
                 .addGap(4, 4, 4)
                 .addGroup(jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tf_windowSize)
+                    .addComponent(tf_windowSec)
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1801,7 +1800,7 @@ public class Principal extends javax.swing.JFrame {
             .addComponent(jSplitPane2)
         );
 
-        tb_principal.addTab("Symbolic", jPanel5);
+        tb_principal.addTab("Streaming", jPanel5);
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -2102,6 +2101,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void lt_trainDataMouseClicked(MouseEvent evt) {//GEN-FIRST:event_lt_trainDataMouseClicked
         if (lt_trainData.getSelectedIndex() != -1 && evt.getButton() == MouseEvent.BUTTON3) {
+            lt_trainData.setFocusable(true);
+            lt_trainDataTest.setFocusable(false);
             pp_file.show(lt_trainData, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_lt_trainDataMouseClicked
@@ -2440,17 +2441,17 @@ public class Principal extends javax.swing.JFrame {
     private void btt_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_stopActionPerformed
         if (play != null && play.isAlive()) {
             play.stop();
-        }
-        switch (tb_principal.getSelectedIndex()) {
-            case 0:
-                stopInternalFrameProcess();
-                break;
-            case 3:
-                clearLineGraphic();
-                clearBarGraphic();
-                break;
-            default:
-                break;
+            switch (tb_principal.getSelectedIndex()) {
+                case 0:
+                    stopInternalFrameProcess();
+                    break;
+                case 3:
+                    clearLineGraphic();
+                    clearBarGraphic();
+                    break;
+                default:
+                    break;
+            }
         }
     }//GEN-LAST:event_btt_stopActionPerformed
 
@@ -2467,7 +2468,11 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void lt_trainDataTestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lt_trainDataTestMouseClicked
-        // TODO add your handling code here:
+        if (lt_trainDataTest.getSelectedIndex() != -1 && evt.getButton() == MouseEvent.BUTTON3) {
+            lt_trainDataTest.setFocusable(true);
+            lt_trainData.setFocusable(false);
+            pp_file.show(lt_trainDataTest, evt.getX(), evt.getY());
+        }
     }//GEN-LAST:event_lt_trainDataTestMouseClicked
 
     private void ck_trainUserTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ck_trainUserTestActionPerformed
@@ -2684,7 +2689,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField tf_symSymbolAlphabet;
     private javax.swing.JTextField tf_symWindow;
     private javax.swing.JTextField tf_symWordLength;
-    private javax.swing.JTextField tf_windowSize;
+    private javax.swing.JTextField tf_windowSec;
     private javax.swing.JTextPane tp_resultClassification;
     private javax.swing.JTextPane tp_resultTrain;
     // End of variables declaration//GEN-END:variables
@@ -2767,6 +2772,7 @@ public class Principal extends javax.swing.JFrame {
                 btt_pause.setVisible(true);
                 btt_stop.setVisible(true);
                 SwingUtil.listFilesList(lt_trainData, ConstDataset.DS_TRAIN);
+                SwingUtil.listFilesList(lt_trainDataTest, ConstDataset.DS_TEST);
                 updateClassifierList();
                 break;
             case 2:
@@ -2853,7 +2859,11 @@ public class Principal extends javax.swing.JFrame {
                 componentView.editDeleteDataset(lt_rawData, ConstDataset.DS_RAW, type);
                 break;
             case 1:
-                componentView.editDeleteDataset(lt_trainData, ConstDataset.DS_TRAIN, type);
+                if (lt_trainData.isFocusable()) {
+                    componentView.editDeleteDataset(lt_trainData, ConstDataset.DS_TRAIN, type);
+                } else if (lt_trainDataTest.isFocusable()) {
+                    componentView.editDeleteDataset(lt_trainDataTest, ConstDataset.DS_TEST, type);
+                }
                 break;
             case 2:
                 if (lt_modelClassification.isFocusable()) {
@@ -2927,23 +2937,20 @@ public class Principal extends javax.swing.JFrame {
         if (desktopView.isSelectedData()) {
             sx_busy.setBusy(true);
 
-            Float window = 0.0f;
-            Integer hertz = 0;
             try {
-                window = Float.parseFloat(tf_windowSize.getText());
-                hertz = Integer.parseInt(tf_frequency.getText());
+                Parameters.WINDOW_SEC = Float.parseFloat(tf_windowSec.getText());
+                Parameters.FREQUENCY = Integer.parseInt(tf_frequency.getText());
             } catch (NumberFormatException ex) {
                 messages.bug("Invalid window or frequency values!");
                 sx_busy.setBusy(false);
                 return;
             }
-
             Integer overlap = sl_overlap.getValue();
-            Integer offset = Math.round((overlap / 100f) * window * hertz);
+            Integer offset = Math.round((overlap / 100f) * Parameters.WINDOW_SEC * Parameters.FREQUENCY);
 
-            desktopView.signalProcessing(lt_filtersRight, window, hertz, offset);
-            desktopView.principalFeatureProcessing(lt_principalFeaturesRight, window, hertz, offset);
-            desktopView.featureExtraction(lt_timeFeaturesRight, lt_frequencyFeaturesRight, window, hertz, offset);
+            desktopView.signalProcessing(lt_filtersRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY, offset);
+            desktopView.principalFeatureProcessing(lt_principalFeaturesRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY, offset);
+            desktopView.featureExtraction(lt_timeFeaturesRight, lt_frequencyFeaturesRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY, offset);
 
             desktopView.updateGraphic();
             updateConfigLists();
@@ -2953,7 +2960,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void prepareRawData() {
-        LinkedHashSet<GenericRowBean> data = HandleGenericDataset.bufferFileInMemory(ConstDataset.SEPARATOR,
+        LinkedList<GenericRowBean> data = HandleGenericDataset.bufferFileInMemory(ConstDataset.SEPARATOR,
                 ConstDataset.DS_RAW + lt_rawData.getSelectedValue());
         HandleGenericDataset.setColumnClass(data);
         HandleGenericDataset.setColumnTimestamp(data);

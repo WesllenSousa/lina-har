@@ -3,7 +3,6 @@ package view;
 import datasets.generic.GenericTableModel;
 import datasets.generic.HandleGenericDataset;
 import datasets.generic.GenericRowBean;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import constants.ConstDataset;
 import constants.ConstGeneral;
@@ -19,7 +18,7 @@ public class MergeDataset extends javax.swing.JDialog {
 
     private final Messages messages = new Messages();
 
-    private LinkedHashSet<GenericRowBean> data1, data2;
+    private LinkedList<GenericRowBean> data1, data2;
     private String source1, source2;
 
     public MergeDataset(java.awt.Frame parent, boolean modal, String source1, String source2) {
@@ -57,6 +56,8 @@ public class MergeDataset extends javax.swing.JDialog {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mi_csv = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Merge dataset");
@@ -221,6 +222,19 @@ public class MergeDataset extends javax.swing.JDialog {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setText("Option");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItem1.setText("Settings");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -257,13 +271,20 @@ public class MergeDataset extends javax.swing.JDialog {
         thread.start();
     }//GEN-LAST:event_mi_csvActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        Options options = new Options(null, true);
+        options.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_dell;
     private javax.swing.JButton bt_view1;
     private javax.swing.JButton bt_view2;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel26;
@@ -298,14 +319,14 @@ public class MergeDataset extends javax.swing.JDialog {
 
     public void populaTabela(LinkedList<GenericRowBean> data) {
         GenericTableModel model = new GenericTableModel(data);
-        model.setColunas(HandleGenericDataset.extractNamesColumnFromBuffer(HandleGenericDataset.converLinkedlistToHashset(data)));
+        model.setColunas(HandleGenericDataset.extractNamesColumnFromBuffer(data));
         tb_mergedData.setModel(model);
     }
 
     private void dellColumnTable() {
         LinkedList<GenericRowBean> data = ((GenericTableModel) tb_mergedData.getModel()).getLinhas();
         try {
-            HandleGenericDataset.removeColumnFromBuffer(HandleGenericDataset.converLinkedlistToHashset(data), Integer.parseInt(tf_dellColumn.getText()));
+            HandleGenericDataset.removeColumnFromBuffer(data, Integer.parseInt(tf_dellColumn.getText()));
         } catch (NumberFormatException ex) {
             messages.aviso("Invalid number column!");
         }
@@ -320,7 +341,7 @@ public class MergeDataset extends javax.swing.JDialog {
         sx_busy.setBusy(true);
         if (!Validation.isEmptyString(name)) {
             LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_mergedData.getModel()).getLinhas();
-            if (HandleGenericDataset.saveBufferToCSV(dir, name, HandleGenericDataset.converLinkedlistToHashset(dataTable))) {
+            if (HandleGenericDataset.saveBufferToCSV(dir, name, dataTable, ConstDataset.SEPARATOR)) {
                 ConstGeneral.TELA_PRINCIPAL.updateHandleTabedPane();
                 messages.sucesso("File saved!");
             }

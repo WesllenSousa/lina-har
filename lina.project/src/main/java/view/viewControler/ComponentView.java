@@ -3,13 +3,13 @@ package view.viewControler;
 import datasets.generic.GenericRowBean;
 import datasets.generic.HandleGenericDataset;
 import java.io.File;
-import java.util.LinkedHashSet;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.filechooser.FileFilter;
 import constants.ConstDataset;
 import constants.ConstGeneral;
+import java.util.LinkedList;
 import util.FileUtil;
 import util.Messages;
 import util.SwingUtil;
@@ -38,9 +38,9 @@ public class ComponentView {
     }
 
     public void openEditView(JList list, String source) {
-        LinkedHashSet<GenericRowBean> data = HandleGenericDataset.bufferFileInMemory(ConstDataset.SEPARATOR, source);
+        LinkedList<GenericRowBean> data = HandleGenericDataset.bufferFileInMemory(ConstDataset.SEPARATOR, source);
         HandleGenericDataset.setColumnClass(data);
-        EditDataset view = new EditDataset(null, false, source, data);
+        EditDataset view = new EditDataset(ConstGeneral.TELA_PRINCIPAL, true, source, data);
         view.setVisible(true);
     }
 

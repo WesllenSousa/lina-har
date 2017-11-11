@@ -12,12 +12,14 @@ package constants;
 public class Parameters {
 
     public static int WINDOW_SIZE = 50;
-    public static int WORD_LENGTH_PAA = 8;
-    public static int SYMBOLS_ALPHABET_SIZE = 4;
+    public static int FREQUENCY = 50;
+    public static float WINDOW_SEC = 5;
 
     /**
      * SAX Parameters
      */
+    public static int WORD_LENGTH_PAA = 8;
+    public static int SYMBOLS_ALPHABET_SIZE = 4;
     public static double NORMALIZATION_THRESHOLD = 0.05;
 
     /**

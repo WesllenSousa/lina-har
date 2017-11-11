@@ -3,7 +3,7 @@ Afazeres de implementação
 1) Fazer com que o Page Hinkley se adapte seu theshold de disparo maseado no histórico de disparo.
 2) Resolver o problema da media negativa do PageHinkley
 3) Ler o item de Logistic Regression do livro de PNL
-4) Implementar a parte de classificação dos métodos de discretização
+4) Testar a atuação dos ruidos no método stringMoreFrequency no HandleGenericDataset
 
 Notas de Inovação
 

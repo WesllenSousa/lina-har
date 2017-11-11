@@ -16,7 +16,7 @@ public class Validation {
 
     //Verifica se a String é vazia, tem apenas um espaço ou é nula;
     public static boolean isEmptyString(String v) {
-        return (v == null) || (v.length() == 0) || (v.equals(" "));
+        return (v == null) || (v.length() == 0);
     }
 
     //Verifica se o número é negativo

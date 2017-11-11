@@ -147,7 +147,7 @@ public class TimeSeriesLoader {
      * @throws IOException
      */
     public static TimeSeries[] loadHorizontalData(String dataset, String splitColumn, Boolean normalize) {
-        ArrayList<TimeSeries> samples = new ArrayList<TimeSeries>();
+        ArrayList<TimeSeries> samples = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(dataset))) {
             String line = null;

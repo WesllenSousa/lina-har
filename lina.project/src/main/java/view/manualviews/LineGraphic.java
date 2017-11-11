@@ -3,7 +3,6 @@ package view.manualviews;
 import datasets.generic.GenericRowBean;
 import datasets.timeseries.TimeSeries;
 import java.awt.BorderLayout;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartPanel;
@@ -68,7 +67,7 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
         chart.setNotify(true);
     }
 
-    public void prepareStream(LinkedHashSet<GenericRowBean> data) {
+    public void prepareStream(LinkedList<GenericRowBean> data) {
         if (!data.isEmpty()) {
             LinkedList<XYSeries> timeSeries = new LinkedList<>();
             //Cria timeseries vazias
