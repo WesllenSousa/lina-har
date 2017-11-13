@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import constants.ConstDataset;
+import constants.ConstGeneral;
 import constants.Parameters;
 import java.util.HashMap;
 import util.FileUtil;
@@ -44,10 +45,13 @@ public class HandleGenericDataset {
             }
             if (row % tsSize == 0) {
                 String classe = stringMoreFrequency(classes, true);
-                tuplaHoriz.addFirst(classe);
-                GenericRowBean newBean = new GenericRowBean();
-                newBean.setTupla((LinkedList<String>) tuplaHoriz.clone());
-                horizList.add(newBean);
+                //Ingnoring noise columns
+                if (!classe.equals(ConstGeneral.NOISE)) {
+                    tuplaHoriz.addFirst(classe);
+                    GenericRowBean newBean = new GenericRowBean();
+                    newBean.setTupla((LinkedList<String>) tuplaHoriz.clone());
+                    horizList.add(newBean);
+                }
 
                 tuplaHoriz.clear();
                 classes.clear();
@@ -633,7 +637,7 @@ public class HandleGenericDataset {
             }
         }
         if (noise && frequency.size() > 1) {
-            return "noise";
+            return ConstGeneral.NOISE;
         }
         int maior = 0;
         String classe = "";

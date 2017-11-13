@@ -103,9 +103,9 @@ public class SAX {
             double error = 1.0d - accuracy;
 
             // report results
-            String results = "classification results: \n" + toLogStr(params, accuracy, error);
+            String results = "SAX-VSM: \n" + toLogStr(params, accuracy, error);
             System.out.println(results);
-            
+
             return results;
 
         } catch (IOException | NumberFormatException | SAXException ex) {
@@ -118,12 +118,12 @@ public class SAX {
     private static String toLogStr(Params params, double accuracy, double error) {
         DecimalFormat fmt = new DecimalFormat("0.00###");
         StringBuffer sb = new StringBuffer();
-        sb.append(" strategy ").append(params.getNrStartegy().toString()).append(",");
-        sb.append(" window ").append(params.getWindowSize()).append(",");
-        sb.append(" PAA ").append(params.getPaaSize()).append(",");
-        sb.append("alphabet ").append(params.getAlphabetSize()).append(",");
-        sb.append(" accuracy ").append(fmt.format(accuracy)).append(",");
-        sb.append(" error ").append(fmt.format(error));
+        sb.append(" Strategy: ").append(params.getNrStartegy().toString()).append(",");
+        sb.append("\n Window ").append(params.getWindowSize()).append(",");
+        sb.append("\n PAA ").append(params.getPaaSize()).append(",");
+        sb.append("\n Alphabet ").append(params.getAlphabetSize()).append(",");
+        sb.append("\n>> Accuracy ").append(fmt.format(accuracy)).append(",");
+        sb.append("\n>> Error ").append(fmt.format(error));
         return sb.toString();
     }
 

@@ -25,7 +25,7 @@ public class iSAXExample {
             int WINDOW_SIZE = 28;
 
             //0 = all lines
-            TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "sinusoid.csv", false, ",");
+            TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_STREAM + "sinusoid.csv", false, ",");
 
             iSAX iSAX = new iSAX();
             SAXRecords sAXRecords = iSAX.ts2iSaxViaWindow(timeSeries[0].getData(), WINDOW_SIZE);

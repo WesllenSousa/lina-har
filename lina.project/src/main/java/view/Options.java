@@ -17,7 +17,7 @@ public class Options extends javax.swing.JDialog {
     public Options(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(ConstGeneral.TELA_PRINCIPAL);
+        this.setLocationRelativeTo(null);
 
         fillPreprocessingOptions();
         fillSymbolicOptions();

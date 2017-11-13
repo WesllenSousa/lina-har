@@ -94,13 +94,16 @@ public class TrainView {
 
     public void executeTrain(String train, String test, String algorithm) throws IOException {
 
+        int window = (int) (Parameters.WINDOW_SEC * Parameters.FREQUENCY);
+
         if (algorithm.equals(ConstGeneral.AL_SAX_VSM)) {
 
             String trainSamples = ConstDataset.DS_TRAIN + train;
             String testSamples = ConstDataset.DS_TEST + test;
 
-            Params params = new Params(Parameters.WINDOW_SIZE, Parameters.WORD_LENGTH_PAA,
-                    Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.EXACT);
+            Params params = new Params(window, Parameters.WORD_LENGTH_PAA,
+                    Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD,
+                    NumerosityReductionStrategy.EXACT);
 
             String result = SAX.SAX_VSM(trainSamples, testSamples, params);
             if (result != null) {
@@ -110,19 +113,19 @@ public class TrainView {
         } else {
             // Load the train/test splits
             TimeSeries[] trainSamples = TimeSeriesLoader.loadHorizontalData(
-                    ConstDataset.DS_TRAIN + train, " ", true);
+                    ConstDataset.DS_TRAIN + train, ConstDataset.SEPARATOR, true);
             TimeSeries[] testSamples = TimeSeriesLoader.loadHorizontalData(
-                    ConstDataset.DS_TEST + test, " ", true);
+                    ConstDataset.DS_TEST + test, ConstDataset.SEPARATOR, true);
 
             if (trainSamples.length == 0 || testSamples.length == 0) {
                 messages.aviso("Dataset format incorrect!");
             }
 
-            controle.SFA.classification.Classifier.DEBUG = false;
+            controle.SFA.classification.Classifier.DEBUG = true;
             controle.SFA.classification.Classifier classifier = null;
 
             if (algorithm.equals(ConstGeneral.AL_BOSS_MODEL)) {
-                classifier = new BOSSClassifier(trainSamples, testSamples, Parameters.WINDOW_SIZE);
+                classifier = new BOSSClassifier(trainSamples, testSamples, window);
             } else if (algorithm.equals(ConstGeneral.AL_BOSS_ENSEMBLE)) {
                 classifier = new BOSSEnsembleClassifier(trainSamples, testSamples);
             } else if (algorithm.equals(ConstGeneral.AL_BOSS_VS)) {
@@ -130,7 +133,7 @@ public class TrainView {
             } else if (algorithm.equals(ConstGeneral.AL_WEASEL)) {
                 classifier = new WEASELClassifier(trainSamples, testSamples);
             } else if (algorithm.equals(ConstGeneral.AL_SHOTGUN)) {
-                classifier = new ShotgunClassifier(trainSamples, testSamples, Parameters.WINDOW_SIZE);
+                classifier = new ShotgunClassifier(trainSamples, testSamples, window);
             } else if (algorithm.equals(ConstGeneral.AL_SHOTGUN_ENSEMBLE)) {
                 classifier = new ShotgunEnsembleClassifier(trainSamples, testSamples);
             } else {

@@ -216,10 +216,6 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         lt_timeSeriesData = new javax.swing.JList<>();
         jPanel28 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
         jButton2 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jRadioButton6 = new javax.swing.JRadioButton();
@@ -1404,18 +1400,6 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel28.setBorder(javax.swing.BorderFactory.createTitledBorder("Segmentation"));
 
-        jLabel6.setText("Speed:");
-
-        gp_settings.add(jRadioButton1);
-        jRadioButton1.setText("Slow");
-
-        gp_settings.add(jRadioButton2);
-        jRadioButton2.setSelected(true);
-        jRadioButton2.setText("Fast");
-
-        gp_settings.add(jRadioButton3);
-        jRadioButton3.setText("None");
-
         jButton2.setText("Show Page Hinkley");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1440,32 +1424,19 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel28Layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel28Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton7)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 45, Short.MAX_VALUE))
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
         jPanel28Layout.setVerticalGroup(
             jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel28Layout.createSequentialGroup()
-                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(jRadioButton6)
@@ -1673,9 +1644,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(118, 118, 118))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         jScrollPane4.setViewportView(jPanel11);
@@ -2071,8 +2042,8 @@ public class Principal extends javax.swing.JFrame {
                     SwingUtil.listFilesList(lt_testData, ConstDataset.DS_TEST);
                     break;
                 case 3:
-                    FileUtil.copyFile(currentFile, ConstDataset.DS_TIME_SERIES);
-                    SwingUtil.listFilesList(lt_timeSeriesData, ConstDataset.DS_TIME_SERIES);
+                    FileUtil.copyFile(currentFile, ConstDataset.DS_STREAM);
+                    SwingUtil.listFilesList(lt_timeSeriesData, ConstDataset.DS_STREAM);
                     break;
                 default:
                     break;
@@ -2154,7 +2125,7 @@ public class Principal extends javax.swing.JFrame {
                 }
                 break;
             case 3:
-                componentView.renameDataset(lt_timeSeriesData, ConstDataset.DS_TIME_SERIES);
+                componentView.renameDataset(lt_timeSeriesData, ConstDataset.DS_STREAM);
                 break;
             default:
                 break;
@@ -2538,7 +2509,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -2582,9 +2552,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton6;
     private javax.swing.JRadioButton jRadioButton7;
     private javax.swing.JScrollPane jScrollPane1;
@@ -2794,7 +2761,7 @@ public class Principal extends javax.swing.JFrame {
                 btt_reset.setVisible(false);
                 btt_pause.setVisible(true);
                 btt_stop.setVisible(true);
-                SwingUtil.listFilesList(lt_timeSeriesData, ConstDataset.DS_TIME_SERIES);
+                SwingUtil.listFilesList(lt_timeSeriesData, ConstDataset.DS_STREAM);
                 break;
             default:
                 break;
@@ -2873,7 +2840,7 @@ public class Principal extends javax.swing.JFrame {
                 }
                 break;
             case 3:
-                componentView.editDeleteDataset(lt_timeSeriesData, ConstDataset.DS_TIME_SERIES, type);
+                componentView.editDeleteDataset(lt_timeSeriesData, ConstDataset.DS_STREAM, type);
                 break;
             default:
                 break;
@@ -3070,7 +3037,7 @@ public class Principal extends javax.swing.JFrame {
             setParameters();
 
             TimeSeries[] data = TimeSeriesLoader.loadVerticalData("0",
-                    ConstDataset.DS_TIME_SERIES + lt_timeSeriesData.getSelectedValue(), false,
+                    ConstDataset.DS_STREAM + lt_timeSeriesData.getSelectedValue(), false,
                     ConstDataset.SEPARATOR);
 
             symbolicView = new SymbolicView(lineGraphic, barGraphic, data);

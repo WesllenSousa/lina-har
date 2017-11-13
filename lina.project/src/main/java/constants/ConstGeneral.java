@@ -30,6 +30,8 @@ public class ConstGeneral {
 
     public static String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
     public static double PERCENT_QUEDA_THRESHOULD = 30;
+    
+    public static String NOISE = "noise";
 
     //Signal Processing
     public static String SP_GausianLowpass = "GaussianLowpass";

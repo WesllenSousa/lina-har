@@ -19,7 +19,7 @@ public class RepairExample {
     public static void main(String[] args) {
 
         //0 = all lines
-        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "sinusoid.csv", false, ",");
+        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_STREAM + "sinusoid.csv", false, ",");
 
         GrammarRules grammarRules = Repair.run(timeSeries[0].getData(), false);
 

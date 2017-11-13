@@ -29,7 +29,7 @@ public class SAXExample {
 
         //0 = all lines
         //double[] ts = HandleData.loadData("0", "samples/TimeSeries/sinusoid.csv");
-        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "bbb.arff", ",");
+        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_STREAM + "bbb.arff", ",");
 
 //        String test = SAX.serieToWord(timeSeries.getData(), params);
 //        System.out.println(test);

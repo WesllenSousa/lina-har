@@ -3,9 +3,6 @@ package view;
 import datasets.generic.GenericTableModel;
 import datasets.generic.HandleGenericDataset;
 import datasets.generic.GenericRowBean;
-import java.io.File;
-import constants.ConstDataset;
-import constants.ConstGeneral;
 import java.util.LinkedList;
 import util.FileUtil;
 import util.Messages;
@@ -18,7 +15,6 @@ import util.Validation;
 public class EditDataset extends javax.swing.JDialog {
 
     private final Messages messages = new Messages();
-    private String nameDataset;
 
     public EditDataset(java.awt.Frame parent, boolean modal, String nameDataset, LinkedList<GenericRowBean> data) {
         super(parent, modal);
@@ -26,7 +22,6 @@ public class EditDataset extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
 
         this.setTitle("View Dataset - " + FileUtil.extractNameFile(nameDataset));
-        this.nameDataset = nameDataset;
 
         populaTabela(data);
     }
@@ -53,12 +48,6 @@ public class EditDataset extends javax.swing.JDialog {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mi_save = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        mi_csv = new javax.swing.JMenuItem();
-        mi_arff = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        mi_saveTrain = new javax.swing.JMenuItem();
-        mi_saveStreaming = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         mi_convHorizontal = new javax.swing.JMenuItem();
         mi_convVertical = new javax.swing.JMenuItem();
@@ -198,44 +187,6 @@ public class EditDataset extends javax.swing.JDialog {
             }
         });
         jMenu1.add(mi_save);
-        jMenu1.add(jSeparator1);
-
-        mi_csv.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
-        mi_csv.setText("Save to CSV");
-        mi_csv.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mi_csvActionPerformed(evt);
-            }
-        });
-        jMenu1.add(mi_csv);
-
-        mi_arff.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
-        mi_arff.setText("Save to ARFF");
-        mi_arff.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mi_arffActionPerformed(evt);
-            }
-        });
-        jMenu1.add(mi_arff);
-        jMenu1.add(jSeparator2);
-
-        mi_saveTrain.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
-        mi_saveTrain.setText("Save as Train");
-        mi_saveTrain.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mi_saveTrainActionPerformed(evt);
-            }
-        });
-        jMenu1.add(mi_saveTrain);
-
-        mi_saveStreaming.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
-        mi_saveStreaming.setText("Save as Test");
-        mi_saveStreaming.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mi_saveStreamingActionPerformed(evt);
-            }
-        });
-        jMenu1.add(mi_saveStreaming);
 
         jMenuBar1.add(jMenu1);
 
@@ -299,34 +250,10 @@ public class EditDataset extends javax.swing.JDialog {
     }//GEN-LAST:event_bt_replaceActionPerformed
 
     private void mi_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_saveActionPerformed
-        Thread thread = new Thread(this::save);
-        thread.setPriority(Thread.MAX_PRIORITY);
-        thread.start();
+        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
+        ConfigSaveFile dialog = new ConfigSaveFile(null, true, dataTable);
+        dialog.setVisible(true);
     }//GEN-LAST:event_mi_saveActionPerformed
-
-    private void mi_saveTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_saveTrainActionPerformed
-        Thread thread = new Thread(this::saveTrain);
-        thread.setPriority(Thread.MAX_PRIORITY);
-        thread.start();
-    }//GEN-LAST:event_mi_saveTrainActionPerformed
-
-    private void mi_arffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_arffActionPerformed
-        Thread thread = new Thread(this::saveFileARFF);
-        thread.setPriority(Thread.MAX_PRIORITY);
-        thread.start();
-    }//GEN-LAST:event_mi_arffActionPerformed
-
-    private void mi_csvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_csvActionPerformed
-        Thread thread = new Thread(this::saveFileCSV);
-        thread.setPriority(Thread.MAX_PRIORITY);
-        thread.start();
-    }//GEN-LAST:event_mi_csvActionPerformed
-
-    private void mi_saveStreamingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_saveStreamingActionPerformed
-        Thread thread = new Thread(this::saveStream);
-        thread.setPriority(Thread.MAX_PRIORITY);
-        thread.start();
-    }//GEN-LAST:event_mi_saveStreamingActionPerformed
 
     private void mi_settingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_settingsActionPerformed
         Options options = new Options(null, true);
@@ -367,16 +294,10 @@ public class EditDataset extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lb_rows;
-    private javax.swing.JMenuItem mi_arff;
     private javax.swing.JMenuItem mi_convHorizontal;
     private javax.swing.JMenuItem mi_convVertical;
-    private javax.swing.JMenuItem mi_csv;
     private javax.swing.JMenuItem mi_save;
-    private javax.swing.JMenuItem mi_saveStreaming;
-    private javax.swing.JMenuItem mi_saveTrain;
     private javax.swing.JMenuItem mi_settings;
     private org.jdesktop.swingx.JXBusyLabel sx_busy;
     private javax.swing.JTable tb_data;
@@ -396,60 +317,6 @@ public class EditDataset extends javax.swing.JDialog {
         } else {
             messages.aviso("Empty data result!");
         }
-    }
-
-    private void save() {
-        if (messages.confirmacao("Are you sure to save this change?")) {
-            if (FileUtil.deleteFile(new File(nameDataset))) {
-                saveCSV(FileUtil.extractParentPathFile(nameDataset), FileUtil.extractNameFile(nameDataset));
-            } else {
-                messages.aviso("Erro!");
-            }
-        }
-    }
-
-    private void saveStream() {
-        saveARFF(ConstDataset.DS_TEST, FileUtil.extractNameFile(nameDataset));
-    }
-
-    private void saveTrain() {
-        saveARFF(ConstDataset.DS_TRAIN, messages.inserirDados("Insert file name"));
-    }
-
-    private void saveFileCSV() {
-        saveCSV(ConstDataset.DS_RAW, messages.inserirDados("Insert file name"));
-    }
-
-    private void saveFileARFF() {
-        saveARFF(ConstDataset.DS_RAW, messages.inserirDados("Insert file name"));
-    }
-
-    private void saveCSV(String dir, String name) {
-        sx_busy.setBusy(true);
-        if (!Validation.isEmptyString(name)) {
-            LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
-            if (HandleGenericDataset.saveBufferToCSV(dir, name, dataTable, ConstDataset.SEPARATOR)) {
-                ConstGeneral.TELA_PRINCIPAL.updateHandleTabedPane();
-                messages.sucesso("File saved!");
-            }
-        } else {
-            messages.aviso("Empty name!");
-        }
-        sx_busy.setBusy(false);
-    }
-
-    private void saveARFF(String dir, String name) {
-        sx_busy.setBusy(true);
-        if (!Validation.isEmptyString(name)) {
-            LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
-            if (HandleGenericDataset.saveBufferToARFF(dir, name, dataTable)) {
-                ConstGeneral.TELA_PRINCIPAL.updateHandleTabedPane();
-                messages.sucesso("File saved!");
-            }
-        } else {
-            messages.aviso("Empty name!");
-        }
-        sx_busy.setBusy(false);
     }
 
     private void replace() {
@@ -480,7 +347,7 @@ public class EditDataset extends javax.swing.JDialog {
 
     private void updateRowNumber() {
         LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
-        lb_rows.setText(dataTable.size() + " rows");
+        lb_rows.setText(dataTable.size() + " rows and " + dataTable.getFirst().getTupla().size() + " columns");
     }
 
 }

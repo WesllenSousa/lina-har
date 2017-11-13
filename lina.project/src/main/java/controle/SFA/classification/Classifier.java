@@ -42,11 +42,11 @@ public abstract class Classifier {
     protected int[][] trainIndices;
     public static int folds = 10;
 
-    protected int maxWordLength = 16; // 12
-    protected int minWordLenth = 6;  // 4
-    protected int maxSymbol = 4;  // 8
-    protected int maxWindowLength = 250;
-    protected int minWindowLength = 10;
+    protected static int maxWordLength = 16; // 12
+    protected static int minWordLenth = 6;  // 4
+    protected static int maxSymbol = 4;  // 8
+    protected static int maxWindowLength = 250;
+    protected static int minWindowLength = 10;
 
     // Blocks for parallel execution
     public final int BLOCKS = 8;
@@ -159,9 +159,17 @@ public abstract class Classifier {
 
         @Override
         public String toString() {
-            return this.name + ";" + this.training + ";" + this.testing;
+            return "Name: " + this.name + "\n"
+                    + "Training: " + this.training + "\n"
+                    + "Test: " + this.testing + "\n"
+                    + "> Window: " + windowLength + "\n"
+                    + "> Normed: " + normed + "\n"
+                    + "> Symbol: " + maxSymbol + "\n"
+                    + "> Max word length: " + maxWordLength + ", Min word length: " + minWordLenth + "\n"
+                    + "> Max window length: " + maxWindowLength + ", Min window length: " + minWindowLength;
         }
 
+        @Override
         public int compareTo(Score bestScore) {
             if (this.training > bestScore.training
                     || this.training == bestScore.training
@@ -193,9 +201,9 @@ public abstract class Classifier {
         //String errorStr = MessageFormat.format("{0,number,#.##%}", error);
         String correctStr = MessageFormat.format("{0,number,#.##%}", 1 - error);
 
-        System.out.print("Correct:\t");
-        System.out.print("" + correctStr + "");
-        System.out.println("\tTime: \t" + (System.currentTimeMillis() - time) / 1000.0 + " s");
+        System.out.print("Correct: " + correctStr + "\n");
+        System.out.println("Time: " + (System.currentTimeMillis() - time) / 1000.0 + " s\n");
+
     }
 
     public static double formatError(int correct, int testSize) {
@@ -214,7 +222,7 @@ public abstract class Classifier {
         double trainTestSplit = 1.0 / (double) splits;
         ArrayList<TimeSeries>[] sets = new ArrayList[splits];
         for (int s = 0; s < splits; s++) {
-            sets[s] = new ArrayList<TimeSeries>();
+            sets[s] = new ArrayList<>();
             for (Entry<String, LinkedList<Integer>> data : elements.entrySet()) {
                 int count = (int) (data.getValue().size() * trainTestSplit);
                 int i = 0;
@@ -226,7 +234,7 @@ public abstract class Classifier {
             }
         }
 
-        ArrayList<TimeSeries> testSet = new ArrayList<TimeSeries>();
+        ArrayList<TimeSeries> testSet = new ArrayList<>();
         for (List<Integer> indices : elements.values()) {
             for (int index : indices) {
                 testSet.add(samples[index]);
@@ -242,14 +250,14 @@ public abstract class Classifier {
     }
 
     public static Map<String, LinkedList<Integer>> splitByLabel(TimeSeries[] samples) {
-        Map<String, LinkedList<Integer>> elements = new HashMap<String, LinkedList<Integer>>();
+        Map<String, LinkedList<Integer>> elements = new HashMap<>();
 
         for (int i = 0; i < samples.length; i++) {
             String label = samples[i].getLabel();
             if (!label.trim().isEmpty()) {
                 LinkedList<Integer> sameLabel = elements.get(label);
                 if (sameLabel == null) {
-                    sameLabel = new LinkedList<Integer>();
+                    sameLabel = new LinkedList<>();
                     elements.put(label, sameLabel);
                 }
                 sameLabel.add(i);
@@ -296,7 +304,7 @@ public abstract class Classifier {
             String maxLabel = "";
             double maxCount = 0.0;
 
-            HashMap<String, Double> counts = new HashMap<String, Double>();
+            HashMap<String, Double> counts = new HashMap<>();
 
             for (Pair<String, Double> k : labels[i]) {
                 if (k != null && k.key != null) {
@@ -333,7 +341,7 @@ public abstract class Classifier {
     }
 
     protected static HashSet<String> uniqueClassLabels(TimeSeries[] ts) {
-        HashSet<String> labels = new HashSet<String>();
+        HashSet<String> labels = new HashSet<>();
         for (TimeSeries t : ts) {
             labels.add(t.getLabel());
         }
@@ -370,7 +378,7 @@ public abstract class Classifier {
             TimeSeries[] samples,
             int splits) {
 
-        HashMap<String, IntArrayDeque> elements = new HashMap<String, IntArrayDeque>();
+        HashMap<String, IntArrayDeque> elements = new HashMap<>();
 
         for (int i = 0; i < samples.length; i++) {
             String label = samples[i].getLabel();

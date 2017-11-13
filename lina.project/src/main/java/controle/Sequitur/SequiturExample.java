@@ -31,7 +31,7 @@ public class SequiturExample {
                 NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.NONE);
 
         //0 = all lines
-        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TIME_SERIES + "sinusoid.csv", false, ",");
+        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_STREAM + "sinusoid.csv", false, ",");
 
         SAXRecords saxRecords = SAX.slideWindow(timeSeries[0].getData(), params);
         GrammarRules grammarRules = Sequitur.run(saxRecords.getSAXString(" "));
