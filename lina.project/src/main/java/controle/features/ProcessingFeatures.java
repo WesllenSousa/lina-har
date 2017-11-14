@@ -446,4 +446,39 @@ public class ProcessingFeatures {
         }
     }
 
+    /*
+    * Data Fusion 
+     */
+    public LinkedList<LinkedList<String>> applyDataFusionProcessing(LinkedList<String> methodsFusion,
+            LinkedList<GenericRowBean> data, String nameDataset) {
+        LinkedList<LinkedList<String>> lineColumns = new LinkedList<>();
+
+        for (String method : methodsFusion) {
+            if (method.equals(ConstGeneral.DF_MAGNITUDE)) {
+                LinkedList<String> magnitude = new LinkedList<>();
+                DataFusion.Magnitude(data).stream().forEach((value) -> {
+                    magnitude.add(value.toString());
+                });
+                lineColumns.add(magnitude);
+            } else if (method.equals(ConstGeneral.DF_PCA)) {
+                LinkedList<String> pca = new LinkedList<>();
+                DataFusion.PCA(ConstDataset.DS_RAW, nameDataset).stream().forEach((value) -> {
+                    pca.add(value.toString());
+                });
+                lineColumns.add(pca);
+            }
+        }
+
+        return lineColumns;
+    }
+
+    public LinkedList<String> getClassesFromData(LinkedList<GenericRowBean> data) {
+        LinkedList<String> classes = new LinkedList<>();
+        for (GenericRowBean bean : data) {
+            if (bean.getClasse() != null) {
+                classes.add(bean.getClasse());
+            }
+        }
+        return classes;
+    }
 }

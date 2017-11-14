@@ -89,7 +89,7 @@ public class HandleGenericDataset {
     public static LinkedList<GenericRowBean> bufferFileInMemory(String separador, String inputSource) {
         LinkedList<GenericRowBean> list = new LinkedList<>();
         GenericRowBean nameColumns = new GenericRowBean();
-        nameColumns.setTupla(extractNamesColumnFromFile(separador, inputSource));
+        nameColumns.setTupla(FileUtil.extractNamesColumnFromFile(separador, inputSource));
         list.add(nameColumns);
 
         try (BufferedReader buffer = FileUtil.readFile(inputSource)) {
@@ -114,7 +114,7 @@ public class HandleGenericDataset {
 
                 LinkedList<String> columns = new LinkedList<>();
                 for (int i = 0; i < colunas.length; i++) {
-                    columns.add(colunas[i]);
+                    columns.add(colunas[i].trim());
                 }
 
                 GenericRowBean bean = new GenericRowBean();
@@ -137,7 +137,7 @@ public class HandleGenericDataset {
         try (OutputStream output = new FileOutputStream(new File(diretorio + File.separator + nameFile + ".csv"));
                 OutputStreamWriter osw = new OutputStreamWriter(output);
                 BufferedWriter write = new BufferedWriter(osw)) {
-            String lastClass = null;
+
             for (GenericRowBean bean : data) {
                 String linha = "";
                 Iterator<String> tuplas = bean.getTupla().iterator();
@@ -145,15 +145,18 @@ public class HandleGenericDataset {
                     String value = tuplas.next();
                     if (tuplas.hasNext()) {
                         linha += value + separador;
+                    } else if (bean.getClasse() != null || bean.getTimestamp() != null) {
+                        linha += value + separador;
                     } else {
                         linha += value;
                     }
                 }
-                if (bean.getClasse() != null) {
-                    linha += separador + bean.getClasse();
-                    lastClass = bean.getClasse();
-                } else if (lastClass != null) {
-                    linha += separador + lastClass;
+                if (bean.getTimestamp() != null && bean.getClasse() != null) {
+                    linha += bean.getTimestamp() + separador + bean.getClasse();
+                } else if (bean.getClasse() != null) {
+                    linha += bean.getClasse();
+                } else if (bean.getTimestamp() != null) {
+                    linha += bean.getTimestamp();
                 }
                 write.write(linha + "\n");
             }
@@ -228,46 +231,17 @@ public class HandleGenericDataset {
         return true;
     }
 
-    public static Boolean saveFileBytes(String texto, File diretorio) {
-        byte bytes[] = texto.getBytes();
-        try (FileOutputStream local = new FileOutputStream(diretorio)) {
-            local.write(bytes);
-            return true;
-        } catch (IOException ex) {
-            return false;
-        }
-    }
-
-    public static void replaceInFile(String source, String fileInput, String fileOutput, String oldString, String newString) {
-        try (BufferedReader buffer = FileUtil.readFile(source + fileInput);
-                OutputStream output = new FileOutputStream(new File(source + fileOutput));
-                OutputStreamWriter osw = new OutputStreamWriter(output);
-                BufferedWriter write = new BufferedWriter(osw)) {
-            String linha = buffer.readLine();
-            while (linha != null) {
-                String novaLinha = linha.replace(oldString, newString) + "\n";
-                write.write(novaLinha);
-                linha = buffer.readLine();
-            }
-            write.close();
-            osw.close();
-            output.close();
-            buffer.close();
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-    }
-
-    public static void replaceInBuffer(LinkedList<GenericRowBean> data, String word, String newWord) {
+    public static void replaceInBuffer(LinkedList<GenericRowBean> data, String word, String newWord, int column) {
         for (GenericRowBean bean : data) {
-            int i = 0;
+            int col = 0;
             for (String value : bean.getTupla()) {
-                if (value.equals(word)) {
-                    bean.getTupla().set(i, newWord);
+                if (col == column && value.equals(word)) {
+                    bean.getTupla().set(col, newWord);
                 }
-                i++;
+                col++;
             }
-            if (bean.getClasse() != null) {
+            int columnClass = data.getFirst().getTupla().size();
+            if (columnClass == column && bean.getClasse() != null) {
                 if (bean.getClasse().equals(word)) {
                     bean.setClasse(newWord);
                 }
@@ -313,102 +287,16 @@ public class HandleGenericDataset {
         return newBuffer;
     }
 
-    public static void removeColumnFromFile(String separador, String source, String inputFile, String outputFile, int coluna) {
-        try (BufferedReader buffer = FileUtil.readFile(source + inputFile);
-                OutputStream output = new FileOutputStream(new File(source + outputFile));
-                OutputStreamWriter osw = new OutputStreamWriter(output);
-                BufferedWriter write = new BufferedWriter(osw)) {
-
-            String novaLinha = "";
-            int cont = 1;
-            String linha = buffer.readLine();
-
-            if (FileUtil.getFileExtension(inputFile).equals("arff")) {
-                while (linha != null) {
-                    if (linha.contains("@ATTRIBUTE")) {
-                        if (cont == coluna) {
-                            continue;
-                        }
-                        novaLinha = linha + "\n";
-                        linha = buffer.readLine();
-                        cont += 1;
-                    } else if (linha.contains("@DATA")) {
-                        novaLinha = linha + "\n";
-                        linha = buffer.readLine();
-                        break;
-                    } else {
-                        novaLinha = linha + "\n";
-                        linha = buffer.readLine();
-                    }
-                }
-            }
-
-            while (linha != null) {
-                String[] colunas = linha.split(separador);
-                for (int i = 0; i < colunas.length; i++) {
-                    if (i == (coluna - 1)) {
-                        continue;
-                    }
-                    if ((i + 1) == colunas.length) {
-                        novaLinha += colunas[i] + "\n";
-                    } else if (coluna == colunas.length && (i + 2) == colunas.length) {
-                        novaLinha += colunas[i] + "\n";
-                    } else {
-                        novaLinha += colunas[i] + ConstDataset.SEPARATOR;
-                    }
-                }
-
-                write.write(novaLinha);
-                linha = buffer.readLine();
-            }
-            write.close();
-            osw.close();
-            output.close();
-            buffer.close();
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-    }
-
     public static void removeColumnFromBuffer(LinkedList<GenericRowBean> data, Integer column) {
-        for (GenericRowBean bean : data) {
-            for (int i = 0; i < bean.getTupla().size(); i++) {
-                if (i == (column - 1)) {
-                    bean.getTupla().remove(i);
-                }
-            }
-        }
-    }
-
-    public static LinkedList<String> extractNamesColumnFromFile(String separador, String inputSource) {
-        try (BufferedReader buffer = FileUtil.readFile(inputSource)) {
-            LinkedList<String> nameColumns = new LinkedList<>();
-
-            String linha = buffer.readLine();
-            if (FileUtil.getFileExtension(inputSource).equals("arff")) {
-                while (linha != null) {
-                    if (linha.contains("@ATTRIBUTE")) {
-                        String[] column = linha.split(" ")[1].replace(".", ",").split(","); // Need Review for char '\t'
-                        nameColumns.add(column[column.length - 1]);
-                        linha = buffer.readLine();
-                    } else if (linha.contains("@DATA")) {
-                        break;
-                    } else {
-                        linha = buffer.readLine();
+        if (column != -1) {
+            for (GenericRowBean bean : data) {
+                for (int i = 0; i < bean.getTupla().size(); i++) {
+                    if (i == (column - 1)) {
+                        bean.getTupla().remove(i);
                     }
                 }
-            } else {
-                for (String s : linha.split(separador)) {
-                    nameColumns.add(s);
-                }
             }
-
-            buffer.close();
-            return nameColumns;
-        } catch (IOException ex) {
-            System.out.println(ex);
         }
-        return null;
     }
 
     public static LinkedList<String> extractNamesColumnFromBuffer(LinkedList<GenericRowBean> data) {
@@ -574,7 +462,7 @@ public class HandleGenericDataset {
         return column;
     }
 
-    public static LinkedList<GenericRowBean> convertLineColumnsToGenericData(LinkedList<LinkedList<String>> lineColumns) {
+    public static LinkedList<GenericRowBean> convertColumnsToGenericData(LinkedList<LinkedList<String>> lineColumns) {
         System.out.println("Convert line columns to generic data...");
         LinkedList<GenericRowBean> newData = new LinkedList<>();
         Iterator<LinkedList<String>> lineColIter = lineColumns.iterator();

@@ -110,14 +110,14 @@ public class BOSSVSClassifier extends Classifier {
     }
 
     public List<BossVSScore<IntFloatOpenHashMap>> fitEnsemble(ExecutorService exec, final boolean normMean) throws FileNotFoundException {
-        int minWindowLength = this.minWindowLength;
-        int maxWindowLength = getMax(trainSamples, this.maxWindowLength);
+        int min = this.minWindowLength;
+        int max = getMax(trainSamples, this.maxWindowLength);
 
         // equi-distance sampling of windows
-        ArrayList<Integer> windows = new ArrayList<Integer>();
-        double count = Math.sqrt(maxWindowLength);
-        double distance = ((maxWindowLength - minWindowLength) / count);
-        for (int c = minWindowLength; c <= maxWindowLength; c += distance) {
+        ArrayList<Integer> windows = new ArrayList<>();
+        double count = Math.sqrt(max);
+        double distance = ((max - min) / count);
+        for (int c = min; c <= max; c += distance) {
             windows.add(c);
         }
         return fit(windows.toArray(new Integer[]{}), normMean, trainSamples, exec);
@@ -128,8 +128,10 @@ public class BOSSVSClassifier extends Classifier {
             boolean normMean,
             TimeSeries[] samples,
             ExecutorService exec) {
+
         final List<BossVSScore<IntFloatOpenHashMap>> results = new ArrayList<>(allWindows.length);
         ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
+
             HashSet<String> uniqueLabels = uniqueClassLabels(samples);
             BossVSScore<IntFloatOpenHashMap> bestScore = new BossVSScore<>(normMean, 0);
 

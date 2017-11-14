@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
+import util.FileUtil;
 import util.Messages;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -19,13 +20,19 @@ import weka.core.converters.ConverterUtils.DataSource;
  */
 public class WekaUtil {
 
-    private Instances data;
+    private Instances data = null;
 
     public void readData(String dir, Integer numberColumnClass) {
         try {
-            DataSource fonte = new DataSource(dir);
-            data = fonte.getDataSet();
-            data.setClassIndex(numberColumnClass - 1);
+            String extension = FileUtil.getFileExtension(dir);
+            if (extension.equals("arff")) {
+                DataSource fonte = new DataSource(dir);
+                data = fonte.getDataSet();
+                data.setClassIndex(numberColumnClass - 1);
+            } else {
+                Messages messages = new Messages();
+                messages.bug("File format should be arff!");
+            }
         } catch (Exception ex) {
             System.out.println("readData: " + ex);
             Messages messages = new Messages();
@@ -34,6 +41,9 @@ public class WekaUtil {
     }
 
     public Classifier buildClassfy(Classifier classifier) {
+        if (data == null) {
+            return null;
+        }
         try {
             classifier.buildClassifier(data);
             return classifier;

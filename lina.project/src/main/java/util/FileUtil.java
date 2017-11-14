@@ -1,8 +1,10 @@
 package util;
 
+import constants.ConstDataset;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.TreeSet;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -64,6 +66,114 @@ public class FileUtil {
         } catch (IOException ex) {
             return false;
         }
+    }
+
+    public static void replaceInFile(String source, String fileInput, String fileOutput, String oldString, String newString) {
+        try (BufferedReader buffer = FileUtil.readFile(source + fileInput);
+                OutputStream output = new FileOutputStream(new File(source + fileOutput));
+                OutputStreamWriter osw = new OutputStreamWriter(output);
+                BufferedWriter write = new BufferedWriter(osw)) {
+            String linha = buffer.readLine();
+            while (linha != null) {
+                String novaLinha = linha.replace(oldString, newString) + "\n";
+                write.write(novaLinha);
+                linha = buffer.readLine();
+            }
+            write.close();
+            osw.close();
+            output.close();
+            buffer.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public static void removeColumnFromFile(String separador, String source, String inputFile, String outputFile, int coluna) {
+        try (BufferedReader buffer = FileUtil.readFile(source + inputFile);
+                OutputStream output = new FileOutputStream(new File(source + outputFile));
+                OutputStreamWriter osw = new OutputStreamWriter(output);
+                BufferedWriter write = new BufferedWriter(osw)) {
+
+            String novaLinha = "";
+            int cont = 1;
+            String linha = buffer.readLine();
+
+            if (FileUtil.getFileExtension(inputFile).equals("arff")) {
+                while (linha != null) {
+                    if (linha.contains("@ATTRIBUTE")) {
+                        if (cont == coluna) {
+                            continue;
+                        }
+                        novaLinha = linha + "\n";
+                        linha = buffer.readLine();
+                        cont += 1;
+                    } else if (linha.contains("@DATA")) {
+                        novaLinha = linha + "\n";
+                        linha = buffer.readLine();
+                        break;
+                    } else {
+                        novaLinha = linha + "\n";
+                        linha = buffer.readLine();
+                    }
+                }
+            }
+
+            while (linha != null) {
+                String[] colunas = linha.split(separador);
+                for (int i = 0; i < colunas.length; i++) {
+                    if (i == (coluna - 1)) {
+                        continue;
+                    }
+                    if ((i + 1) == colunas.length) {
+                        novaLinha += colunas[i] + "\n";
+                    } else if (coluna == colunas.length && (i + 2) == colunas.length) {
+                        novaLinha += colunas[i] + "\n";
+                    } else {
+                        novaLinha += colunas[i] + ConstDataset.SEPARATOR;
+                    }
+                }
+
+                write.write(novaLinha);
+                linha = buffer.readLine();
+            }
+            write.close();
+            osw.close();
+            output.close();
+            buffer.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public static LinkedList<String> extractNamesColumnFromFile(String separador, String inputSource) {
+        try (BufferedReader buffer = FileUtil.readFile(inputSource)) {
+            LinkedList<String> nameColumns = new LinkedList<>();
+
+            String linha = buffer.readLine();
+            if (FileUtil.getFileExtension(inputSource).equals("arff")) {
+                while (linha != null) {
+                    if (linha.contains("@ATTRIBUTE")) {
+                        String[] column = linha.split(" ")[1].replace(".", ",").split(","); // Need Review for char '\t'
+                        nameColumns.add(column[column.length - 1]);
+                        linha = buffer.readLine();
+                    } else if (linha.contains("@DATA")) {
+                        break;
+                    } else {
+                        linha = buffer.readLine();
+                    }
+                }
+            } else {
+                for (String s : linha.split(separador)) {
+                    nameColumns.add(s);
+                }
+            }
+
+            buffer.close();
+            return nameColumns;
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        return null;
     }
 
     /**
@@ -397,6 +507,16 @@ public class FileUtil {
             ext = s.substring(i + 1).toLowerCase();
         }
         return ext;
+    }
+
+    public static Boolean saveTextToBytes(String texto, File diretorio) {
+        byte bytes[] = texto.getBytes();
+        try (FileOutputStream local = new FileOutputStream(diretorio)) {
+            local.write(bytes);
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
     }
 
 }

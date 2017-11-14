@@ -54,7 +54,28 @@ public class DesktopView {
             processingFeatures.ajustLineColumns(lineColumns);
             if (!lineColumns.isEmpty()) {
                 getData().clear();
-                setData(HandleGenericDataset.convertLineColumnsToGenericData(lineColumns));
+                setData(HandleGenericDataset.convertColumnsToGenericData(lineColumns));
+                HandleGenericDataset.addClassToGenericData(getData(), getClasses());
+            }
+        }
+    }
+
+    public void dataFusionProcessing(JList lt_dataFusionRight, String nameDataset) {
+        LinkedList<String> methodsFusion = new LinkedList<>();
+        if (lt_dataFusionRight.getModel().getSize() != 0) {
+            for (int i = 0; i < lt_dataFusionRight.getModel().getSize(); i++) {
+                methodsFusion.add(lt_dataFusionRight.getModel().getElementAt(i).toString());
+            }
+        }
+        if (!methodsFusion.isEmpty()) {
+            LinkedList<LinkedList<String>> lineColumns = processingFeatures.applyDataFusionProcessing(
+                    methodsFusion, getData(), nameDataset);
+            processingFeatures.ajustLineColumns(lineColumns);
+            if (!lineColumns.isEmpty()) {
+                getClasses().clear();
+                setClasses(processingFeatures.getClassesFromData(getData()));
+                getData().clear();
+                setData(HandleGenericDataset.convertColumnsToGenericData(lineColumns));
                 HandleGenericDataset.addClassToGenericData(getData(), getClasses());
             }
         }
@@ -73,7 +94,7 @@ public class DesktopView {
             processingFeatures.ajustLineColumns(lineColumns);
             if (!lineColumns.isEmpty()) {
                 getData().clear();
-                setData(HandleGenericDataset.convertLineColumnsToGenericData(lineColumns));
+                setData(HandleGenericDataset.convertColumnsToGenericData(lineColumns));
                 HandleGenericDataset.addClassToGenericData(getData(), getClasses());
             }
         }
@@ -98,7 +119,7 @@ public class DesktopView {
                     window * hertz, voltar, hertz);
             if (!lineColumns.isEmpty()) {
                 getDataFeatures().clear();
-                setDataFeatures(HandleGenericDataset.convertLineColumnsToGenericData(lineColumns));
+                setDataFeatures(HandleGenericDataset.convertColumnsToGenericData(lineColumns));
                 HandleGenericDataset.addClassToGenericData(getDataFeatures(), getClasses());
             }
         }
@@ -275,12 +296,14 @@ public class DesktopView {
         }
     }
 
-    public void updateConfigLists(List<String> signalSelection, List<String> filters, List<String> principalFeatures,
-            List<String> timeFeatures, List<String> frequencyFeatures) {
+    public void updateConfigLists(List<String> signalSelection, List<String> filters, List<String> dataFusion,
+            List<String> principalFeatures, List<String> timeFeatures, List<String> frequencyFeatures) {
         if (ConstGeneral.CURRENT_INTERNAL_FRAME != null) {
-            ConstGeneral.CURRENT_INTERNAL_FRAME.updateConfigLists(signalSelection, filters, principalFeatures, timeFeatures, frequencyFeatures);
+            ConstGeneral.CURRENT_INTERNAL_FRAME.updateConfigLists(signalSelection, filters, dataFusion,
+                    principalFeatures, timeFeatures, frequencyFeatures);
         } else if (ConstGeneral.CURRENT_BOX != null) {
-            ConstGeneral.CURRENT_BOX.updateConfigLists(signalSelection, filters, principalFeatures, timeFeatures, frequencyFeatures);
+            ConstGeneral.CURRENT_BOX.updateConfigLists(signalSelection, filters, dataFusion, principalFeatures,
+                    timeFeatures, frequencyFeatures);
         }
     }
 
@@ -383,6 +406,13 @@ public class DesktopView {
         defaultListModel.addElement(ConstGeneral.SP_bandPass);
         defaultListModel.addElement(ConstGeneral.SP_HighPass);
         defaultListModel.addElement(ConstGeneral.SP_MovingAverageFilter);
+        list.setModel(defaultListModel);
+    }
+
+    public void fillDataFusionList(JList list) {
+        DefaultListModel defaultListModel = new DefaultListModel<>();
+        defaultListModel.addElement(ConstGeneral.DF_MAGNITUDE);
+        defaultListModel.addElement(ConstGeneral.DF_PCA);
         list.setModel(defaultListModel);
     }
 

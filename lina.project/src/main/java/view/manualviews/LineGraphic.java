@@ -24,6 +24,7 @@ import org.jfree.ui.Layer;
 import org.jfree.ui.LengthAdjustmentType;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.TextAnchor;
+import util.Messages;
 
 /**
  * Wesllen Sousa
@@ -131,12 +132,17 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
 
     public void addData(GenericRowBean bean) {
         for (int i = 0; i < seriesCollection.getSeriesCount(); i++) {
-            XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(i);
-            int nextItem = timeSerie.getItemCount() + 1;
-            String value = bean.getTupla().get(i);
-            timeSerie.add(nextItem, Double.parseDouble(value));
+            if (bean.getTupla().size() == seriesCollection.getSeriesCount()) {
+                XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(i);
+                int nextItem = timeSerie.getItemCount() + 1;
+                String value = bean.getTupla().get(i);
+                timeSerie.add(nextItem, Double.parseDouble(value));
 
-            //addMarker(nextItem, nextItem, Color.CYAN);
+                //addMarker(nextItem, nextItem, Color.CYAN);
+            } else {
+                Messages msg = new Messages();
+                msg.bug("Missing value!");
+            }
         }
     }
 

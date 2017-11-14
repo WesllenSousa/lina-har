@@ -75,10 +75,8 @@ public class GenericTableModel extends AbstractTableModel {
                     return bean.getTupla().get(columnIndex);
                 }
             }
-            if (bean.getClasse() != null) {
-                if (columnIndex == bean.getTupla().size()) {
-                    return bean.getClasse();
-                }
+            if (bean.getClasse() != null && columnIndex == bean.getTupla().size()) {
+                return bean.getClasse();
             }
         } else if (columnIndex == -1) {
             return bean;

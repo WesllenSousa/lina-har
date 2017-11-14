@@ -11,8 +11,9 @@ Notas de Inovação
 1) Fase
     1) Filtrar o sinal (SSA e RSSA)
     2) Substituir FFT por Wavelet no SFA
-    3) Implementar fusao no inicio, PCA, (Hendrio) e fusao das caracteristicas (Kevin)
-    4) No preprocessamento da base de dados deve ingnogar a janela com ruído, i.e., janela que contenha mais de uma atividade.
+    3) Implementar fusao no inicio, Magnitude, PCA, (Hendrio) e fusao das caracteristicas (Kevin)
+    4) Verificar outras técnicas de fusao de dados
+    5) No preprocessamento da base de dados deve ingnogar a janela com ruído, i.e., janela que contenha mais de uma atividade.
 
 2) Fase
     1) Alinhamento das palavras (Sequitur, MED - PNL, palavras com letras iguais e ordenadas, shotgun)

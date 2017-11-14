@@ -40,6 +40,7 @@ public class ComponentView {
     public void openEditView(JList list, String source) {
         LinkedList<GenericRowBean> data = HandleGenericDataset.bufferFileInMemory(ConstDataset.SEPARATOR, source);
         HandleGenericDataset.setColumnClass(data);
+        HandleGenericDataset.setColumnTimestamp(data);
         EditDataset view = new EditDataset(ConstGeneral.TELA_PRINCIPAL, true, source, data);
         view.setVisible(true);
     }

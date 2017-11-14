@@ -273,7 +273,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane13" alignment="0" pref="791" max="32767" attributes="0"/>
+                          <Component id="jScrollPane13" alignment="0" pref="734" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -362,7 +362,7 @@
                                   <Layout>
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="jScrollPane1" pref="277" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane1" pref="279" max="32767" attributes="0"/>
                                       </Group>
                                     </DimensionLayout>
                                     <DimensionLayout dim="1">
@@ -432,7 +432,7 @@
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" alignment="0" attributes="0">
                                                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                                                  <Component id="jScrollPane18" pref="105" max="32767" attributes="0"/>
+                                                  <Component id="jScrollPane18" pref="106" max="32767" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                       <Component id="bt_signalSelectionLeft1" max="32767" attributes="0"/>
@@ -441,7 +441,7 @@
                                                       <Component id="bt_signalSelectionRight" alignment="0" max="32767" attributes="0"/>
                                                   </Group>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jScrollPane19" pref="106" max="32767" attributes="0"/>
+                                                  <Component id="jScrollPane19" pref="107" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -565,7 +565,7 @@
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="tf_windowSec" pref="156" max="32767" attributes="0"/>
+                                                  <Component id="tf_windowSec" pref="158" max="32767" attributes="0"/>
                                                   <Component id="tf_frequency" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
@@ -651,7 +651,7 @@
                                 <DimensionLayout dim="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jPanel12" max="32767" attributes="0"/>
-                                      <Component id="jPanel14" max="32767" attributes="0"/>
+                                      <Component id="jPanel21" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -659,7 +659,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jPanel14" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jPanel21" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="13" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -679,7 +679,7 @@
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jScrollPane5" pref="106" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane5" pref="107" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="bt_filtersLeft" alignment="0" max="32767" attributes="0"/>
@@ -688,7 +688,7 @@
                                                   <Component id="bt_signalSelectionLeft4" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane22" pref="106" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane22" pref="107" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                     </DimensionLayout>
@@ -792,11 +792,11 @@
                                     </Component>
                                   </SubComponents>
                                 </Container>
-                                <Container class="javax.swing.JPanel" name="jPanel14">
+                                <Container class="javax.swing.JPanel" name="jPanel21">
                                   <Properties>
                                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                                        <TitledBorder title="Principal Features"/>
+                                        <TitledBorder title="Data fusion"/>
                                       </Border>
                                     </Property>
                                   </Properties>
@@ -805,58 +805,55 @@
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jScrollPane6" pref="106" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane8" pref="107" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="bt_principalFeatureLeft" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="bt_principalFeatureRight" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="bt_signalSelectionLeft5" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="bt_signalSelectionLeft6" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="bt_filtersLeft1" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="bt_filtersRight1" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="bt_signalSelectionLeft11" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="bt_signalSelectionLeft12" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane27" pref="106" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane23" pref="107" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                     </DimensionLayout>
                                     <DimensionLayout dim="1">
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jScrollPane6" alignment="0" pref="165" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane8" alignment="0" pref="160" max="32767" attributes="0"/>
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="bt_signalSelectionLeft5" min="-2" max="-2" attributes="0"/>
+                                              <Component id="bt_signalSelectionLeft11" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="bt_principalFeatureLeft" min="-2" max="-2" attributes="0"/>
+                                              <Component id="bt_filtersLeft1" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="bt_principalFeatureRight" min="-2" max="-2" attributes="0"/>
+                                              <Component id="bt_filtersRight1" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="bt_signalSelectionLeft6" min="-2" max="-2" attributes="0"/>
+                                              <Component id="bt_signalSelectionLeft12" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace max="32767" attributes="0"/>
                                           </Group>
-                                          <Component id="jScrollPane27" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane23" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                     </DimensionLayout>
                                   </Layout>
                                   <SubComponents>
-                                    <Container class="javax.swing.JScrollPane" name="jScrollPane6">
+                                    <Container class="javax.swing.JScrollPane" name="jScrollPane8">
                                       <AuxValues>
                                         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                                       </AuxValues>
 
                                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                                       <SubComponents>
-                                        <Component class="javax.swing.JList" name="lt_principalFeaturesLeft">
+                                        <Component class="javax.swing.JList" name="lt_dataFusionLeft">
                                           <Properties>
                                             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                                              <StringArray count="5">
-                                                <StringItem index="0" value="Magnitude "/>
-                                                <StringItem index="1" value="FFT"/>
-                                                <StringItem index="2" value="Vertical"/>
-                                                <StringItem index="3" value="Horizontal"/>
-                                                <StringItem index="4" value="Wavelet"/>
+                                              <StringArray count="2">
+                                                <StringItem index="0" value="Magnitude"/>
+                                                <StringItem index="1" value="PCA"/>
                                               </StringArray>
                                             </Property>
                                           </Properties>
                                           <Events>
-                                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_principalFeaturesLeftMouseClicked"/>
+                                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_dataFusionLeftMouseClicked"/>
                                           </Events>
                                           <AuxValues>
                                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -864,37 +861,37 @@
                                         </Component>
                                       </SubComponents>
                                     </Container>
-                                    <Component class="javax.swing.JButton" name="bt_principalFeatureRight">
+                                    <Component class="javax.swing.JButton" name="bt_filtersRight1">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="&lt;"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_principalFeatureRightActionPerformed"/>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_filtersRight1ActionPerformed"/>
                                       </Events>
                                     </Component>
-                                    <Component class="javax.swing.JButton" name="bt_principalFeatureLeft">
+                                    <Component class="javax.swing.JButton" name="bt_filtersLeft1">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="&gt;"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_principalFeatureLeftActionPerformed"/>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_filtersLeft1ActionPerformed"/>
                                       </Events>
                                     </Component>
-                                    <Container class="javax.swing.JScrollPane" name="jScrollPane27">
+                                    <Container class="javax.swing.JScrollPane" name="jScrollPane23">
                                       <AuxValues>
                                         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                                       </AuxValues>
 
                                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                                       <SubComponents>
-                                        <Component class="javax.swing.JList" name="lt_principalFeaturesRight">
+                                        <Component class="javax.swing.JList" name="lt_dataFusionRight">
                                           <Properties>
                                             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                                               <StringArray count="0"/>
                                             </Property>
                                           </Properties>
                                           <Events>
-                                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_principalFeaturesRightMouseClicked"/>
+                                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_dataFusionRightMouseClicked"/>
                                           </Events>
                                           <AuxValues>
                                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -902,20 +899,20 @@
                                         </Component>
                                       </SubComponents>
                                     </Container>
-                                    <Component class="javax.swing.JButton" name="bt_signalSelectionLeft5">
+                                    <Component class="javax.swing.JButton" name="bt_signalSelectionLeft11">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_signalSelectionLeft5ActionPerformed"/>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_signalSelectionLeft11ActionPerformed"/>
                                       </Events>
                                     </Component>
-                                    <Component class="javax.swing.JButton" name="bt_signalSelectionLeft6">
+                                    <Component class="javax.swing.JButton" name="bt_signalSelectionLeft12">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="&lt;&lt;"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_signalSelectionLeft6ActionPerformed"/>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_signalSelectionLeft12ActionPerformed"/>
                                       </Events>
                                     </Component>
                                   </SubComponents>
@@ -937,15 +934,18 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jPanel15" max="32767" attributes="0"/>
                                       <Component id="jPanel27" max="32767" attributes="0"/>
+                                      <Component id="jPanel14" alignment="1" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="1" attributes="0">
+                                          <Component id="jPanel14" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
                                           <Component id="jPanel15" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
                                           <Component id="jPanel27" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>
@@ -964,7 +964,7 @@
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jScrollPane20" pref="106" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane20" pref="107" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="bt_timeFeatureLeft" alignment="0" max="32767" attributes="0"/>
@@ -973,7 +973,7 @@
                                                   <Component id="bt_timeFeatureRight" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane24" pref="106" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane24" pref="107" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                     </DimensionLayout>
@@ -1103,7 +1103,7 @@
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jScrollPane21" pref="106" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane21" pref="107" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="bt_frequencyFeatureLeft" alignment="0" max="32767" attributes="0"/>
@@ -1112,7 +1112,7 @@
                                                   <Component id="bt_signalSelectionLeft10" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane25" pref="106" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane25" pref="107" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                     </DimensionLayout>
@@ -1221,6 +1221,134 @@
                                     </Component>
                                   </SubComponents>
                                 </Container>
+                                <Container class="javax.swing.JPanel" name="jPanel14">
+                                  <Properties>
+                                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                                      <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                                        <TitledBorder title="Principal Features"/>
+                                      </Border>
+                                    </Property>
+                                  </Properties>
+
+                                  <Layout>
+                                    <DimensionLayout dim="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jScrollPane6" pref="107" max="32767" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="bt_principalFeatureLeft" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="bt_principalFeatureRight" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="bt_signalSelectionLeft5" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="bt_signalSelectionLeft6" alignment="0" max="32767" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jScrollPane27" pref="107" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                    </DimensionLayout>
+                                    <DimensionLayout dim="1">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jScrollPane6" alignment="0" pref="165" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="bt_signalSelectionLeft5" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="bt_principalFeatureLeft" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="bt_principalFeatureRight" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="bt_signalSelectionLeft6" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                          </Group>
+                                          <Component id="jScrollPane27" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                    </DimensionLayout>
+                                  </Layout>
+                                  <SubComponents>
+                                    <Container class="javax.swing.JScrollPane" name="jScrollPane6">
+                                      <AuxValues>
+                                        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                                      </AuxValues>
+
+                                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                                      <SubComponents>
+                                        <Component class="javax.swing.JList" name="lt_principalFeaturesLeft">
+                                          <Properties>
+                                            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                                              <StringArray count="5">
+                                                <StringItem index="0" value="Magnitude "/>
+                                                <StringItem index="1" value="FFT"/>
+                                                <StringItem index="2" value="Vertical"/>
+                                                <StringItem index="3" value="Horizontal"/>
+                                                <StringItem index="4" value="Wavelet"/>
+                                              </StringArray>
+                                            </Property>
+                                          </Properties>
+                                          <Events>
+                                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_principalFeaturesLeftMouseClicked"/>
+                                          </Events>
+                                          <AuxValues>
+                                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                                          </AuxValues>
+                                        </Component>
+                                      </SubComponents>
+                                    </Container>
+                                    <Component class="javax.swing.JButton" name="bt_principalFeatureRight">
+                                      <Properties>
+                                        <Property name="text" type="java.lang.String" value="&lt;"/>
+                                      </Properties>
+                                      <Events>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_principalFeatureRightActionPerformed"/>
+                                      </Events>
+                                    </Component>
+                                    <Component class="javax.swing.JButton" name="bt_principalFeatureLeft">
+                                      <Properties>
+                                        <Property name="text" type="java.lang.String" value="&gt;"/>
+                                      </Properties>
+                                      <Events>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_principalFeatureLeftActionPerformed"/>
+                                      </Events>
+                                    </Component>
+                                    <Container class="javax.swing.JScrollPane" name="jScrollPane27">
+                                      <AuxValues>
+                                        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                                      </AuxValues>
+
+                                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                                      <SubComponents>
+                                        <Component class="javax.swing.JList" name="lt_principalFeaturesRight">
+                                          <Properties>
+                                            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                                              <StringArray count="0"/>
+                                            </Property>
+                                          </Properties>
+                                          <Events>
+                                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lt_principalFeaturesRightMouseClicked"/>
+                                          </Events>
+                                          <AuxValues>
+                                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                                          </AuxValues>
+                                        </Component>
+                                      </SubComponents>
+                                    </Container>
+                                    <Component class="javax.swing.JButton" name="bt_signalSelectionLeft5">
+                                      <Properties>
+                                        <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
+                                      </Properties>
+                                      <Events>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_signalSelectionLeft5ActionPerformed"/>
+                                      </Events>
+                                    </Component>
+                                    <Component class="javax.swing.JButton" name="bt_signalSelectionLeft6">
+                                      <Properties>
+                                        <Property name="text" type="java.lang.String" value="&lt;&lt;"/>
+                                      </Properties>
+                                      <Events>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_signalSelectionLeft6ActionPerformed"/>
+                                      </Events>
+                                    </Component>
+                                  </SubComponents>
+                                </Container>
                               </SubComponents>
                             </Container>
                           </SubComponents>
@@ -1300,7 +1428,7 @@
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="761" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="704" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -1355,9 +1483,10 @@
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jPanel31" alignment="1" max="32767" attributes="0"/>
                                   <Component id="jPanel36" alignment="0" max="32767" attributes="0"/>
                                   <Component id="pn_trainTest" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jPanel31" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jButton3" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -1367,12 +1496,14 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel31" linkSize="2" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jPanel31" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="pn_trainTest" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel36" linkSize="2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="214" max="32767" attributes="0"/>
+                              <Component id="jPanel36" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="119" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1390,12 +1521,12 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane10" alignment="0" pref="263" max="32767" attributes="0"/>
+                              <Component id="jScrollPane10" alignment="0" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane10" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jScrollPane10" alignment="0" pref="152" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -1542,6 +1673,14 @@
                         </Component>
                       </SubComponents>
                     </Container>
+                    <Component class="javax.swing.JButton" name="jButton3">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Parameters"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+                      </Events>
+                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="jPanel34">
@@ -1594,7 +1733,7 @@
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane12" alignment="0" pref="740" max="32767" attributes="0"/>
+                              <Component id="jScrollPane12" alignment="0" pref="683" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -1744,7 +1883,7 @@
                               <Component id="jPanel30" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel29" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="429" max="32767" attributes="0"/>
+                              <EmptySpace pref="372" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1890,7 +2029,7 @@
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane11" alignment="0" pref="766" max="32767" attributes="0"/>
+                              <Component id="jScrollPane11" alignment="0" pref="709" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -1995,7 +2134,7 @@
                                       <Component id="jPanel26" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="132" max="32767" attributes="0"/>
+                                      <EmptySpace pref="75" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2572,7 +2711,7 @@
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jScrollPane3" pref="541" max="32767" attributes="0"/>
+                                      <Component id="jScrollPane3" pref="484" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="lb_tableInfo" min="-2" max="-2" attributes="0"/>
                                   </Group>

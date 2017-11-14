@@ -3,6 +3,7 @@ package util;
 import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -169,6 +170,24 @@ public class SwingUtil {
             values.add(enumeration.nextElement().toString());
         }
         return values;
+    }
+    
+    public static Comparator getComparadorString() {
+        Comparator comparator = new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                String valor1 = null;
+                String valor2 = null;
+                try {
+                    valor1 = (String) o1;
+                    valor2 = (String) o2;
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                return valor1.compareTo(valor2);
+            }
+        };
+        return comparator;
     }
 
 }

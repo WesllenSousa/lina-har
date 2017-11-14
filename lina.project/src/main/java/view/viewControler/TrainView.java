@@ -54,7 +54,8 @@ public class TrainView {
 
     public void executeTrain(String dataset, String algorithm) {
         WekaUtil wekaUtil = new WekaUtil();
-        LinkedList<String> columns = HandleGenericDataset.extractNamesColumnFromFile(ConstDataset.SEPARATOR, ConstDataset.DS_TRAIN + dataset);
+        LinkedList<String> columns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR, 
+                ConstDataset.DS_TRAIN + dataset);
         wekaUtil.readData(ConstDataset.DS_TRAIN + dataset, columns.size());
 
         Classifier classifier = null;
@@ -118,11 +119,17 @@ public class TrainView {
                     ConstDataset.DS_TEST + test, ConstDataset.SEPARATOR, true);
 
             if (trainSamples.length == 0 || testSamples.length == 0) {
-                messages.aviso("Dataset format incorrect!");
+                messages.aviso("Dataset format incorrect!\n"
+                        + "Check separator config!");
+                return;
+            }
+            if (trainSamples[0].getLength() < window) {
+                window = trainSamples[0].getLength();
             }
 
             controle.SFA.classification.Classifier.DEBUG = true;
             controle.SFA.classification.Classifier classifier = null;
+            controle.SFA.classification.Classifier.resultString = "";
 
             if (algorithm.equals(ConstGeneral.AL_BOSS_MODEL)) {
                 classifier = new BOSSClassifier(trainSamples, testSamples, window);

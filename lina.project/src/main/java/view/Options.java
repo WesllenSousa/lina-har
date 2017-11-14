@@ -21,6 +21,19 @@ public class Options extends javax.swing.JDialog {
 
         fillPreprocessingOptions();
         fillSymbolicOptions();
+        fillSegmentation();
+    }
+    
+    public Options(java.awt.Frame parent, boolean modal, int tab) {
+        super(parent, modal);
+        initComponents();
+        this.setLocationRelativeTo(null);
+        
+        tb_pane.setSelectedIndex(tab);
+
+        fillPreprocessingOptions();
+        fillSymbolicOptions();
+        fillSegmentation();
     }
 
     @SuppressWarnings("unchecked")
@@ -28,7 +41,7 @@ public class Options extends javax.swing.JDialog {
     private void initComponents() {
 
         jButton2 = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tb_pane = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         tf_dateFormat = new javax.swing.JTextField();
@@ -39,10 +52,6 @@ public class Options extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         tf_columnTimestamp = new javax.swing.JTextField();
         bt_preprocessing = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
-        tf_windowSec = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
-        tf_frequency = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -52,16 +61,22 @@ public class Options extends javax.swing.JDialog {
         bt_symbolic = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         tf_fallThPagehinkey = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        tf_maxWinLegth = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        tf_minWinLegth = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         tf_maxSymbol = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         tf_maxWordLegth = new javax.swing.JTextField();
         tf_minWordLength = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        tf_windowSec = new javax.swing.JTextField();
+        tf_frequency = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        bt_preprocessing1 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        tf_minWinLegth = new javax.swing.JTextField();
+        tf_maxWinLegth = new javax.swing.JTextField();
 
         jButton2.setText("Apply");
 
@@ -83,10 +98,6 @@ public class Options extends javax.swing.JDialog {
             }
         });
 
-        jLabel12.setText("Windows sec:");
-
-        jLabel13.setText("Frequency:");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -99,8 +110,6 @@ public class Options extends javax.swing.JDialog {
                         .addComponent(bt_preprocessing, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -110,9 +119,7 @@ public class Options extends javax.swing.JDialog {
                             .addComponent(tf_separatorFile, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                             .addComponent(tf_dateFormat)
                             .addComponent(tf_columnClass, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tf_columnTimestamp)
-                            .addComponent(tf_windowSec, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tf_frequency, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(tf_columnTimestamp))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -134,20 +141,12 @@ public class Options extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(tf_columnTimestamp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(tf_windowSec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(tf_frequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(bt_preprocessing)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Preprocessing", jPanel2);
+        tb_pane.addTab("Preprocessing", jPanel2);
 
         jLabel1.setText("Speed streaming:");
 
@@ -170,11 +169,7 @@ public class Options extends javax.swing.JDialog {
 
         jLabel6.setText("Threshold Page Hinkley:");
 
-        jLabel7.setText("Max window length:");
-
-        jLabel8.setText("Min window length:");
-
-        jLabel9.setText("Max symbol:");
+        jLabel9.setText("Amount of symbol:");
 
         jLabel10.setText("Max word length:");
 
@@ -204,14 +199,10 @@ public class Options extends javax.swing.JDialog {
                             .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tf_fallThPagehinkey)
-                            .addComponent(tf_maxWinLegth)
-                            .addComponent(tf_minWinLegth)
                             .addComponent(tf_maxSymbol)
                             .addComponent(tf_maxWordLegth)
                             .addComponent(tf_minWordLength, javax.swing.GroupLayout.Alignment.TRAILING))))
@@ -234,14 +225,6 @@ public class Options extends javax.swing.JDialog {
                     .addComponent(tf_fallThPagehinkey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(tf_maxWinLegth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(tf_minWinLegth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(tf_maxSymbol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -252,22 +235,87 @@ public class Options extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(tf_minWordLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(bt_symbolic)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Symbolic", jPanel1);
+        tb_pane.addTab("Symbolic", jPanel1);
+
+        jLabel12.setText("Windows sec:");
+
+        jLabel13.setText("Frequency:");
+
+        bt_preprocessing1.setText("Apply");
+        bt_preprocessing1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_preprocessing1ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Max window length:");
+
+        jLabel8.setText("Min window length:");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(bt_preprocessing1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tf_windowSec, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                            .addComponent(tf_frequency, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tf_minWinLegth)
+                            .addComponent(tf_maxWinLegth, javax.swing.GroupLayout.Alignment.LEADING))))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(tf_frequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(tf_windowSec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(tf_maxWinLegth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(tf_minWinLegth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addComponent(bt_preprocessing1)
+                .addContainerGap())
+        );
+
+        tb_pane.addTab("Segmentation", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(tb_pane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(tb_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
         );
 
         pack();
@@ -281,12 +329,6 @@ public class Options extends javax.swing.JDialog {
         }
         if (tf_fallThPagehinkey.getText() != null && Validation.isDouble(tf_fallThPagehinkey.getText())) {
             ConstGeneral.PERCENT_QUEDA_THRESHOULD = Double.parseDouble(tf_fallThPagehinkey.getText());
-        }
-        if (tf_maxWinLegth.getText() != null && Validation.isInteger(tf_maxWinLegth.getText())) {
-            Parameters.MAX_WINDOW_LENGTH = Integer.parseInt(tf_maxWinLegth.getText());
-        }
-        if (tf_minWinLegth.getText() != null && Validation.isInteger(tf_minWinLegth.getText())) {
-            Parameters.MIN_WINDOW_LENGTH = Integer.parseInt(tf_minWinLegth.getText());
         }
         if (tf_maxSymbol.getText() != null && Validation.isInteger(tf_maxSymbol.getText())) {
             Parameters.MAX_SYMBOL = Integer.parseInt(tf_maxSymbol.getText());
@@ -313,17 +355,28 @@ public class Options extends javax.swing.JDialog {
         if (!Validation.isEmptyString(tf_columnTimestamp.getText())) {
             ConstDataset.TIMESTAMP = tf_columnTimestamp.getText();
         }
-        if (!Validation.isEmptyString(tf_windowSec.getText()) && Validation.isInteger(tf_windowSec.getText())) {
-            Parameters.WINDOW_SEC = Integer.parseInt(tf_windowSec.getText());
-        }
-        if (!Validation.isEmptyString(tf_frequency.getText()) && Validation.isInteger(tf_frequency.getText())) {
-            Parameters.FREQUENCY = Integer.parseInt(tf_frequency.getText());
-        }
         dispose();
     }//GEN-LAST:event_bt_preprocessingActionPerformed
 
+    private void bt_preprocessing1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_preprocessing1ActionPerformed
+        if (!Validation.isEmptyString(tf_frequency.getText()) && Validation.isInteger(tf_frequency.getText())) {
+            Parameters.FREQUENCY = Integer.parseInt(tf_frequency.getText());
+        }
+        if (!Validation.isEmptyString(tf_windowSec.getText()) && Validation.isInteger(tf_windowSec.getText())) {
+            Parameters.WINDOW_SEC = Integer.parseInt(tf_windowSec.getText());
+        }
+        if (tf_maxWinLegth.getText() != null && Validation.isInteger(tf_maxWinLegth.getText())) {
+            Parameters.MAX_WINDOW_LENGTH = Integer.parseInt(tf_maxWinLegth.getText());
+        }
+        if (tf_minWinLegth.getText() != null && Validation.isInteger(tf_minWinLegth.getText())) {
+            Parameters.MIN_WINDOW_LENGTH = Integer.parseInt(tf_minWinLegth.getText());
+        }
+        dispose();
+    }//GEN-LAST:event_bt_preprocessing1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_preprocessing;
+    private javax.swing.JButton bt_preprocessing1;
     private javax.swing.JButton bt_symbolic;
     private javax.swing.JCheckBox ck_clearHist;
     private javax.swing.JButton jButton2;
@@ -342,10 +395,11 @@ public class Options extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane tb_pane;
     private javax.swing.JTextField tf_columnClass;
     private javax.swing.JTextField tf_columnTimestamp;
     private javax.swing.JTextField tf_dateFormat;
@@ -365,18 +419,21 @@ public class Options extends javax.swing.JDialog {
         tf_separatorFile.setText(ConstDataset.SEPARATOR);
         tf_columnClass.setText(ConstDataset.CLASS);
         tf_columnTimestamp.setText(ConstDataset.TIMESTAMP);
-        tf_windowSec.setText(Parameters.WINDOW_SEC + "");
-        tf_frequency.setText(Parameters.FREQUENCY + "");
     }
 
     private void fillSymbolicOptions() {
         ck_clearHist.setSelected(ConstGeneral.CLEAR_HIST);
         tf_fallThPagehinkey.setText(ConstGeneral.PERCENT_QUEDA_THRESHOULD + "");
-        tf_maxWinLegth.setText(Parameters.MAX_WINDOW_LENGTH + "");
-        tf_minWinLegth.setText(Parameters.MIN_WINDOW_LENGTH + "");
         tf_maxSymbol.setText(Parameters.MAX_SYMBOL + "");
         tf_maxWordLegth.setText(Parameters.MAX_WORD_LENGTH + "");
         tf_minWordLength.setText(Parameters.MIN_WORD_LENGTH + "");
+    }
+
+    private void fillSegmentation() {
+        tf_frequency.setText(Parameters.FREQUENCY + "");
+        tf_windowSec.setText(Parameters.WINDOW_SEC + "");
+        tf_maxWinLegth.setText(Parameters.MAX_WINDOW_LENGTH + "");
+        tf_minWinLegth.setText(Parameters.MIN_WINDOW_LENGTH + "");
     }
 
 }

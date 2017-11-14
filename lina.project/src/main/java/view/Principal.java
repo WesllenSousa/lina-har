@@ -140,15 +140,15 @@ public class Principal extends javax.swing.JFrame {
         lt_filtersRight = new javax.swing.JList<>();
         bt_signalSelectionLeft3 = new javax.swing.JButton();
         bt_signalSelectionLeft4 = new javax.swing.JButton();
-        jPanel14 = new javax.swing.JPanel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        lt_principalFeaturesLeft = new javax.swing.JList<>();
-        bt_principalFeatureRight = new javax.swing.JButton();
-        bt_principalFeatureLeft = new javax.swing.JButton();
-        jScrollPane27 = new javax.swing.JScrollPane();
-        lt_principalFeaturesRight = new javax.swing.JList<>();
-        bt_signalSelectionLeft5 = new javax.swing.JButton();
-        bt_signalSelectionLeft6 = new javax.swing.JButton();
+        jPanel21 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        lt_dataFusionLeft = new javax.swing.JList<>();
+        bt_filtersRight1 = new javax.swing.JButton();
+        bt_filtersLeft1 = new javax.swing.JButton();
+        jScrollPane23 = new javax.swing.JScrollPane();
+        lt_dataFusionRight = new javax.swing.JList<>();
+        bt_signalSelectionLeft11 = new javax.swing.JButton();
+        bt_signalSelectionLeft12 = new javax.swing.JButton();
         tb_3 = new javax.swing.JToggleButton();
         pn_3 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
@@ -169,6 +169,15 @@ public class Principal extends javax.swing.JFrame {
         lt_frequencyFeaturesRight = new javax.swing.JList<>();
         bt_signalSelectionLeft9 = new javax.swing.JButton();
         bt_signalSelectionLeft10 = new javax.swing.JButton();
+        jPanel14 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        lt_principalFeaturesLeft = new javax.swing.JList<>();
+        bt_principalFeatureRight = new javax.swing.JButton();
+        bt_principalFeatureLeft = new javax.swing.JButton();
+        jScrollPane27 = new javax.swing.JScrollPane();
+        lt_principalFeaturesRight = new javax.swing.JList<>();
+        bt_signalSelectionLeft5 = new javax.swing.JButton();
+        bt_signalSelectionLeft6 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         tb_desktop = new javax.swing.JTabbedPane();
         dp_preprocessing = new javax.swing.JDesktopPane();
@@ -186,6 +195,7 @@ public class Principal extends javax.swing.JFrame {
         sp_trainTest = new javax.swing.JScrollPane();
         lt_trainDataTest = new javax.swing.JList<>();
         ck_trainUserTest = new javax.swing.JCheckBox();
+        jButton3 = new javax.swing.JButton();
         jPanel34 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jScrollPane12 = new javax.swing.JScrollPane();
@@ -411,7 +421,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,7 +478,7 @@ public class Principal extends javax.swing.JFrame {
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel25Layout.createSequentialGroup()
                 .addGap(1, 1, 1)
-                .addComponent(jScrollPane18, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                .addComponent(jScrollPane18, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bt_signalSelectionLeft1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -476,7 +486,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(bt_signalSelectionLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bt_signalSelectionRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane19, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                .addComponent(jScrollPane19, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -537,7 +547,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tf_windowSec, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(tf_windowSec, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                     .addComponent(tf_frequency)))
             .addComponent(sl_overlap, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -640,7 +650,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bt_filtersLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -648,7 +658,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(bt_signalSelectionLeft3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bt_signalSelectionLeft4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane22, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                .addComponent(jScrollPane22, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -665,83 +675,83 @@ public class Principal extends javax.swing.JFrame {
             .addComponent(jScrollPane22)
         );
 
-        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Principal Features"));
+        jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder("Data fusion"));
 
-        lt_principalFeaturesLeft.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Magnitude ", "FFT", "Vertical", "Horizontal", "Wavelet" };
+        lt_dataFusionLeft.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Magnitude", "PCA" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        lt_principalFeaturesLeft.addMouseListener(new java.awt.event.MouseAdapter() {
+        lt_dataFusionLeft.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lt_principalFeaturesLeftMouseClicked(evt);
+                lt_dataFusionLeftMouseClicked(evt);
             }
         });
-        jScrollPane6.setViewportView(lt_principalFeaturesLeft);
+        jScrollPane8.setViewportView(lt_dataFusionLeft);
 
-        bt_principalFeatureRight.setText("<");
-        bt_principalFeatureRight.addActionListener(new java.awt.event.ActionListener() {
+        bt_filtersRight1.setText("<");
+        bt_filtersRight1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_principalFeatureRightActionPerformed(evt);
+                bt_filtersRight1ActionPerformed(evt);
             }
         });
 
-        bt_principalFeatureLeft.setText(">");
-        bt_principalFeatureLeft.addActionListener(new java.awt.event.ActionListener() {
+        bt_filtersLeft1.setText(">");
+        bt_filtersLeft1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_principalFeatureLeftActionPerformed(evt);
+                bt_filtersLeft1ActionPerformed(evt);
             }
         });
 
-        lt_principalFeaturesRight.addMouseListener(new java.awt.event.MouseAdapter() {
+        lt_dataFusionRight.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lt_principalFeaturesRightMouseClicked(evt);
+                lt_dataFusionRightMouseClicked(evt);
             }
         });
-        jScrollPane27.setViewportView(lt_principalFeaturesRight);
+        jScrollPane23.setViewportView(lt_dataFusionRight);
 
-        bt_signalSelectionLeft5.setText(">>");
-        bt_signalSelectionLeft5.addActionListener(new java.awt.event.ActionListener() {
+        bt_signalSelectionLeft11.setText(">>");
+        bt_signalSelectionLeft11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_signalSelectionLeft5ActionPerformed(evt);
+                bt_signalSelectionLeft11ActionPerformed(evt);
             }
         });
 
-        bt_signalSelectionLeft6.setText("<<");
-        bt_signalSelectionLeft6.addActionListener(new java.awt.event.ActionListener() {
+        bt_signalSelectionLeft12.setText("<<");
+        bt_signalSelectionLeft12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_signalSelectionLeft6ActionPerformed(evt);
+                bt_signalSelectionLeft12ActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
+        jPanel21.setLayout(jPanel21Layout);
+        jPanel21Layout.setHorizontalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(bt_principalFeatureLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bt_principalFeatureRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bt_signalSelectionLeft5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bt_signalSelectionLeft6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bt_filtersLeft1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_filtersRight1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_signalSelectionLeft11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_signalSelectionLeft12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane27, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                .addComponent(jScrollPane23, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
         );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addComponent(bt_signalSelectionLeft5)
+        jPanel21Layout.setVerticalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addComponent(bt_signalSelectionLeft11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bt_principalFeatureLeft)
+                .addComponent(bt_filtersLeft1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bt_principalFeatureRight)
+                .addComponent(bt_filtersRight1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bt_signalSelectionLeft6)
+                .addComponent(bt_signalSelectionLeft12)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane27)
+            .addComponent(jScrollPane23)
         );
 
         javax.swing.GroupLayout pn_2Layout = new javax.swing.GroupLayout(pn_2);
@@ -749,14 +759,14 @@ public class Principal extends javax.swing.JFrame {
         pn_2Layout.setHorizontalGroup(
             pn_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pn_2Layout.setVerticalGroup(
             pn_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pn_2Layout.createSequentialGroup()
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 13, Short.MAX_VALUE))
         );
 
@@ -821,7 +831,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
-                .addComponent(jScrollPane20, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                .addComponent(jScrollPane20, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bt_timeFeatureLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -829,7 +839,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(bt_signalSelectionLeft8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bt_timeFeatureRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane24, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                .addComponent(jScrollPane24, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -903,7 +913,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel27Layout.setHorizontalGroup(
             jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel27Layout.createSequentialGroup()
-                .addComponent(jScrollPane21, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                .addComponent(jScrollPane21, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bt_frequencyFeatureLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -911,7 +921,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(bt_signalSelectionLeft9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bt_signalSelectionLeft10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane25, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                .addComponent(jScrollPane25, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
         );
         jPanel27Layout.setVerticalGroup(
             jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -931,20 +941,102 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Principal Features"));
+
+        lt_principalFeaturesLeft.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Magnitude ", "FFT", "Vertical", "Horizontal", "Wavelet" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        lt_principalFeaturesLeft.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lt_principalFeaturesLeftMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(lt_principalFeaturesLeft);
+
+        bt_principalFeatureRight.setText("<");
+        bt_principalFeatureRight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_principalFeatureRightActionPerformed(evt);
+            }
+        });
+
+        bt_principalFeatureLeft.setText(">");
+        bt_principalFeatureLeft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_principalFeatureLeftActionPerformed(evt);
+            }
+        });
+
+        lt_principalFeaturesRight.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lt_principalFeaturesRightMouseClicked(evt);
+            }
+        });
+        jScrollPane27.setViewportView(lt_principalFeaturesRight);
+
+        bt_signalSelectionLeft5.setText(">>");
+        bt_signalSelectionLeft5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_signalSelectionLeft5ActionPerformed(evt);
+            }
+        });
+
+        bt_signalSelectionLeft6.setText("<<");
+        bt_signalSelectionLeft6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_signalSelectionLeft6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bt_principalFeatureLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_principalFeatureRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_signalSelectionLeft5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_signalSelectionLeft6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane27, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addComponent(bt_signalSelectionLeft5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bt_principalFeatureLeft)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bt_principalFeatureRight)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bt_signalSelectionLeft6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane27)
+        );
+
         javax.swing.GroupLayout pn_3Layout = new javax.swing.GroupLayout(pn_3);
         pn_3.setLayout(pn_3Layout);
         pn_3Layout.setHorizontalGroup(
             pn_3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pn_3Layout.setVerticalGroup(
             pn_3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_3Layout.createSequentialGroup()
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pn_menuLayout = new javax.swing.GroupLayout(pn_menu);
@@ -985,7 +1077,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 791, Short.MAX_VALUE)
+            .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -1017,7 +1109,7 @@ public class Principal extends javax.swing.JFrame {
         );
         pn_boxLayout.setVerticalGroup(
             pn_boxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 761, Short.MAX_VALUE)
+            .addGap(0, 704, Short.MAX_VALUE)
         );
 
         tb_desktop.addTab("Without Graphic", pn_box);
@@ -1068,11 +1160,11 @@ public class Principal extends javax.swing.JFrame {
         jPanel31.setLayout(jPanel31Layout);
         jPanel31Layout.setHorizontalGroup(
             jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+            .addComponent(jScrollPane10)
         );
         jPanel31Layout.setVerticalGroup(
             jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane10)
+            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
         );
 
         jPanel36.setBorder(javax.swing.BorderFactory.createTitledBorder("Algorithms"));
@@ -1132,6 +1224,13 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(sp_trainTest))
         );
 
+        jButton3.setText("Parameters");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
         jPanel20.setLayout(jPanel20Layout);
         jPanel20Layout.setHorizontalGroup(
@@ -1139,24 +1238,25 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel31, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pn_trainTest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pn_trainTest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel31, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pn_trainTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(214, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
-
-        jPanel20Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jPanel31, jPanel36});
 
         jSplitPane6.setLeftComponent(jPanel20);
 
@@ -1187,7 +1287,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel35Layout.setVerticalGroup(
             jPanel35Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
+            .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 683, Short.MAX_VALUE)
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Result"));
@@ -1325,7 +1425,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(429, Short.MAX_VALUE))
+                .addContainerGap(372, Short.MAX_VALUE))
         );
 
         jSplitPane5.setLeftComponent(jPanel19);
@@ -1342,7 +1442,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
+            .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel32Layout = new javax.swing.GroupLayout(jPanel32);
@@ -1646,7 +1746,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         jScrollPane4.setViewportView(jPanel11);
@@ -1731,7 +1831,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lb_tableInfo))
         );
@@ -2218,7 +2318,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_lt_timeFeaturesLeftMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Options options = new Options(this, true);
+        Options options = new Options(this, true, 0);
         options.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -2456,10 +2556,45 @@ public class Principal extends javax.swing.JFrame {
         pn_trainTest.updateUI();
     }//GEN-LAST:event_ck_trainUserTestActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Options options = new Options(this, true, 2);
+        options.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void lt_dataFusionLeftMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lt_dataFusionLeftMouseClicked
+        if (evt.getClickCount() == 2) {
+            SwingUtil.changePickListLeftRight(lt_dataFusionLeft, lt_dataFusionRight);
+        }
+    }//GEN-LAST:event_lt_dataFusionLeftMouseClicked
+
+    private void bt_filtersRight1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_filtersRight1ActionPerformed
+        SwingUtil.changePickListRightLeft(lt_dataFusionRight, lt_dataFusionLeft);
+    }//GEN-LAST:event_bt_filtersRight1ActionPerformed
+
+    private void bt_filtersLeft1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_filtersLeft1ActionPerformed
+        SwingUtil.changePickListLeftRight(lt_dataFusionLeft, lt_dataFusionRight);
+    }//GEN-LAST:event_bt_filtersLeft1ActionPerformed
+
+    private void lt_dataFusionRightMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lt_dataFusionRightMouseClicked
+        if (evt.getClickCount() == 2) {
+            SwingUtil.changePickListRightLeft(lt_dataFusionRight, lt_dataFusionLeft);
+        }
+    }//GEN-LAST:event_lt_dataFusionRightMouseClicked
+
+    private void bt_signalSelectionLeft11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_signalSelectionLeft11ActionPerformed
+        SwingUtil.changePickListLeftRightAll(lt_dataFusionLeft, lt_dataFusionRight);
+    }//GEN-LAST:event_bt_signalSelectionLeft11ActionPerformed
+
+    private void bt_signalSelectionLeft12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_signalSelectionLeft12ActionPerformed
+        SwingUtil.changePickListRightLeftAll(lt_dataFusionRight, lt_dataFusionLeft);
+    }//GEN-LAST:event_bt_signalSelectionLeft12ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bg_graphic;
     private javax.swing.JButton bt_filtersLeft;
+    private javax.swing.JButton bt_filtersLeft1;
     private javax.swing.JButton bt_filtersRight;
+    private javax.swing.JButton bt_filtersRight1;
     private javax.swing.JButton bt_frequencyFeatureLeft;
     private javax.swing.JButton bt_frequencyFeatureRight;
     private javax.swing.JButton bt_principalFeatureLeft;
@@ -2467,6 +2602,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton bt_signalSelectionLeft;
     private javax.swing.JButton bt_signalSelectionLeft1;
     private javax.swing.JButton bt_signalSelectionLeft10;
+    private javax.swing.JButton bt_signalSelectionLeft11;
+    private javax.swing.JButton bt_signalSelectionLeft12;
     private javax.swing.JButton bt_signalSelectionLeft2;
     private javax.swing.JButton bt_signalSelectionLeft3;
     private javax.swing.JButton bt_signalSelectionLeft4;
@@ -2500,6 +2637,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.ButtonGroup gp_settings;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -2531,6 +2669,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
@@ -2568,6 +2707,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane20;
     private javax.swing.JScrollPane jScrollPane21;
     private javax.swing.JScrollPane jScrollPane22;
+    private javax.swing.JScrollPane jScrollPane23;
     private javax.swing.JScrollPane jScrollPane24;
     private javax.swing.JScrollPane jScrollPane25;
     private javax.swing.JScrollPane jScrollPane27;
@@ -2576,6 +2716,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
@@ -2591,6 +2732,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel lb_tableInfo;
     private javax.swing.JList<String> lt_algorithms;
     private javax.swing.JList<String> lt_classifier;
+    private javax.swing.JList<String> lt_dataFusionLeft;
+    private javax.swing.JList<String> lt_dataFusionRight;
     private javax.swing.JList<String> lt_filtersLeft;
     private javax.swing.JList<String> lt_filtersRight;
     private javax.swing.JList<String> lt_frequencyFeaturesLeft;
@@ -2700,6 +2843,8 @@ public class Principal extends javax.swing.JFrame {
     private void resetProcessingLists() {
         desktopView.fillFiltersList(lt_filtersLeft);
         lt_filtersRight.setModel(new DefaultListModel<>());
+        desktopView.fillDataFusionList(lt_dataFusionLeft);
+        lt_dataFusionRight.setModel(new DefaultListModel<>());
         desktopView.fillPrincipalFeaturesList(lt_principalFeaturesLeft);
         lt_principalFeaturesRight.setModel(new DefaultListModel<>());
         desktopView.fillTimeFeaturesListLeft(lt_timeFeaturesLeft);
@@ -2709,7 +2854,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void fillSignalList() {
-        LinkedList<String> columns = HandleGenericDataset.extractNamesColumnFromFile(ConstDataset.SEPARATOR,
+        LinkedList<String> columns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR,
                 ConstDataset.DS_RAW + lt_rawData.getSelectedValue());
         SwingUtil.fillList(lt_signalSelectionLeft, columns);
         lt_signalSelectionRight.setModel(new DefaultListModel<>());
@@ -2768,23 +2913,25 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    public void updateConfigList(String nameDataset, List<String> signalSelection, List<String> filters, List<String> principalFeatures,
+    public void updateConfigList(String nameDataset, List<String> signalSelection, List<String> filters,
+            List<String> dataFusion, List<String> principalFeatures,
             List<String> timeFeatures, List<String> frequencyFeatures) {
         lt_rawData.setSelectedValue(nameDataset, true);
         resetSignalSelection();
         resetProcessingLists();
         fillSignalList();
         SwingUtil.fillPickListRight(lt_signalSelectionRight, lt_signalSelectionLeft, signalSelection);
-        if (!filters.isEmpty() || !principalFeatures.isEmpty()) {
+        if (!filters.isEmpty() || !dataFusion.isEmpty()) {
             SwingUtil.fillPickListRight(lt_filtersRight, lt_filtersLeft, filters);
-            SwingUtil.fillPickListRight(lt_principalFeaturesRight, lt_principalFeaturesLeft, principalFeatures);
+            SwingUtil.fillPickListRight(lt_dataFusionRight, lt_dataFusionLeft, dataFusion);
             tb_2.setSelected(true);
             pn_2.setVisible(true);
         } else {
             tb_2.setSelected(false);
             pn_2.setVisible(false);
         }
-        if (!timeFeatures.isEmpty() || !frequencyFeatures.isEmpty()) {
+        if (!principalFeatures.isEmpty() || !timeFeatures.isEmpty() || !frequencyFeatures.isEmpty()) {
+            SwingUtil.fillPickListRight(lt_principalFeaturesRight, lt_principalFeaturesLeft, principalFeatures);
             SwingUtil.fillPickListRight(lt_timeFeaturesRight, lt_timeFeaturesLeft, timeFeatures);
             SwingUtil.fillPickListRight(lt_frequencyFeaturesRight, lt_frequencyFeaturesLeft, frequencyFeatures);
             tb_3.setSelected(true);
@@ -2916,6 +3063,7 @@ public class Principal extends javax.swing.JFrame {
             Integer offset = Math.round((overlap / 100f) * Parameters.WINDOW_SEC * Parameters.FREQUENCY);
 
             desktopView.signalProcessing(lt_filtersRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY, offset);
+            desktopView.dataFusionProcessing(lt_dataFusionRight, lt_rawData.getSelectedValue());
             desktopView.principalFeatureProcessing(lt_principalFeaturesRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY, offset);
             desktopView.featureExtraction(lt_timeFeaturesRight, lt_frequencyFeaturesRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY, offset);
 
@@ -2948,12 +3096,14 @@ public class Principal extends javax.swing.JFrame {
             }
         } else {
             desktopView.setData(data);
+            desktopView.updateGraphic();
         }
     }
 
     private void updateConfigLists() {
         if (desktopView.isSelectedData()) {
-            desktopView.updateConfigLists(SwingUtil.getElementsList(lt_signalSelectionRight), SwingUtil.getElementsList(lt_filtersRight),
+            desktopView.updateConfigLists(SwingUtil.getElementsList(lt_signalSelectionRight),
+                    SwingUtil.getElementsList(lt_filtersRight), SwingUtil.getElementsList(lt_dataFusionRight),
                     SwingUtil.getElementsList(lt_principalFeaturesRight), SwingUtil.getElementsList(lt_timeFeaturesRight),
                     SwingUtil.getElementsList(lt_frequencyFeaturesRight));
         }
@@ -3015,7 +3165,7 @@ public class Principal extends javax.swing.JFrame {
         String modelDir = ConstDataset.DS_MODEL + lt_modelClassification.getSelectedValue();
 
         WekaUtil classifySamples = new WekaUtil();
-        int numberOfColumns = HandleGenericDataset.extractNamesColumnFromFile(ConstDataset.SEPARATOR, testDir).size();
+        int numberOfColumns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR, testDir).size();
         classifySamples.readData(testDir, numberOfColumns);
         Classifier classifier = classifySamples.readModel(modelDir);
 

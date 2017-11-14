@@ -16,10 +16,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.carrotsearch.hppc.FloatContainer;
 import com.carrotsearch.hppc.IntArrayDeque;
 import com.carrotsearch.hppc.IntArrayList;
+import com.carrotsearch.hppc.ObjectLongOpenHashMap;
+import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
 import com.carrotsearch.hppc.cursors.FloatCursor;
 import com.carrotsearch.hppc.cursors.IntCursor;
+import com.carrotsearch.hppc.cursors.ObjectCursor;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
+import java.util.Collections;
+import java.util.Comparator;
 
 public abstract class Classifier {
 
@@ -37,6 +42,7 @@ public abstract class Classifier {
 
     public String train;
     public String test;
+    public static String resultString = "";
 
     protected int[][] testIndices;
     protected int[][] trainIndices;
@@ -166,7 +172,8 @@ public abstract class Classifier {
                     + "> Normed: " + normed + "\n"
                     + "> Symbol: " + maxSymbol + "\n"
                     + "> Max word length: " + maxWordLength + ", Min word length: " + minWordLenth + "\n"
-                    + "> Max window length: " + maxWindowLength + ", Min window length: " + minWindowLength;
+                    + "> Max window length: " + maxWindowLength + ", Min window length: " + minWindowLength + "\n"
+                    + "Confusion Matrix: \n" + resultString;
         }
 
         @Override
@@ -202,8 +209,9 @@ public abstract class Classifier {
         String correctStr = MessageFormat.format("{0,number,#.##%}", 1 - error);
 
         System.out.print("Correct: " + correctStr + "\n");
+        resultString += "Correct: " + correctStr + "\n";
         System.out.println("Time: " + (System.currentTimeMillis() - time) / 1000.0 + " s\n");
-
+        resultString += "Time: " + (System.currentTimeMillis() - time) / 1000.0 + " s\n";
     }
 
     public static double formatError(int correct, int testSize) {
@@ -277,7 +285,7 @@ public abstract class Classifier {
         }
 
         public static <E, T> Pair<E, T> create(E e, T t) {
-            return new Pair<E, T>(e, t);
+            return new Pair<>(e, t);
         }
 
         @Override
@@ -298,6 +306,11 @@ public abstract class Classifier {
             long startTime,
             final List<Pair<String, Double>>[] labels,
             final List<Integer> currentWindowLengths) {
+
+        HashSet<String> uniqueLabels = uniqueClassLabels(samples);
+        ObjectObjectOpenHashMap<String, ObjectLongOpenHashMap> confMatrix = new ObjectObjectOpenHashMap<>(uniqueLabels.size());
+        initConfusionMatrix(confMatrix, uniqueLabels);
+
         int correctTesting = 0;
         for (int i = 0; i < labels.length; i++) {
 
@@ -322,14 +335,71 @@ public abstract class Classifier {
             }
             if (samples[i].getLabel().equals(maxLabel)) {
                 correctTesting++;
+                confMatrix.get(maxLabel).putOrAdd(maxLabel, (long) 1, (long) 1);
+            } else {
+                confMatrix.get(samples[i].getLabel()).putOrAdd(maxLabel, (long) 1, (long) 1);
             }
         }
 
         if (DEBUG) {
             System.out.println(name + " Testing with " + currentWindowLengths.size() + " models:\t");
+            resultString += name + " Testing with " + currentWindowLengths.size() + " models:\t\n";
             outputResult(correctTesting, startTime, samples.length);
+            outputConfusionMatrix(confMatrix);
         }
         return correctTesting;
+    }
+
+    protected void initConfusionMatrix(
+            final ObjectObjectOpenHashMap<String, ObjectLongOpenHashMap> matrix,
+            final HashSet<String> uniqueLabels) {
+        for (String label : uniqueLabels) {
+            ObjectLongOpenHashMap stat = matrix.get(label);
+            if (stat == null) {
+                matrix.put(label, new ObjectLongOpenHashMap(uniqueLabels.size()));
+            } else if (stat != null) {
+                stat.clear();
+            }
+        }
+    }
+
+    public static void outputConfusionMatrix(ObjectObjectOpenHashMap<String, ObjectLongOpenHashMap> matrix) {
+        try {
+            int rows = matrix.size();
+            List<String> labels = new ArrayList(rows);
+
+            for (ObjectCursor<String> actual_class : matrix.keys()) {
+                labels.add(actual_class.value);
+            }
+            Collections.sort(labels, ALPHABETICAL_ORDER);
+
+            int columns = rows;
+            String str = "\t";
+            String str2 = "\t";
+            for (String l : labels) {
+                str += l + "\t";
+                str2 += '-' + "\t";
+            }
+            System.out.println(str + "");
+            System.out.println(str2 + "");
+            resultString += str + "\n" + str2 + "\n";
+            str = "|\t";
+            resultString += str;
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    str += matrix.get(labels.get(i)).get(labels.get(j)) + "\t";
+                }
+                str = labels.get(i) + str;
+                System.out.println(str + "|");
+                resultString += str + "|\n";
+                str = "|\t";
+                resultString += str;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Matrix is empty!!");
+        }
     }
 
     public int getMax(TimeSeries[] samples, int MAX_WINDOW_SIZE) {
@@ -445,6 +515,17 @@ public abstract class Classifier {
 
         return setData;
     }
+
+    private static Comparator<String> ALPHABETICAL_ORDER = new Comparator<String>() {
+        @Override
+        public int compare(String str1, String str2) {
+            int res = String.CASE_INSENSITIVE_ORDER.compare(str1, str2);
+            if (res == 0) {
+                res = str1.compareTo(str2);
+            }
+            return res;
+        }
+    };
 
     public void setMaxWordLength(int maxWordLength) {
         this.maxWordLength = maxWordLength;

@@ -1,4 +1,12 @@
 
+import constants.ConstDataset;
+import controle.weka.WekaUtil;
+import java.util.LinkedList;
+import util.FileUtil;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.PrincipalComponents;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,17 +19,26 @@
  */
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        double minDist = Double.MIN_VALUE;
-        
-        if(-1 > minDist) {
-            System.out.println("sim");
-        } else {
-            System.out.println("nao");
+        String dataset = "MPU_WEKA.arff";
+
+        WekaUtil wekaUtil = new WekaUtil();
+        LinkedList<String> columns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR,
+                ConstDataset.DS_RAW + dataset);
+        wekaUtil.readData(ConstDataset.DS_RAW + dataset, columns.size());
+
+        PrincipalComponents pca = new PrincipalComponents();
+        pca.setMaximumAttributeNames(3);
+        pca.setMaximumAttributes(1);
+        pca.setVarianceCovered(0.95);
+        pca.setInputFormat(wekaUtil.getData());
+
+        Instances newData = Filter.useFilter(wekaUtil.getData(), pca);
+
+        for (Instance instance : newData) {
+            System.out.println(instance);
         }
-        
-        
 
     }
 
