@@ -5,6 +5,8 @@ Afazeres de implementação
 3) Ler o item de Logistic Regression do livro de PNL
 4) Testar a atuação dos ruidos no método stringMoreFrequency no HandleGenericDataset
 5) Preparar todas as bases de dados possíveis
+6) Implementar Kalman filter
+7) Testar outras bases de dados
 
 Notas de Inovação
 

@@ -13,6 +13,7 @@ import com.carrotsearch.hppc.cursors.LongFloatCursor;
 import controle.SFA.classification.Classifier.Words;
 import controle.SFA.classification.ParallelFor;
 import datasets.timeseries.TimeSeries;
+import java.util.LinkedList;
 
 /**
  * The WEASEL-Model.
@@ -24,7 +25,7 @@ public class WEASELModel {
     public int alphabetSize;
     public int maxF;
 
-    public int[] windowLengths;
+    public LinkedList<Integer> windowLengths;
     public boolean norm;
     public boolean normMean;
     public boolean lowerBounding;
@@ -57,14 +58,14 @@ public class WEASELModel {
      */
     public WEASELModel(
             int maxF, int maxS,
-            int[] windowLengths, boolean normMean, boolean lowerBounding) {
+            LinkedList<Integer> windowLengths, boolean normMean, boolean lowerBounding) {
         this.maxF = maxF;
         this.alphabetSize = maxS;
         this.windowLengths = windowLengths;
         this.normMean = normMean;
         this.lowerBounding = lowerBounding;
         this.dict = new Dictionary();
-        this.signature = new SFA[windowLengths.length];
+        this.signature = new SFA[windowLengths.size()];
     }
 
     /**
@@ -89,11 +90,11 @@ public class WEASELModel {
      */
     public int[][][] createWords(final TimeSeries[] samples) {
         // create bag of words for each window length
-        final int[][][] words = new int[this.windowLengths.length][samples.length][];
+        final int[][][] words = new int[this.windowLengths.size()][samples.length][];
         ParallelFor.withIndex(BLOCKS, new ParallelFor.Each() {
             @Override
             public void run(int id, AtomicInteger processed) {
-                for (int w = 0; w < WEASELModel.this.windowLengths.length; w++) {
+                for (int w = 0; w < WEASELModel.this.windowLengths.size(); w++) {
                     if (w % BLOCKS == id) {
                         words[w] = createWords(samples, w);
                     }
@@ -114,7 +115,7 @@ public class WEASELModel {
         // SFA quantization
         if (this.signature[index] == null) {
             this.signature[index] = new SFASupervised();
-            this.signature[index].fitWindowing(samples, this.windowLengths[index], this.maxF, this.alphabetSize, this.normMean, this.lowerBounding);
+            this.signature[index].fitWindowing(samples, this.windowLengths.get(index), this.maxF, this.alphabetSize, this.normMean, this.lowerBounding);
         }
 
         // create words
@@ -147,15 +148,15 @@ public class WEASELModel {
             bagOfPatterns[j] = new BagOfBigrams(words[0][j].length * 6, samples[j].getLabel());
 
             // create subsequences
-            for (int w = 0; w < this.windowLengths.length; w++) {
+            for (int w = 0; w < this.windowLengths.size(); w++) {
                 final short factor = 1;
                 for (int offset = 0; offset < words[w][j].length; offset++) {
                     int word = this.dict.getWord((long) w << 52 | (words[w][j][offset] & mask));
                     bagOfPatterns[j].bob.putOrAdd(word, factor, factor);
 
                     // add 2 grams
-                    if (offset - this.windowLengths[w] >= 0) {
-                        long prevWord = this.dict.getWord((long) w << 52 | (words[w][j][offset - this.windowLengths[w]] & mask));
+                    if (offset - this.windowLengths.get(w) >= 0) {
+                        long prevWord = this.dict.getWord((long) w << 52 | (words[w][j][offset - this.windowLengths.get(w)] & mask));
                         int newWord = this.dict.getWord((long) w << 52 | prevWord << 26 | word);
                         bagOfPatterns[j].bob.putOrAdd(newWord, factor, factor);
                     }
@@ -179,15 +180,15 @@ public class WEASELModel {
 
         // and create a bag of pattern
         // create subsequences
-        for (int w = 0; w < this.windowLengths.length; w++) {
+        for (int w = 0; w < this.windowLengths.size(); w++) {
             final short factor = 1;
             for (int offset = 0; offset < words.length; offset++) {
                 int word = this.dict.getWord((long) w << 52 | (words[w][offset] & mask));
                 bagOfPattern.bob.putOrAdd(word, factor, factor);
 
                 // add 2 grams
-                if (offset - this.windowLengths[w] >= 0) {
-                    long prevWord = this.dict.getWord((long) w << 52 | (words[w][offset - this.windowLengths[w]] & mask));
+                if (offset - this.windowLengths.get(w) >= 0) {
+                    long prevWord = this.dict.getWord((long) w << 52 | (words[w][offset - this.windowLengths.get(w)] & mask));
                     int newWord = this.dict.getWord((long) w << 52 | prevWord << 26 | word);
                     bagOfPattern.bob.putOrAdd(newWord, factor, factor);
                 }
@@ -337,7 +338,7 @@ public class WEASELModel {
 
     }
 
-    public int[] getWindowLengths() {
+    public LinkedList<Integer> getWindowLengths() {
         return windowLengths;
     }
 

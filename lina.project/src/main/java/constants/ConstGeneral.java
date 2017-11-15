@@ -30,7 +30,7 @@ public class ConstGeneral {
 
     public static String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
     public static double PERCENT_QUEDA_THRESHOULD = 30;
-    
+
     public static String NOISE = "noise";
 
     //Signal Processing
@@ -40,7 +40,6 @@ public class ConstGeneral {
     public static String SP_FourStageLowPass = "FourStageLowpass";
     public static String SP_bandPass = "BandPass";
     public static String SP_HighPass = "HighPass";
-    public static String SP_KALMAN = "Kalman";
     public static String SP_MovingAverageFilter = "MovingAverageFilter";
 
     //Principal Features
@@ -121,9 +120,10 @@ public class ConstGeneral {
     public static String AL_WEASEL = "Weasel";
     public static String AL_SHOTGUN = "Shotgun";
     public static String AL_SHOTGUN_ENSEMBLE = "ShotgunEnsemble";
-    
+
     //Data Fusion
     public static String DF_MAGNITUDE = "Magnitude";
     public static String DF_PCA = "PCA";
+    public static String DF_KALMAN = "Kalman";
 
 }

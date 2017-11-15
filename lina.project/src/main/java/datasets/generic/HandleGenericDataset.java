@@ -185,10 +185,14 @@ public class HandleGenericDataset {
             for (String value : beanFirst.getTupla()) {
                 columnTitleType.put(value, DataToARFF.NUMERIC);
             }
+            if (beanFirst.getTimestamp() != null) {
+                columnTitleType.put(ConstDataset.TIMESTAMP, DataToARFF.NUMERIC);
+            }
             if (beanFirst.getClasse() != null) {
                 columnTitleType.put(ConstDataset.CLASS, DataToARFF.NOMINAL);
                 nominalValues.put(ConstDataset.CLASS, new LinkedList<>());
             }
+
         }
 
         //Prepare DATA
@@ -197,7 +201,6 @@ public class HandleGenericDataset {
         Iterator<GenericRowBean> beanIterDATA = data.iterator();
         beanIterDATA.next(); //Pula o nome das colunas
 
-        String lastClass = null;
         int contRow = 0;
         while (beanIterDATA.hasNext()) {
             GenericRowBean bean = beanIterDATA.next();
@@ -207,6 +210,9 @@ public class HandleGenericDataset {
                 novaTupla.add(value);
             }
 
+            if (bean.getTimestamp() != null) {
+                novaTupla.add(bean.getTimestamp());
+            }
             if (bean.getClasse() != null) {
                 novaTupla.add(bean.getClasse());
                 //Captura os diferentes valores para o tipo de dados nominal
@@ -214,9 +220,6 @@ public class HandleGenericDataset {
                 if (!list.contains(bean.getClasse())) {
                     list.add(bean.getClasse());
                 }
-                lastClass = bean.getClasse();
-            } else if (lastClass != null) {
-                novaTupla.add(lastClass);
             }
 
             row.put(++contRow, novaTupla);
@@ -511,6 +514,8 @@ public class HandleGenericDataset {
                     bean.setClasse(classesIter.next());
                 }
             }
+        } else {
+            System.out.println("Data size and class size are differents!");
         }
     }
 

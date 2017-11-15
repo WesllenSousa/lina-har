@@ -88,14 +88,15 @@ public class BOSSEnsembleClassifier extends BOSSClassifier {
     public List<BossScore> fitEnsemble(
             ExecutorService exec,
             final boolean normMean) throws FileNotFoundException {
-        int minWindowLength = this.minWindowLength;
-        int maxWindowLength = getMax(trainSamples, this.maxWindowLength);
-        for (TimeSeries ts : this.trainSamples) {
-            maxWindowLength = Math.min(ts.getLength(), maxWindowLength);
-        }
-        ArrayList<Integer> windows = new ArrayList<Integer>();
-        for (int windowLength = maxWindowLength; windowLength >= minWindowLength; windowLength--) {
-            windows.add(windowLength);
+        int min = this.minWindowLength;
+        int max = getMax(trainSamples, this.maxWindowLength);
+
+        // equi-distance sampling of windows
+        ArrayList<Integer> windows = new ArrayList<>();
+        double count = Math.sqrt(max);
+        double distance = ((max - min) / count);
+        for (int c = min; c <= max; c += distance) {
+            windows.add(c);
         }
         return fit(windows.toArray(new Integer[]{}), normMean, trainSamples, exec);
     }
@@ -110,10 +111,10 @@ public class BOSSEnsembleClassifier extends BOSSClassifier {
         @SuppressWarnings("unchecked")
         final List<Pair<String, Double>>[] testLabels = new List[testSamples.length];
         for (int i = 0; i < testLabels.length; i++) {
-            testLabels[i] = new ArrayList<Pair<String, Double>>();
+            testLabels[i] = new ArrayList<>();
         }
 
-        final List<Integer> usedLengths = new ArrayList<Integer>(results.size());
+        final List<Integer> usedLengths = new ArrayList<>(results.size());
 
         // parallel execution
         ParallelFor.withIndex(executor, threads, new ParallelFor.Each() {

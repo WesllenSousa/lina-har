@@ -290,10 +290,6 @@ public class ProcessingFeatures {
             FiltersSignalProcessing.HighPass(window, frequency).stream().forEach((value) -> {
                 column.add(value.toString());
             });
-        } else if (nameMethod.equals(ConstGeneral.SP_KALMAN)) {
-            FiltersSignalProcessing.Kalman(window).stream().forEach((value) -> {
-                column.add(value);
-            });
         } else if (nameMethod.equals(ConstGeneral.PF_ForwardAxis)) {
             PrincipalFeatures.forwardAxis(window).stream().forEach((value) -> {
                 column.add(value.toString());
@@ -474,10 +470,14 @@ public class ProcessingFeatures {
 
     public LinkedList<String> getClassesFromData(LinkedList<GenericRowBean> data) {
         LinkedList<String> classes = new LinkedList<>();
+        int row = 1;
         for (GenericRowBean bean : data) {
             if (bean.getClasse() != null) {
                 classes.add(bean.getClasse());
+            } else {
+                System.out.println("getClassesFromData: Class null - file line: " + row);
             }
+            row++;
         }
         return classes;
     }

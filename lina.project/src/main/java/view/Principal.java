@@ -2215,7 +2215,11 @@ public class Principal extends javax.swing.JFrame {
                 componentView.renameDataset(lt_rawData, ConstDataset.DS_RAW);
                 break;
             case 1:
-                componentView.renameDataset(lt_trainData, ConstDataset.DS_TRAIN);
+                if (lt_trainData.isFocusable()) {
+                    componentView.renameDataset(lt_trainData, ConstDataset.DS_TRAIN);
+                } else if (lt_trainDataTest.isFocusable()) {
+                    componentView.renameDataset(lt_trainDataTest, ConstDataset.DS_TEST);
+                }
                 break;
             case 2:
                 if (lt_modelClassification.isFocusable()) {

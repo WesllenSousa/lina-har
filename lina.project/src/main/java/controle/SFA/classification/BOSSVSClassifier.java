@@ -52,6 +52,7 @@ public class BOSSVSClassifier extends Classifier {
         public BOSSVSModel model;
         public int features;
 
+        @Override
         public void clear() {
             super.clear();
             this.idf = null;
@@ -59,6 +60,7 @@ public class BOSSVSClassifier extends Classifier {
         }
     }
 
+    @Override
     public Score eval() throws IOException {
         ExecutorService exec = Executors.newFixedThreadPool(threads);
         try {

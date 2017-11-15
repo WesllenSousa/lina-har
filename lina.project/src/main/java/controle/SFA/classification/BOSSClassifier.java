@@ -54,6 +54,7 @@ public class BOSSClassifier extends Classifier {
         public BOSSModel model;
         public int features;
 
+        @Override
         public void clear() {
             super.clear();
             this.model = null;
@@ -103,7 +104,7 @@ public class BOSSClassifier extends Classifier {
                     Predictions p = predict(windowsBoss.get(0), bagTest, score.bag);
                     for (int j = 0; j < p.labels.length; j++) {
                         synchronized (testLabels[j]) {
-                            testLabels[j].add(new Pair<String, Double>(p.labels[j], score.training));
+                            testLabels[j].add(new Pair<>(p.labels[j], score.training));
                         }
                     }
                     int correctTesting = score("BOSS", testSamples, startTime, testLabels, usedLengths);

@@ -79,17 +79,16 @@ public class ShotgunEnsembleClassifier extends ShotgunClassifier {
             final TimeSeries[] trainSamples,
             final boolean normMean,
             final double factor) {
-        int minWindowLength = this.minWindowLength;
-        int maxWindowLength = getMax(trainSamples, this.maxWindowLength);
-        for (TimeSeries ts : trainSamples) {
-            maxWindowLength = Math.min(ts.getLength(), maxWindowLength);
-        }
+        int min = this.minWindowLength;
+        int max = getMax(trainSamples, this.maxWindowLength);
 
-        ArrayList<Integer> windows = new ArrayList<Integer>();
-        for (int windowLength = maxWindowLength; windowLength >= minWindowLength; windowLength--) {
-            windows.add(windowLength);
+        // equi-distance sampling of windows
+        ArrayList<Integer> windows = new ArrayList<>();
+        double count = Math.sqrt(max);
+        double distance = ((max - min) / count);
+        for (int c = min; c <= max; c += distance) {
+            windows.add(c);
         }
-
         return fit(windows.toArray(new Integer[]{}), normMean, trainSamples, factor, exec);
     }
 
@@ -103,10 +102,10 @@ public class ShotgunEnsembleClassifier extends ShotgunClassifier {
         @SuppressWarnings("unchecked")
         final List<Pair<String, Double>>[] testLabels = new List[testSamples.length];
         for (int i = 0; i < testLabels.length; i++) {
-            testLabels[i] = new ArrayList<Pair<String, Double>>();
+            testLabels[i] = new ArrayList<>();
         }
 
-        final List<Integer> usedLengths = new ArrayList<Integer>(results.size());
+        final List<Integer> usedLengths = new ArrayList<>(results.size());
 
         // parallel execution
         ParallelFor.withIndex(executor, threads, new ParallelFor.Each() {

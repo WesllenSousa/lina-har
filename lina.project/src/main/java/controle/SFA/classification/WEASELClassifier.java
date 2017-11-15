@@ -22,6 +22,7 @@ import de.bwaldvogel.liblinear.Model;
 import de.bwaldvogel.liblinear.Parameter;
 import de.bwaldvogel.liblinear.Problem;
 import de.bwaldvogel.liblinear.SolverType;
+import java.util.LinkedList;
 
 /**
  * Liblinear: O(n) vs Libsvm: O(n^2) to O(n^3)
@@ -78,6 +79,7 @@ public class WEASELClassifier extends Classifier {
         }
     }
 
+    @Override
     public Score eval() throws IOException {
         ExecutorService exec = Executors.newFixedThreadPool(threads);
         try {
@@ -127,9 +129,12 @@ public class WEASELClassifier extends Classifier {
 
             int min = minWindowLength;
             int max = getMax(samples, maxWindowLength);
-            int[] windowLengths = new int[max - min + 1];
-            for (int w = min, a = 0; w <= max; w++, a++) {
-                windowLengths[a] = w;
+            // equi-distance sampling of windows
+            LinkedList<Integer> windowLengths = new LinkedList<>();
+            double count = Math.sqrt(max);
+            double distance = ((max - min) / count);
+            for (int c = min; c <= max; c += distance) {
+                windowLengths.add(c);
             }
 
             optimize:

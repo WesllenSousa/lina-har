@@ -44,6 +44,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import net.seninp.jmotif.sax.NumerosityReductionStrategy;
@@ -243,7 +244,8 @@ public class SymbolicView {
                     break;
                 case "Weasel":
                     if (ConstGeneral.SFA) {
-                        int[] windowLengths = new int[]{Parameters.WINDOW_SIZE}; //Cria diferentes tamanhos de janelas, ver uma solucao pra ca
+                        LinkedList<Integer> windowLengths = new LinkedList<>(); //Cria diferentes tamanhos de janelas, ver uma solucao pra ca
+                        windowLengths.add(Parameters.WINDOW_SIZE);
                         BagOfBigrams bag4 = createBagOfBigramWEASEL(buffer.getBufferWord(), label, windowLengths);
                         buffer.getBOPWeasel().add(bag4);
                         updateModelWeasel(buffer, windowLengths);
@@ -285,8 +287,8 @@ public class SymbolicView {
         return bag;
     }
 
-    private BagOfBigrams createBagOfBigramWEASEL(List<WordRecord> listWords, String label, int[] windowLengths) {
-        int[][] words = new int[windowLengths.length][listWords.size()];
+    private BagOfBigrams createBagOfBigramWEASEL(List<WordRecord> listWords, String label, LinkedList<Integer> windowLengths) {
+        int[][] words = new int[windowLengths.size()][listWords.size()];
         for (int wordIndex = 0; wordIndex < listWords.size(); wordIndex++) {
             //Get word int value from word bit value
             int wordInt = (int) Words.createWord(listWords.get(wordIndex).getWordBit(), Parameters.WORD_LENGTH_PAA,
@@ -314,7 +316,7 @@ public class SymbolicView {
         buffer.setMatrixBossVs(matrixTrain);
     }
 
-    private void updateModelWeasel(BufferStreaming buffer, int[] windowLengths) {
+    private void updateModelWeasel(BufferStreaming buffer, LinkedList<Integer> windowLengths) {
         List<BagOfBigrams> bop = buffer.getBOPWeasel();
         WEASELModel weasel = new WEASELModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
                 windowLengths, true, true);

@@ -162,11 +162,6 @@ public class FiltersSignalProcessing {
         return dest;
     }
 
-    public static LinkedList<String> Kalman(LinkedList<Float> N) {
-        LinkedList<String> newBuffer = new LinkedList<>();
-        return newBuffer;
-    }
-
     public static LinkedList<Float> MovingAverageFilter(LinkedList<Float> N, int windowMean) { 
         //System.out.println("MovingAverageFilter: ");
         LinkedList<Float> newVector = new LinkedList<>();
