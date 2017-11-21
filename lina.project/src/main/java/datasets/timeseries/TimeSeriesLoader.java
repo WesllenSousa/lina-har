@@ -194,9 +194,7 @@ public class TimeSeriesLoader {
                 }
                 String[] columns = line.split(splitColumn);
 
-                //DImensio 1??????
                 int tsSize = (columns.length - 1) / qtdeDimension;
-
                 LinkedList<TimeSeries> samples = new LinkedList<>();
                 for (int i = 0; i < qtdeDimension; i++) {
 

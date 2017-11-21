@@ -1,44 +1,41 @@
-// Copyright (c) 2016 - Patrick Schäfer (patrick.schaefer@zib.de)
+// Copyright (c) 2016 - Patrick Schäfer (patrick.schaefer@hu-berlin.de)
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
-package controle.SFA.transformation;
+package controle.SFA.multDimension.concatenateWords.transformation;
 
 import com.carrotsearch.hppc.IntFloatHashMap;
 import com.carrotsearch.hppc.IntShortHashMap;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
-import java.util.HashSet;
+import com.carrotsearch.hppc.cursors.*;
 
-import com.carrotsearch.hppc.cursors.FloatCursor;
-import com.carrotsearch.hppc.cursors.IntFloatCursor;
-import com.carrotsearch.hppc.cursors.IntIntCursor;
-import com.carrotsearch.hppc.cursors.ObjectCursor;
-import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
+import java.util.Set;
 
 /**
- * The Bag-of-SFA-Symbols in Vector Space model as published in Schäfer, P.:
+ * The Bag-of-SFA-Symbols in Vector Space boss as published in Schäfer, P.:
  * Scalable time series classification. DMKD (Preprint)
  *
  * @author bzcschae
- *
  */
-public class BOSSVSModel extends BOSSModel {
+public class BOSSVS extends BOSS {
+
+    public BOSSVS() {
+    }
 
     /**
-     * Create a BOSS VS model.
+     * Create a BOSS VS boss.
      *
-     *
-     * @param maxF length of the SFA words
+     * @param maxF queryLength of the SFA words
      * @param maxS alphabet size
-     * @param windowLength subsequence (window) length used for extracting SFA
-     * words from time series.
+     * @param windowLength subsequence (window) queryLength used for extracting
+     * SFA words from time series.
      * @param normMean set to true, if mean should be set to 0 for a window
      */
-    public BOSSVSModel(int maxF, int maxS, int windowLength, boolean normMean) {
+    public BOSSVS(int maxF, int maxS, int windowLength, boolean normMean) {
         super(maxF, maxS, windowLength, normMean);
     }
 
-    public ObjectObjectHashMap<String, IntFloatHashMap> createTfIdf(
+    public ObjectObjectHashMap<Double, IntFloatHashMap> createTfIdf(
             final BagOfPattern[] bagOfPatterns,
-            final HashSet<String> uniqueLabels) {
+            final Set<Double> uniqueLabels) {
         int[] sampleIndices = createIndices(bagOfPatterns.length);
         return createTfIdf(bagOfPatterns, sampleIndices, uniqueLabels);
     }
@@ -52,25 +49,26 @@ public class BOSSVSModel extends BOSSModel {
     }
 
     /**
-     * Obtains the TF-IDF representation based on the BOSS represenation. Only
-     * those elements in sampleIndices are used (usefull for cross-validation).
+     * Obtains the TF-IDF representation based on the BOSS representation. Only
+     * those elements in sampleIndices are used (useful for cross-validation).
      *
      * @param bagOfPatterns The BOSS (bag-of-patterns) representation of the
      * time series
      * @param sampleIndices The indices to use
-     * @param uniqueLabels The unique class labels in the dataset
-     * @return
+     * @param uniqueLabels The unique class labels in the data set
+     * @return returns the tf-idf boss for the time series
      */
-    public ObjectObjectHashMap<String, IntFloatHashMap> createTfIdf(
+    public ObjectObjectHashMap<Double, IntFloatHashMap> createTfIdf(
             final BagOfPattern[] bagOfPatterns,
             final int[] sampleIndices,
-            final HashSet<String> uniqueLabels) {
+            final Set<Double> uniqueLabels) {
 
-        ObjectObjectHashMap<String, IntFloatHashMap> matrix = new ObjectObjectHashMap<String, IntFloatHashMap>(uniqueLabels.size());
+        ObjectObjectHashMap<Double, IntFloatHashMap> matrix = new ObjectObjectHashMap<>(
+                uniqueLabels.size());
         initMatrix(matrix, uniqueLabels, bagOfPatterns);
 
         for (int j : sampleIndices) {
-            String label = bagOfPatterns[j].label;
+            Double label = bagOfPatterns[j].label;
             IntFloatHashMap wordInBagFreq = matrix.get(label);
             for (IntIntCursor key : bagOfPatterns[j].bag) {
                 wordInBagFreq.putOrAdd(key.key, key.value, key.value);
@@ -81,14 +79,14 @@ public class BOSSVSModel extends BOSSModel {
         IntShortHashMap wordInClassFreq = new IntShortHashMap(matrix.iterator().next().value.size());
 
         for (ObjectCursor<IntFloatHashMap> stat : matrix.values()) {
-            // count the occurence of words
+            // count the occurrence of words
             for (IntFloatCursor key : stat.value) {
                 wordInClassFreq.putOrAdd(key.key, (short) 1, (short) 1);
             }
         }
 
         // calculate the tfIDF value for each class
-        for (ObjectObjectCursor<String, IntFloatHashMap> stat : matrix) {
+        for (ObjectObjectCursor<Double, IntFloatHashMap> stat : matrix) {
             IntFloatHashMap tfIDFs = stat.value;
             // calculate the tfIDF value for each word
             for (IntFloatCursor patternFrequency : tfIDFs) {
@@ -115,25 +113,25 @@ public class BOSSVSModel extends BOSSModel {
     }
 
     protected void initMatrix(
-            final ObjectObjectHashMap<String, IntFloatHashMap> matrix,
-            final HashSet<String> uniqueLabels,
+            final ObjectObjectHashMap<Double, IntFloatHashMap> matrix,
+            final Set<Double> uniqueLabels,
             final BagOfPattern[] bag) {
-        for (String label : uniqueLabels) {
+        for (Double label : uniqueLabels) {
             IntFloatHashMap stat = matrix.get(label);
             if (stat == null) {
                 matrix.put(label, new IntFloatHashMap(bag[0].bag.size() * bag.length));
-            } else if (stat != null) {
+            } else {
                 stat.clear();
             }
         }
     }
 
     /**
-     * Norm the vector to length 1
+     * Norm the vector to queryLength 1
      *
      * @param classStatistics
      */
-    public void normalizeTfIdf(final ObjectObjectHashMap<String, IntFloatHashMap> classStatistics) {
+    public void normalizeTfIdf(final ObjectObjectHashMap<Double, IntFloatHashMap> classStatistics) {
         for (ObjectCursor<IntFloatHashMap> classStat : classStatistics.values()) {
             double squareSum = 0.0;
             for (FloatCursor entry : classStat.value.values()) {

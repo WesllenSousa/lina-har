@@ -2,6 +2,8 @@
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
 package controle.SFA.multDimension;
 
+import com.carrotsearch.hppc.LongFloatHashMap;
+import com.carrotsearch.hppc.ObjectObjectHashMap;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,8 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.carrotsearch.hppc.LongFloatOpenHashMap;
-import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
 import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
 import controle.SFA.classification.ParallelFor;
@@ -29,13 +29,13 @@ import java.util.Iterator;
  * @author bzcschae
  *
  */
-public class BOSSVSMDClassifier extends ClassifierMD {
+public class BOSSVSMDStackClassifier extends ClassifierMD {
 
     public static double factor = 0.92;
-    
+
     public static boolean normMagnitudes = false;
 
-    public BOSSVSMDClassifier(TimeSeriesMD[] train, TimeSeriesMD[] test) throws IOException {
+    public BOSSVSMDStackClassifier(TimeSeriesMD[] train, TimeSeriesMD[] test) throws IOException {
         super(train, test);
     }
 
@@ -45,7 +45,7 @@ public class BOSSVSMDClassifier extends ClassifierMD {
             super("BOSS MD", 0, 0, normed, windowLength);
         }
 
-        public ObjectObjectOpenHashMap<String, E> idf;
+        public ObjectObjectHashMap<String, E> idf;
         public BOSSMDModel model;
         public int features;
 
@@ -63,7 +63,7 @@ public class BOSSVSMDClassifier extends ClassifierMD {
         ExecutorService exec = Executors.newFixedThreadPool(threads);
         try {
             // BOSS Distance
-            BossMDScore<LongFloatOpenHashMap> totalBestScore = null;
+            BossMDScore<LongFloatHashMap> totalBestScore = null;
             int bestCorrectTesting = 0;
             int bestCorrectTraining = 0;
 
@@ -75,10 +75,10 @@ public class BOSSVSMDClassifier extends ClassifierMD {
 
                 this.correctTraining = new AtomicInteger(0);
 
-                List<BossMDScore<LongFloatOpenHashMap>> scores = fitEnsemble(exec, normMean);
+                List<BossMDScore<LongFloatHashMap>> scores = fitEnsemble(exec, normMean);
 
                 // training score
-                BossMDScore<LongFloatOpenHashMap> bestScore = scores.get(0);
+                BossMDScore<LongFloatHashMap> bestScore = scores.get(0);
                 if (DEBUG) {
                     System.out.println("BOSS VS Training:\t w_" + bestScore.windowLength + " f_" + bestScore.features + "\tnormed: \t" + normMean);
                     outputResult(this.correctTraining.get(), startTime, this.trainSamples.length);
@@ -109,7 +109,7 @@ public class BOSSVSMDClassifier extends ClassifierMD {
 
     }
 
-    public List<BossMDScore<LongFloatOpenHashMap>> fitEnsemble(ExecutorService exec, final boolean normMean) throws FileNotFoundException {
+    public List<BossMDScore<LongFloatHashMap>> fitEnsemble(ExecutorService exec, final boolean normMean) throws FileNotFoundException {
         int min = minWindowLength;
         int max = getMax(trainSamples, maxWindowLength);
 
@@ -123,22 +123,22 @@ public class BOSSVSMDClassifier extends ClassifierMD {
         return fit(windows.toArray(new Integer[]{}), normMean, trainSamples, exec);
     }
 
-    public List<BossMDScore<LongFloatOpenHashMap>> fit(
+    public List<BossMDScore<LongFloatHashMap>> fit(
             Integer[] allWindows,
             boolean normMean,
             TimeSeriesMD[] samples,
             ExecutorService exec) {
-        final List<BossMDScore<LongFloatOpenHashMap>> results = new ArrayList<>(allWindows.length);
+        final List<BossMDScore<LongFloatHashMap>> results = new ArrayList<>(allWindows.length);
 
         ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
             HashSet<String> uniqueLabels = uniqueClassLabels(samples);
-            BossMDScore<LongFloatOpenHashMap> bestScore = new BossMDScore<>(normMean, 0);
+            BossMDScore<LongFloatHashMap> bestScore = new BossMDScore<>(normMean, 0);
 
             @Override
             public void run(int id, AtomicInteger processed) {
                 for (int i = 0; i < allWindows.length; i++) {
                     if (i % threads == id) {
-                        BossMDScore<LongFloatOpenHashMap> score = new BossMDScore<>(normMean, allWindows[i]);
+                        BossMDScore<LongFloatHashMap> score = new BossMDScore<>(normMean, allWindows[i]);
                         try {
                             BOSSMDModel model = new BOSSMDModel(maxWindowLength, maxSymbol, score.windowLength, score.normed);
                             int[][][] words = model.createWordsMD(trainSamples);
@@ -151,7 +151,7 @@ public class BOSSVSMDClassifier extends ClassifierMD {
                                 int correct = 0;
                                 for (int s = 0; s < folds; s++) {
                                     // calculate the tf-idf for each class
-                                    ObjectObjectOpenHashMap<String, LongFloatOpenHashMap> idf = model.createTfIdf(bag, trainIndices[s], uniqueLabels);
+                                    ObjectObjectHashMap<String, LongFloatHashMap> idf = model.createTfIdf(bag, trainIndices[s], uniqueLabels);
 
                                     correct += predict(testIndices[s], bag, idf).correct.get();
                                 }
@@ -180,14 +180,14 @@ public class BOSSVSMDClassifier extends ClassifierMD {
                         if (this.bestScore.compareTo(score) < 0) {
                             synchronized (this.bestScore) {
                                 if (this.bestScore.compareTo(score) < 0) {
-                                    BOSSVSMDClassifier.this.correctTraining.set((int) score.training);
+                                    BOSSVSMDStackClassifier.this.correctTraining.set((int) score.training);
                                     this.bestScore = score;
                                 }
                             }
                         }
 
                         // add to ensemble
-                        if (score.training >= BOSSVSMDClassifier.this.correctTraining.get() * factor) {
+                        if (score.training >= BOSSVSMDStackClassifier.this.correctTraining.get() * factor) {
                             synchronized (results) {
                                 results.add(score);
                             }
@@ -198,7 +198,7 @@ public class BOSSVSMDClassifier extends ClassifierMD {
         });
 
         // cleanup unused scores
-        for (BossMDScore<LongFloatOpenHashMap> s : results) {
+        for (BossMDScore<LongFloatHashMap> s : results) {
             if (s.model != null
                     && s.training < this.correctTraining.get() * factor) {
                 s.clear();
@@ -213,7 +213,7 @@ public class BOSSVSMDClassifier extends ClassifierMD {
     public Predictions predict(
             final int[] indices,
             final BagOfPattern[] bagOfPatternsTestSamples,
-            final ObjectObjectOpenHashMap<String, LongFloatOpenHashMap> matrixTrain) {
+            final ObjectObjectHashMap<String, LongFloatHashMap> matrixTrain) {
 
         Predictions p = new Predictions(new String[bagOfPatternsTestSamples.length], 0);
 
@@ -226,10 +226,10 @@ public class BOSSVSMDClassifier extends ClassifierMD {
                         double bestDistance = 0.0;
 
                         // for each class
-                        for (ObjectObjectCursor<String, LongFloatOpenHashMap> classEntry : matrixTrain) {
+                        for (ObjectObjectCursor<String, LongFloatHashMap> classEntry : matrixTrain) {
 
                             String label = classEntry.key;
-                            LongFloatOpenHashMap stat = classEntry.value;
+                            LongFloatHashMap stat = classEntry.value;
 
                             // determine cosine similarity
                             double distance = 0.0;
@@ -266,7 +266,7 @@ public class BOSSVSMDClassifier extends ClassifierMD {
 
     public int predictEnsamble(
             ExecutorService executor,
-            final List<BossMDScore<LongFloatOpenHashMap>> results,
+            final List<BossMDScore<LongFloatHashMap>> results,
             final TimeSeriesMD[] testSamples,
             boolean normMean) {
         long startTime = System.currentTimeMillis();
@@ -287,8 +287,8 @@ public class BOSSVSMDClassifier extends ClassifierMD {
                 // iterate each sample to classify
                 for (int i = 0; i < results.size(); i++) {
                     if (i % threads == id) {
-                        final BossMDScore<LongFloatOpenHashMap> score = results.get(i);
-                        if (score.training >= BOSSVSMDClassifier.this.correctTraining.get() * factor) { // all with same score
+                        final BossMDScore<LongFloatHashMap> score = results.get(i);
+                        if (score.training >= BOSSVSMDStackClassifier.this.correctTraining.get() * factor) { // all with same score
                             usedLengths.add(score.windowLength);
 
                             BOSSMDModel model = score.model;
@@ -311,7 +311,6 @@ public class BOSSVSMDClassifier extends ClassifierMD {
                 }
             }
         });
-
         return score("BOSS MD", testSamples, startTime, testLabels, usedLengths);
     }
 

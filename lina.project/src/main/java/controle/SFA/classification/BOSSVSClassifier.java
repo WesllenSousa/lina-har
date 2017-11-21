@@ -2,6 +2,8 @@
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
 package controle.SFA.classification;
 
+import com.carrotsearch.hppc.IntFloatHashMap;
+import com.carrotsearch.hppc.ObjectObjectHashMap;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,8 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.carrotsearch.hppc.IntFloatOpenHashMap;
-import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
 import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
 import datasets.timeseries.TimeSeries;
@@ -48,7 +48,7 @@ public class BOSSVSClassifier extends Classifier {
             super("BOSS VS", 0, 0, normed, windowLength);
         }
 
-        public ObjectObjectOpenHashMap<String, E> idf;
+        public ObjectObjectHashMap<String, E> idf;
         public BOSSVSModel model;
         public int features;
 
@@ -65,7 +65,7 @@ public class BOSSVSClassifier extends Classifier {
         ExecutorService exec = Executors.newFixedThreadPool(threads);
         try {
             // BOSS Distance
-            BossVSScore<IntFloatOpenHashMap> totalBestScore = null;
+            BossVSScore<IntFloatHashMap> totalBestScore = null;
             int bestCorrectTesting = 0;
             int bestCorrectTraining = 0;
 
@@ -77,10 +77,10 @@ public class BOSSVSClassifier extends Classifier {
 
                 this.correctTraining = new AtomicInteger(0);
 
-                List<BossVSScore<IntFloatOpenHashMap>> scores = fitEnsemble(exec, normMean);
+                List<BossVSScore<IntFloatHashMap>> scores = fitEnsemble(exec, normMean);
 
                 // training score
-                BossVSScore<IntFloatOpenHashMap> bestScore = scores.get(0);
+                BossVSScore<IntFloatHashMap> bestScore = scores.get(0);
                 if (DEBUG) {
                     System.out.println("BOSS VS Training:\t" + bestScore.windowLength + " " + bestScore.features + "\tnormed: \t" + normMean);
                     outputResult(this.correctTraining.get(), startTime, this.trainSamples.length);
@@ -111,7 +111,7 @@ public class BOSSVSClassifier extends Classifier {
 
     }
 
-    public List<BossVSScore<IntFloatOpenHashMap>> fitEnsemble(ExecutorService exec, final boolean normMean) throws FileNotFoundException {
+    public List<BossVSScore<IntFloatHashMap>> fitEnsemble(ExecutorService exec, final boolean normMean) throws FileNotFoundException {
         int min = minWindowLength;
         int max = getMax(trainSamples, maxWindowLength);
 
@@ -125,23 +125,23 @@ public class BOSSVSClassifier extends Classifier {
         return fit(windows.toArray(new Integer[]{}), normMean, trainSamples, exec);
     }
 
-    public List<BossVSScore<IntFloatOpenHashMap>> fit(
+    public List<BossVSScore<IntFloatHashMap>> fit(
             Integer[] allWindows,
             boolean normMean,
             TimeSeries[] samples,
             ExecutorService exec) {
 
-        final List<BossVSScore<IntFloatOpenHashMap>> results = new ArrayList<>(allWindows.length);
+        final List<BossVSScore<IntFloatHashMap>> results = new ArrayList<>(allWindows.length);
         ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
 
             HashSet<String> uniqueLabels = uniqueClassLabels(samples);
-            BossVSScore<IntFloatOpenHashMap> bestScore = new BossVSScore<>(normMean, 0);
+            BossVSScore<IntFloatHashMap> bestScore = new BossVSScore<>(normMean, 0);
 
             @Override
             public void run(int id, AtomicInteger processed) {
                 for (int i = 0; i < allWindows.length; i++) {
                     if (i % threads == id) {
-                        BossVSScore<IntFloatOpenHashMap> score = new BossVSScore<>(normMean, allWindows[i]);
+                        BossVSScore<IntFloatHashMap> score = new BossVSScore<>(normMean, allWindows[i]);
                         try {
                             BOSSVSModel model = new BOSSVSModel(maxWordLength, maxSymbol, score.windowLength, score.normed);
                             int[][] words = model.createWords(trainSamples);
@@ -154,7 +154,7 @@ public class BOSSVSClassifier extends Classifier {
                                 int correct = 0;
                                 for (int s = 0; s < folds; s++) {
                                     // calculate the tf-idf for each class
-                                    ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> idf = model.createTfIdf(bag, trainIndices[s], uniqueLabels);
+                                    ObjectObjectHashMap<String, IntFloatHashMap> idf = model.createTfIdf(bag, trainIndices[s], uniqueLabels);
 
                                     correct += predict(testIndices[s], bag, idf).correct.get();
                                 }
@@ -201,7 +201,7 @@ public class BOSSVSClassifier extends Classifier {
         });
 
         // cleanup unused scores
-        for (BossVSScore<IntFloatOpenHashMap> s : results) {
+        for (BossVSScore<IntFloatHashMap> s : results) {
             if (s.model != null
                     && s.training < this.correctTraining.get() * factor) {
                 s.clear();
@@ -216,7 +216,7 @@ public class BOSSVSClassifier extends Classifier {
     public Predictions predict(
             final int[] indices,
             final BagOfPattern[] bagOfPatternsTestSamples,
-            final ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixTrain) {
+            final ObjectObjectHashMap<String, IntFloatHashMap> matrixTrain) {
 
         Predictions p = new Predictions(new String[bagOfPatternsTestSamples.length], 0);
 
@@ -229,10 +229,10 @@ public class BOSSVSClassifier extends Classifier {
                         double bestDistance = 0.0;
 
                         // for each class
-                        for (ObjectObjectCursor<String, IntFloatOpenHashMap> classEntry : matrixTrain) {
+                        for (ObjectObjectCursor<String, IntFloatHashMap> classEntry : matrixTrain) {
 
                             String label = classEntry.key;
-                            IntFloatOpenHashMap stat = classEntry.value;
+                            IntFloatHashMap stat = classEntry.value;
 
                             // determine cosine similarity
                             double distance = 0.0;
@@ -268,7 +268,7 @@ public class BOSSVSClassifier extends Classifier {
 
     public int predictEnsamble(
             ExecutorService executor,
-            final List<BossVSScore<IntFloatOpenHashMap>> results,
+            final List<BossVSScore<IntFloatHashMap>> results,
             final TimeSeries[] testSamples,
             boolean normMean) {
         long startTime = System.currentTimeMillis();
@@ -289,7 +289,7 @@ public class BOSSVSClassifier extends Classifier {
                 // iterate each sample to classify
                 for (int i = 0; i < results.size(); i++) {
                     if (i % threads == id) {
-                        final BossVSScore<IntFloatOpenHashMap> score = results.get(i);
+                        final BossVSScore<IntFloatHashMap> score = results.get(i);
                         if (score.training >= BOSSVSClassifier.this.correctTraining.get() * factor) { // all with same score
                             usedLengths.add(score.windowLength);
 
@@ -319,17 +319,17 @@ public class BOSSVSClassifier extends Classifier {
 
     public Predictions predictStream(
             final BagOfPattern bagOfPatternsTestSample,
-            final ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixTrain) {
+            final ObjectObjectHashMap<String, IntFloatHashMap> matrixTrain) {
 
         Predictions p = new Predictions(new String[1], 0);
 
         double bestDistance = 0.0;
 
         // for each class
-        for (ObjectObjectCursor<String, IntFloatOpenHashMap> classEntry : matrixTrain) {
+        for (ObjectObjectCursor<String, IntFloatHashMap> classEntry : matrixTrain) {
 
             String label = classEntry.key;
-            IntFloatOpenHashMap stat = classEntry.value;
+            IntFloatHashMap stat = classEntry.value;
 
             // determine cosine similarity
             double distance = 0.0;

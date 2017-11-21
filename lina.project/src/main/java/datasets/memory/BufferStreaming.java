@@ -5,8 +5,8 @@
  */
 package datasets.memory;
 
-import com.carrotsearch.hppc.IntFloatOpenHashMap;
-import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
+import com.carrotsearch.hppc.IntFloatHashMap;
+import com.carrotsearch.hppc.ObjectObjectHashMap;
 import controle.SAX.saxvsm.text.WordBag;
 import controle.SFA.classification.WEASELClassifier.WScore;
 import controle.SFA.transformation.BOSSModel.BagOfPattern;
@@ -34,7 +34,7 @@ public class BufferStreaming {
     private List<BagOfPattern> BOPBoss = new ArrayList<>();
     private List<BagOfBigrams> BOPWeasel = new ArrayList<>();
 
-    private ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixBossVs;
+    private ObjectObjectHashMap<String, IntFloatHashMap> matrixBossVs;
     private HashMap<String, HashMap<String, Double>> matrixSaxVsm;
     private WScore weaselModel;
 
@@ -70,11 +70,11 @@ public class BufferStreaming {
         return BOPWeasel;
     }
 
-    public ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> getMatrixBossVs() {
+    public ObjectObjectHashMap<String, IntFloatHashMap> getMatrixBossVs() {
         return matrixBossVs;
     }
 
-    public void setMatrixBossVs(ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixBossVs) {
+    public void setMatrixBossVs(ObjectObjectHashMap<String, IntFloatHashMap> matrixBossVs) {
         this.matrixBossVs = matrixBossVs;
     }
 

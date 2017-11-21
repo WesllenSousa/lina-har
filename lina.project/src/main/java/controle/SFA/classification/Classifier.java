@@ -16,8 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.carrotsearch.hppc.FloatContainer;
 import com.carrotsearch.hppc.IntArrayDeque;
 import com.carrotsearch.hppc.IntArrayList;
-import com.carrotsearch.hppc.ObjectLongOpenHashMap;
-import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
+import com.carrotsearch.hppc.ObjectLongHashMap;
+import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.cursors.FloatCursor;
 import com.carrotsearch.hppc.cursors.IntCursor;
 import com.carrotsearch.hppc.cursors.ObjectCursor;
@@ -308,7 +308,7 @@ public abstract class Classifier {
             final List<Integer> currentWindowLengths) {
 
         HashSet<String> uniqueLabels = uniqueClassLabels(samples);
-        ObjectObjectOpenHashMap<String, ObjectLongOpenHashMap> confMatrix = new ObjectObjectOpenHashMap<>(uniqueLabels.size());
+        ObjectObjectHashMap<String, ObjectLongHashMap> confMatrix = new ObjectObjectHashMap<>(uniqueLabels.size());
         initConfusionMatrix(confMatrix, uniqueLabels);
 
         int correctTesting = 0;
@@ -351,19 +351,19 @@ public abstract class Classifier {
     }
 
     protected void initConfusionMatrix(
-            final ObjectObjectOpenHashMap<String, ObjectLongOpenHashMap> matrix,
+            final ObjectObjectHashMap<String, ObjectLongHashMap> matrix,
             final HashSet<String> uniqueLabels) {
         for (String label : uniqueLabels) {
-            ObjectLongOpenHashMap stat = matrix.get(label);
+            ObjectLongHashMap stat = matrix.get(label);
             if (stat == null) {
-                matrix.put(label, new ObjectLongOpenHashMap(uniqueLabels.size()));
+                matrix.put(label, new ObjectLongHashMap(uniqueLabels.size()));
             } else if (stat != null) {
                 stat.clear();
             }
         }
     }
 
-    public static void outputConfusionMatrix(ObjectObjectOpenHashMap<String, ObjectLongOpenHashMap> matrix) {
+    public static void outputConfusionMatrix(ObjectObjectHashMap<String, ObjectLongHashMap> matrix) {
         try {
             int rows = matrix.size();
             List<String> labels = new ArrayList(rows);

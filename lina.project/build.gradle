@@ -36,8 +36,10 @@ dependencies {
     compile group: 'net.seninp', name: 'jmotif-gi', version: '1.0.1'
     compile group: 'de.bwaldvogel', name: 'liblinear', version: '2.11'
     compile group: 'net.sourceforge.jtransforms', name: 'jtransforms', version: '2.4.0'
-    compile group: 'com.carrotsearch', name: 'hppc', version: '0.5.0'
+    //compile group: 'com.carrotsearch', name: 'hppc', version: '0.5.0'
     compile group: 'net.jcip', name: 'jcip-annotations', version: '1.0'
+    compile group: 'com.esotericsoftware', name: 'kryo', version: '4.0.1'
+    compile group: 'com.carrotsearch', name: 'hppc', version: '0.7.2'
     
     compile files('libs/jahmm-0.6.2.jar')
     compile files('libs/riso.jar')

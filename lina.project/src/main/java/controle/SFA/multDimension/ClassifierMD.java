@@ -12,7 +12,6 @@ import com.carrotsearch.hppc.*;
 import com.carrotsearch.hppc.cursors.ObjectCursor;
 import com.carrotsearch.hppc.cursors.FloatCursor;
 import com.carrotsearch.hppc.cursors.IntCursor;
-import static controle.SFA.classification.Classifier.resultString;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesMD;
 
@@ -32,6 +31,7 @@ public abstract class ClassifierMD {
     protected int[][] testIndices;
     protected int[][] trainIndices;
     public static int folds = 10;
+    public static String resultString = "";
 
     protected static int maxWordLength = 16; // 12
     protected static int minWordLenth = 6;  // 4
@@ -180,10 +180,12 @@ public abstract class ClassifierMD {
 
         System.out.print("Correct:\t");
         System.out.print("" + correctStr + "");
+        resultString += "Correct: " + correctStr + "\n";
         System.out.println("\tTime: \t" + (System.currentTimeMillis() - time) / 1000.0 + " s");
+        resultString += "Time: " + (System.currentTimeMillis() - time) / 1000.0 + " s\n";
     }
 
-    public static void outputConfusionMatrix(ObjectObjectOpenHashMap<String, ObjectLongOpenHashMap> matrix) {
+    public static void outputConfusionMatrix(ObjectObjectHashMap<String, ObjectLongHashMap> matrix) {
         try {
             int rows = matrix.size();
             List<String> labels = new ArrayList(rows);
@@ -203,7 +205,9 @@ public abstract class ClassifierMD {
             }
             System.out.println(str + "");
             System.out.println(str2 + "");
+            resultString += str + "\n" + str2 + "\n";
             str = "|\t";
+            resultString += str;
 
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
@@ -212,7 +216,9 @@ public abstract class ClassifierMD {
                 }
                 str = labels.get(i) + str;
                 System.out.println(str + "|");
+                resultString += str + "|\n";
                 str = "|\t";
+                resultString += str;
             }
 
         } catch (Exception e) {
@@ -220,7 +226,8 @@ public abstract class ClassifierMD {
         }
     }
 
-    private static Comparator<String> ALPHABETICAL_ORDER = new Comparator<String>() {
+    private static final Comparator<String> ALPHABETICAL_ORDER = new Comparator<String>() {
+        @Override
         public int compare(String str1, String str2) {
             int res = String.CASE_INSENSITIVE_ORDER.compare(str1, str2);
             if (res == 0) {
@@ -323,7 +330,7 @@ public abstract class ClassifierMD {
             final List<Pair<String, Double>>[] labels,
             final List<Integer> currentWindowLengths) {
         HashSet<String> uniqueLabels = uniqueClassLabels(samples); // OLHO somente as labels de TEST
-        ObjectObjectOpenHashMap<String, ObjectLongOpenHashMap> confusionMatrix = new ObjectObjectOpenHashMap<>(uniqueLabels.size());
+        ObjectObjectHashMap<String, ObjectLongHashMap> confusionMatrix = new ObjectObjectHashMap<>(uniqueLabels.size());
         initConfusionMatrix(confusionMatrix, uniqueLabels);
         int correctTesting = 0;
         for (int i = 0; i < labels.length; i++) {
@@ -358,10 +365,19 @@ public abstract class ClassifierMD {
 
         if (DEBUG) {
             System.out.println(name + " Testing with " + currentWindowLengths.size() + " models:\t");
+            resultString += name + " Testing with " + currentWindowLengths.size() + " models:\t\n";
             outputResult(correctTesting, startTime, samples.length);
             outputConfusionMatrix(confusionMatrix);
         }
         return correctTesting;
+    }
+
+    protected Integer[] getWindowsBetween(int minWindowLength, int maxWindowLength) {
+        List<Integer> windows = new ArrayList<>();
+        for (int windowLength = maxWindowLength; windowLength >= minWindowLength; windowLength--) {
+            windows.add(windowLength);
+        }
+        return windows.toArray(new Integer[]{});
     }
 
     public int getMax(TimeSeriesMD[] samples, int MAX_WINDOW_SIZE) {
@@ -373,7 +389,7 @@ public abstract class ClassifierMD {
     }
 
     protected static HashSet<String> uniqueClassLabels(TimeSeriesMD[] ts) {
-        HashSet<String> labels = new HashSet<String>();
+        HashSet<String> labels = new HashSet<>();
         for (TimeSeriesMD t : ts) {
             labels.add(t.getLabel());
         }
@@ -410,7 +426,7 @@ public abstract class ClassifierMD {
             TimeSeriesMD[] samples,
             int splits) {
 
-        HashMap<String, IntArrayDeque> elements = new HashMap<String, IntArrayDeque>();
+        HashMap<String, IntArrayDeque> elements = new HashMap<>();
 
         for (int i = 0; i < samples.length; i++) {
             String label = samples[i].getLabel();
@@ -479,12 +495,12 @@ public abstract class ClassifierMD {
     }
 
     protected void initConfusionMatrix(
-            final ObjectObjectOpenHashMap<String, ObjectLongOpenHashMap> matrix,
+            final ObjectObjectHashMap<String, ObjectLongHashMap> matrix,
             final HashSet<String> uniqueLabels) {
         for (String label : uniqueLabels) {
-            ObjectLongOpenHashMap stat = matrix.get(label);
+            ObjectLongHashMap stat = matrix.get(label);
             if (stat == null) {
-                matrix.put(label, new ObjectLongOpenHashMap(uniqueLabels.size()));
+                matrix.put(label, new ObjectLongHashMap(uniqueLabels.size()));
             } else if (stat != null) {
                 stat.clear();
             }

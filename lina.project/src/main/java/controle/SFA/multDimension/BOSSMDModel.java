@@ -2,10 +2,10 @@
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
 package controle.SFA.multDimension;
 
+import com.carrotsearch.hppc.LongFloatHashMap;
+import com.carrotsearch.hppc.LongShortHashMap;
+import com.carrotsearch.hppc.ObjectObjectHashMap;
 import java.util.HashSet;
-import com.carrotsearch.hppc.LongFloatOpenHashMap;
-import com.carrotsearch.hppc.LongShortOpenHashMap;
-import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
 import com.carrotsearch.hppc.cursors.FloatCursor;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
 import com.carrotsearch.hppc.cursors.LongFloatCursor;
@@ -36,7 +36,7 @@ public class BOSSMDModel extends BOSSModel {
         super(maxF, maxS, windowLength, normMean);
     }
 
-    public ObjectObjectOpenHashMap<String, LongFloatOpenHashMap> createTfIdf(
+    public ObjectObjectHashMap<String, LongFloatHashMap> createTfIdf(
             final BagOfPattern[] bagOfPatterns,
             final HashSet<String> uniqueLabels) {
         int[] sampleIndices = createIndices(bagOfPatterns.length);
@@ -61,17 +61,17 @@ public class BOSSMDModel extends BOSSModel {
      * @param uniqueLabels The unique class labels in the dataset
      * @return
      */
-    public ObjectObjectOpenHashMap<String, LongFloatOpenHashMap> createTfIdf(
+    public ObjectObjectHashMap<String, LongFloatHashMap> createTfIdf(
             final BagOfPattern[] bagOfPatterns,
             final int[] sampleIndices,
             final HashSet<String> uniqueLabels) {
 
-        ObjectObjectOpenHashMap<String, LongFloatOpenHashMap> matrix = new ObjectObjectOpenHashMap<>(uniqueLabels.size());
+        ObjectObjectHashMap<String, LongFloatHashMap> matrix = new ObjectObjectHashMap<>(uniqueLabels.size());
         initMatrix(matrix, uniqueLabels, bagOfPatterns);
 
         for (int j : sampleIndices) {
             String label = bagOfPatterns[j].label;
-            LongFloatOpenHashMap wordInBagFreq = matrix.get(label);
+            LongFloatHashMap wordInBagFreq = matrix.get(label);
             for (Iterator<IntIntCursor> it = bagOfPatterns[j].bag.iterator(); it.hasNext();) {
                 IntIntCursor key = it.next();
                 wordInBagFreq.putOrAdd(key.key, key.value, key.value);
@@ -79,9 +79,9 @@ public class BOSSMDModel extends BOSSModel {
         }
 
         // count the number of classes where the word is present
-        LongShortOpenHashMap wordInClassFreq = new LongShortOpenHashMap(matrix.iterator().next().value.size());
+        LongShortHashMap wordInClassFreq = new LongShortHashMap(matrix.iterator().next().value.size());
 
-        for (ObjectCursor<LongFloatOpenHashMap> stat : matrix.values()) {
+        for (ObjectCursor<LongFloatHashMap> stat : matrix.values()) {
             // count the occurence of words
             for (LongFloatCursor key : stat.value) {
                 wordInClassFreq.putOrAdd(key.key, (short) 1, (short) 1);
@@ -89,8 +89,8 @@ public class BOSSMDModel extends BOSSModel {
         }
 
         // calculate the tfIDF value for each class
-        for (ObjectObjectCursor<String, LongFloatOpenHashMap> stat : matrix) {
-            LongFloatOpenHashMap tfIDFs = stat.value;
+        for (ObjectObjectCursor<String, LongFloatHashMap> stat : matrix) {
+            LongFloatHashMap tfIDFs = stat.value;
             // calculate the tfIDF value for each word
             for (LongFloatCursor patternFrequency : tfIDFs) {
                 short wordCount = wordInClassFreq.get(patternFrequency.key);
@@ -116,13 +116,13 @@ public class BOSSMDModel extends BOSSModel {
     }
 
     protected void initMatrix(
-            final ObjectObjectOpenHashMap<String, LongFloatOpenHashMap> matrix,
+            final ObjectObjectHashMap<String, LongFloatHashMap> matrix,
             final HashSet<String> uniqueLabels,
             final BagOfPattern[] bag) {
         for (String label : uniqueLabels) {
-            LongFloatOpenHashMap stat = matrix.get(label);
+            LongFloatHashMap stat = matrix.get(label);
             if (stat == null) {
-                matrix.put(label, new LongFloatOpenHashMap(bag[0].bag.size() * bag.length));
+                matrix.put(label, new LongFloatHashMap(bag[0].bag.size() * bag.length));
             } else if (stat != null) {
                 stat.clear();
             }
@@ -134,8 +134,8 @@ public class BOSSMDModel extends BOSSModel {
      *
      * @param classStatistics
      */
-    public void normalizeTfIdf(final ObjectObjectOpenHashMap<String, LongFloatOpenHashMap> classStatistics) {
-        for (ObjectCursor<LongFloatOpenHashMap> classStat : classStatistics.values()) {
+    public void normalizeTfIdf(final ObjectObjectHashMap<String, LongFloatHashMap> classStatistics) {
+        for (ObjectCursor<LongFloatHashMap> classStat : classStatistics.values()) {
             double squareSum = 0.0;
             for (FloatCursor entry : classStat.value.values()) {
                 squareSum += entry.value * entry.value;

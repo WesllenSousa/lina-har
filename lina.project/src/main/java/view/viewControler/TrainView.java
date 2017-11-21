@@ -20,7 +20,7 @@ import controle.SFA.classification.Classifier.Score;
 import controle.SFA.classification.ShotgunClassifier;
 import controle.SFA.classification.ShotgunEnsembleClassifier;
 import controle.SFA.classification.WEASELClassifier;
-import controle.SFA.multDimension.BOSSVSMDClassifier;
+import controle.SFA.multDimension.BOSSVSMDStackClassifier;
 import controle.SFA.multDimension.ClassifierMD;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
@@ -67,7 +67,7 @@ public class TrainView {
             executeTrainWeka(train, test, algorithm);
         } else if (algorithm.equals(ConstGeneral.AL_BOSS_ENSEMBLE) || algorithm.equals(ConstGeneral.AL_BOSS_VS)
                 || algorithm.equals(ConstGeneral.AL_WEASEL) || algorithm.equals(ConstGeneral.AL_SHOTGUN)
-                || algorithm.equals(ConstGeneral.AL_SHOTGUN_ENSEMBLE)) {
+                || algorithm.equals(ConstGeneral.AL_SHOTGUN_ENSEMBLE) || algorithm.equals(ConstGeneral.AL_BOSS_MODEL)) {
             executeTrainBoss(train, test, algorithm);
         } else if (algorithm.equals(ConstGeneral.AL_SAX_VSM)) {
             executeTrainSaxVsm(train, test, algorithm);
@@ -221,7 +221,7 @@ public class TrainView {
         try {
             ClassifierMD classifier = null;
             if (algorithm.equals(ConstGeneral.AL_BOSS_VS_MD)) {
-                classifier = new BOSSVSMDClassifier(trainSamples, testSamples);
+                classifier = new BOSSVSMDStackClassifier(trainSamples, testSamples);
             }
 
             if (classifier != null) {

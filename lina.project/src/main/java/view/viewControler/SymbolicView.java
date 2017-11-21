@@ -5,8 +5,8 @@
  */
 package view.viewControler;
 
-import com.carrotsearch.hppc.IntFloatOpenHashMap;
-import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
+import com.carrotsearch.hppc.IntFloatHashMap;
+import com.carrotsearch.hppc.ObjectObjectHashMap;
 import constants.ConstGeneral;
 import constants.Parameters;
 import controle.SAX.Params;
@@ -219,10 +219,10 @@ public class SymbolicView {
                         SAX_VSM sax_vsm = new SAX_VSM();
                         WordBag bag1 = sax_vsm.wordsToWordBag(buffer.getBufferWord(), label);
                         buffer.getBOPSax().add(bag1); //verificar e mudar para SAX model?
-                        
+
                         HashMap<String, HashMap<String, Double>> tfidf = sax_vsm.getTfIdfFromWordBags(buffer.getBOPSax());
                         buffer.setMatrixSaxVsm(tfidf);
-                        
+
                         String result = sax_vsm.predict(bag1, tfidf);
                         updateLog("SAX-VSM: " + result);
                     } else {
@@ -234,7 +234,7 @@ public class SymbolicView {
                         BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
                         BagOfPattern bag2 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
                         buffer.getBOPBoss().add(bag2); //Boss model?
-                        
+
                         classifyBossModel(bag2, buffer.getBOPBoss());
                     } else {
                         updateLog("Need to be choose SFA discretization algorithm!");
@@ -245,7 +245,7 @@ public class SymbolicView {
                         BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
                         BagOfPattern bag3 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
                         buffer.getBOPBoss().add(bag3); //Boss model?
-                        
+
                         updateModelBossVs(buffer);
                         classifyBossVs(bag3, buffer.getMatrixBossVs());
                     } else {
@@ -260,7 +260,7 @@ public class SymbolicView {
                                 windowLengths, true, true);
                         BagOfBigrams bag4 = createBagOfBigramWEASEL(weasel, buffer.getBufferWord(), label, windowLengths);
                         buffer.getBOPWeasel().add(bag4);
-                        
+
                         updateModelWeasel(weasel, buffer);
                         classifyWeasel(bag4, buffer);
                     } else {
@@ -308,7 +308,7 @@ public class SymbolicView {
     private void updateModelBossVs(BufferStreaming buffer) {
         BOSSVSModel bossVsModel = new BOSSVSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
                 Parameters.WINDOW_SIZE, true);
-        ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixTrain = bossVsModel.createTfIdf(
+        ObjectObjectHashMap<String, IntFloatHashMap> matrixTrain = bossVsModel.createTfIdf(
                 buffer.getBOPBoss().toArray(new BagOfPattern[]{}), uniqueLabels);
         buffer.setMatrixBossVs(matrixTrain);
     }
@@ -329,7 +329,7 @@ public class SymbolicView {
         updateLog("BOSS: " + pBoss.labels[0]);
     }
 
-    private void classifyBossVs(BagOfPattern bag, ObjectObjectOpenHashMap<String, IntFloatOpenHashMap> matrixBossVs) {
+    private void classifyBossVs(BagOfPattern bag, ObjectObjectHashMap<String, IntFloatHashMap> matrixBossVs) {
         BOSSVSClassifier bossVs = new BOSSVSClassifier();
         Predictions pBossVs = bossVs.predictStream(bag, matrixBossVs); //BOSS VS
         updateLog("BOSS VS: " + pBossVs.labels[0]);
