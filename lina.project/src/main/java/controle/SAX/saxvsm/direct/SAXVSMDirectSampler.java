@@ -194,7 +194,7 @@ public class SAXVSMDirectSampler {
 
     private static void classify(Params params) throws Exception {
         // making training bags collection
-        List<WordBag> bags = tp.labeledSeries2WordBags(trainData, params);
+        List<WordBag> bags = tp.labeledSeriesToWordBags(trainData, params);
         // getting TFIDF done
         HashMap<String, HashMap<String, Double>> tfidf = tp.computeTFIDF(bags);
         // classifying

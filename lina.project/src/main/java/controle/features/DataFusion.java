@@ -41,10 +41,10 @@ public class DataFusion {
 
     public static LinkedList<Double> PCA(String dir, String nameFile) {
         try {
-            WekaUtil wekaUtil = new WekaUtil();
+            
             LinkedList<String> columns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR,
                     dir + nameFile);
-            wekaUtil.readData(dir + nameFile, columns.size());
+            WekaUtil wekaUtil = new WekaUtil(dir + nameFile, columns.size());
 
             if (wekaUtil.getData() == null) {
                 return new LinkedList<>();

@@ -5,13 +5,6 @@
  */
 package controle.SAX;
 
-import controle.SAX.saxvsm.text.TextProcessor;
-import controle.SAX.saxvsm.text.WordBag;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.seninp.jmotif.sax.SAXException;
 import net.seninp.jmotif.sax.SAXProcessor;
 import net.seninp.jmotif.sax.TSProcessor;
@@ -19,7 +12,6 @@ import net.seninp.jmotif.sax.alphabet.Alphabet;
 import net.seninp.jmotif.sax.alphabet.NormalAlphabet;
 import net.seninp.jmotif.sax.datastructure.SAXRecords;
 import net.seninp.jmotif.sax.parallel.ParallelSAXImplementation;
-import net.seninp.util.UCRUtils;
 import util.Messages;
 
 /**
@@ -27,8 +19,14 @@ import util.Messages;
  * @author Wesllen Sousa
  */
 public class SAX {
+    
+    private final Params params;
+    
+    public SAX(Params params) {
+        this.params = params;
+    }
 
-    public static String serieToWord(double[] ts, Params params) {
+    public String serieToWord(double[] ts) {
         try {
             TSProcessor tp = new TSProcessor();
             // Z normalize it
@@ -46,7 +44,7 @@ public class SAX {
         return null;
     }
 
-    public static SAXRecords slideWindow(double[] ts, Params params) {
+    public SAXRecords slideWindow(double[] ts) {
         SAXProcessor sp = new SAXProcessor();
         SAXRecords sAXRecords = new SAXRecords();
         try {
@@ -62,7 +60,7 @@ public class SAX {
         return new SAXRecords();
     }
 
-    public static SAXRecords slideWindowParallel(double[] ts, Params params) {
+    public SAXRecords slideWindowParallel(double[] ts) {
         try {
             ParallelSAXImplementation ps = new ParallelSAXImplementation();
             SAXRecords parallelRes = ps.process(ts, 2, params.windowSize, params.paaSize,
@@ -73,58 +71,6 @@ public class SAX {
             msg.bug("ParallelSAX - slideWindowParallel: " + ex.toString());
         }
         return new SAXRecords();
-    }
-
-    public static String SAX_VSM(String train_file, String test_file, Params params) {
-
-        try {
-            Map<String, List<double[]>> trainData = UCRUtils.readUCRData(train_file);
-            Map<String, List<double[]>> testData = UCRUtils.readUCRData(test_file);
-
-            TextProcessor tp = new TextProcessor();
-            // making training bags collection
-            List<WordBag> bags = tp.labeledSeries2WordBags(trainData, params);
-            // getting TFIDF done
-            HashMap<String, HashMap<String, Double>> tfidf = tp.computeTFIDF(bags);
-            // classifying
-            int testSampleSize = 0;
-            int positiveTestCounter = 0;
-            for (String label : tfidf.keySet()) {
-                List<double[]> testD = testData.get(label);
-                for (double[] series : testD) {
-                    positiveTestCounter = positiveTestCounter
-                            + tp.classify(label, series, tfidf, params);
-                    testSampleSize++;
-                }
-            }
-
-            // accuracy and error
-            double accuracy = (double) positiveTestCounter / (double) testSampleSize;
-            double error = 1.0d - accuracy;
-
-            // report results
-            String results = "SAX-VSM: \n" + toLogStr(params, accuracy, error);
-            System.out.println(results);
-
-            return results;
-
-        } catch (IOException | NumberFormatException | SAXException ex) {
-            Messages msg = new Messages();
-            msg.bug("SAX - SAX_VSM: " + ex.toString());
-        }
-        return null;
-    }
-
-    private static String toLogStr(Params params, double accuracy, double error) {
-        DecimalFormat fmt = new DecimalFormat("0.00###");
-        StringBuffer sb = new StringBuffer();
-        sb.append(" Strategy: ").append(params.getNrStartegy().toString()).append(",");
-        sb.append("\n Window ").append(params.getWindowSize()).append(",");
-        sb.append("\n PAA ").append(params.getPaaSize()).append(",");
-        sb.append("\n Alphabet ").append(params.getAlphabetSize()).append(",");
-        sb.append("\n>> Accuracy ").append(fmt.format(accuracy)).append(",");
-        sb.append("\n>> Error ").append(fmt.format(error));
-        return sb.toString();
     }
 
 }

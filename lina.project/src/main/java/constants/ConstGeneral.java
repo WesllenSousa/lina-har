@@ -24,14 +24,13 @@ public class ConstGeneral {
     public static boolean ALINGMENT = true;
     public static String MODEL = "";
     public static boolean CLEAR_HIST = true;
+    public static boolean HORIZONTAL_FORMAT_NOISE = true;
 
     public static int PP_EDIT = 2;
     public static int PP_DELETE = 3;
 
     public static String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
     public static double PERCENT_QUEDA_THRESHOULD = 30;
-
-    public static String NOISE = "noise";
 
     //Signal Processing
     public static String SP_GausianLowpass = "GaussianLowpass";
@@ -120,6 +119,7 @@ public class ConstGeneral {
     public static String AL_WEASEL = "Weasel";
     public static String AL_SHOTGUN = "Shotgun";
     public static String AL_SHOTGUN_ENSEMBLE = "ShotgunEnsemble";
+    public static String AL_BOSS_VS_MD = "BossVSMD";
 
     //Data Fusion
     public static String DF_MAGNITUDE = "Magnitude";

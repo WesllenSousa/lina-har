@@ -6,23 +6,23 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/TrainView.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/DesktopView.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/SAX/SAX_VSM.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/EditDataset.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/util/FileUtil.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/todo</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/SAX/SaxVsmExample.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/Test.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/Principal.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/features/DataFusion.java</file>
       </group>
     </open-files>
     <editor-bookmarks lastBookmarkId="0" xmlns="http://www.netbeans.org/ns/editor-bookmarks/2"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/TrainView.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/DesktopView.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/SFA/classification/WEASELClassifier.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/SFA/transformation/WEASELModel.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/SAX/SAX_VSM.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/util/FileUtil.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/todo</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/SymbolicView.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/features/ProcessingFeatures.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/datasets/generic/HandleGenericDataset.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/SAX/SaxVsmExample.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/Principal.java</file>
       </group>
     </open-files>

@@ -32,6 +32,15 @@ public class HandleGenericDataset {
         LinkedList<String> tuplaHoriz = new LinkedList<>();
         LinkedList<String> classes = new LinkedList<>();
 
+        //Inicialize the object with the amount of column
+        LinkedList<LinkedList<String>> columns = new LinkedList<>();
+        GenericRowBean firstBean = data.getFirst();
+        int col = 0;
+        for (String value : firstBean.getTupla()) {
+            columns.add(col, new LinkedList<>());
+            col++;
+        }
+
         int tsSize = (int) (Math.abs(Parameters.WINDOW_SEC) * Parameters.FREQUENCY);
         int row = 0;
         for (GenericRowBean bean : data) {
@@ -40,20 +49,30 @@ public class HandleGenericDataset {
                 continue;
             }
             classes.add(bean.getClasse());
+            col = 0;
             for (String value : bean.getTupla()) {
-                tuplaHoriz.addLast(value);
+                columns.get(col).add(value);
+                col++;
             }
             if (row % tsSize == 0) {
-                String classe = stringMoreFrequency(classes, true);
+                String classe = stringMoreFrequency(classes, ConstGeneral.HORIZONTAL_FORMAT_NOISE);
                 //Ingnoring noise columns
-                if (!classe.equals(ConstGeneral.NOISE)) {
+                if (!classe.equals(ConstDataset.NOISE)) {
                     tuplaHoriz.addFirst(classe);
+                    for (LinkedList<String> column : columns) {
+                        for (String value : column) {
+                            tuplaHoriz.addLast(value);
+                        }
+                    }
                     GenericRowBean newBean = new GenericRowBean();
                     newBean.setTupla((LinkedList<String>) tuplaHoriz.clone());
                     horizList.add(newBean);
                 }
 
                 tuplaHoriz.clear();
+                for (LinkedList<String> column : columns) {
+                    column.clear();
+                }
                 classes.clear();
             }
             row++;
@@ -530,7 +549,7 @@ public class HandleGenericDataset {
             }
         }
         if (noise && frequency.size() > 1) {
-            return ConstGeneral.NOISE;
+            return ConstDataset.NOISE;
         }
         int maior = 0;
         String classe = "";

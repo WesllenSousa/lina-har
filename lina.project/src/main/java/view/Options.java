@@ -18,7 +18,7 @@ public class Options extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-
+        
         fillPreprocessingOptions();
         fillSymbolicOptions();
         fillSegmentation();
@@ -30,12 +30,12 @@ public class Options extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         
         tb_pane.setSelectedIndex(tab);
-
+        
         fillPreprocessingOptions();
         fillSymbolicOptions();
         fillSegmentation();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -52,6 +52,7 @@ public class Options extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         tf_columnTimestamp = new javax.swing.JTextField();
         bt_preprocessing = new javax.swing.JButton();
+        ck_horizontalFormatNoise = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -98,6 +99,9 @@ public class Options extends javax.swing.JDialog {
             }
         });
 
+        ck_horizontalFormatNoise.setSelected(true);
+        ck_horizontalFormatNoise.setText("Horizontal format noise");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -119,7 +123,8 @@ public class Options extends javax.swing.JDialog {
                             .addComponent(tf_separatorFile, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                             .addComponent(tf_dateFormat)
                             .addComponent(tf_columnClass, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tf_columnTimestamp))))
+                            .addComponent(tf_columnTimestamp)))
+                    .addComponent(ck_horizontalFormatNoise, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -141,7 +146,9 @@ public class Options extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(tf_columnTimestamp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ck_horizontalFormatNoise)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(bt_preprocessing)
                 .addContainerGap())
         );
@@ -315,7 +322,7 @@ public class Options extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tb_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+            .addComponent(tb_pane)
         );
 
         pack();
@@ -355,6 +362,11 @@ public class Options extends javax.swing.JDialog {
         if (!Validation.isEmptyString(tf_columnTimestamp.getText())) {
             ConstDataset.TIMESTAMP = tf_columnTimestamp.getText();
         }
+        if (ck_horizontalFormatNoise.isSelected()) {
+            ConstGeneral.HORIZONTAL_FORMAT_NOISE = true;
+        } else {
+            ConstGeneral.HORIZONTAL_FORMAT_NOISE = false;
+        }
         dispose();
     }//GEN-LAST:event_bt_preprocessingActionPerformed
 
@@ -379,6 +391,7 @@ public class Options extends javax.swing.JDialog {
     private javax.swing.JButton bt_preprocessing1;
     private javax.swing.JButton bt_symbolic;
     private javax.swing.JCheckBox ck_clearHist;
+    private javax.swing.JCheckBox ck_horizontalFormatNoise;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -419,8 +432,9 @@ public class Options extends javax.swing.JDialog {
         tf_separatorFile.setText(ConstDataset.SEPARATOR);
         tf_columnClass.setText(ConstDataset.CLASS);
         tf_columnTimestamp.setText(ConstDataset.TIMESTAMP);
+        ck_horizontalFormatNoise.setSelected(ConstGeneral.HORIZONTAL_FORMAT_NOISE);
     }
-
+    
     private void fillSymbolicOptions() {
         ck_clearHist.setSelected(ConstGeneral.CLEAR_HIST);
         tf_fallThPagehinkey.setText(ConstGeneral.PERCENT_QUEDA_THRESHOULD + "");
@@ -428,12 +442,12 @@ public class Options extends javax.swing.JDialog {
         tf_maxWordLegth.setText(Parameters.MAX_WORD_LENGTH + "");
         tf_minWordLength.setText(Parameters.MIN_WORD_LENGTH + "");
     }
-
+    
     private void fillSegmentation() {
         tf_frequency.setText(Parameters.FREQUENCY + "");
         tf_windowSec.setText(Parameters.WINDOW_SEC + "");
         tf_maxWinLegth.setText(Parameters.MAX_WINDOW_LENGTH + "");
         tf_minWinLegth.setText(Parameters.MIN_WINDOW_LENGTH + "");
     }
-
+    
 }

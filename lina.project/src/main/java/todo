@@ -1,12 +1,15 @@
 
 Afazeres de implementação
 1) Fazer com que o Page Hinkley se adapte seu theshold de disparo maseado no histórico de disparo.
-2) Resolver o problema da media negativa do PageHinkley
+2) Resolver o problema da media negativa do PageHinkley (Magnitude resolve)
 3) Ler o item de Logistic Regression do livro de PNL
 4) Testar a atuação dos ruidos no método stringMoreFrequency no HandleGenericDataset
 5) Preparar todas as bases de dados possíveis
 6) Implementar Kalman filter
 7) Testar outras bases de dados
+8) Testar o overlap de 50% na geração das bases de dados no formato horizontal
+9) Implementar formato horizontal multi-dimensional
+10) Weka base de teste
 
 Notas de Inovação
 

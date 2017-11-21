@@ -33,7 +33,8 @@ public class SequiturExample {
         //0 = all lines
         TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_STREAM + "sinusoid.csv", false, ",");
 
-        SAXRecords saxRecords = SAX.slideWindow(timeSeries[0].getData(), params);
+        SAX sax = new SAX(params);
+        SAXRecords saxRecords = sax.slideWindow(timeSeries[0].getData());
         GrammarRules grammarRules = Sequitur.run(saxRecords.getSAXString(" "));
 
         GrammarRules grammarRulesPruned = RulePrunerFactory.performPruning(timeSeries[0].getData(), grammarRules);

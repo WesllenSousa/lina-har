@@ -10,11 +10,12 @@ package constants;
  * @author Wesllen Sousa
  */
 public class ConstDataset {
-    
+
     public static String CURRENT_DIR = System.getProperty("user.home");
     public static String SEPARATOR = ",";
     public static String CLASS = "class";
     public static String TIMESTAMP = "timestamp";
+    public static String NOISE = "noise";
 
     public static String DS_MODEL = CURRENT_DIR + "\\Lina\\Datasets\\Model\\";
     public static String DS_TRAIN = CURRENT_DIR + "\\Lina\\Datasets\\Train\\";

@@ -29,7 +29,8 @@ public class Repair {
         Params params = new Params(WINDOW_SIZE, SAX_PAA, SAX_ALPHABET,
                 NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.NONE);
 
-        SAXRecords saxRecords = SAX.slideWindowParallel(ts, params);
+        SAX sax = new SAX(params);
+        SAXRecords saxRecords = sax.slideWindowParallel(ts);
         RePairGrammar rePairGrammar = RePairFactory.buildGrammar(saxRecords);
 
         rePairGrammar.expandRules();

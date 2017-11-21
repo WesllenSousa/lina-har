@@ -23,10 +23,9 @@ public class Test {
 
         String dataset = "MPU_WEKA.arff";
 
-        WekaUtil wekaUtil = new WekaUtil();
         LinkedList<String> columns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR,
                 ConstDataset.DS_RAW + dataset);
-        wekaUtil.readData(ConstDataset.DS_RAW + dataset, columns.size());
+        WekaUtil wekaUtil = new WekaUtil(ConstDataset.DS_RAW + dataset, columns.size());
 
         PrincipalComponents pca = new PrincipalComponents();
         pca.setMaximumAttributeNames(3);

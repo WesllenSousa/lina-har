@@ -15,6 +15,13 @@ import javax.swing.tree.TreeNode;
  */
 public class FileUtil {
 
+    public static void main(String[] args) {
+        String inputFile = "C:\\Users\\Wesllen Sousa\\Lina\\Datasets\\Raw\\train_shoaib.txt";
+        String outputDir = "C:\\Users\\Wesllen Sousa\\Lina\\Datasets\\Raw";
+
+        divideFile(inputFile, outputDir, 230000);
+    }
+
     public static BufferedReader readFile(String diretorio) {
         try {
             File f = new File(diretorio);
@@ -26,8 +33,8 @@ public class FileUtil {
         return null;
     }
 
-    public static Boolean saveFile(String texto, String diretorio) {
-        try (OutputStream output = new FileOutputStream(new File(diretorio));
+    public static Boolean saveFile(String dir, String texto) {
+        try (OutputStream output = new FileOutputStream(new File(dir));
                 OutputStreamWriter osw = new OutputStreamWriter(output);
                 BufferedWriter write = new BufferedWriter(osw)) {
             write.write(texto);
@@ -43,10 +50,10 @@ public class FileUtil {
         return false;
     }
 
-    public static Boolean saveFile(String diretorio, InputStream contents) {
+    public static Boolean saveFile(String dir, InputStream contents) {
         try (InputStreamReader input = new InputStreamReader(contents);
                 BufferedReader reader = new BufferedReader(input);
-                OutputStream output = new FileOutputStream(new File(diretorio));
+                OutputStream output = new FileOutputStream(new File(dir));
                 OutputStreamWriter osw = new OutputStreamWriter(output);
                 BufferedWriter write = new BufferedWriter(osw);) {
 
@@ -88,9 +95,9 @@ public class FileUtil {
         }
     }
 
-    public static void removeColumnFromFile(String separador, String source, String inputFile, String outputFile, int coluna) {
-        try (BufferedReader buffer = FileUtil.readFile(source + inputFile);
-                OutputStream output = new FileOutputStream(new File(source + outputFile));
+    public static void removeColumnFromFile(String separador, String inputFile, String outputFile, int coluna) {
+        try (BufferedReader buffer = FileUtil.readFile(inputFile);
+                OutputStream output = new FileOutputStream(new File(outputFile));
                 OutputStreamWriter osw = new OutputStreamWriter(output);
                 BufferedWriter write = new BufferedWriter(osw)) {
 

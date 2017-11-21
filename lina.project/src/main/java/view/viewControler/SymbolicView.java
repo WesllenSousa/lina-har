@@ -11,7 +11,7 @@ import constants.ConstGeneral;
 import constants.Parameters;
 import controle.SAX.Params;
 import controle.SAX.SAX;
-import controle.SAX.saxvsm.text.TextProcessor;
+import controle.SAX.SAX_VSM;
 import controle.SAX.saxvsm.text.WordBag;
 import controle.SFA.classification.BOSSClassifier;
 import controle.SFA.classification.BOSSVSClassifier;
@@ -142,7 +142,8 @@ public class SymbolicView {
     }
 
     private WordRecord SAX(TimeSeries sample, int position) {
-        String word = SAX.serieToWord(sample.getData(), params);
+        SAX sax = new SAX(params);
+        String word = sax.serieToWord(sample.getData());
         WordRecord wordRecord = populaWordRecord(word, position);
         return wordRecord;
     }
@@ -215,18 +216,25 @@ public class SymbolicView {
             switch (ConstGeneral.MODEL) {
                 case "SaxVsm":
                     if (!ConstGeneral.SFA) {
-                        WordBag bag1 = createBagOfPatternSAX(buffer.getBufferWord(), label);
+                        SAX_VSM sax_vsm = new SAX_VSM();
+                        WordBag bag1 = sax_vsm.wordsToWordBag(buffer.getBufferWord(), label);
                         buffer.getBOPSax().add(bag1); //verificar e mudar para SAX model?
-                        updateModelSax(buffer);
-                        classifySaxVsm(bag1, buffer.getMatrixSaxVsm());
+                        
+                        HashMap<String, HashMap<String, Double>> tfidf = sax_vsm.getTfIdfFromWordBags(buffer.getBOPSax());
+                        buffer.setMatrixSaxVsm(tfidf);
+                        
+                        String result = sax_vsm.predict(bag1, tfidf);
+                        updateLog("SAX-VSM: " + result);
                     } else {
                         updateLog("Need to be choose SAX discretization algorithm!");
                     }
                     break;
                 case "BossModel":
                     if (ConstGeneral.SFA) {
-                        BagOfPattern bag2 = createBagOfPatternBOSS(buffer.getBufferWord(), label);
+                        BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
+                        BagOfPattern bag2 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
                         buffer.getBOPBoss().add(bag2); //Boss model?
+                        
                         classifyBossModel(bag2, buffer.getBOPBoss());
                     } else {
                         updateLog("Need to be choose SFA discretization algorithm!");
@@ -234,8 +242,10 @@ public class SymbolicView {
                     break;
                 case "BossVS":
                     if (ConstGeneral.SFA) {
-                        BagOfPattern bag3 = createBagOfPatternBOSS(buffer.getBufferWord(), label);
+                        BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
+                        BagOfPattern bag3 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
                         buffer.getBOPBoss().add(bag3); //Boss model?
+                        
                         updateModelBossVs(buffer);
                         classifyBossVs(bag3, buffer.getMatrixBossVs());
                     } else {
@@ -246,9 +256,12 @@ public class SymbolicView {
                     if (ConstGeneral.SFA) {
                         LinkedList<Integer> windowLengths = new LinkedList<>(); //Cria diferentes tamanhos de janelas, ver uma solucao pra ca
                         windowLengths.add(Parameters.WINDOW_SIZE);
-                        BagOfBigrams bag4 = createBagOfBigramWEASEL(buffer.getBufferWord(), label, windowLengths);
+                        WEASELModel weasel = new WEASELModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
+                                windowLengths, true, true);
+                        BagOfBigrams bag4 = createBagOfBigramWEASEL(weasel, buffer.getBufferWord(), label, windowLengths);
                         buffer.getBOPWeasel().add(bag4);
-                        updateModelWeasel(buffer, windowLengths);
+                        
+                        updateModelWeasel(weasel, buffer);
                         classifyWeasel(bag4, buffer);
                     } else {
                         updateLog("Need to be choose SFA discretization algorithm!");
@@ -265,15 +278,7 @@ public class SymbolicView {
         }
     }
 
-    private WordBag createBagOfPatternSAX(List<WordRecord> listWords, String label) {
-        WordBag bag = new WordBag(label);
-        for (WordRecord word : listWords) {
-            bag.addWord(word.getWord(), word.getFrequency());
-        }
-        return bag;
-    }
-
-    private BagOfPattern createBagOfPatternBOSS(List<WordRecord> listWords, String label) {
+    private BagOfPattern createBagOfPatternBOSS(BOSSModel boss, List<WordRecord> listWords, String label) {
         int[] words = new int[listWords.size()];
         for (int wordIndex = 0; wordIndex < listWords.size(); wordIndex++) {
             //Get word int value from word bit value
@@ -282,12 +287,12 @@ public class SymbolicView {
             //Create column from matrix word equals the frequency of each word 
             words[wordIndex] = wordInt;
         }
-        BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
         BagOfPattern bag = boss.createOneBagOfPattern(words, label, Parameters.WORD_LENGTH_PAA);
         return bag;
     }
 
-    private BagOfBigrams createBagOfBigramWEASEL(List<WordRecord> listWords, String label, LinkedList<Integer> windowLengths) {
+    private BagOfBigrams createBagOfBigramWEASEL(WEASELModel weasel, List<WordRecord> listWords, String label,
+            LinkedList<Integer> windowLengths) {
         int[][] words = new int[windowLengths.size()][listWords.size()];
         for (int wordIndex = 0; wordIndex < listWords.size(); wordIndex++) {
             //Get word int value from word bit value
@@ -296,16 +301,8 @@ public class SymbolicView {
             //Create column from matrix word equals the frequency of each word 
             words[0][wordIndex] = wordInt;
         }
-        WEASELModel weasel = new WEASELModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
-                windowLengths, true, true);
         BagOfBigrams bag = weasel.createOneBagOfPatterns(words, label, Parameters.WORD_LENGTH_PAA);
         return bag;
-    }
-
-    private void updateModelSax(BufferStreaming buffer) {
-        TextProcessor tp = new TextProcessor();
-        HashMap<String, HashMap<String, Double>> tfidf = tp.computeTFIDF(buffer.getBOPSax());
-        buffer.setMatrixSaxVsm(tfidf);
     }
 
     private void updateModelBossVs(BufferStreaming buffer) {
@@ -316,22 +313,14 @@ public class SymbolicView {
         buffer.setMatrixBossVs(matrixTrain);
     }
 
-    private void updateModelWeasel(BufferStreaming buffer, LinkedList<Integer> windowLengths) {
+    private void updateModelWeasel(WEASELModel weasel, BufferStreaming buffer) {
         List<BagOfBigrams> bop = buffer.getBOPWeasel();
-        WEASELModel weasel = new WEASELModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
-                windowLengths, true, true);
         weasel.filterChiSquared(bop.toArray(new BagOfBigrams[]{}), chi);
         Problem problem = WEASELClassifier.initLibLinearProblem(bop.toArray(new BagOfBigrams[]{}), weasel.dict,
                 WEASELClassifier.bias);
         Model linearModel = Linear.train(problem, new Parameter(solverType, c, iter, p));
         WScore score = new WScore(0., true, Parameters.WORD_LENGTH_PAA, weasel, linearModel);
         buffer.setWeaselModel(score);
-    }
-
-    private void classifySaxVsm(WordBag bag, HashMap<String, HashMap<String, Double>> matrixSaxVsm) {
-        TextProcessor tp = new TextProcessor();
-        String result = tp.classify(bag, matrixSaxVsm);
-        updateLog("SAX-VSM: " + result);
     }
 
     private void classifyBossModel(BagOfPattern bag, List<BagOfPattern> BOP) {

@@ -268,21 +268,18 @@ public class EditDataset extends javax.swing.JDialog {
     private void mi_convHorizontalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_convHorizontalActionPerformed
         sx_busy.setBusy(true);
         LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
-        if (dataTable.getFirst().getTupla().size() <= 2) {
-            LinkedList<GenericRowBean> dataConverted = HandleGenericDataset.convertToHorizontalFormat(dataTable);
-            populaTabela(dataConverted);
-        } else {
-            messages.aviso("Data should be one number column and the class column!");
-        }
+        LinkedList<GenericRowBean> dataConverted = HandleGenericDataset.convertToHorizontalFormat(dataTable);
+        populaTabela(dataConverted);
         sx_busy.setBusy(false);
     }//GEN-LAST:event_mi_convHorizontalActionPerformed
 
     private void mi_convVerticalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_convVerticalActionPerformed
         sx_busy.setBusy(true);
-        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
-        LinkedList<GenericRowBean> dataConverted = HandleGenericDataset.convertToVerticalFormat(dataTable);
-        populaTabela(dataConverted);
-        populaComboboxColumn();
+//        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
+//        LinkedList<GenericRowBean> dataConverted = HandleGenericDataset.convertToVerticalFormat(dataTable);
+//        populaTabela(dataConverted);
+//        populaComboboxColumn();
+        messages.aviso("Function in mantenaince!");
         sx_busy.setBusy(false);
     }//GEN-LAST:event_mi_convVerticalActionPerformed
 

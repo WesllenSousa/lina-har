@@ -113,7 +113,7 @@ public class SAXVSMPatternExplorer {
 
         Params params = new Params(WINDOW_SIZE, PAA_SIZE, ALPHABET_SIZE, 0.01, STRATEGY);
 
-        List<WordBag> bags = tp.labeledSeries2WordBags(trainData, params);
+        List<WordBag> bags = tp.labeledSeriesToWordBags(trainData, params);
 
         // get tfidf statistics
         HashMap<String, HashMap<String, Double>> tfidf = tp.computeTFIDF(bags);

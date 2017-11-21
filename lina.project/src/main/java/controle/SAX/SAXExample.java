@@ -33,7 +33,8 @@ public class SAXExample {
 
 //        String test = SAX.serieToWord(timeSeries.getData(), params);
 //        System.out.println(test);
-        SAXRecords sAXRecords = SAX.slideWindow(timeSeries[3].getData(), params);
+        SAX sax = new SAX(params);
+        SAXRecords sAXRecords = sax.slideWindow(timeSeries[3].getData());
         System.out.println(">> " + sAXRecords.getIndexes().size());
         System.out.println(">> " + sAXRecords.getIndexes());
         for (SAXRecord sAXRecord : sAXRecords) {

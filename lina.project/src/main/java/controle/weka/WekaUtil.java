@@ -20,15 +20,29 @@ import weka.core.converters.ConverterUtils.DataSource;
  */
 public class WekaUtil {
 
-    private Instances data = null;
+    private Instances trainData = null;
+    private Instances testData = null;
 
-    public void readData(String dir, Integer numberColumnClass) {
+    public WekaUtil() {
+    }
+
+    public WekaUtil(String trainFile, Integer numberColumnClass) {
+        this.trainData = readData(trainFile, numberColumnClass);
+    }
+
+    public WekaUtil(String trainFile, String testFile, Integer numberColumnClass) {
+        this.trainData = readData(trainFile, numberColumnClass);
+        this.testData = readData(testFile, numberColumnClass);
+    }
+
+    private Instances readData(String dir, Integer numberColumnClass) {
         try {
             String extension = FileUtil.getFileExtension(dir);
             if (extension.equals("arff")) {
                 DataSource fonte = new DataSource(dir);
-                data = fonte.getDataSet();
+                Instances data = fonte.getDataSet();
                 data.setClassIndex(numberColumnClass - 1);
+                return data;
             } else {
                 Messages messages = new Messages();
                 messages.bug("File format should be arff!");
@@ -38,14 +52,15 @@ public class WekaUtil {
             Messages messages = new Messages();
             messages.bug(ex.toString());
         }
+        return null;
     }
 
-    public Classifier buildClassfy(Classifier classifier) {
-        if (data == null) {
+    public Classifier buildClassify(Classifier classifier) {
+        if (trainData == null) {
             return null;
         }
         try {
-            classifier.buildClassifier(data);
+            classifier.buildClassifier(trainData);
             return classifier;
         } catch (Exception ex) {
             System.out.println("buildClassfy: " + ex);
@@ -86,7 +101,7 @@ public class WekaUtil {
     public String classify(Classifier classifier, Instance newInstance) {
         try {
             double predict = classifier.classifyInstance(newInstance);
-            return data.attribute(data.classIndex()).value((int) predict);
+            return trainData.attribute(trainData.classIndex()).value((int) predict);
         } catch (Exception ex) {
             System.out.println("classify: " + ex);
             Messages messages = new Messages();
@@ -99,8 +114,13 @@ public class WekaUtil {
         String result = classifier.toString() + "\n";
         Evaluation eval = null;
         try {
-            eval = new Evaluation(data);
-            eval.crossValidateModel(classifier, data, 10, new Random(1));
+            if (testData != null) {
+                eval = new Evaluation(trainData);
+                eval.evaluateModel(classifier, testData);
+            } else {
+                eval = new Evaluation(trainData);
+                eval.crossValidateModel(classifier, trainData, 10, new Random(1));
+            }
             result += "Total Cost: " + eval.totalCost() + "\n";
             result += eval.toSummaryString("Summary", true);
         } catch (Exception ex) {
@@ -129,11 +149,7 @@ public class WekaUtil {
         Getters and Setters
      */
     public Instances getData() {
-        return data;
-    }
-
-    public void setData(Instances data) {
-        this.data = data;
+        return trainData;
     }
 
 }

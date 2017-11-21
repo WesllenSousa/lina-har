@@ -32,8 +32,6 @@ import org.slf4j.event.Level;
  */
 public final class TextProcessor {
 
-    @SuppressWarnings("unused")
-    private static final String COMMA = ",";
     private static final String CR = "\n";
     private static final DecimalFormat df = new DecimalFormat("#0.00000");
 
@@ -111,11 +109,11 @@ public final class TextProcessor {
         return resultBag;
     }
 
-    public List<WordBag> labeledSeries2WordBags(Map<String, List<double[]>> data, Params params)
+    public List<WordBag> labeledSeriesToWordBags(Map<String, List<double[]>> data, Params params)
             throws SAXException {
 
         // make a map of resulting bags
-        Map<String, WordBag> preRes = new HashMap<String, WordBag>();
+        Map<String, WordBag> preRes = new HashMap<>();
 
         // process series one by one building word bags
         for (Entry<String, List<double[]>> e : data.entrySet()) {
@@ -131,7 +129,7 @@ public final class TextProcessor {
             preRes.put(classLabel, bag);
         }
 
-        List<WordBag> res = new ArrayList<WordBag>();
+        List<WordBag> res = new ArrayList<>();
         res.addAll(preRes.values());
         return res;
     }
@@ -150,14 +148,14 @@ public final class TextProcessor {
         int totalDocs = texts.size();
 
         // the result. map of document names to the pairs word - tfidf weight
-        HashMap<String, HashMap<String, Double>> res = new HashMap<String, HashMap<String, Double>>();
+        HashMap<String, HashMap<String, Double>> res = new HashMap<>();
 
         // build a collection of all observed words and their frequency in corpus
-        HashMap<String, AtomicInteger> allWords = new HashMap<String, AtomicInteger>();
+        HashMap<String, AtomicInteger> allWords = new HashMap<>();
         for (WordBag bag : texts) {
 
             // here populate result map with empty entries
-            res.put(bag.getLabel(), new HashMap<String, Double>());
+            res.put(bag.getLabel(), new HashMap<>());
 
             // and get those words
             for (Entry<String, AtomicInteger> e : bag.getInternalWords().entrySet()) {
@@ -249,7 +247,7 @@ public final class TextProcessor {
      */
     public double normalizedTF(WordBag bag, String term) {
         if (bag.contains(term)) {
-            return Integer.valueOf(bag.getWordFrequency(term)).doubleValue()
+            return bag.getWordFrequency(term).doubleValue()
                     / Integer.valueOf(bag.getMaxFrequency()).doubleValue();
         }
         return 0;
@@ -265,7 +263,7 @@ public final class TextProcessor {
      */
     public double augmentedTF(WordBag bag, String term) {
         if (bag.contains(term)) {
-            return 0.5D + (Integer.valueOf(bag.getWordFrequency(term)).doubleValue())
+            return 0.5D + (bag.getWordFrequency(term).doubleValue())
                     / (2.0D * Integer.valueOf(bag.getMaxFrequency()).doubleValue());
         }
         return 0;
@@ -281,7 +279,7 @@ public final class TextProcessor {
      */
     public double logAveTF(WordBag bag, String term) {
         if (bag.contains(term)) {
-            return (1D + Math.log(Integer.valueOf(bag.getWordFrequency(term)).doubleValue()))
+            return (1D + Math.log(bag.getWordFrequency(term).doubleValue()))
                     / (1D + Math.log(bag.getAverageFrequency()));
         }
         return 0;
@@ -320,7 +318,7 @@ public final class TextProcessor {
 
         // melt together sets of keys
         //
-        TreeSet<String> words = new TreeSet<String>();
+        TreeSet<String> words = new TreeSet<>();
         for (HashMap<String, Double> t : tfidf.values()) {
             words.addAll(t.keySet());
         }
@@ -338,7 +336,7 @@ public final class TextProcessor {
         for (String w : words) {
 
             int zeroCounter = 0;
-            StringBuffer rowSB = new StringBuffer();
+            StringBuilder rowSB = new StringBuilder();
             rowSB.append("\"").append(w).append("\",");
 
             for (String key : tfidf.keySet()) {
@@ -377,7 +375,7 @@ public final class TextProcessor {
             sum = sum + value * value;
         }
         sum = Math.sqrt(sum);
-        HashMap<String, Double> res = new HashMap<String, Double>();
+        HashMap<String, Double> res = new HashMap<>();
         for (Entry<String, Double> e : vector.entrySet()) {
             res.put(e.getKey(), e.getValue() / sum);
         }
@@ -393,7 +391,7 @@ public final class TextProcessor {
     public HashMap<String, HashMap<String, Double>> normalizeToUnitVectors(
             HashMap<String, HashMap<String, Double>> data) {
         // result
-        HashMap<String, HashMap<String, Double>> res = new HashMap<String, HashMap<String, Double>>();
+        HashMap<String, HashMap<String, Double>> res = new HashMap<>();
         // cosine normalize these rows corresponding to docs TFIDF
         //
         for (Entry<String, HashMap<String, Double>> e : data.entrySet()) {
@@ -409,7 +407,7 @@ public final class TextProcessor {
             double sqRoot = Math.sqrt(sum);
 
             // now all the elements must be divided by its value
-            HashMap<String, Double> newEntry = new HashMap<String, Double>(e.getValue().size());
+            HashMap<String, Double> newEntry = new HashMap<>(e.getValue().size());
             for (Entry<String, Double> val : e.getValue().entrySet()) {
                 if (val.getValue().equals(0D)) {
                     newEntry.put(val.getKey(), 0D);
@@ -437,7 +435,7 @@ public final class TextProcessor {
         Set<String> unionKey = map2.keySet();
         if (!(map1.keySet().equals(map2.keySet()))) {
             System.err.println("WARN: Uneven vectors in the cosineDistance(), adjusting...");
-            unionKey = new HashSet<String>(map1.keySet());
+            unionKey = new HashSet<>(map1.keySet());
             // seninp: I take intersect here, because zeroes do not matter
             //
             unionKey.retainAll(map2.keySet());
@@ -448,8 +446,8 @@ public final class TextProcessor {
 
         int i = 0;
         for (String s : unionKey) {
-            vector1[i] = map1.get(s).doubleValue();
-            vector2[i] = map2.get(s).doubleValue();
+            vector1[i] = map1.get(s);
+            vector2[i] = map2.get(s);
             i++;
         }
 
@@ -464,7 +462,7 @@ public final class TextProcessor {
         double res = 0;
         for (Entry<String, Integer> entry : testSample.getWords().entrySet()) {
             if (weightVector.containsKey(entry.getKey())) {
-                res = res + entry.getValue().doubleValue() * weightVector.get(entry.getKey()).doubleValue();
+                res = res + entry.getValue().doubleValue() * weightVector.get(entry.getKey());
             }
         }
         double m1 = magnitude(testSample.getWordsAsDoubles().values());
@@ -518,9 +516,9 @@ public final class TextProcessor {
         double res = 0;
         for (Entry<String, Integer> entry : testSample.getWords().entrySet()) {
             if (weightVector.containsKey(entry.getKey())) {
-                res = res + entry.getValue().doubleValue() * weightVector.get(entry.getKey()).doubleValue();
+                res = res + entry.getValue().doubleValue() * weightVector.get(entry.getKey());
                 insight.put(entry.getKey(),
-                        entry.getValue().doubleValue() * weightVector.get(entry.getKey()).doubleValue());
+                        entry.getValue().doubleValue() * weightVector.get(entry.getKey()));
             }
         }
         double m1 = magnitude(testSample.getWordsAsDoubles().values());
@@ -544,7 +542,7 @@ public final class TextProcessor {
         for (Double v : values) {
             res = res + v * v;
         }
-        return Math.sqrt(res.doubleValue());
+        return Math.sqrt(res);
     }
 
     /**
@@ -712,104 +710,9 @@ public final class TextProcessor {
         return className;
     }
 
-    // public int classifyBigrams(String classKey, double[] series,
-    // HashMap<String, HashMap<Bigram, Double>> tfidf, int[][] params) throws Exception {
-    //
-    // BigramBag test = seriesToBigramBag("test", series, params);
-    //
-    // double minDist = -1.0d;
-    // String className = "";
-    // double[] cosines = new double[tfidf.entrySet().size()];
-    // int index = 0;
-    // for (Entry<String, HashMap<Bigram, Double>> e : tfidf.entrySet()) {
-    // double dist = TextUtils.cosineSimilarity(test, e.getValue());
-    // cosines[index] = dist;
-    // index++;
-    // if (dist > minDist) {
-    // className = e.getKey();
-    // minDist = dist;
-    // }
-    // }
-    //
-    // boolean allEqual = true;
-    // double cosine = cosines[0];
-    // for (int i = 1; i < cosines.length; i++) {
-    // if (!(cosines[i] == cosine)) {
-    // allEqual = false;
-    // }
-    // }
-    //
-    // if (!(allEqual) && className.equalsIgnoreCase(classKey)) {
-    // return 1;
-    // }
-    // return 0;
-    // }
-    // public int classify(String classKey, double[][] data,
-    // HashMap<String, HashMap<String, Double>> tfidf, int[][] params)
-    // throws IndexOutOfBoundsException, Exception {
-    //
-    // WordBag test = new WordBag("test");
-    //
-    // for (int[] p : params) {
-    // int windowSize = p[0];
-    // int paaSize = p[1];
-    // int alphabetSize = p[2];
-    // SAXNumerosityReductionStrategy strategy = SAXNumerosityReductionStrategy.fromValue(p[3]);
-    // String oldStr = "";
-    //
-    // for (double[] series : data) {
-    //
-    // for (int j = 0; j <= series.length - windowSize; j++) {
-    // double[] paa = tp.optimizedPaa(tp.zNormalize(tp.subseries(series, j, windowSize)),
-    // paaSize);
-    // char[] sax = tp.ts2String(paa, a.getCuts(alphabetSize));
-    // if (SAXNumerosityReductionStrategy.CLASSIC.equals(strategy)) {
-    // if (oldStr.length() > 0 && SAXFactory.strDistance(sax, oldStr.toCharArray()) == 0) {
-    // continue;
-    // }
-    // }
-    // else if (SAXNumerosityReductionStrategy.EXACT.equals(strategy)) {
-    // if (oldStr.equalsIgnoreCase(String.valueOf(sax))) {
-    // continue;
-    // }
-    // }
-    // oldStr = String.valueOf(sax);
-    // test.addWord(String.valueOf(sax));
-    // }
-    //
-    // }
-    // }
-    //
-    // double minDist = -1.0d;
-    // String className = "";
-    // double[] cosines = new double[tfidf.entrySet().size()];
-    // int index = 0;
-    // for (Entry<String, HashMap<String, Double>> e : tfidf.entrySet()) {
-    // double dist = TextUtils.cosineSimilarity(test, e.getValue());
-    // cosines[index] = dist;
-    // index++;
-    // if (dist > minDist) {
-    // className = e.getKey();
-    // minDist = dist;
-    // }
-    // }
-    //
-    // boolean allEqual = true;
-    // double cosine = cosines[0];
-    // for (int i = 1; i < cosines.length; i++) {
-    // if (!(cosines[i] == cosine)) {
-    // allEqual = false;
-    // }
-    // }
-    //
-    // if (!(allEqual) && className.equalsIgnoreCase(classKey)) {
-    // return 1;
-    // }
-    // return 0;
-    // }
     public String wordBagToTable(WordBag bag) {
 
-        TreeSet<String> words = new TreeSet<String>();
+        TreeSet<String> words = new TreeSet<>();
         words.addAll(bag.getWordSet());
 
         // name
@@ -836,14 +739,14 @@ public final class TextProcessor {
 
         // melt together sets of keys
         //
-        TreeSet<String> words = new TreeSet<String>();
+        TreeSet<String> words = new TreeSet<>();
         for (WordBag bag : bags) {
             words.addAll(bag.getWordSet());
         }
 
         // print keys - the dictionaries names
         //
-        LinkedHashMap<String, Integer> bagKeys = new LinkedHashMap<String, Integer>();
+        LinkedHashMap<String, Integer> bagKeys = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder("\"\",");
         int index = 0;
         for (WordBag bag : bags) {
@@ -1021,5 +924,100 @@ public final class TextProcessor {
     // res.put(e.getKey(), newEntry);
     // }
     // return res;
+    // }
+    // public int classifyBigrams(String classKey, double[] series,
+    // HashMap<String, HashMap<Bigram, Double>> tfidf, int[][] params) throws Exception {
+    //
+    // BigramBag test = seriesToBigramBag("test", series, params);
+    //
+    // double minDist = -1.0d;
+    // String className = "";
+    // double[] cosines = new double[tfidf.entrySet().size()];
+    // int index = 0;
+    // for (Entry<String, HashMap<Bigram, Double>> e : tfidf.entrySet()) {
+    // double dist = TextUtils.cosineSimilarity(test, e.getValue());
+    // cosines[index] = dist;
+    // index++;
+    // if (dist > minDist) {
+    // className = e.getKey();
+    // minDist = dist;
+    // }
+    // }
+    //
+    // boolean allEqual = true;
+    // double cosine = cosines[0];
+    // for (int i = 1; i < cosines.length; i++) {
+    // if (!(cosines[i] == cosine)) {
+    // allEqual = false;
+    // }
+    // }
+    //
+    // if (!(allEqual) && className.equalsIgnoreCase(classKey)) {
+    // return 1;
+    // }
+    // return 0;
+    // }
+    // public int classify(String classKey, double[][] data,
+    // HashMap<String, HashMap<String, Double>> tfidf, int[][] params)
+    // throws IndexOutOfBoundsException, Exception {
+    //
+    // WordBag test = new WordBag("test");
+    //
+    // for (int[] p : params) {
+    // int windowSize = p[0];
+    // int paaSize = p[1];
+    // int alphabetSize = p[2];
+    // SAXNumerosityReductionStrategy strategy = SAXNumerosityReductionStrategy.fromValue(p[3]);
+    // String oldStr = "";
+    //
+    // for (double[] series : data) {
+    //
+    // for (int j = 0; j <= series.length - windowSize; j++) {
+    // double[] paa = tp.optimizedPaa(tp.zNormalize(tp.subseries(series, j, windowSize)),
+    // paaSize);
+    // char[] sax = tp.ts2String(paa, a.getCuts(alphabetSize));
+    // if (SAXNumerosityReductionStrategy.CLASSIC.equals(strategy)) {
+    // if (oldStr.length() > 0 && SAXFactory.strDistance(sax, oldStr.toCharArray()) == 0) {
+    // continue;
+    // }
+    // }
+    // else if (SAXNumerosityReductionStrategy.EXACT.equals(strategy)) {
+    // if (oldStr.equalsIgnoreCase(String.valueOf(sax))) {
+    // continue;
+    // }
+    // }
+    // oldStr = String.valueOf(sax);
+    // test.addWord(String.valueOf(sax));
+    // }
+    //
+    // }
+    // }
+    //
+    // double minDist = -1.0d;
+    // String className = "";
+    // double[] cosines = new double[tfidf.entrySet().size()];
+    // int index = 0;
+    // for (Entry<String, HashMap<String, Double>> e : tfidf.entrySet()) {
+    // double dist = TextUtils.cosineSimilarity(test, e.getValue());
+    // cosines[index] = dist;
+    // index++;
+    // if (dist > minDist) {
+    // className = e.getKey();
+    // minDist = dist;
+    // }
+    // }
+    //
+    // boolean allEqual = true;
+    // double cosine = cosines[0];
+    // for (int i = 1; i < cosines.length; i++) {
+    // if (!(cosines[i] == cosine)) {
+    // allEqual = false;
+    // }
+    // }
+    //
+    // if (!(allEqual) && className.equalsIgnoreCase(classKey)) {
+    // return 1;
+    // }
+    // return 0;
     // }
 }

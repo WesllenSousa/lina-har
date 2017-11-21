@@ -20,7 +20,6 @@ import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.io.IOException;
 import java.util.ArrayList;
 import util.FileUtil;
 import util.Messages;
@@ -203,7 +202,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tp_resultTrain = new javax.swing.JTextPane();
-        jButton1 = new javax.swing.JButton();
+        bt_saveResultTrain = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jSplitPane5 = new javax.swing.JSplitPane();
         jPanel19 = new javax.swing.JPanel();
@@ -1295,10 +1294,10 @@ public class Principal extends javax.swing.JFrame {
         tp_resultTrain.setEditable(false);
         jScrollPane7.setViewportView(tp_resultTrain);
 
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bt_saveResultTrain.setText("Save");
+        bt_saveResultTrain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bt_saveResultTrainActionPerformed(evt);
             }
         });
 
@@ -1309,14 +1308,14 @@ public class Principal extends javax.swing.JFrame {
             .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(bt_saveResultTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addComponent(jScrollPane7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1))
+                .addComponent(bt_saveResultTrain))
         );
 
         javax.swing.GroupLayout jPanel34Layout = new javax.swing.GroupLayout(jPanel34);
@@ -2384,6 +2383,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_tb_desktopStateChanged
 
     private void ppi_viewDatasetBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppi_viewDatasetBoxActionPerformed
+        setWindowParameter();
         desktopView.editData();
     }//GEN-LAST:event_ppi_viewDatasetBoxActionPerformed
 
@@ -2399,12 +2399,12 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btt_resetActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bt_saveResultTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_saveResultTrainActionPerformed
         String currentFile = componentView.openFileChooser(this, new TextFilter());
         if (currentFile != null) {
-            FileUtil.saveFile(tp_resultTrain.getText(), currentFile + ".txt");
+            FileUtil.saveFile(currentFile + ".txt", tp_resultTrain.getText());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bt_saveResultTrainActionPerformed
 
     private void bt_signalSelectionLeft1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_signalSelectionLeft1ActionPerformed
         SwingUtil.changePickListLeftRightAll(lt_signalSelectionLeft, lt_signalSelectionRight);
@@ -2603,6 +2603,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton bt_frequencyFeatureRight;
     private javax.swing.JButton bt_principalFeatureLeft;
     private javax.swing.JButton bt_principalFeatureRight;
+    private javax.swing.JButton bt_saveResultTrain;
     private javax.swing.JButton bt_signalSelectionLeft;
     private javax.swing.JButton bt_signalSelectionLeft1;
     private javax.swing.JButton bt_signalSelectionLeft10;
@@ -2639,7 +2640,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.ButtonGroup gp_numerosityReduction;
     private javax.swing.ButtonGroup gp_pageHinkley;
     private javax.swing.ButtonGroup gp_settings;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -2968,10 +2968,21 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    private void setWindowParameter() {
+        try {
+            Parameters.WINDOW_SEC = Float.parseFloat(tf_windowSec.getText());
+            Parameters.FREQUENCY = Integer.parseInt(tf_frequency.getText());
+        } catch (NumberFormatException ex) {
+            messages.bug("Invalid window or frequency values!");
+            sx_busy.setBusy(false);
+        }
+    }
+
     /*
         Toolbar
      */
     private void editDeleteDataset(int type) {
+        setWindowParameter();
         switch (tb_principal.getSelectedIndex()) {
             case 0:
                 componentView.editDeleteDataset(lt_rawData, ConstDataset.DS_RAW, type);
@@ -3055,14 +3066,7 @@ public class Principal extends javax.swing.JFrame {
         if (desktopView.isSelectedData()) {
             sx_busy.setBusy(true);
 
-            try {
-                Parameters.WINDOW_SEC = Float.parseFloat(tf_windowSec.getText());
-                Parameters.FREQUENCY = Integer.parseInt(tf_frequency.getText());
-            } catch (NumberFormatException ex) {
-                messages.bug("Invalid window or frequency values!");
-                sx_busy.setBusy(false);
-                return;
-            }
+            setWindowParameter();
             Integer overlap = sl_overlap.getValue();
             Integer offset = Math.round((overlap / 100f) * Parameters.WINDOW_SEC * Parameters.FREQUENCY);
 
@@ -3136,13 +3140,9 @@ public class Principal extends javax.swing.JFrame {
                 return;
             }
             test = lt_trainDataTest.getSelectedValue();
-            try {
-                trainView.executeTrain(train, test, algorithm);
-            } catch (IOException ex) {
-                messages.bug("Train: " + ex.toString());
-            }
+            trainView.executeTrain(train, test, algorithm);
         } else {
-            trainView.executeTrain(train, algorithm);
+            trainView.executeTrain(train, null, algorithm);
         }
         updateClassifierList();
 
@@ -3168,13 +3168,12 @@ public class Principal extends javax.swing.JFrame {
         String testDir = ConstDataset.DS_TEST + lt_testData.getSelectedValue();
         String modelDir = ConstDataset.DS_MODEL + lt_modelClassification.getSelectedValue();
 
-        WekaUtil classifySamples = new WekaUtil();
         int numberOfColumns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR, testDir).size();
-        classifySamples.readData(testDir, numberOfColumns);
-        Classifier classifier = classifySamples.readModel(modelDir);
+        WekaUtil wekaUtil = new WekaUtil(testDir, numberOfColumns);
+        Classifier classifier = wekaUtil.readModel(modelDir);
 
-        for (Instance instance : classifySamples.getData()) {
-            tp_resultClassification.setText(tp_resultClassification.getText() + "\n" + classifySamples.classify(classifier, instance));
+        for (Instance instance : wekaUtil.getData()) {
+            tp_resultClassification.setText(tp_resultClassification.getText() + "\n" + wekaUtil.classify(classifier, instance));
         }
 
         sx_busy.setBusy(false);
