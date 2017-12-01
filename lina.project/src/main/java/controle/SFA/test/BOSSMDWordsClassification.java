@@ -7,16 +7,19 @@ package controle.SFA.test;
 
 import static cern.clhep.Units.s;
 import constants.ConstDataset;
-import controle.SFA.multDimension.concatenateWords.classification.MDClassifier;
-import controle.SFA.multDimension.concatenateWords.classification.WEASELMDClassifier;
+import controle.SFA.classification.BOSSMDWordsClassifier;
+import controle.SFA.classification.ClassifierMD;
 import datasets.timeseries.TimeSeriesLoader;
 import datasets.timeseries.TimeSeriesMD;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Wesllen Sousa
  */
-public class WEASELMDClassification {
+public class BOSSMDWordsClassification {
 
     public static void main(String[] args) {
 
@@ -25,9 +28,13 @@ public class WEASELMDClassification {
         TimeSeriesMD[] testSamples = TimeSeriesLoader.loadHorizontalDataMultiDimensional(
                 ConstDataset.DS_TEST + "test_shoaib_md.csv", ",", true, 3);
 
-        MDClassifier bossmd = new WEASELMDClassifier(trainSamples, testSamples);
-        MDClassifier.Score scoreMD = bossmd.eval();
-        System.out.println(s + ";" + scoreMD.toString());
+        try {
+            ClassifierMD bossmd = new BOSSMDWordsClassifier(trainSamples, testSamples);
+            ClassifierMD.Score scoreMD = bossmd.eval();
+            System.out.println(s + ";" + scoreMD.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(BOSSMDWordsClassification.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

@@ -393,7 +393,8 @@ public class DesktopView {
         defaultListModel.addElement(ConstGeneral.AL_WEASEL);
         defaultListModel.addElement(ConstGeneral.AL_SHOTGUN);
         defaultListModel.addElement(ConstGeneral.AL_SHOTGUN_ENSEMBLE);
-        defaultListModel.addElement(ConstGeneral.AL_BOSS_VS_MD);
+        defaultListModel.addElement(ConstGeneral.AL_BOSS_MD_STACK);
+        defaultListModel.addElement(ConstGeneral.AL_BOSS_MD_WORDS);
         list.setModel(defaultListModel);
     }
 

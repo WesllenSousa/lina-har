@@ -1,46 +1,30 @@
 // Copyright (c) 2016 - Patrick Schäfer (patrick.schaefer@zib.de)
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
-package controle.SFA.multDimension;
+package controle.SFA.transformation;
 
 import com.carrotsearch.hppc.LongFloatHashMap;
 import com.carrotsearch.hppc.LongShortHashMap;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
-import java.util.HashSet;
-import com.carrotsearch.hppc.cursors.FloatCursor;
-import com.carrotsearch.hppc.cursors.IntIntCursor;
-import com.carrotsearch.hppc.cursors.LongFloatCursor;
-import com.carrotsearch.hppc.cursors.ObjectCursor;
-import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
-import controle.SFA.classification.ParallelFor;
-import controle.SFA.multDimension.ClassifierMD.Words;
-import controle.SFA.transformation.BOSSModel;
-import controle.SFA.transformation.SFA;
+import com.carrotsearch.hppc.cursors.*;
+import controle.SFA.classification.Classifier.Words;
 import controle.SFA.transformation.SFA.HistogramType;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesMD;
-import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import java.util.HashSet;
 
 /**
  * The Bag-of-SFA-Symbols in Vector Space model as published in Schäfer, P.:
  * Scalable time series classification. DMKD (Preprint)
  *
  * @author bzcschae
- *
  */
-public class BOSSMDModel extends BOSSModel {
+public class BOSSModelMDStack extends BOSSModel {
 
     public SFA[] signatures;
 
-    public BOSSMDModel(int maxF, int maxS, int windowLength, boolean normMean) {
+    public BOSSModelMDStack(int maxF, int maxS, int windowLength, boolean normMean) {
         super(maxF, maxS, windowLength, normMean);
-    }
-
-    public ObjectObjectHashMap<String, LongFloatHashMap> createTfIdf(
-            final BagOfPattern[] bagOfPatterns,
-            final HashSet<String> uniqueLabels) {
-        int[] sampleIndices = createIndices(bagOfPatterns.length);
-        return createTfIdf(bagOfPatterns, sampleIndices, uniqueLabels);
     }
 
     protected static int[] createIndices(int length) {
@@ -49,6 +33,13 @@ public class BOSSMDModel extends BOSSModel {
             indices[i] = i;
         }
         return indices;
+    }
+
+    public ObjectObjectHashMap<String, LongFloatHashMap> createTfIdf(
+            final BagOfPattern[] bagOfPatterns,
+            final HashSet<String> uniqueLabels) {
+        int[] sampleIndices = createIndices(bagOfPatterns.length);
+        return createTfIdf(bagOfPatterns, sampleIndices, uniqueLabels);
     }
 
     /**
@@ -72,8 +63,7 @@ public class BOSSMDModel extends BOSSModel {
         for (int j : sampleIndices) {
             String label = bagOfPatterns[j].label;
             LongFloatHashMap wordInBagFreq = matrix.get(label);
-            for (Iterator<IntIntCursor> it = bagOfPatterns[j].bag.iterator(); it.hasNext();) {
-                IntIntCursor key = it.next();
+            for (IntIntCursor key : bagOfPatterns[j].bag) {
                 wordInBagFreq.putOrAdd(key.key, key.value, key.value);
             }
         }
@@ -129,6 +119,18 @@ public class BOSSMDModel extends BOSSModel {
         }
     }
 
+    public TimeSeries[][] splitMultiDimTimeSeries(int numSources, TimeSeriesMD[] samples) {
+
+        TimeSeries[][] samplesModified = new TimeSeries[numSources][samples.length];
+        for (int indexOfSource = 0; indexOfSource < numSources; indexOfSource++) {
+
+            for (int indexOfSample = 0; indexOfSample < samples.length; indexOfSample++) {
+                samplesModified[indexOfSource][indexOfSample] = samples[indexOfSample].getTimeSeriesOfOneSource(indexOfSource);
+            }
+        }
+        return samplesModified;
+    }
+
     /**
      * Norm the vector to length 1
      *
@@ -150,55 +152,42 @@ public class BOSSMDModel extends BOSSModel {
         }
     }
 
-    public int[][][] createWordsMD(final TimeSeriesMD[] samples) {
+    public long[][][] createWordsMDStack(final TimeSeriesMD[] samples) {
         int numSources = samples[0].getNumSources();
-        final int[][][] words = new int[numSources][samples.length][];
 
-        TimeSeries[][] samplesModificado = new TimeSeries[numSources][samples.length];
-        for (int indexOfSource = 0; indexOfSource < numSources; indexOfSource++) {
+        final long[][][] words = new long[numSources][samples.length][];
 
-            for (int indexOfSample = 0; indexOfSample < samples.length; indexOfSample++) {
-                samplesModificado[indexOfSource][indexOfSample] = samples[indexOfSample].getTimeSeriesOfOneSource(indexOfSource);
-            }
-        }
+        TimeSeries[][] samplesModified = splitMultiDimTimeSeries(numSources, samples);
+
         if (this.signatures == null) {
             this.signatures = new SFA[numSources];
+
             for (int i = 0; i < numSources; i++) {
-                this.signatures[i] = new SFA(HistogramType.EQUI_DEPTH);
-                this.signatures[i].fitWindowing(samplesModificado[i], windowLength, maxF, symbols, normMean, true);
+
+                signatures[i] = new SFA(HistogramType.EQUI_DEPTH);
+                signatures[i].fitWindowing(samplesModified[i], windowLength, maxF, symbols, normMean, true);
+
             }
+
         }
-        int teste = 0;
-        // create sliding windows
-        ParallelFor.withIndex(BLOCKS, new ParallelFor.Each() {
-            @Override
-            public void run(int id, AtomicInteger processed) {
-                for (int idSource = 0; idSource < numSources; idSource++) {
-                    for (int i = 0; i < samples.length; i++) {
-                        if (i % BLOCKS == id) {
-                            short[][] sfaWords = signatures[idSource].transformWindowing(samples[i].getTimeSeriesOfOneSource(idSource), maxF);
-                            words[idSource][i] = new int[sfaWords.length];
-                            for (int j = 0; j < sfaWords.length; j++) {
-                                words[idSource][i][j] = (int) Words.createWord(sfaWords[j], maxF, (byte) Words.binlog(symbols));
-                            }
-                        }
-                    }
+
+        for (int idSource = 0; idSource < numSources; idSource++) {
+            for (int i = 0; i < samples.length; i++) {
+
+                short[][] sfaWords = signatures[idSource].transformWindowing(samples[i].getTimeSeriesOfOneSource(idSource), maxF);
+                words[idSource][i] = new long[sfaWords.length];
+                for (int j = 0; j < sfaWords.length; j++) {
+                    //Aqui pode ser long palabras maiores
+                    words[idSource][i][j] = Words.createWord(sfaWords[j], maxF, (byte) Words.binlog(symbols));
                 }
             }
-        });
+        }
+
         return words;
     }
 
-    /**
-     * Create the BOSS model for a fixed window-length and SFA word length
-     *
-     * @param words the SFA words of the time series
-     * @param samples
-     * @param wordLength the SFA word length
-     * @return
-     */
-    public BagOfPattern[] createBagOfPatternMD(
-            final int[][][] words,
+    public BagOfPattern[] createBagOfPatternMDStack(
+            final long[][][] words,
             final TimeSeriesMD[] samples,
             final int wordLength) {
         BagOfPattern[] bagOfPatterns = new BagOfPattern[samples.length];
@@ -206,8 +195,11 @@ public class BOSSMDModel extends BOSSModel {
         int numSources = samples[0].getNumSources();
 
         final byte usedBits = (byte) Words.binlog(symbols);
-        final byte dimensionBits = 3;
-
+        final byte dimensionBits = (byte) Words.binlog(numSources);
+        int totalBitsToUse = usedBits * wordLength;
+        if (totalBitsToUse > 60) {
+            System.out.println("Problems with leght word!");
+        }
         final long mask = (1l << (usedBits * wordLength)) - 1l;
 
         // iterate all samples
@@ -232,4 +224,5 @@ public class BOSSMDModel extends BOSSModel {
         }
         return bagOfPatterns;
     }
+
 }

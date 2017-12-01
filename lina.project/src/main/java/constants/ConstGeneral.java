@@ -119,7 +119,8 @@ public class ConstGeneral {
     public static String AL_WEASEL = "Weasel";
     public static String AL_SHOTGUN = "Shotgun";
     public static String AL_SHOTGUN_ENSEMBLE = "ShotgunEnsemble";
-    public static String AL_BOSS_VS_MD = "BossVSMD";
+    public static String AL_BOSS_MD_STACK = "BossMdStack";
+    public static String AL_BOSS_MD_WORDS = "BossMdWords";
 
     //Data Fusion
     public static String DF_MAGNITUDE = "Magnitude";

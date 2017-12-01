@@ -119,11 +119,15 @@ public class SymbolicView {
                 //Process window 
                 TimeSeries sample = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE);
                 BufferStreaming buffer = bufferStreaming.get(dataColumn);
+
                 //Get word
                 WordRecord word = getWordFromSample(buffer, sample, position);
                 analyseWord(buffer, word);
+
                 //Handle model
-                analyseModel(buffer, position);
+                if (position % Parameters.BOP_SIZE == 0) { //*** change threhold to BOP 
+                    analyseModel(buffer, position);
+                }
 
                 dataColumn++;
             }
@@ -207,75 +211,70 @@ public class SymbolicView {
 
     private void analyseModel(BufferStreaming buffer, int position) {
 
-        if (position % Parameters.BOP_SIZE == 0) { //*** change threhold to BOP 
+        String label = "1"; //Elaborar uma estratégia pra cá
+        uniqueLabels.add(label);
+        //Elaborar uma estrategia para atualizar todos os modelos
+        switch (ConstGeneral.MODEL) {
+            case "SaxVsm":
+                if (!ConstGeneral.SFA) {
+                    SAX_VSM sax_vsm = new SAX_VSM();
+                    WordBag bag1 = sax_vsm.wordsToWordBag(buffer.getBufferWord(), label);
+                    buffer.getBOPSax().add(bag1); //verificar e mudar para SAX model?
 
-            String label = "1"; //Elaborar uma estratégia pra cá
-            uniqueLabels.add(label);
+                    HashMap<String, HashMap<String, Double>> tfidf = sax_vsm.getTfIdfFromWordBags(buffer.getBOPSax());
+                    buffer.setMatrixSaxVsm(tfidf);
 
-            //Elaborar uma estrategia para atualizar todos os modelos
-            switch (ConstGeneral.MODEL) {
-                case "SaxVsm":
-                    if (!ConstGeneral.SFA) {
-                        SAX_VSM sax_vsm = new SAX_VSM();
-                        WordBag bag1 = sax_vsm.wordsToWordBag(buffer.getBufferWord(), label);
-                        buffer.getBOPSax().add(bag1); //verificar e mudar para SAX model?
+                    String result = sax_vsm.predict(bag1, tfidf);
+                    updateLog("SAX-VSM: " + result);
+                } else {
+                    updateLog("Need to be choose SAX discretization algorithm!");
+                }
+                break;
+            case "BossModel":
+                if (ConstGeneral.SFA) {
+                    BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
+                    BagOfPattern bag2 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
+                    buffer.getBOPBoss().add(bag2); //Boss model?
 
-                        HashMap<String, HashMap<String, Double>> tfidf = sax_vsm.getTfIdfFromWordBags(buffer.getBOPSax());
-                        buffer.setMatrixSaxVsm(tfidf);
+                    classifyBossModel(bag2, buffer.getBOPBoss());
+                } else {
+                    updateLog("Need to be choose SFA discretization algorithm!");
+                }
+                break;
+            case "BossVS":
+                if (ConstGeneral.SFA) {
+                    BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
+                    BagOfPattern bag3 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
+                    buffer.getBOPBoss().add(bag3); //Boss model?
 
-                        String result = sax_vsm.predict(bag1, tfidf);
-                        updateLog("SAX-VSM: " + result);
-                    } else {
-                        updateLog("Need to be choose SAX discretization algorithm!");
-                    }
-                    break;
-                case "BossModel":
-                    if (ConstGeneral.SFA) {
-                        BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
-                        BagOfPattern bag2 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
-                        buffer.getBOPBoss().add(bag2); //Boss model?
+                    updateModelBossVs(buffer);
+                    classifyBossVs(bag3, buffer.getMatrixBossVs());
+                } else {
+                    updateLog("Need to be choose SFA discretization algorithm!");
+                }
+                break;
+            case "Weasel":
+                if (ConstGeneral.SFA) {
+                    LinkedList<Integer> windowLengths = new LinkedList<>(); //Cria diferentes tamanhos de janelas, ver uma solucao pra ca
+                    windowLengths.add(Parameters.WINDOW_SIZE);
+                    WEASELModel weasel = new WEASELModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
+                            windowLengths, true, true);
+                    BagOfBigrams bag4 = createBagOfBigramWEASEL(weasel, buffer.getBufferWord(), label, windowLengths);
+                    buffer.getBOPWeasel().add(bag4);
 
-                        classifyBossModel(bag2, buffer.getBOPBoss());
-                    } else {
-                        updateLog("Need to be choose SFA discretization algorithm!");
-                    }
-                    break;
-                case "BossVS":
-                    if (ConstGeneral.SFA) {
-                        BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
-                        BagOfPattern bag3 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
-                        buffer.getBOPBoss().add(bag3); //Boss model?
-
-                        updateModelBossVs(buffer);
-                        classifyBossVs(bag3, buffer.getMatrixBossVs());
-                    } else {
-                        updateLog("Need to be choose SFA discretization algorithm!");
-                    }
-                    break;
-                case "Weasel":
-                    if (ConstGeneral.SFA) {
-                        LinkedList<Integer> windowLengths = new LinkedList<>(); //Cria diferentes tamanhos de janelas, ver uma solucao pra ca
-                        windowLengths.add(Parameters.WINDOW_SIZE);
-                        WEASELModel weasel = new WEASELModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
-                                windowLengths, true, true);
-                        BagOfBigrams bag4 = createBagOfBigramWEASEL(weasel, buffer.getBufferWord(), label, windowLengths);
-                        buffer.getBOPWeasel().add(bag4);
-
-                        updateModelWeasel(weasel, buffer);
-                        classifyWeasel(bag4, buffer);
-                    } else {
-                        updateLog("Need to be choose SFA discretization algorithm!");
-                    }
-                    break;
-                default:
-                    Messages messages = new Messages();
-                    messages.aviso("Need to be choose SFA discretization algorithm!");
-                    break;
-            }
-
-            clearGUIbar(buffer);
-            lineGraphic.addMarker(position, position, Color.black);
+                    updateModelWeasel(weasel, buffer);
+                    classifyWeasel(bag4, buffer);
+                } else {
+                    updateLog("Need to be choose SFA discretization algorithm!");
+                }
+                break;
+            default:
+                Messages messages = new Messages();
+                messages.aviso("Need to be choose SFA discretization algorithm!");
+                break;
         }
+        clearGUIbar(buffer);
+        lineGraphic.addMarker(position, position, Color.black);
     }
 
     private BagOfPattern createBagOfPatternBOSS(BOSSModel boss, List<WordRecord> listWords, String label) {
@@ -416,7 +415,7 @@ public class SymbolicView {
     private String toSfaWord(short[] word) {
         StringBuilder sfaWord = new StringBuilder();
         for (short c : word) {
-            sfaWord.append((char) (Character.valueOf('a') + c));
+            sfaWord.append((char) ('a' + c));
         }
         return sfaWord.toString();
     }

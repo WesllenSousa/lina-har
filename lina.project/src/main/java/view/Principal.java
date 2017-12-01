@@ -194,7 +194,6 @@ public class Principal extends javax.swing.JFrame {
         sp_trainTest = new javax.swing.JScrollPane();
         lt_trainDataTest = new javax.swing.JList<>();
         ck_trainUserTest = new javax.swing.JCheckBox();
-        jButton3 = new javax.swing.JButton();
         jPanel34 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jScrollPane12 = new javax.swing.JScrollPane();
@@ -286,9 +285,8 @@ public class Principal extends javax.swing.JFrame {
         sx_busy = new org.jdesktop.swingx.JXBusyLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        mi_generalSettings = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
 
         ppi_cascade.setText("Cascate");
@@ -1200,7 +1198,7 @@ public class Principal extends javax.swing.JFrame {
         });
         sp_trainTest.setViewportView(lt_trainDataTest);
 
-        ck_trainUserTest.setText("Use test data (Only for symbolic alg.)");
+        ck_trainUserTest.setText("Use test data");
         ck_trainUserTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ck_trainUserTestActionPerformed(evt);
@@ -1223,13 +1221,6 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(sp_trainTest))
         );
 
-        jButton3.setText("Parameters");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
         jPanel20.setLayout(jPanel20Layout);
         jPanel20Layout.setHorizontalGroup(
@@ -1239,22 +1230,19 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pn_trainTest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel31, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel31, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pn_trainTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(151, Short.MAX_VALUE))
         );
 
         jSplitPane6.setLeftComponent(jPanel20);
@@ -2022,25 +2010,26 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu3.setText("Options");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem1.setText("Settings");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        mi_generalSettings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+        mi_generalSettings.setText("Settings");
+        mi_generalSettings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                mi_generalSettingsActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenu3.add(mi_generalSettings);
 
         jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Help");
 
-        jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem9.setText("Options");
-        jMenu2.add(jMenuItem9);
-
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem3.setText("About");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
@@ -2320,10 +2309,10 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lt_timeFeaturesLeftMouseClicked
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Options options = new Options(this, true, 0);
+    private void mi_generalSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_generalSettingsActionPerformed
+        Options options = new Options(this, true, tb_principal.getSelectedIndex());
         options.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_mi_generalSettingsActionPerformed
 
     private void btt_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_editActionPerformed
         editDeleteDataset(ConstGeneral.PP_EDIT);
@@ -2560,11 +2549,6 @@ public class Principal extends javax.swing.JFrame {
         pn_trainTest.updateUI();
     }//GEN-LAST:event_ck_trainUserTestActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Options options = new Options(this, true, 2);
-        options.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void lt_dataFusionLeftMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lt_dataFusionLeftMouseClicked
         if (evt.getClickCount() == 2) {
             SwingUtil.changePickListLeftRight(lt_dataFusionLeft, lt_dataFusionRight);
@@ -2592,6 +2576,14 @@ public class Principal extends javax.swing.JFrame {
     private void bt_signalSelectionLeft12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_signalSelectionLeft12ActionPerformed
         SwingUtil.changePickListRightLeftAll(lt_dataFusionRight, lt_dataFusionLeft);
     }//GEN-LAST:event_bt_signalSelectionLeft12ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        messages.sucesso("This tool was developed by Wesllen Sousa Lima\n"
+                + "wesllen.wsl@gmail.com\n"
+                + "+55 92 99366-1635\n"
+                + "Federal university of Amazonas\n"
+                + "Manaus-AM");
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bg_graphic;
@@ -2641,7 +2633,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.ButtonGroup gp_pageHinkley;
     private javax.swing.ButtonGroup gp_settings;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -2657,9 +2648,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -2754,6 +2743,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JList<String> lt_timeSeriesData;
     private javax.swing.JList<String> lt_trainData;
     private javax.swing.JList<String> lt_trainDataTest;
+    private javax.swing.JMenuItem mi_generalSettings;
     private javax.swing.JPanel pn_1;
     private javax.swing.JPanel pn_2;
     private javax.swing.JPanel pn_3;

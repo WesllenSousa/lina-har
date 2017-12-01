@@ -65,7 +65,7 @@ public class FrequencyFeatures {
             sumEntropy += fn * log;
         }
         sEntropy = sumEntropy * -1;
-        
+
         //Long end = System.currentTimeMillis();
         //System.out.println("SpectralEntropy: " + DateUtil.timeInterval(init, end));
         return sEntropy;
@@ -73,12 +73,21 @@ public class FrequencyFeatures {
 
     public static float CoefficientsSum(LinkedList<Float> N) {
         //System.out.println("CoefficientsSum -> ");
-        return TimeFeature.Sum(N);
+        //int cont = (N.size() * 20) / 100;
+        int cont = 10;
+
+        LinkedList<Float> Nnew = new LinkedList<>();
+        for (int i = 0; i < cont; i++) {
+            Nnew.add(N.get(i));
+        }
+
+        return TimeFeature.Sum(Nnew);
     }
 
     public static float DComponents(LinkedList<Float> N) {
         //System.out.println("DComponents -> ");
-        return TimeFeature.Mean(N);
+        //return TimeFeature.Mean(N);
+        return N.getFirst();
     }
 
     public static float DominantFrequency(LinkedList<Float> N) {

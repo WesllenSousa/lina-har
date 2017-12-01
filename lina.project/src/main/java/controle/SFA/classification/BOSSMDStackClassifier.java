@@ -1,9 +1,15 @@
 // Copyright (c) 2016 - Patrick Schäfer (patrick.schaefer@zib.de)
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
-package controle.SFA.multDimension;
+package controle.SFA.classification;
 
 import com.carrotsearch.hppc.LongFloatHashMap;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
+import com.carrotsearch.hppc.cursors.IntIntCursor;
+import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
+import controle.SFA.classification.ClassifierMD.BOSSMDType;
+import controle.SFA.transformation.BOSSModel.BagOfPattern;
+import controle.SFA.transformation.BOSSModelMDStack;
+import datasets.timeseries.TimeSeriesMD;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,29 +20,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.carrotsearch.hppc.cursors.IntIntCursor;
-import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
-import controle.SFA.classification.ParallelFor;
-import controle.SFA.transformation.BOSSModel.BagOfPattern;
-import datasets.timeseries.TimeSeriesMD;
-import java.util.Iterator;
-
 /**
  * The Bag-of-SFA-Symbols in Vector Space classifier as published in Schäfer,
  * P.: Scalable time series classification. DMKD (Preprint)
  *
- *
  * @author bzcschae
- *
  */
-public class BOSSVSMDStackClassifier extends ClassifierMD {
+public class BOSSMDStackClassifier extends ClassifierMD {
 
+    public BOSSMDType typeClassifier;
     public static double factor = 0.92;
 
     public static boolean normMagnitudes = false;
 
-    public BOSSVSMDStackClassifier(TimeSeriesMD[] train, TimeSeriesMD[] test) throws IOException {
+    public BOSSMDStackClassifier(TimeSeriesMD[] train, TimeSeriesMD[] test) {
         super(train, test);
+        typeClassifier = BOSSMDType.STACK;
     }
 
     public static class BossMDScore<E> extends Score {
@@ -46,7 +45,7 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
         }
 
         public ObjectObjectHashMap<String, E> idf;
-        public BOSSMDModel model;
+        public BOSSModelMDStack model;
         public int features;
 
         @Override
@@ -59,7 +58,7 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
 
     @Override
     public Score eval() throws IOException {
-        //threads variavel herdado de ClassifierMD
+        //threads variavel herdado de Classifier
         ExecutorService exec = Executors.newFixedThreadPool(threads);
         try {
             // BOSS Distance
@@ -80,7 +79,7 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
                 // training score
                 BossMDScore<LongFloatHashMap> bestScore = scores.get(0);
                 if (DEBUG) {
-                    System.out.println("BOSS VS Training:\t w_" + bestScore.windowLength + " f_" + bestScore.features + "\tnormed: \t" + normMean);
+                    System.out.println("BOSS " + typeClassifierToString() + " Training:\t S_" + maxSymbol + " F_" + bestScore.features + "\tw_" + bestScore.windowLength + "\tnormed: \t" + normMean);
                     outputResult(this.correctTraining.get(), startTime, this.trainSamples.length);
                 }
 
@@ -98,7 +97,7 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
             }
 
             return new Score(
-                    "BOSS MD",
+                    "BOSS " + typeClassifierToString(),
                     1 - formatError(bestCorrectTesting, this.testSamples.length),
                     1 - formatError(bestCorrectTraining, this.trainSamples.length),
                     totalBestScore.normed,
@@ -109,14 +108,24 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
 
     }
 
+    protected String typeClassifierToString() {
+        if (typeClassifier == BOSSMDType.STACK) {
+            return "MDStack";
+        } else if (typeClassifier == BOSSMDType.MDWord) {
+            return "MDwords";
+        }
+        return "EMPTY";
+    }
+
     public List<BossMDScore<LongFloatHashMap>> fitEnsemble(ExecutorService exec, final boolean normMean) throws FileNotFoundException {
-        int min = minWindowLength;
-        int max = getMax(trainSamples, maxWindowLength);
+        int min = this.minWindowLength;
+        int max = getMax(trainSamples, this.maxWindowLength);
 
         // equi-distance sampling of windows
         ArrayList<Integer> windows = new ArrayList<>();
         double count = Math.sqrt(max);
         double distance = ((max - min) / count);
+        //distance = 1;
         for (int c = min; c <= max; c += distance) {
             windows.add(c);
         }
@@ -128,6 +137,7 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
             boolean normMean,
             TimeSeriesMD[] samples,
             ExecutorService exec) {
+
         final List<BossMDScore<LongFloatHashMap>> results = new ArrayList<>(allWindows.length);
 
         ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
@@ -140,12 +150,13 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
                     if (i % threads == id) {
                         BossMDScore<LongFloatHashMap> score = new BossMDScore<>(normMean, allWindows[i]);
                         try {
-                            BOSSMDModel model = new BOSSMDModel(maxWindowLength, maxSymbol, score.windowLength, score.normed);
-                            int[][][] words = model.createWordsMD(trainSamples);
+                            BOSSModelMDStack model = new BOSSModelMDStack(maxWordLength, maxSymbol, score.windowLength, score.normed);
+
+                            long[][][] words = model.createWordsMDStack(trainSamples);
 
                             optimize:
-                            for (int f = minWindowLength; f <= Math.min(score.windowLength, maxWindowLength); f += 2) {
-                                BagOfPattern[] bag = model.createBagOfPatternMD(words, trainSamples, f);
+                            for (int f = minWordLenth; f <= Math.min(score.windowLength, maxWordLength); f += 2) {
+                                BagOfPattern[] bag = model.createBagOfPatternMDStack(words, trainSamples, f);
 
                                 // cross validation using folds
                                 int correct = 0;
@@ -161,13 +172,13 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
                                     score.features = f;
 
                                     if (correct == samples.length) {
-                                        break;
+                                        break optimize;
                                     }
                                 }
                             }
 
                             // obtain the final matrix              
-                            BagOfPattern[] bag = model.createBagOfPatternMD(words, trainSamples, score.features);
+                            BagOfPattern[] bag = model.createBagOfPatternMDStack(words, trainSamples, score.features);
 
                             // calculate the tf-idf for each class
                             score.idf = model.createTfIdf(bag, uniqueLabels);
@@ -180,14 +191,14 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
                         if (this.bestScore.compareTo(score) < 0) {
                             synchronized (this.bestScore) {
                                 if (this.bestScore.compareTo(score) < 0) {
-                                    BOSSVSMDStackClassifier.this.correctTraining.set((int) score.training);
+                                    BOSSMDStackClassifier.this.correctTraining.set((int) score.training);
                                     this.bestScore = score;
                                 }
                             }
                         }
 
                         // add to ensemble
-                        if (score.training >= BOSSVSMDStackClassifier.this.correctTraining.get() * factor) {
+                        if (score.training >= BOSSMDStackClassifier.this.correctTraining.get() * factor) {
                             synchronized (results) {
                                 results.add(score);
                             }
@@ -233,8 +244,7 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
 
                             // determine cosine similarity
                             double distance = 0.0;
-                            for (Iterator<IntIntCursor> it = bagOfPatternsTestSamples[i].bag.iterator(); it.hasNext();) {
-                                IntIntCursor wordFreq = it.next();
+                            for (IntIntCursor wordFreq : bagOfPatternsTestSamples[i].bag) {
                                 double wordInBagFreq = wordFreq.value;
                                 double value = stat.get(wordFreq.key);
                                 distance += wordInBagFreq * (value + 1.0);
@@ -288,20 +298,20 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
                 for (int i = 0; i < results.size(); i++) {
                     if (i % threads == id) {
                         final BossMDScore<LongFloatHashMap> score = results.get(i);
-                        if (score.training >= BOSSVSMDStackClassifier.this.correctTraining.get() * factor) { // all with same score
+                        if (score.training >= BOSSMDStackClassifier.this.correctTraining.get() * factor) { // all with same score
                             usedLengths.add(score.windowLength);
 
-                            BOSSMDModel model = score.model;
+                            BOSSModelMDStack model = (BOSSModelMDStack) score.model;
 
                             // create words and BOSS model for test samples
-                            int[][][] wordsTest = model.createWordsMD(testSamples);
-                            BagOfPattern[] bagTest = model.createBagOfPatternMD(wordsTest, testSamples, score.features);
+                            long[][][] wordsTest = model.createWordsMDStack(testSamples);
+                            BagOfPattern[] bagTest = model.createBagOfPatternMDStack(wordsTest, testSamples, score.features);
 
                             Predictions p = predict(indicesTest, bagTest, score.idf);
 
                             for (int j = 0; j < p.labels.length; j++) {
                                 synchronized (testLabels[j]) {
-                                    testLabels[j].add(new Pair<String, Double>(p.labels[j], score.training));
+                                    testLabels[j].add(new Pair<>(p.labels[j], score.training));
                                 }
                             }
                         } else {
@@ -311,50 +321,8 @@ public class BOSSVSMDStackClassifier extends ClassifierMD {
                 }
             }
         });
-        return score("BOSS MD", testSamples, startTime, testLabels, usedLengths);
+
+        return score("BOSS " + typeClassifierToString(), testSamples, startTime, testLabels, usedLengths);
     }
 
-    public static boolean setParameters(int maxWordLenght, int minWordLenght, int maxAlfabetSize, int numSources) {
-
-        int maxLenght = 64;
-        int num_bits = binlog(maxAlfabetSize);
-        int num_bits_source = binlog(numSources);
-
-        int total_bits = num_bits * maxWordLenght * numSources + num_bits_source;
-        if (total_bits <= maxLenght) {
-            maxWindowLength = maxWordLenght;
-            minWindowLength = minWordLenght;
-            maxSymbol = maxWordLenght;
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    private static int binlog(int number) // returns 0 for bits=0
-    {
-        int log = 0;
-        int bits = number;
-        if ((bits & 0xffff0000) != 0) {
-            bits >>>= 16;
-            log = 16;
-        }
-        if (bits >= 256) {
-            bits >>>= 8;
-            log += 8;
-        }
-        if (bits >= 16) {
-            bits >>>= 4;
-            log += 4;
-        }
-        if (bits >= 4) {
-            bits >>>= 2;
-            log += 2;
-        }
-        if (1 << log < number) {
-            log++;
-        }
-        return log + (bits >>> 1);
-    }
 }

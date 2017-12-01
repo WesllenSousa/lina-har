@@ -7,8 +7,8 @@ package controle.SFA.test;
 
 import static cern.clhep.Units.s;
 import constants.ConstDataset;
-import controle.SFA.multDimension.BOSSVSMDStackClassifier;
-import controle.SFA.multDimension.ClassifierMD;
+import controle.SFA.classification.BOSSMDStackClassifier;
+import controle.SFA.classification.ClassifierMD;
 import datasets.timeseries.TimeSeriesLoader;
 import datasets.timeseries.TimeSeriesMD;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author Wesllen Sousa
  */
-public class BOSSVSMDStackClassification {
+public class BOSSMDStackClassification {
     
     public static void main(String[] args) {
         
@@ -29,12 +29,12 @@ public class BOSSVSMDStackClassification {
             TimeSeriesMD[] testSamples = TimeSeriesLoader.loadHorizontalDataMultiDimensional(
                     ConstDataset.DS_TEST + "test_shoaib_md.csv", ",", true, 3);
             
-            ClassifierMD bossmd = new BOSSVSMDStackClassifier(trainSamples, testSamples);
+            ClassifierMD bossmd = new BOSSMDStackClassifier(trainSamples, testSamples);
             ClassifierMD.Score scoreMD = bossmd.eval();
             System.out.println(s + ";" + scoreMD.toString());
             
         } catch (IOException ex) {
-            Logger.getLogger(BOSSVSMDStackClassification.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BOSSMDStackClassification.class.getName()).log(Level.SEVERE, null, ex);
         }
                     
     }

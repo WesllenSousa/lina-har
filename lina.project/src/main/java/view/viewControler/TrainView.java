@@ -15,13 +15,14 @@ import controle.SAX.Params;
 import controle.SAX.SAX_VSM;
 import controle.SFA.classification.BOSSClassifier;
 import controle.SFA.classification.BOSSEnsembleClassifier;
+import controle.SFA.classification.BOSSMDStackClassifier;
+import controle.SFA.classification.BOSSMDWordsClassifier;
 import controle.SFA.classification.BOSSVSClassifier;
 import controle.SFA.classification.Classifier.Score;
+import controle.SFA.classification.ClassifierMD;
 import controle.SFA.classification.ShotgunClassifier;
 import controle.SFA.classification.ShotgunEnsembleClassifier;
 import controle.SFA.classification.WEASELClassifier;
-import controle.SFA.multDimension.BOSSVSMDStackClassifier;
-import controle.SFA.multDimension.ClassifierMD;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
 import datasets.timeseries.TimeSeriesMD;
@@ -63,15 +64,15 @@ public class TrainView {
                 || algorithm.equals(ConstGeneral.AL_J48) || algorithm.equals(ConstGeneral.AL_Random_Forest)
                 || algorithm.equals(ConstGeneral.AL_KNN) || algorithm.equals(ConstGeneral.AL_NaiveBayes)
                 || algorithm.equals(ConstGeneral.AL_Logistic) || algorithm.equals(ConstGeneral.AL_MultilayerPerceptron)
-                || algorithm.equals(ConstGeneral.AL_AdaBoost)) {
+                || algorithm.equals(ConstGeneral.AL_AdaBoost) || algorithm.equals(ConstGeneral.AL_Random_Tree)) {
             executeTrainWeka(train, test, algorithm);
+        } else if (algorithm.equals(ConstGeneral.AL_SAX_VSM)) {
+            executeTrainSaxVsm(train, test, algorithm);
         } else if (algorithm.equals(ConstGeneral.AL_BOSS_ENSEMBLE) || algorithm.equals(ConstGeneral.AL_BOSS_VS)
                 || algorithm.equals(ConstGeneral.AL_WEASEL) || algorithm.equals(ConstGeneral.AL_SHOTGUN)
                 || algorithm.equals(ConstGeneral.AL_SHOTGUN_ENSEMBLE) || algorithm.equals(ConstGeneral.AL_BOSS_MODEL)) {
             executeTrainBoss(train, test, algorithm);
-        } else if (algorithm.equals(ConstGeneral.AL_SAX_VSM)) {
-            executeTrainSaxVsm(train, test, algorithm);
-        } else if (algorithm.equals(ConstGeneral.AL_BOSS_VS_MD)) {
+        } else if (algorithm.equals(ConstGeneral.AL_BOSS_MD_STACK) || algorithm.equals(ConstGeneral.AL_BOSS_MD_WORDS)) {
             executeTrainBossMD(train, test, algorithm);
         } else {
             messages.aviso("Unsuported algorithm!");
@@ -220,8 +221,10 @@ public class TrainView {
 
         try {
             ClassifierMD classifier = null;
-            if (algorithm.equals(ConstGeneral.AL_BOSS_VS_MD)) {
-                classifier = new BOSSVSMDStackClassifier(trainSamples, testSamples);
+            if (algorithm.equals(ConstGeneral.AL_BOSS_MD_STACK)) {
+                classifier = new BOSSMDStackClassifier(trainSamples, testSamples);
+            } else if (algorithm.equals(ConstGeneral.AL_BOSS_MD_WORDS)) {
+                classifier = new BOSSMDWordsClassifier(trainSamples, testSamples);
             }
 
             if (classifier != null) {
@@ -231,7 +234,7 @@ public class TrainView {
                 classifier.setMaxSymbol(Parameters.MAX_SYMBOL);
                 classifier.setMaxWordLength(Parameters.MAX_WORD_LENGTH);
                 classifier.setMinWordLenth(Parameters.MIN_WORD_LENGTH);
-                
+
                 ClassifierMD.Score scoreMD = classifier.eval();
                 String result = scoreMD.toString();
                 String key = FileUtil.extractNameFile(train) + "_" + algorithm;
