@@ -476,7 +476,7 @@ public class DesktopView {
         defaultListModel.addElement(ConstGeneral.FF_SpectralEnergy);
         defaultListModel.addElement(ConstGeneral.FF_SpectralEnergyNormalized);
         defaultListModel.addElement(ConstGeneral.FF_SpectralPower);
-//        defaultListModel.addElement(ConstGeneral.FF_SpectralEntropy);
+        defaultListModel.addElement(ConstGeneral.FF_SpectralEntropy);
         defaultListModel.addElement(ConstGeneral.FF_CoefficientsSum);
         defaultListModel.addElement(ConstGeneral.FF_Peaks);
         defaultListModel.addElement(ConstGeneral.FF_DComponents);

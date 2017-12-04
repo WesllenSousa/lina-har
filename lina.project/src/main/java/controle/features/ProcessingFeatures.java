@@ -306,11 +306,13 @@ public class ProcessingFeatures {
             PrincipalFeatures.HaarWaveletTransform(window, true).stream().forEach((value) -> {
                 column.add(value.toString());
             });
-        } else if (nameMethod.equals(ConstGeneral.PF_TiltAngle)) {
-            PrincipalFeatures.tiltAngle(window).stream().forEach((value) -> {
-                column.add(value);
-            });
-        } else if (nameMethod.equals(ConstGeneral.SP_MovingAverageFilter)) {
+        } 
+//        else if (nameMethod.equals(ConstGeneral.PF_TiltAngle)) {
+//            PrincipalFeatures.tiltAngle(window).stream().forEach((value) -> {
+//                column.add(value);
+//            });
+//        } 
+        else if (nameMethod.equals(ConstGeneral.SP_MovingAverageFilter)) {
             FiltersSignalProcessing.MovingAverageFilter(window, 3).stream().forEach((value) -> {
                 column.add(value.toString());
             });
