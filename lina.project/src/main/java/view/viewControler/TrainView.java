@@ -64,7 +64,8 @@ public class TrainView {
                 || algorithm.equals(ConstGeneral.AL_J48) || algorithm.equals(ConstGeneral.AL_Random_Forest)
                 || algorithm.equals(ConstGeneral.AL_KNN) || algorithm.equals(ConstGeneral.AL_NaiveBayes)
                 || algorithm.equals(ConstGeneral.AL_Logistic) || algorithm.equals(ConstGeneral.AL_MultilayerPerceptron)
-                || algorithm.equals(ConstGeneral.AL_AdaBoost) || algorithm.equals(ConstGeneral.AL_Random_Tree)) {
+                || algorithm.equals(ConstGeneral.AL_AdaBoost) || algorithm.equals(ConstGeneral.AL_Random_Tree)
+                || algorithm.equals(ConstGeneral.AL_SVM)) {
             executeTrainWeka(train, test, algorithm);
         } else if (algorithm.equals(ConstGeneral.AL_SAX_VSM)) {
             executeTrainSaxVsm(train, test, algorithm);
