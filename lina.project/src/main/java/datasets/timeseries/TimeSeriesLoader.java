@@ -198,10 +198,10 @@ public class TimeSeriesLoader {
                 LinkedList<TimeSeries> samples = new LinkedList<>();
                 for (int i = 0; i < qtdeDimension; i++) {
 
-                    String[] column = new String[tsSize - 1];
-                    for (int w = 1; w < tsSize; w++) {
+                    String[] column = new String[tsSize];
+                    for (int w = 0; w < tsSize; w++) {
                         int index = (i * tsSize) + w;
-                        column[w - 1] = columns[index];
+                        column[w] = columns[index];
                     }
                     TimeSeries ts = getTimeSeriesObject(column, normalize);
                     if (ts != null) {
@@ -211,7 +211,7 @@ public class TimeSeriesLoader {
                 }
 
                 TimeSeriesMD tsMD = new TimeSeriesMD(samples.toArray(new TimeSeries[]{}));
-                tsMD.setLabel(samples.getFirst().getLabel());
+                tsMD.setLabel(columns[0]);
                 samplesMD.add(tsMD);
             }
         } catch (IOException e) {
@@ -231,20 +231,9 @@ public class TimeSeriesLoader {
 
         double[] data = new double[columns.length];
         int j = 0;
-//        String label = null;
-
-        // first is the label
-        int i = 0;
-//        for (; i < columns.length; i++) {
-//            String column = columns[i].trim();
-//            if (isNonEmptyColumn(column)) {
-//                label = column;
-//                break;
-//            }
-//        }
 
         // next the data
-        for (i = i + 1; i < columns.length; i++) {
+        for (int i = 0; i < columns.length; i++) {
             String column = columns[i].trim();
             try {
                 if (isNonEmptyColumn(column)) {
