@@ -527,7 +527,6 @@ public class Principal extends javax.swing.JFrame {
         sl_overlap.setMaximum(90);
         sl_overlap.setPaintLabels(true);
         sl_overlap.setPaintTicks(true);
-        sl_overlap.setValue(0);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel5.setText("Frequency (Hz):");

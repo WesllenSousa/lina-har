@@ -154,6 +154,8 @@ public class BOSSModelMDStack extends BOSSModel {
 
     public long[][][] createWordsMDStack(final TimeSeriesMD[] samples) {
         int numSources = samples[0].getNumSources();
+        
+//        System.out.println(numSources);
 
         final long[][][] words = new long[numSources][samples.length][];
 
@@ -163,16 +165,15 @@ public class BOSSModelMDStack extends BOSSModel {
             this.signatures = new SFA[numSources];
 
             for (int i = 0; i < numSources; i++) {
-
                 signatures[i] = new SFA(HistogramType.EQUI_DEPTH);
                 signatures[i].fitWindowing(samplesModified[i], windowLength, maxF, symbols, normMean, true);
-
             }
-
         }
 
         for (int idSource = 0; idSource < numSources; idSource++) {
             for (int i = 0; i < samples.length; i++) {
+                
+//                System.out.println(">> " + samples[0].getLength());
 
                 short[][] sfaWords = signatures[idSource].transformWindowing(samples[i].getTimeSeriesOfOneSource(idSource), maxF);
                 words[idSource][i] = new long[sfaWords.length];
@@ -182,6 +183,8 @@ public class BOSSModelMDStack extends BOSSModel {
                 }
             }
         }
+        
+//        System.out.println("================");
 
         return words;
     }

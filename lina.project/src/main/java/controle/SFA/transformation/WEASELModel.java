@@ -150,17 +150,25 @@ public class WEASELModel {
             // create subsequences
             for (int w = 0; w < this.windowLengths.size(); w++) {
                 final short factor = 1;
-                for (int offset = 0; offset < words[w][j].length; offset++) {
-                    int word = this.dict.getWord((long) w << 52 | (words[w][j][offset] & mask));
-                    bagOfPatterns[j].bob.putOrAdd(word, factor, factor);
 
-                    // add 2 grams
-                    if (offset - this.windowLengths.get(w) >= 0) {
-                        long prevWord = this.dict.getWord((long) w << 52 | (words[w][j][offset - this.windowLengths.get(w)] & mask));
-                        int newWord = this.dict.getWord((long) w << 52 | prevWord << 26 | word);
-                        bagOfPatterns[j].bob.putOrAdd(newWord, factor, factor);
+                try { //As vezes da uma erro
+
+                    for (int offset = 0; offset < words[w][j].length; offset++) {
+                        int word = this.dict.getWord((long) w << 52 | (words[w][j][offset] & mask));
+                        bagOfPatterns[j].bob.putOrAdd(word, factor, factor);
+
+                        // add 2 grams
+                        if (offset - this.windowLengths.get(w) >= 0) {
+                            long prevWord = this.dict.getWord((long) w << 52 | (words[w][j][offset - this.windowLengths.get(w)] & mask));
+                            int newWord = this.dict.getWord((long) w << 52 | prevWord << 26 | word);
+                            bagOfPatterns[j].bob.putOrAdd(newWord, factor, factor);
+                        }
                     }
+
+                } catch (NullPointerException ex) {
+                    System.out.println(ex + "\n" + "windowLengths.size()" + windowLengths.size() + " - " + w);
                 }
+
             }
         }
         return bagOfPatterns;

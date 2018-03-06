@@ -57,7 +57,7 @@ public class HandleGenericDataset {
             if (row % tsSize == 0) {
                 String classe = stringMoreFrequency(classes, ConstGeneral.HORIZONTAL_FORMAT_NOISE);
                 //Ingnoring noise columns
-                if (!classe.equals(ConstDataset.NOISE)) {
+                if (classe != null && !classe.equals(ConstDataset.NOISE)) {
                     tuplaHoriz.addFirst(classe);
                     for (LinkedList<String> column : columns) {
                         for (String value : column) {

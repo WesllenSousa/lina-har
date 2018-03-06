@@ -2,15 +2,14 @@
 Afazeres de implementação
 1) Fazer com que o Page Hinkley se adapte seu theshold de disparo maseado no histórico de disparo.
 2) O problema da media negativa do PageHinkley pode ser resolvido com Magnitude
-3) Ler o item de Logistic Regression do livro de PNL
-4) Preparar todas as bases de dados possíveis
-5) Testar o overlap de 50% na geração das bases de dados no formato horizontal
+3) Testar o overlap de 50% na geração das bases de dados no formato horizontal
+4) Atualiza API do SFA
+5) Verificar formula cossena SFA.
 
 Notas de Inovação
 
 1) Fase
-    1) Testar alguns filtros antes da discretização (SSA e RSSA)
-        1.1) O codigo do SFA aplica o lowpass filter naturalmente com o primeiro coeficiente do FFT.
+    1) O codigo do SFA aplica o lowpass filter naturalmente com o primeiro coeficiente do FFT.
     2) Fusão de dados no raw data com Magnitude, PCA, Kalman Filter (Hendrio) e fusao das características (Kevin)
     3) Eliminar ruídos na conversão da base para formato horizontal (stringMoreFrequency no HandleGenericDataset), i.e., janela que contenha mais de uma atividade.
 
@@ -24,7 +23,7 @@ Notas de Inovação
     5) Definir o melhor tamanho de janela para no contexto de HAR (O ensemble do BOSS resolve)
     6) Discords podem ser considerados transição entre atividades.
     7) Os motifs podem ser utilizados para agrupar palavras (atividades).
-    8) Procurar uma forma de estabelecer uma tag as o histograma de referência?
+    8) Procurar uma forma de gerar histogramas de referência
     9) Testar algum algoritmo de agrupamento: dendograma. (API SAX tem)
     
 3) Fase
@@ -35,7 +34,3 @@ Notas de Inovação
     3) Manter um histograma de referencia e monitorar os histogramas que são similares, mas possuem uma alta variacao.
         3.3) Entender o conceito de histograma de referência do Hendrio
     4) O histograma de referencia pode ser definido quando ele não varia muito.
-
-Experimentos
-    1) Reproduzir os testes incluindo o SAX-VSM, BOSS VS e WEASEL para ver as acurácias e comparar com as caracteristicas de tempo e frequencia.
-        1.1) Preencher um excel.

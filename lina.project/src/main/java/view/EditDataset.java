@@ -3,12 +3,15 @@ package view;
 import datasets.generic.GenericTableModel;
 import datasets.generic.HandleGenericDataset;
 import datasets.generic.GenericRowBean;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import util.FileUtil;
 import util.Messages;
+import util.Validation;
 
 /**
  *
@@ -49,6 +52,11 @@ public class EditDataset extends javax.swing.JDialog {
         tf_search = new javax.swing.JTextField();
         bt_replace = new javax.swing.JButton();
         sx_busy = new org.jdesktop.swingx.JXBusyLabel();
+        jLabel5 = new javax.swing.JLabel();
+        bt_dellColumn1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        tf_dellLine = new javax.swing.JTextField();
+        bt_dellColumn2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mi_save = new javax.swing.JMenuItem();
@@ -107,6 +115,24 @@ public class EditDataset extends javax.swing.JDialog {
             }
         });
 
+        jLabel5.setText("Selected Lines:");
+
+        bt_dellColumn1.setText("Delete");
+        bt_dellColumn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_dellColumn1ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("or");
+
+        bt_dellColumn2.setText("Delete");
+        bt_dellColumn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_dellColumn2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -123,6 +149,16 @@ public class EditDataset extends javax.swing.JDialog {
                         .addComponent(cb_column, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bt_dellColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bt_dellColumn1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tf_dellLine, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bt_dellColumn2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(sx_busy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -130,7 +166,7 @@ public class EditDataset extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tf_newWord)
+                        .addComponent(tf_newWord, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bt_replace, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(tf_search))
@@ -144,7 +180,12 @@ public class EditDataset extends javax.swing.JDialog {
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(cb_column, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(bt_dellColumn))
+                        .addComponent(bt_dellColumn)
+                        .addComponent(jLabel5)
+                        .addComponent(bt_dellColumn1)
+                        .addComponent(jLabel6)
+                        .addComponent(tf_dellLine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(bt_dellColumn2))
                     .addComponent(sx_busy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -164,7 +205,7 @@ public class EditDataset extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addComponent(lb_rows, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -240,7 +281,7 @@ public class EditDataset extends javax.swing.JDialog {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setBounds(0, 0, 637, 680);
+        setBounds(0, 0, 756, 680);
     }// </editor-fold>//GEN-END:initComponents
 
     private void bt_dellColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_dellColumnActionPerformed
@@ -289,14 +330,30 @@ public class EditDataset extends javax.swing.JDialog {
         thread2.start();
     }//GEN-LAST:event_tf_searchKeyReleased
 
+    private void bt_dellColumn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_dellColumn1ActionPerformed
+        Thread thread2 = new Thread(this::dellLineTable);
+        thread2.setPriority(Thread.MAX_PRIORITY);
+        thread2.start();
+    }//GEN-LAST:event_bt_dellColumn1ActionPerformed
+
+    private void bt_dellColumn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_dellColumn2ActionPerformed
+        Thread thread2 = new Thread(this::dellLineTable);
+        thread2.setPriority(Thread.MAX_PRIORITY);
+        thread2.start();
+    }//GEN-LAST:event_bt_dellColumn2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_dellColumn;
+    private javax.swing.JButton bt_dellColumn1;
+    private javax.swing.JButton bt_dellColumn2;
     private javax.swing.JButton bt_replace;
     private javax.swing.JComboBox<String> cb_column;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -311,6 +368,7 @@ public class EditDataset extends javax.swing.JDialog {
     private javax.swing.JMenuItem mi_settings;
     private org.jdesktop.swingx.JXBusyLabel sx_busy;
     private javax.swing.JTable tb_data;
+    private javax.swing.JTextField tf_dellLine;
     private javax.swing.JTextField tf_newWord;
     private javax.swing.JTextField tf_search;
     private javax.swing.JTextField tf_word;
@@ -377,6 +435,55 @@ public class EditDataset extends javax.swing.JDialog {
             populaTabela(dataTable);
         }
         sx_busy.setBusy(false);
+    }
+
+    private void dellLineTable() {
+        sx_busy.setBusy(true);
+        List<GenericRowBean> toRemove = new ArrayList<>();
+        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
+    
+        if (Validation.isEmptyString(tf_dellLine.getText())) {
+            toRemove = toRemove();
+        } else {
+            toRemove = toRemoveByName(dataTable, tf_dellLine.getText());
+        }
+        if (!toRemove.isEmpty()) {
+            dataTable.removeAll(toRemove);
+        }
+
+        tb_data.updateUI();
+        tb_data.clearSelection();
+        updateRowNumber();
+        sx_busy.setBusy(false);
+    }
+
+    private List<GenericRowBean> toRemove() {
+        List<GenericRowBean> toRemove = new ArrayList<>();
+        int[] linhas = tb_data.getSelectedRows();
+        if (linhas.length > 0) {
+            for (int i = 0; i < linhas.length; i++) {
+                GenericRowBean line = (GenericRowBean) tb_data.getValueAt(linhas[i], -1);
+                toRemove.add(line);
+            }
+        }
+        return toRemove;
+    }
+
+    private List<GenericRowBean> toRemoveByName(LinkedList<GenericRowBean> dataTable, String chave) {
+        List<GenericRowBean> toRemove = new ArrayList<>();
+        int col = Integer.parseInt(cb_column.getSelectedItem().toString()) - 1;
+        for (GenericRowBean line : dataTable) {
+            String value = "";
+            if (col > line.getTupla().size() - 1) {
+                value = line.getClasse();
+            } else {
+                value = line.getTupla().get(col);
+            }
+            if (value.contains(chave)) {
+                toRemove.add(line);
+            }
+        }
+        return toRemove;
     }
 
     private void updateRowNumber() {
