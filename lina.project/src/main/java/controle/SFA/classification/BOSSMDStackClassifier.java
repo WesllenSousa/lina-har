@@ -7,9 +7,9 @@ import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
 import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
 import controle.SFA.classification.ClassifierMD.BOSSMDType;
-import controle.SFA.transformation.BOSSModel.BagOfPattern;
-import controle.SFA.transformation.BOSSModelMDStack;
-import datasets.timeseries.TimeSeriesMD;
+import controle.SFA.transformation.BOSS.BagOfPattern;
+import controle.SFA.transformation.BOSSMDStack;
+import datasets.timeseries.MultiVariateTimeSeries;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class BOSSMDStackClassifier extends ClassifierMD {
 
     public static boolean normMagnitudes = false;
 
-    public BOSSMDStackClassifier(TimeSeriesMD[] train, TimeSeriesMD[] test) {
+    public BOSSMDStackClassifier(MultiVariateTimeSeries[] train, MultiVariateTimeSeries[] test) {
         super(train, test);
         typeClassifier = BOSSMDType.STACK;
     }
@@ -44,8 +44,8 @@ public class BOSSMDStackClassifier extends ClassifierMD {
             super("BOSS MD", 0, 0, normed, windowLength);
         }
 
-        public ObjectObjectHashMap<String, E> idf;
-        public BOSSModelMDStack model;
+        public ObjectObjectHashMap<Double, E> idf;
+        public BOSSMDStack model;
         public int features;
 
         @Override
@@ -135,13 +135,13 @@ public class BOSSMDStackClassifier extends ClassifierMD {
     public List<BossMDScore<LongFloatHashMap>> fit(
             Integer[] allWindows,
             boolean normMean,
-            TimeSeriesMD[] samples,
+            MultiVariateTimeSeries[] samples,
             ExecutorService exec) {
 
         final List<BossMDScore<LongFloatHashMap>> results = new ArrayList<>(allWindows.length);
 
         ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
-            HashSet<String> uniqueLabels = uniqueClassLabels(samples);
+            HashSet<Double> uniqueLabels = uniqueClassLabels(samples);
             BossMDScore<LongFloatHashMap> bestScore = new BossMDScore<>(normMean, 0);
 
             @Override
@@ -150,7 +150,7 @@ public class BOSSMDStackClassifier extends ClassifierMD {
                     if (i % threads == id) {
                         BossMDScore<LongFloatHashMap> score = new BossMDScore<>(normMean, allWindows[i]);
                         try {
-                            BOSSModelMDStack model = new BOSSModelMDStack(maxWordLength, maxSymbol, score.windowLength, score.normed);
+                            BOSSMDStack model = new BOSSMDStack(maxWordLength, maxSymbol, score.windowLength, score.normed);
 
                             long[][][] words = model.createWordsMDStack(trainSamples);
 
@@ -162,7 +162,7 @@ public class BOSSMDStackClassifier extends ClassifierMD {
                                 int correct = 0;
                                 for (int s = 0; s < folds; s++) {
                                     // calculate the tf-idf for each class
-                                    ObjectObjectHashMap<String, LongFloatHashMap> idf = model.createTfIdf(bag, trainIndices[s], uniqueLabels);
+                                    ObjectObjectHashMap<Double, LongFloatHashMap> idf = model.createTfIdf(bag, trainIndices[s], uniqueLabels);
 
                                     correct += predict(testIndices[s], bag, idf).correct.get();
                                 }
@@ -224,9 +224,9 @@ public class BOSSMDStackClassifier extends ClassifierMD {
     public Predictions predict(
             final int[] indices,
             final BagOfPattern[] bagOfPatternsTestSamples,
-            final ObjectObjectHashMap<String, LongFloatHashMap> matrixTrain) {
+            final ObjectObjectHashMap<Double, LongFloatHashMap> matrixTrain) {
 
-        Predictions p = new Predictions(new String[bagOfPatternsTestSamples.length], 0);
+        Predictions p = new Predictions(new Double[bagOfPatternsTestSamples.length], 0);
 
         ParallelFor.withIndex(BLOCKS, new ParallelFor.Each() {
             @Override
@@ -237,9 +237,9 @@ public class BOSSMDStackClassifier extends ClassifierMD {
                         double bestDistance = 0.0;
 
                         // for each class
-                        for (ObjectObjectCursor<String, LongFloatHashMap> classEntry : matrixTrain) {
+                        for (ObjectObjectCursor<Double, LongFloatHashMap> classEntry : matrixTrain) {
 
-                            String label = classEntry.key;
+                            Double label = classEntry.key;
                             LongFloatHashMap stat = classEntry.value;
 
                             // determine cosine similarity
@@ -277,12 +277,12 @@ public class BOSSMDStackClassifier extends ClassifierMD {
     public int predictEnsamble(
             ExecutorService executor,
             final List<BossMDScore<LongFloatHashMap>> results,
-            final TimeSeriesMD[] testSamples,
+            final MultiVariateTimeSeries[] testSamples,
             boolean normMean) {
         long startTime = System.currentTimeMillis();
 
         @SuppressWarnings("unchecked")
-        final List<Pair<String, Double>>[] testLabels = new List[testSamples.length];
+        final List<Pair<Double, Double>>[] testLabels = new List[testSamples.length];
         for (int i = 0; i < testLabels.length; i++) {
             testLabels[i] = new ArrayList<>();
         }
@@ -301,7 +301,7 @@ public class BOSSMDStackClassifier extends ClassifierMD {
                         if (score.training >= BOSSMDStackClassifier.this.correctTraining.get() * factor) { // all with same score
                             usedLengths.add(score.windowLength);
 
-                            BOSSModelMDStack model = (BOSSModelMDStack) score.model;
+                            BOSSMDStack model = (BOSSMDStack) score.model;
 
                             // create words and BOSS model for test samples
                             long[][][] wordsTest = model.createWordsMDStack(testSamples);

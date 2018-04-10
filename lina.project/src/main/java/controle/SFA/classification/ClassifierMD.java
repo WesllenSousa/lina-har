@@ -4,8 +4,8 @@ import com.carrotsearch.hppc.*;
 import com.carrotsearch.hppc.cursors.FloatCursor;
 import com.carrotsearch.hppc.cursors.IntCursor;
 import com.carrotsearch.hppc.cursors.ObjectCursor;
+import datasets.timeseries.MultiVariateTimeSeries;
 import datasets.timeseries.TimeSeries;
-import datasets.timeseries.TimeSeriesMD;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -23,34 +23,23 @@ public abstract class ClassifierMD {
 
     // Blocks for parallel execution
     public final int BLOCKS = 8;
-    public TimeSeriesMD[] testSamples;
-    public TimeSeriesMD[] trainSamples;
+    public MultiVariateTimeSeries[] testSamples;
+    public MultiVariateTimeSeries[] trainSamples;
     public AtomicInteger correctTraining = new AtomicInteger(0);
     protected int[][] testIndices;
     protected int[][] trainIndices;
     public static String resultString = "";
 
-    protected static int maxWordLength = 16; // 12
-    protected static int minWordLenth = 6;  // 4
-    protected static int maxSymbol = 4;  // 8
-    protected static int maxWindowLength = 250;
-    protected static int minWindowLength = 10;
+    public static int maxWordLength = 16; // 12
+    public static int minWordLenth = 6;  // 4
+    public static int maxSymbol = 4;  // 8
+    public static int maxWindowLength = 250;
+    public static int minWindowLength = 10;
 
-    public ClassifierMD(TimeSeriesMD[] train, TimeSeriesMD[] test) {
+    public ClassifierMD(MultiVariateTimeSeries[] train, MultiVariateTimeSeries[] test) {
         this.trainSamples = train;
         this.testSamples = test;
     }
-
-    private static Comparator<String> ALPHABETICAL_ORDER = new Comparator<String>() {
-        @Override
-        public int compare(String str1, String str2) {
-            int res = String.CASE_INSENSITIVE_ORDER.compare(str1, str2);
-            if (res == 0) {
-                res = str1.compareTo(str2);
-            }
-            return res;
-        }
-    };
 
     static {
         Runtime runtime = Runtime.getRuntime();
@@ -74,21 +63,21 @@ public abstract class ClassifierMD {
         resultString += "Correct: " + correctStr + "\n";
     }
 
-    public static void outputConfusionMatrix(ObjectObjectHashMap<String, ObjectLongHashMap> matrix) {
+    public static void outputConfusionMatrix(ObjectObjectHashMap<Double, ObjectLongHashMap> matrix) {
         try {
             int rows = matrix.size();
-            List<String> labels = new ArrayList(rows);
+            List<Double> labels = new ArrayList(rows);
 
-            for (ObjectCursor<String> actual_class : matrix.keys()) {
+            for (ObjectCursor<Double> actual_class : matrix.keys()) {
                 labels.add(actual_class.value);
 
             }
-            Collections.sort(labels, ALPHABETICAL_ORDER);
+            Collections.sort(labels);
 
             int columns = rows;
             String str = "\t";
             String str2 = "\t";
-            for (String l : labels) {
+            for (Double l : labels) {
                 str += l + "\t";
                 str2 += '-' + "\t";
             }
@@ -125,14 +114,14 @@ public abstract class ClassifierMD {
             TimeSeries[] samples,
             int splits) {
 
-        Map<String, LinkedList<Integer>> elements = splitByLabel(samples);
+        Map<Double, LinkedList<Integer>> elements = splitByLabel(samples);
 
         // pick samples
         double trainTestSplit = 1.0 / (double) splits;
         ArrayList<TimeSeries>[] sets = new ArrayList[splits];
         for (int s = 0; s < splits; s++) {
             sets[s] = new ArrayList<>();
-            for (Entry<String, LinkedList<Integer>> data : elements.entrySet()) {
+            for (Entry<Double, LinkedList<Integer>> data : elements.entrySet()) {
                 int count = (int) (data.getValue().size() * trainTestSplit);
                 int i = 0;
                 while (!data.getValue().isEmpty()
@@ -158,12 +147,12 @@ public abstract class ClassifierMD {
         return data;
     }
 
-    public static Map<String, LinkedList<Integer>> splitByLabel(TimeSeries[] samples) {
-        Map<String, LinkedList<Integer>> elements = new HashMap<>();
+    public static Map<Double, LinkedList<Integer>> splitByLabel(TimeSeries[] samples) {
+        Map<Double, LinkedList<Integer>> elements = new HashMap<>();
 
         for (int i = 0; i < samples.length; i++) {
-            String label = samples[i].getLabel();
-            if (!label.trim().isEmpty()) {
+            Double label = samples[i].getLabel();
+            if (label != null) {
                 LinkedList<Integer> sameLabel = elements.get(label);
                 if (sameLabel == null) {
                     sameLabel = new LinkedList<>();
@@ -175,9 +164,9 @@ public abstract class ClassifierMD {
         return elements;
     }
 
-    protected static HashSet<String> uniqueClassLabels(TimeSeriesMD[] ts) {
-        HashSet<String> labels = new HashSet<>();
-        for (TimeSeriesMD t : ts) {
+    protected static HashSet<Double> uniqueClassLabels(MultiVariateTimeSeries[] ts) {
+        HashSet<Double> labels = new HashSet<>();
+        for (MultiVariateTimeSeries t : ts) {
             labels.add(t.getLabel());
         }
         return labels;
@@ -234,24 +223,24 @@ public abstract class ClassifierMD {
 
     public int score(
             final String name,
-            final TimeSeriesMD[] samples,
+            final MultiVariateTimeSeries[] samples,
             long startTime,
-            final List<Pair<String, Double>>[] labels,
+            final List<Pair<Double, Double>>[] labels,
             final List<Integer> currentWindowLengths) {
-        HashSet<String> uniqueLabels = uniqueClassLabels(samples); // OLHO somente as labels de TEST
-        ObjectObjectHashMap<String, ObjectLongHashMap> confusionMatrix = new ObjectObjectHashMap<>(uniqueLabels.size());
+        HashSet<Double> uniqueLabels = uniqueClassLabels(samples); // OLHO somente as labels de TEST
+        ObjectObjectHashMap<Double, ObjectLongHashMap> confusionMatrix = new ObjectObjectHashMap<>(uniqueLabels.size());
         initConfusionMatrix(confusionMatrix, uniqueLabels);
         int correctTesting = 0;
         for (int i = 0; i < labels.length; i++) {
 
-            String maxLabel = "";
+            Double maxLabel = 0.0;
             double maxCount = 0.0;
 
-            HashMap<String, Double> counts = new HashMap<>();
+            HashMap<Double, Double> counts = new HashMap<>();
 
-            for (Pair<String, Double> k : labels[i]) {
+            for (Pair<Double, Double> k : labels[i]) {
                 if (k != null && k.key != null) {
-                    String s = k.key;
+                    Double s = k.key;
                     Double count = counts.get(s);
                     double increment = ENSEMBLE_WEIGHTS ? k.value : 1;
                     count = (count == null) ? increment : count + increment;
@@ -281,9 +270,9 @@ public abstract class ClassifierMD {
         return correctTesting;
     }
 
-    public int getMax(TimeSeriesMD[] samples, int MAX_WINDOW_SIZE) {
+    public int getMax(MultiVariateTimeSeries[] samples, int MAX_WINDOW_SIZE) {
         int max = MAX_WINDOW_SIZE;
-        for (TimeSeriesMD ts : samples) {
+        for (MultiVariateTimeSeries ts : samples) {
             max = Math.min(ts.getLength(), max);
         }
         return max;
@@ -300,13 +289,13 @@ public abstract class ClassifierMD {
     }
 
     protected IntArrayList[] getStratifiedTrainTestSplitIndices(
-            TimeSeriesMD[] samples,
+            MultiVariateTimeSeries[] samples,
             int splits) {
 
-        HashMap<String, IntArrayDeque> elements = new HashMap<>();
+        HashMap<Double, IntArrayDeque> elements = new HashMap<>();
 
         for (int i = 0; i < samples.length; i++) {
-            String label = samples[i].getLabel();
+            Double label = samples[i].getLabel();
             IntArrayDeque sameLabel = elements.get(label);
             if (sameLabel == null) {
                 sameLabel = new IntArrayDeque();
@@ -322,7 +311,7 @@ public abstract class ClassifierMD {
         }
 
         // all but one
-        for (Entry<String, IntArrayDeque> data : elements.entrySet()) {
+        for (Entry<Double, IntArrayDeque> data : elements.entrySet()) {
             IntArrayDeque d = data.getValue();
             separate:
             while (true) {
@@ -341,9 +330,9 @@ public abstract class ClassifierMD {
     }
 
     protected void initConfusionMatrix(
-            final ObjectObjectHashMap<String, ObjectLongHashMap> matrix,
-            final HashSet<String> uniqueLabels) {
-        for (String label : uniqueLabels) {
+            final ObjectObjectHashMap<Double, ObjectLongHashMap> matrix,
+            final HashSet<Double> uniqueLabels) {
+        for (Double label : uniqueLabels) {
             ObjectLongHashMap stat = matrix.get(label);
             if (stat == null) {
                 matrix.put(label, new ObjectLongHashMap(uniqueLabels.size()));
@@ -459,10 +448,10 @@ public abstract class ClassifierMD {
 
     public static class Predictions {
 
-        public String[] labels;
+        public Double[] labels;
         public AtomicInteger correct;
 
-        public Predictions(String[] labels, int bestCorrect) {
+        public Predictions(Double[] labels, int bestCorrect) {
             this.labels = labels;
             this.correct = new AtomicInteger(bestCorrect);
         }
@@ -492,26 +481,6 @@ public abstract class ClassifierMD {
         public boolean equals(Object obj) {
             return this.key.equals(((Pair<E, T>) obj).key);
         }
-    }
-
-    public void setMaxWordLength(int maxWordLength) {
-        this.maxWordLength = maxWordLength;
-    }
-
-    public void setMinWordLenth(int minWordLenth) {
-        this.minWordLenth = minWordLenth;
-    }
-
-    public void setMaxSymbol(int maxSymbol) {
-        this.maxSymbol = maxSymbol;
-    }
-
-    public void setMaxWindowLength(int maxWindowLength) {
-        this.maxWindowLength = maxWindowLength;
-    }
-
-    public void setMinWindowLength(int minWindowLength) {
-        this.minWindowLength = minWindowLength;
     }
 
     public enum BOSSMDType {

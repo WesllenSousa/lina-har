@@ -3215,7 +3215,7 @@ public class Principal extends javax.swing.JFrame {
             ConstGeneral.ALINGMENT = false;
         }
         if (rd_algBOSS.isSelected()) {
-            ConstGeneral.MODEL = ConstGeneral.AL_BOSS_MODEL;
+            //ConstGeneral.MODEL = ConstGeneral.AL_BOSS_MODEL;
         } else if (rd_algBOSSVS.isSelected()) {
             ConstGeneral.MODEL = ConstGeneral.AL_BOSS_VS;
         } else if (rd_algWeasel.isSelected()) {

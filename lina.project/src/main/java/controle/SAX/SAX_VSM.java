@@ -58,8 +58,8 @@ public class SAX_VSM {
         return null;
     }
 
-    public WordBag wordsToWordBag(List<WordRecord> words, String label) {
-        WordBag bag = new WordBag(label);
+    public WordBag wordsToWordBag(List<WordRecord> words, Double label) {
+        WordBag bag = new WordBag(label.toString());
         for (WordRecord word : words) {
             bag.addWord(word.getWord(), word.getFrequency());
         }

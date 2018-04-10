@@ -38,7 +38,7 @@ public class TimeSeriesLoader {
 
         ArrayList<TimeSeries> samples = new ArrayList<>();
         double[] ts = new double[]{};
-        String label = null;
+        Double label = null;
 
         // check if everything is ready
         if ((null == dataFileName) || dataFileName.isEmpty()) {
@@ -112,7 +112,7 @@ public class TimeSeriesLoader {
                 }
             }
             reader.close();
-        } catch (Exception e) {
+        } catch (NumberFormatException | IOException e) {
             String stackTrace = StackTrace.toString(e);
             System.err.println(StackTrace.toString(e));
             System.out.println("error while trying to read data from " + dataFileName + ":\n" + stackTrace);
@@ -143,8 +143,9 @@ public class TimeSeriesLoader {
      * Loads the time series from a csv-file of the UCR time series archive.
      *
      * @param dataset
+     * @param splitColumn
+     * @param normalize
      * @return
-     * @throws IOException
      */
     public static TimeSeries[] loadHorizontalData(String dataset, String splitColumn, Boolean normalize) {
         LinkedList<TimeSeries> samples = new LinkedList<>();
@@ -158,12 +159,12 @@ public class TimeSeriesLoader {
                 String[] column = line.split(splitColumn);
                 TimeSeries ts = getTimeSeriesObject(column, normalize);
                 if (ts != null) {
-                    ts.setLabel(column[0].trim());
+                    ts.setLabel(Double.parseDouble(column[0]));
                     samples.add(ts);
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
 
         if (samples.size() > 0) {
@@ -179,12 +180,15 @@ public class TimeSeriesLoader {
      * Loads the time series from a csv-file of the UCR time series archive.
      *
      * @param dataset
+     * @param splitColumn
+     * @param normalize
+     * @param qtdeDimension
+     * @param derivatives
      * @return
-     * @throws IOException
      */
-    public static TimeSeriesMD[] loadHorizontalDataMultiDimensional(String dataset, String splitColumn, Boolean normalize,
-            int qtdeDimension) {
-        LinkedList<TimeSeriesMD> samplesMD = new LinkedList<>();
+    public static MultiVariateTimeSeries[] loadHorizontalDataMultiDimensional(String dataset, String splitColumn, Boolean normalize,
+            int qtdeDimension, boolean derivatives) {
+        LinkedList<MultiVariateTimeSeries> samplesMD = new LinkedList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(dataset))) {
             String line = null;
@@ -205,17 +209,17 @@ public class TimeSeriesLoader {
                     }
                     TimeSeries ts = getTimeSeriesObject(column, normalize);
                     if (ts != null) {
-                        ts.setLabel(columns[0].trim());
+                        ts.setLabel(Double.parseDouble(columns[0]));
                         samples.add(ts);
                     }
                 }
 
-                TimeSeriesMD tsMD = new TimeSeriesMD(samples.toArray(new TimeSeries[]{}));
-                tsMD.setLabel(columns[0]);
+                MultiVariateTimeSeries tsMD = new MultiVariateTimeSeries(samples.toArray(new TimeSeries[]{}));
+                tsMD.setLabel(Double.parseDouble(columns[0]));
                 samplesMD.add(tsMD);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
 
         if (samplesMD.size() > 0) {
@@ -223,8 +227,9 @@ public class TimeSeriesLoader {
         } else {
             System.out.println("Data format incorrect!");
         }
-
-        return samplesMD.toArray(new TimeSeriesMD[]{});
+        
+        MultiVariateTimeSeries[] m = samplesMD.toArray(new MultiVariateTimeSeries[]{});
+        return (derivatives) ? getDerivatives(m) : m;
     }
 
     public static TimeSeries getTimeSeriesObject(String[] columns, Boolean normalize) {
@@ -233,14 +238,14 @@ public class TimeSeriesLoader {
         int j = 0;
 
         // next the data
-        for (int i = 0; i < columns.length; i++) {
-            String column = columns[i].trim();
+        for (String column1 : columns) {
+            String column = column1.trim();
             try {
                 if (isNonEmptyColumn(column)) {
                     data[j++] = Double.parseDouble(column);
                 }
             } catch (NumberFormatException nfe) {
-                nfe.printStackTrace();
+                System.out.println(nfe);
             }
         }
 
@@ -252,18 +257,34 @@ public class TimeSeriesLoader {
         return null;
     }
 
+    private static MultiVariateTimeSeries[] getDerivatives(MultiVariateTimeSeries[] mtsSamples) {
+        for (MultiVariateTimeSeries mts : mtsSamples) {
+            TimeSeries[] deltas = new TimeSeries[2 * mts.timeSeries.length];
+            TimeSeries[] samples = mts.timeSeries;
+            for (int a = 0; a < samples.length; a++) {
+                TimeSeries s = samples[a];
+                double[] d = new double[s.getLength() - 1];
+                for (int i = 1; i < s.getLength(); i++) {
+                    d[i - 1] = s.getData()[i] - s.getData()[i - 1];
+                }
+                deltas[2 * a] = samples[a];
+                deltas[2 * a + 1] = new TimeSeries(d, mts.getLabel());
+            }
+            mts.timeSeries = deltas;
+        }
+        return mtsSamples;
+    }
+
     public static TimeSeries readSampleSubsequence(File dataset) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(dataset))) {
             DoubleArrayList data = new DoubleArrayList();
             String line = null;
             while ((line = br.readLine()) != null) {
-                line.trim();
-                String[] values = line.split("[ \\t]");
+                String[] values = line.trim().split("[ \\t]");
                 if (values.length > 0) {
                     for (String value : values) {
                         try {
-                            value.trim();
-                            if (isNonEmptyColumn(value)) {
+                            if (isNonEmptyColumn(value.trim())) {
                                 data.add(Double.parseDouble(value));
                             }
                         } catch (NumberFormatException nfe) {
@@ -276,19 +297,21 @@ public class TimeSeriesLoader {
         }
     }
 
+    public static TimeSeries[] readSamplesQuerySeries(String dataset) throws IOException {
+        return readSamplesQuerySeries(new File(dataset));
+    }
+
     public static TimeSeries[] readSamplesQuerySeries(File dataset) throws IOException {
         List<TimeSeries> samples = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(dataset))) {
             String line = null;
             while ((line = br.readLine()) != null) {
                 DoubleArrayList data = new DoubleArrayList();
-                line.trim();
-                String[] values = line.split("[ \\t]");
+                String[] values = line.trim().split("[ \\t]");
                 if (values.length > 0) {
                     for (String value : values) {
                         try {
-                            value.trim();
-                            if (isNonEmptyColumn(value)) {
+                            if (isNonEmptyColumn(value.trim())) {
                                 data.add(Double.parseDouble(value));
                             }
                         } catch (NumberFormatException nfe) {

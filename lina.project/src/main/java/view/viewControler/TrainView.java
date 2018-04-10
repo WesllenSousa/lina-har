@@ -13,22 +13,24 @@ import constants.ConstGeneral;
 import constants.Parameters;
 import controle.SAX.Params;
 import controle.SAX.SAX_VSM;
-import controle.SFA.classification.BOSSClassifier;
 import controle.SFA.classification.BOSSEnsembleClassifier;
 import controle.SFA.classification.BOSSMDStackClassifier;
 import controle.SFA.classification.BOSSMDWordsClassifier;
 import controle.SFA.classification.BOSSVSClassifier;
 import controle.SFA.classification.Classifier.Score;
 import controle.SFA.classification.ClassifierMD;
+import controle.SFA.classification.MUSEClassifier;
 import controle.SFA.classification.ShotgunClassifier;
 import controle.SFA.classification.ShotgunEnsembleClassifier;
 import controle.SFA.classification.WEASELClassifier;
+import datasets.timeseries.MultiVariateTimeSeries;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
-import datasets.timeseries.TimeSeriesMD;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.seninp.jmotif.sax.NumerosityReductionStrategy;
 import net.seninp.util.UCRUtils;
 import util.FileUtil;
@@ -71,10 +73,12 @@ public class TrainView {
             executeTrainSaxVsm(train, test, algorithm);
         } else if (algorithm.equals(ConstGeneral.AL_BOSS_ENSEMBLE) || algorithm.equals(ConstGeneral.AL_BOSS_VS)
                 || algorithm.equals(ConstGeneral.AL_WEASEL) || algorithm.equals(ConstGeneral.AL_SHOTGUN)
-                || algorithm.equals(ConstGeneral.AL_SHOTGUN_ENSEMBLE) || algorithm.equals(ConstGeneral.AL_BOSS_MODEL)) {
+                || algorithm.equals(ConstGeneral.AL_SHOTGUN_ENSEMBLE)) {
             executeTrainBoss(train, test, algorithm);
         } else if (algorithm.equals(ConstGeneral.AL_BOSS_MD_STACK) || algorithm.equals(ConstGeneral.AL_BOSS_MD_WORDS)) {
             executeTrainBossMD(train, test, algorithm);
+        } else if (algorithm.equals(ConstGeneral.AL_MUSE)) {
+            executeTrainMuse(train, test, algorithm);
         } else {
             messages.aviso("Unsuported algorithm!");
         }
@@ -143,48 +147,39 @@ public class TrainView {
             window = trainSamples[0].getLength();
         }
 
-        try {
-            controle.SFA.classification.Classifier.DEBUG = true;
-            controle.SFA.classification.Classifier classifier = null;
-            controle.SFA.classification.Classifier.resultString = "";
+        controle.SFA.classification.Classifier.DEBUG = true;
+        controle.SFA.classification.Classifier classifier = null;
 
-            if (algorithm.equals(ConstGeneral.AL_BOSS_MODEL)) {
+        if (algorithm.equals(ConstGeneral.AL_BOSS_ENSEMBLE)) {
+            classifier = new BOSSEnsembleClassifier();
+        } else if (algorithm.equals(ConstGeneral.AL_BOSS_VS)) {
+            classifier = new BOSSVSClassifier();
+        } else if (algorithm.equals(ConstGeneral.AL_WEASEL)) {
+            classifier = new WEASELClassifier();
+        } else if (algorithm.equals(ConstGeneral.AL_SHOTGUN)) {
+            classifier = new ShotgunClassifier();
+        } else if (algorithm.equals(ConstGeneral.AL_SHOTGUN_ENSEMBLE)) {
+            classifier = new ShotgunEnsembleClassifier();
+        }
 
-                classifier = new BOSSClassifier(trainSamples, testSamples, window);
+        if (classifier != null) {
+            //Parameters
+            classifier.maxWindowLength = Parameters.MAX_WINDOW_LENGTH;
+            classifier.minWindowLength = Parameters.MIN_WINDOW_LENGTH;
+            classifier.maxSymbol = Parameters.MAX_SYMBOL;
+            classifier.maxWordLength = Parameters.MAX_WORD_LENGTH;
+            classifier.minWordLenth = Parameters.MIN_WORD_LENGTH;
 
-            } else if (algorithm.equals(ConstGeneral.AL_BOSS_ENSEMBLE)) {
-                classifier = new BOSSEnsembleClassifier(trainSamples, testSamples);
-            } else if (algorithm.equals(ConstGeneral.AL_BOSS_VS)) {
-                classifier = new BOSSVSClassifier(trainSamples, testSamples);
-            } else if (algorithm.equals(ConstGeneral.AL_WEASEL)) {
-                classifier = new WEASELClassifier(trainSamples, testSamples);
-            } else if (algorithm.equals(ConstGeneral.AL_SHOTGUN)) {
-                classifier = new ShotgunClassifier(trainSamples, testSamples, window);
-            } else if (algorithm.equals(ConstGeneral.AL_SHOTGUN_ENSEMBLE)) {
-                classifier = new ShotgunEnsembleClassifier(trainSamples, testSamples);
-            }
-
-            if (classifier != null) {
-                //Parameters
-                classifier.setMaxWindowLength(Parameters.MAX_WINDOW_LENGTH);
-                classifier.setMinWindowLength(Parameters.MIN_WINDOW_LENGTH);
-                classifier.setMaxSymbol(Parameters.MAX_SYMBOL);
-                classifier.setMaxWordLength(Parameters.MAX_WORD_LENGTH);
-                classifier.setMinWordLenth(Parameters.MIN_WORD_LENGTH);
-
-                //Train model
-                Score score = classifier.eval();
-                String result = score.toString();
-                String key = FileUtil.extractNameFile(train) + "_" + algorithm;
-                listEvaluation.put(key, result);
-            }
-        } catch (IOException ex) {
-            messages.aviso("executeTrainBoss: " + ex);
+            //Train model
+            Score score = classifier.eval(trainSamples, testSamples);
+            String result = classifier.toString() + score.toString();
+            String key = FileUtil.extractNameFile(train) + "_" + algorithm;
+            listEvaluation.put(key, result);
         }
     }
 
     private void executeTrainSaxVsm(String train, String test, String algorithm) {
-        int window = (int) (Parameters.WINDOW_SEC * Parameters.FREQUENCY);
+        int window = (int) (Parameters.MIN_WINDOW_LENGTH);
         Params params = new Params(window, Parameters.WORD_LENGTH_PAA,
                 Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD,
                 NumerosityReductionStrategy.EXACT);
@@ -215,34 +210,62 @@ public class TrainView {
     }
 
     private void executeTrainBossMD(String train, String test, String algorithm) {
-        TimeSeriesMD[] trainSamples = TimeSeriesLoader.loadHorizontalDataMultiDimensional(
-                ConstDataset.DS_TRAIN + train, ConstDataset.SEPARATOR, true, 3);
-        TimeSeriesMD[] testSamples = TimeSeriesLoader.loadHorizontalDataMultiDimensional(
-                ConstDataset.DS_TEST + test, ConstDataset.SEPARATOR, true, 3);
+        MultiVariateTimeSeries[] trainSamples = TimeSeriesLoader.loadHorizontalDataMultiDimensional(
+                ConstDataset.DS_TRAIN + train, ConstDataset.SEPARATOR, true, 3, false);
+        MultiVariateTimeSeries[] testSamples = TimeSeriesLoader.loadHorizontalDataMultiDimensional(
+                ConstDataset.DS_TEST + test, ConstDataset.SEPARATOR, true, 3, false);
 
-        try {
-            ClassifierMD classifier = null;
-            if (algorithm.equals(ConstGeneral.AL_BOSS_MD_STACK)) {
-                classifier = new BOSSMDStackClassifier(trainSamples, testSamples);
-            } else if (algorithm.equals(ConstGeneral.AL_BOSS_MD_WORDS)) {
-                classifier = new BOSSMDWordsClassifier(trainSamples, testSamples);
-            }
+        ClassifierMD classifier = null;
+        if (algorithm.equals(ConstGeneral.AL_BOSS_MD_STACK)) {
+            classifier = new BOSSMDStackClassifier(trainSamples, testSamples);
+        } else if (algorithm.equals(ConstGeneral.AL_BOSS_MD_WORDS)) {
+            classifier = new BOSSMDWordsClassifier(trainSamples, testSamples);
+        }
 
-            if (classifier != null) {
-                //Parameters
-                classifier.setMaxWindowLength(Parameters.MAX_WINDOW_LENGTH);
-                classifier.setMinWindowLength(Parameters.MIN_WINDOW_LENGTH);
-                classifier.setMaxSymbol(Parameters.MAX_SYMBOL);
-                classifier.setMaxWordLength(Parameters.MAX_WORD_LENGTH);
-                classifier.setMinWordLenth(Parameters.MIN_WORD_LENGTH);
+        if (classifier != null) {
+            //Parameters
+            classifier.maxWindowLength = Parameters.MAX_WINDOW_LENGTH;
+            classifier.minWindowLength = Parameters.MIN_WINDOW_LENGTH;
+            classifier.maxSymbol = Parameters.MAX_SYMBOL;
+            classifier.maxWordLength = Parameters.MAX_WORD_LENGTH;
+            classifier.minWordLenth = Parameters.MIN_WORD_LENGTH;
 
+            try {
                 ClassifierMD.Score scoreMD = classifier.eval();
                 String result = scoreMD.toString();
                 String key = FileUtil.extractNameFile(train) + "_" + algorithm;
                 listEvaluation.put(key, result);
+            } catch (IOException ex) {
+                Logger.getLogger(TrainView.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            messages.aviso("executeTrainBossMD: " + ex);
+        }
+    }
+
+    private void executeTrainMuse(String train, String test, String algorithm) {
+        MultiVariateTimeSeries[] trainSamples = TimeSeriesLoader.loadHorizontalDataMultiDimensional(
+                ConstDataset.DS_TRAIN + train, ConstDataset.SEPARATOR, true, 3, true);
+        MultiVariateTimeSeries[] testSamples = TimeSeriesLoader.loadHorizontalDataMultiDimensional(
+                ConstDataset.DS_TEST + test, ConstDataset.SEPARATOR, true, 3, true);
+
+        MUSEClassifier classifier = null;
+        if (algorithm.equals(ConstGeneral.AL_MUSE)) {
+            classifier = new MUSEClassifier();
+            MUSEClassifier.BIGRAMS = true;
+        }
+
+        if (classifier != null) {
+            //Parameters
+            classifier.maxWindowLength = Parameters.MAX_WINDOW_LENGTH;
+            classifier.minWindowLength = Parameters.MIN_WINDOW_LENGTH;
+            classifier.maxSymbol = Parameters.MAX_SYMBOL;
+            classifier.maxWordLength = Parameters.MAX_WORD_LENGTH;
+            classifier.minWordLenth = Parameters.MIN_WORD_LENGTH;
+
+            //Train model
+            Score score = classifier.eval(trainSamples, testSamples);
+            String result = classifier.toString() + score.toString();
+            String key = FileUtil.extractNameFile(train) + "_" + algorithm;
+            listEvaluation.put(key, result);
         }
 
     }

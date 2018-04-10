@@ -8,10 +8,9 @@ package datasets.memory;
 import com.carrotsearch.hppc.IntFloatHashMap;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
 import controle.SAX.saxvsm.text.WordBag;
-import controle.SFA.classification.WEASELClassifier.WScore;
-import controle.SFA.transformation.BOSSModel.BagOfPattern;
+import controle.SFA.transformation.BOSS.BagOfPattern;
 import controle.SFA.transformation.SFA;
-import controle.SFA.transformation.WEASELModel.BagOfBigrams;
+import controle.SFA.transformation.WEASEL.BagOfBigrams;
 import datasets.timeseries.TimeSeries;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +35,7 @@ public class BufferStreaming {
 
     private ObjectObjectHashMap<String, IntFloatHashMap> matrixBossVs;
     private HashMap<String, HashMap<String, Double>> matrixSaxVsm;
-    private WScore weaselModel;
+    //private WScore weaselModel;
 
     public SFA getMcb() {
         return mcb;
@@ -86,12 +85,12 @@ public class BufferStreaming {
         this.matrixSaxVsm = matrixSaxVsm;
     }
 
-    public WScore getWeaselModel() {
-        return weaselModel;
-    }
-
-    public void setWeaselModel(WScore weaselModel) {
-        this.weaselModel = weaselModel;
-    }
+//    public WScore getWeaselModel() {
+//        return weaselModel;
+//    }
+//
+//    public void setWeaselModel(WScore weaselModel) {
+//        this.weaselModel = weaselModel;
+//    }
 
 }

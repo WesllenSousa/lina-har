@@ -113,7 +113,7 @@ public class ConstGeneral {
     public static String AL_AdaBoost = "AdaBoost";
 
     public static String AL_SAX_VSM = "SaxVsm";
-    public static String AL_BOSS_MODEL = "BossModel";
+    //public static String AL_BOSS_MODEL = "BossModel";
     public static String AL_BOSS_ENSEMBLE = "BossEnsemble";
     public static String AL_BOSS_VS = "BossVS";
     public static String AL_WEASEL = "Weasel";
@@ -121,6 +121,7 @@ public class ConstGeneral {
     public static String AL_SHOTGUN_ENSEMBLE = "ShotgunEnsemble";
     public static String AL_BOSS_MD_STACK = "BossMdStack";
     public static String AL_BOSS_MD_WORDS = "BossMdWords";
+    public static String AL_MUSE = "MUSE";
 
     //Data Fusion
     public static String DF_MAGNITUDE = "Magnitude";

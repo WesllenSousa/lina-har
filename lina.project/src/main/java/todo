@@ -5,6 +5,8 @@ Afazeres de implementação
 3) Testar o overlap de 50% na geração das bases de dados no formato horizontal
 4) Atualiza API do SFA
 5) Verificar formula cossena SFA.
+6) Erro overlap, dominio de frequencia.
+7) Selecao de intervalos de palavras na aba de data stream estranho
 
 Notas de Inovação
 

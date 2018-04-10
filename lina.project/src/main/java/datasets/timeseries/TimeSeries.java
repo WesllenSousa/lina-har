@@ -15,17 +15,22 @@ public class TimeSeries implements Serializable {
     protected double stddev = 1;
 
     protected boolean normed = false;
-    protected String label = null;
+    protected Double label = null;
+
+    public static boolean APPLY_Z_NORM = true;
+
+    public TimeSeries() {
+    }
 
     public TimeSeries(double[] data) {
         this.data = data;
     }
 
-    public TimeSeries(double[] data, String label) {
+    public TimeSeries(double[] data, Double label) {
         this(data);
         this.label = label;
     }
-
+    
     public boolean isNormed() {
         return this.normed;
     }
@@ -50,24 +55,34 @@ public class TimeSeries implements Serializable {
         norm(true);
     }
 
-    public void norm(boolean norm) {
+    /**
+     * After zero-mean-normalization the following holds: mean = 0 stddev = 1
+     *
+     * @param normMean defines, if the mean should be subtracted from the time
+     * series
+     */
+    public void norm(boolean normMean) {
         this.mean = calculateMean();
         this.stddev = calculateStddev();
 
         if (!isNormed()) {
-            norm(norm, this.mean, this.stddev);
+            norm(normMean, this.mean, this.stddev);
         }
     }
 
     /**
-     * Zero-mean normalization. After normalization the following holds: mean =
-     * 0 stddev = 1
+     * Used for zero-mean normalization.
+     *
+     * @param normMean defines, if the mean should be subtracted from the time
+     * series
+     * @param mean the mean to set (usually set to 0)
+     * @param stddev the stddev to set (usually set to 1)
      */
     public void norm(boolean normMean, double mean, double stddev) {
         this.mean = mean;
         this.stddev = stddev;
 
-        if (!isNormed()) {
+        if (APPLY_Z_NORM && !isNormed()) {
             double inverseStddev = (this.stddev != 0) ? 1.0 / this.stddev : 1.0;
 
             if (normMean) {
@@ -81,7 +96,8 @@ public class TimeSeries implements Serializable {
                 }
             }
 
-//      this.stddev = 1.0;
+            //      this.mean = 0.0;
+            //      this.stddev = 1.0;
             this.normed = true;
         }
     }
@@ -153,7 +169,7 @@ public class TimeSeries implements Serializable {
     }
 
     /**
-     * Get a subsequence starting at offset with length windowSize.
+     * Get a subsequence starting at offset with queryLength windowSize.
      *
      * @param windowSize
      * @return
@@ -161,23 +177,7 @@ public class TimeSeries implements Serializable {
     public TimeSeries getSubsequence(int offset, int windowSize) {
         double[] subsequenceData = Arrays.copyOfRange(this.data, offset, Math.min(data.length, offset + windowSize));
         TimeSeries sequence = new TimeSeries(subsequenceData);
-        //sequence.norm();
-        return sequence;
-    }
-
-    /**
-     * Get a subsequence starting at offset with length windowSize.
-     *
-     * @param windowSize
-     * @return
-     */
-    public TimeSeries getSubsequence(int offset, int windowSize, double mean, double stddev) {
-        double[] subsequenceData = Arrays.copyOfRange(this.data, offset, offset + windowSize);
-        if (subsequenceData.length != windowSize) {
-            System.err.println("Wrong size!!");
-        }
-        TimeSeries sequence = new TimeSeries(subsequenceData);
-        sequence.norm(true, mean, stddev);
+        sequence.norm();
         return sequence;
     }
 
@@ -185,36 +185,31 @@ public class TimeSeries implements Serializable {
      * Get sliding windows with windowSize.
      *
      * @param windowSize
+     * @param normMean defines, if the mean should be subtracted from the time
+     * series
      * @return
      */
     public TimeSeries[] getSubsequences(int windowSize, boolean normMean) {
-        // Window offset
-        int offset = 1;
+        // windowSize should not be larger than the data size
+        int ws = Math.min(windowSize, this.data.length);
 
         // extract subsequences
-        int size = (this.data.length - windowSize) / offset + 1;
+        int size = (this.data.length - ws) + 1;
         TimeSeries[] subsequences = new TimeSeries[size];
 
         double[] means = new double[size];
         double[] stddevs = new double[size];
 
-        calcIncreamentalMeanStddev(windowSize, this.data, means, stddevs);
+        calcIncrementalMeanStddev(windowSize, this.data, means, stddevs);
 
-        int pos = 0;
         for (int i = 0; i < subsequences.length; i++) {
             double subsequenceData[] = new double[windowSize];
-            System.arraycopy(this.data, pos, subsequenceData, 0, windowSize);
+            System.arraycopy(this.data, i, subsequenceData, 0, ws);
 
-            // Die neu erstellten Zeitreihen haben die L�nge windowSize und das Offset i
+            // The newly created time series have queryLength windowSize and offset i
             subsequences[i] = new TimeSeries(subsequenceData);
-            if (offset == 1) {
-                subsequences[i].norm(normMean, means[i], stddevs[i]);
-            } else {
-                subsequences[i].norm(normMean);
-            }
+            subsequences[i].norm(normMean, means[i], stddevs[i]);
             subsequences[i].setLabel(getLabel());
-
-            pos += offset;
         }
         return subsequences;
     }
@@ -222,9 +217,9 @@ public class TimeSeries implements Serializable {
     /**
      * Gets the means and stddevs for all sliding windows of a time series
      */
-    public static void calcIncreamentalMeanStddev(
+    public static void calcIncrementalMeanStddev(
             int windowLength,
-            double[] ts,
+            double[] tsData,
             double[] means,
             double[] stds) {
         double sum = 0;
@@ -233,15 +228,17 @@ public class TimeSeries implements Serializable {
         // it is faster to multiply than to divide
         double rWindowLength = 1.0 / (double) windowLength;
 
-        double[] tsData = ts;
-        for (int ww = 0; ww < windowLength; ww++) {
+        for (int ww = 0; ww < Math.min(tsData.length, windowLength); ww++) {
             sum += tsData[ww];
             squareSum += tsData[ww] * tsData[ww];
         }
+
+        // first window
         means[0] = sum * rWindowLength;
         double buf = squareSum * rWindowLength - means[0] * means[0];
         stds[0] = buf > 0 ? Math.sqrt(buf) : 0;
 
+        // remaining windows
         for (int w = 1, end = tsData.length - windowLength + 1; w < end; w++) {
             sum += tsData[w + windowLength - 1] - tsData[w - 1];
             means[w] = sum * rWindowLength;
@@ -280,11 +277,12 @@ public class TimeSeries implements Serializable {
      *
      * @return
      */
-    public String getLabel() {
+    public Double getLabel() {
         return this.label;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(Double label) {
         this.label = label;
     }
+
 }

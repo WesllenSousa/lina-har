@@ -1,198 +1,195 @@
-// Copyright (c) 2016 - Patrick Schäfer (patrick.schaefer@zib.de)
+// Copyright (c) 2016 - Patrick Schäfer (patrick.schaefer@hu-berlin.de)
 // Distributed under the GLP 3.0 (See accompanying file LICENSE)
 package controle.SFA.classification;
 
-import com.carrotsearch.hppc.IntFloatHashMap;
-import com.carrotsearch.hppc.ObjectObjectHashMap;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import controle.SFA.transformation.BOSS.BagOfPattern;
+import controle.SFA.transformation.BOSSVS;
+
+import com.carrotsearch.hppc.IntFloatHashMap;
+import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
 import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
 import datasets.timeseries.TimeSeries;
-import controle.SFA.transformation.BOSSModel.BagOfPattern;
-import controle.SFA.transformation.BOSSVSModel;
 
 /**
- * The Bag-of-SFA-Symbols in Vector Space classifier as published in Schäfer,
- * P.: Scalable time series classification. DMKD (Preprint)
- *
- *
- * @author bzcschae
- *
+ * The Bag-of-SFA-Symbols in Vector Space classifier as published in
+ * <p>
+ * Schäfer, P.: Scalable time series classification. DMKD (2016)
  */
 public class BOSSVSClassifier extends Classifier {
 
+    // default training parameters
     public static double factor = 0.95;
 
     public static boolean normMagnitudes = false;
 
-    public BOSSVSClassifier(TimeSeries[] train, TimeSeries[] test) throws IOException {
-        super(train, test);
-    }
+    // the trained weasel
+    public Ensemble<BossVSModel<IntFloatHashMap>> model;
 
     public BOSSVSClassifier() {
         super();
     }
 
-    public static class BossVSScore<E> extends Score {
+    public static class BossVSModel<E> extends Model {
 
-        public BossVSScore(boolean normed, int windowLength) {
-            super("BOSS VS", 0, 0, normed, windowLength);
+        public BossVSModel() {
         }
 
-        public ObjectObjectHashMap<String, E> idf;
-        public BOSSVSModel model;
+        public BossVSModel(
+                boolean normed,
+                int windowLength) {
+            super("BOSS VS", -1, 1, -1, 1, normed, windowLength);
+        }
+
+        // The inverse document frequencies learned by training
+        public ObjectObjectHashMap<Double, E> idf;
+
+        // the trained BOSS VS transformation
+        public BOSSVS bossvs;
+
+        // the best number of Fourier values to be used
         public int features;
-
-        @Override
-        public void clear() {
-            super.clear();
-            this.idf = null;
-            this.model = null;
-        }
     }
 
     @Override
-    public Score eval() throws IOException {
-        ExecutorService exec = Executors.newFixedThreadPool(threads);
-        try {
-            // BOSS Distance
-            BossVSScore<IntFloatHashMap> totalBestScore = null;
-            int bestCorrectTesting = 0;
-            int bestCorrectTraining = 0;
+    public Score eval(
+            final TimeSeries[] trainSamples, final TimeSeries[] testSamples) {
+        long startTime = System.currentTimeMillis();
 
-            // generate test train/split for cross-validation
-            generateIndices();
+        Score scoreTrain = fit(trainSamples);
 
-            for (boolean normMean : NORMALIZATION) {
-                long startTime = System.currentTimeMillis();
-
-                this.correctTraining = new AtomicInteger(0);
-
-                List<BossVSScore<IntFloatHashMap>> scores = fitEnsemble(exec, normMean);
-
-                // training score
-                BossVSScore<IntFloatHashMap> bestScore = scores.get(0);
-                if (DEBUG) {
-                    System.out.println("BOSS VS Training:\t" + bestScore.windowLength + " " + bestScore.features + "\tnormed: \t" + normMean);
-                    outputResult(this.correctTraining.get(), startTime, this.trainSamples.length);
-                }
-
-                // determine labels based on the majority of predictions
-                int correctTesting = predictEnsamble(exec, scores, this.testSamples, normMean);
-
-                if (bestCorrectTraining <= this.correctTraining.get()) {
-                    bestCorrectTesting = correctTesting;
-                    bestCorrectTraining = this.correctTraining.get();
-                    totalBestScore = bestScore;
-                }
-                if (DEBUG) {
-                    System.out.println("");
-                }
-            }
-
-            return new Score(
-                    "BOSS VS",
-                    1 - formatError(bestCorrectTesting, this.testSamples.length),
-                    1 - formatError(bestCorrectTraining, this.trainSamples.length),
-                    totalBestScore.normed,
-                    totalBestScore.windowLength);
-        } finally {
-            exec.shutdown();
+        if (DEBUG) {
+            System.out.println("training");
+            System.out.println(scoreTrain.toString());
+            outputResult(scoreTrain.training, startTime, testSamples.length);
+            System.out.println("");
         }
 
+        // Classify: testing score
+        Predictions preticted = score(testSamples);
+        int correctTesting = preticted.correct.get();
+
+        return new Score(
+                "BOSS VS",
+                correctTesting, testSamples.length,
+                scoreTrain.training, trainSamples.length,
+                scoreTrain.windowLength);
     }
 
-    public List<BossVSScore<IntFloatHashMap>> fitEnsemble(ExecutorService exec, final boolean normMean) throws FileNotFoundException {
-        int min = minWindowLength;
-        int max = getMax(trainSamples, maxWindowLength);
+    @Override
+    public Score fit(final TimeSeries[] trainSamples) {
+        // generate test train/split for cross-validation
+        generateIndices(trainSamples);
+
+        Score bestScore = null;
+        int bestCorrectTraining = 0;
+
+        int min = BOSSVSClassifier.minWindowLength;
+        int max = getMax(trainSamples, BOSSVSClassifier.maxWindowLength);
 
         // equi-distance sampling of windows
         ArrayList<Integer> windows = new ArrayList<>();
         double count = Math.sqrt(max);
-        double distance = ((max - min) / count);
-        for (int c = min; c <= max; c += distance) {
+        int distance = (int) Math.round(((maxWindowLength - minWindowLength) / count));
+        if(distance == 0) distance = 1;
+        for (int c = min; c <= max; c += Math.round(distance)) {
             windows.add(c);
         }
-        return fit(windows.toArray(new Integer[]{}), normMean, trainSamples, exec);
+
+        for (boolean normMean : NORMALIZATION) {
+            // train the shotgun models for different window lengths
+            Ensemble<BossVSModel<IntFloatHashMap>> m = fitEnsemble(
+                    windows.toArray(new Integer[]{}), normMean, trainSamples);
+            Double[] labels = predict(m, trainSamples);
+            Predictions pred = evalLabels(trainSamples, labels);
+
+            if (bestCorrectTraining <= pred.correct.get()) {
+                bestCorrectTraining = pred.correct.get();
+                bestScore = m.getHighestScoringModel().score;
+                bestScore.training = pred.correct.get();
+                this.model = m;
+            }
+        }
+
+        // return score
+        return bestScore;
     }
 
-    public List<BossVSScore<IntFloatHashMap>> fit(
-            Integer[] allWindows,
+    @Override
+    public Predictions score(final TimeSeries[] testSamples) {
+        Double[] labels = predict(testSamples);
+        return evalLabels(testSamples, labels);
+    }
+
+    @Override
+    public Double[] predict(final TimeSeries[] testSamples) {
+        return predict(this.model, testSamples);
+    }
+
+    protected Ensemble<BossVSModel<IntFloatHashMap>> fitEnsemble(Integer[] windows,
             boolean normMean,
-            TimeSeries[] samples,
-            ExecutorService exec) {
+            TimeSeries[] samples) {
 
-        final List<BossVSScore<IntFloatHashMap>> results = new ArrayList<>(allWindows.length);
+        final List<BossVSModel<IntFloatHashMap>> results = new ArrayList<>(windows.length);
+        final AtomicInteger correctTraining = new AtomicInteger(0);
+
         ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
-
-            HashSet<String> uniqueLabels = uniqueClassLabels(samples);
-            BossVSScore<IntFloatHashMap> bestScore = new BossVSScore<>(normMean, 0);
+            Double[] uniqueLabels = uniqueClassLabels(samples);
 
             @Override
             public void run(int id, AtomicInteger processed) {
-                for (int i = 0; i < allWindows.length; i++) {
+                for (int i = 0; i < windows.length; i++) {
                     if (i % threads == id) {
-                        BossVSScore<IntFloatHashMap> score = new BossVSScore<>(normMean, allWindows[i]);
+                        BossVSModel<IntFloatHashMap> model = new BossVSModel<>(normMean, windows[i]);
                         try {
-                            BOSSVSModel model = new BOSSVSModel(maxWordLength, maxSymbol, score.windowLength, score.normed);
-                            int[][] words = model.createWords(trainSamples);
+                            BOSSVS bossvs = new BOSSVS(maxWordLength, maxSymbol, windows[i], model.normed);
+                            int[][] words = bossvs.createWords(samples);
 
-                            optimize:
-                            for (int f = minWordLenth; f <= Math.min(score.windowLength, maxWordLength); f += 2) {
-                                BagOfPattern[] bag = model.createBagOfPattern(words, trainSamples, f);
+                            for (int f = minWordLenth; f <= Math.min(model.windowLength, maxWordLength); f += 2) {
+                                BagOfPattern[] bag = bossvs.createBagOfPattern(words, samples, f);
 
                                 // cross validation using folds
                                 int correct = 0;
                                 for (int s = 0; s < folds; s++) {
                                     // calculate the tf-idf for each class
-                                    ObjectObjectHashMap<String, IntFloatHashMap> idf = model.createTfIdf(bag, trainIndices[s], uniqueLabels);
+                                    ObjectObjectHashMap<Double, IntFloatHashMap> idf = bossvs.createTfIdf(bag,
+                                            BOSSVSClassifier.this.trainIndices[s], this.uniqueLabels);
 
-                                    correct += predict(testIndices[s], bag, idf).correct.get();
+                                    correct += predict(BOSSVSClassifier.this.testIndices[s], bag, idf).correct.get();
                                 }
-                                if (correct > score.training) {
-                                    score.training = correct;
-                                    score.testing = correct;
-                                    score.features = f;
+                                if (correct > model.score.training) {
+                                    model.score.training = correct;
+                                    model.features = f;
 
                                     if (correct == samples.length) {
-                                        break optimize;
+                                        break;
                                     }
                                 }
                             }
 
-                            // obtain the final matrix              
-                            BagOfPattern[] bag = model.createBagOfPattern(words, trainSamples, score.features);
+                            // obtain the final matrix
+                            BagOfPattern[] bag = bossvs.createBagOfPattern(words, samples, model.features);
 
                             // calculate the tf-idf for each class
-                            score.idf = model.createTfIdf(bag, uniqueLabels);
-                            score.model = model;
+                            model.idf = bossvs.createTfIdf(bag, this.uniqueLabels);
+                            model.bossvs = bossvs;
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
-                        if (this.bestScore.compareTo(score) < 0) {
-                            synchronized (this.bestScore) {
-                                if (this.bestScore.compareTo(score) < 0) {
-                                    BOSSVSClassifier.this.correctTraining.set((int) score.training);
-                                    this.bestScore = score;
-                                }
+                        // keep best scores
+                        synchronized (correctTraining) {
+                            if (model.score.training > correctTraining.get()) {
+                                correctTraining.set(model.score.training);
                             }
-                        }
 
-                        // add to ensemble
-                        if (score.training >= BOSSVSClassifier.this.correctTraining.get() * factor) {
-                            synchronized (results) {
-                                results.add(score);
+                            // add to ensemble if train-score is within factor to the best score
+                            if (model.score.training >= correctTraining.get() * factor) {
+                                results.add(model);
                             }
                         }
                     }
@@ -200,25 +197,16 @@ public class BOSSVSClassifier extends Classifier {
             }
         });
 
-        // cleanup unused scores
-        for (BossVSScore<IntFloatHashMap> s : results) {
-            if (s.model != null
-                    && s.training < this.correctTraining.get() * factor) {
-                s.clear();
-            }
-        }
-
-        // sort descending
-        Collections.sort(results, Collections.reverseOrder());
-        return results;
+        // returns the ensemble based on the best window-lengths within factor
+        return filterByFactor(results, correctTraining.get(), factor);
     }
 
-    public Predictions predict(
+    protected Predictions predict(
             final int[] indices,
             final BagOfPattern[] bagOfPatternsTestSamples,
-            final ObjectObjectHashMap<String, IntFloatHashMap> matrixTrain) {
+            final ObjectObjectHashMap<Double, IntFloatHashMap> matrixTrain) {
 
-        Predictions p = new Predictions(new String[bagOfPatternsTestSamples.length], 0);
+        Predictions p = new Predictions(new Double[bagOfPatternsTestSamples.length], 0);
 
         ParallelFor.withIndex(BLOCKS, new ParallelFor.Each() {
             @Override
@@ -229,9 +217,9 @@ public class BOSSVSClassifier extends Classifier {
                         double bestDistance = 0.0;
 
                         // for each class
-                        for (ObjectObjectCursor<String, IntFloatHashMap> classEntry : matrixTrain) {
+                        for (ObjectObjectCursor<Double, IntFloatHashMap> classEntry : matrixTrain) {
 
-                            String label = classEntry.key;
+                            Double label = classEntry.key;
                             IntFloatHashMap stat = classEntry.value;
 
                             // determine cosine similarity
@@ -255,7 +243,7 @@ public class BOSSVSClassifier extends Classifier {
                         }
 
                         // check if the prediction is correct
-                        if (bagOfPatternsTestSamples[i].label.equals(p.labels[i])) {
+                        if (compareLabels(bagOfPatternsTestSamples[i].label, p.labels[i])) {
                             p.correct.incrementAndGet();
                         }
                     }
@@ -266,97 +254,57 @@ public class BOSSVSClassifier extends Classifier {
         return p;
     }
 
-    public int predictEnsamble(
-            ExecutorService executor,
-            final List<BossVSScore<IntFloatHashMap>> results,
-            final TimeSeries[] testSamples,
-            boolean normMean) {
-        long startTime = System.currentTimeMillis();
-
+    protected Double[] predict(final Ensemble<BossVSModel<IntFloatHashMap>> model, final TimeSeries[] testSamples) {
         @SuppressWarnings("unchecked")
-        final List<Pair<String, Double>>[] testLabels = new List[testSamples.length];
+        final List<Pair<Double, Integer>>[] testLabels = new List[testSamples.length];
         for (int i = 0; i < testLabels.length; i++) {
             testLabels[i] = new ArrayList<>();
         }
 
-        final List<Integer> usedLengths = new ArrayList<>(results.size());
+        final List<Integer> usedLengths = Collections.synchronizedList(new ArrayList<>(model.size()));
         final int[] indicesTest = createIndices(testSamples.length);
 
         // parallel execution
-        ParallelFor.withIndex(executor, threads, new ParallelFor.Each() {
+        ParallelFor.withIndex(exec, threads, new ParallelFor.Each() {
             @Override
             public void run(int id, AtomicInteger processed) {
                 // iterate each sample to classify
-                for (int i = 0; i < results.size(); i++) {
+                for (int i = 0; i < model.size(); i++) {
                     if (i % threads == id) {
-                        final BossVSScore<IntFloatHashMap> score = results.get(i);
-                        if (score.training >= BOSSVSClassifier.this.correctTraining.get() * factor) { // all with same score
-                            usedLengths.add(score.windowLength);
+                        final BossVSModel<IntFloatHashMap> score = model.get(i);
+                        usedLengths.add(score.windowLength);
 
-                            BOSSVSModel model = score.model;
+                        BOSSVS model = score.bossvs;
 
-                            // create words and BOSS model for test samples
-                            int[][] wordsTest = model.createWords(testSamples);
-                            BagOfPattern[] bagTest = model.createBagOfPattern(wordsTest, testSamples, score.features);
+                        // create words and BOSS boss for test samples
+                        int[][] wordsTest = model.createWords(testSamples);
+                        BagOfPattern[] bagTest = model.createBagOfPattern(wordsTest, testSamples, score.features);
 
-                            Predictions p = predict(indicesTest, bagTest, score.idf);
+                        Predictions p = predict(indicesTest, bagTest, score.idf);
 
-                            for (int j = 0; j < p.labels.length; j++) {
-                                synchronized (testLabels[j]) {
-                                    testLabels[j].add(new Pair<String, Double>(p.labels[j], score.training));
-                                }
+                        for (int j = 0; j < p.labels.length; j++) {
+                            synchronized (testLabels[j]) {
+                                testLabels[j].add(new Pair<>(p.labels[j], score.score.training));
                             }
-                        } else {
-                            score.clear();
                         }
                     }
                 }
             }
         });
 
-        return score("BOSS VS", testSamples, startTime, testLabels, usedLengths);
+        return score("BOSS VS", testSamples, testLabels, usedLengths);
     }
 
-    public Predictions predictStream(
-            final BagOfPattern bagOfPatternsTestSample,
-            final ObjectObjectHashMap<String, IntFloatHashMap> matrixTrain) {
-
-        Predictions p = new Predictions(new String[1], 0);
-
-        double bestDistance = 0.0;
-
-        // for each class
-        for (ObjectObjectCursor<String, IntFloatHashMap> classEntry : matrixTrain) {
-
-            String label = classEntry.key;
-            IntFloatHashMap stat = classEntry.value;
-
-            // determine cosine similarity
-            double distance = 0.0;
-
-            for (IntIntCursor wordFreq : bagOfPatternsTestSample.bag) {
-                double wordInBagFreq = wordFreq.value;
-                double value = stat.get(wordFreq.key);
-                distance += wordInBagFreq * (value + 1.0);
-            }
-
-            // norm by magnitudes
-            if (normMagnitudes) {
-                distance /= magnitude(stat.values());
-            }
-
-            // update nearest neighbor
-            if (distance > bestDistance) {
-                bestDistance = distance;
-                p.labels[0] = label;
-            }
-        }
-
-        // check if the prediction is correct
-//        if (bagOfPatternsTestSample.label.equals(p.labels[0])) {
-//            p.correct.incrementAndGet();
-//        }
-        return p;
+    @Override
+    public String toString() {
+        BOSSVS bossvs = model.getHighestScoringModel().bossvs;
+        
+        return "Name: " + model.getHighestScoringModel().name + "\n"
+                //+ "Score - " + score.toString() + "\n"
+                + "Word: " + bossvs.maxF + "\n"
+                + "Norm: " + bossvs.normMean + "\n"
+                + "Symbol: " + bossvs.symbols + "\n"
+                + "Window: " + bossvs.windowLength + "\n";
     }
 
 }

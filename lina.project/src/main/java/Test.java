@@ -1,12 +1,4 @@
 
-import constants.ConstDataset;
-import controle.weka.WekaUtil;
-import java.util.LinkedList;
-import util.FileUtil;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.PrincipalComponents;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +12,14 @@ import weka.filters.unsupervised.attribute.PrincipalComponents;
 public class Test {
 
     public static void main(String[] args) throws Exception {
+        
+        float c = 50;
+        int test = (int) Math.round(0.15);
+        System.out.println(test);
+        c += Math.round(0.15);
+        System.out.println(c);
+        
+        System.out.println(System.getProperty("user.home"));
         
         String teste = "SIT_TO_LIE";
         

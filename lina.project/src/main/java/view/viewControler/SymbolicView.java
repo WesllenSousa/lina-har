@@ -13,23 +13,19 @@ import controle.SAX.Params;
 import controle.SAX.SAX;
 import controle.SAX.SAX_VSM;
 import controle.SAX.saxvsm.text.WordBag;
-import controle.SFA.classification.BOSSClassifier;
-import controle.SFA.classification.BOSSVSClassifier;
 import controle.SFA.classification.Classifier.Predictions;
 import controle.SFA.classification.Classifier.Words;
 import controle.SFA.classification.WEASELClassifier;
-import controle.SFA.classification.WEASELClassifier.WScore;
 import static controle.SFA.classification.WEASELClassifier.c;
 import static controle.SFA.classification.WEASELClassifier.chi;
-import static controle.SFA.classification.WEASELClassifier.iter;
+import static controle.SFA.classification.WEASELClassifier.iterations;
 import static controle.SFA.classification.WEASELClassifier.p;
 import static controle.SFA.classification.WEASELClassifier.solverType;
-import controle.SFA.transformation.BOSSModel;
-import controle.SFA.transformation.BOSSModel.BagOfPattern;
-import controle.SFA.transformation.BOSSVSModel;
+import controle.SFA.transformation.BOSS;
+import controle.SFA.transformation.BOSS.BagOfPattern;
 import controle.SFA.transformation.SFA;
-import controle.SFA.transformation.WEASELModel;
-import controle.SFA.transformation.WEASELModel.BagOfBigrams;
+import controle.SFA.transformation.WEASEL;
+import controle.SFA.transformation.WEASEL.BagOfBigrams;
 import controle.pageHinkley.PageHinkley;
 import controle.pageHinkley.PageHinkleyBean;
 import datasets.memory.BufferStreaming;
@@ -44,7 +40,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import net.seninp.jmotif.sax.NumerosityReductionStrategy;
@@ -65,7 +60,7 @@ public class SymbolicView {
     private List<BufferStreaming> bufferStreaming = new ArrayList<>();
     private List<PageHinkley> listPH = new ArrayList<>();
 
-    private HashSet<String> uniqueLabels = new HashSet<>();
+    private HashSet<Double> uniqueLabels = new HashSet<>();
     private WordRecord previousWord;
     private Params params;
 
@@ -211,7 +206,7 @@ public class SymbolicView {
 
     private void analyseModel(BufferStreaming buffer, int position) {
 
-        String label = "1"; //Elaborar uma estratégia pra cá
+        double label = 1.0; //Elaborar uma estratégia pra cá
         uniqueLabels.add(label);
         //Elaborar uma estrategia para atualizar todos os modelos
         switch (ConstGeneral.MODEL) {
@@ -230,44 +225,43 @@ public class SymbolicView {
                     updateLog("Need to be choose SAX discretization algorithm!");
                 }
                 break;
-            case "BossModel":
-                if (ConstGeneral.SFA) {
-                    BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
-                    BagOfPattern bag2 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
-                    buffer.getBOPBoss().add(bag2); //Boss model?
-
-                    classifyBossModel(bag2, buffer.getBOPBoss());
-                } else {
-                    updateLog("Need to be choose SFA discretization algorithm!");
-                }
-                break;
-            case "BossVS":
-                if (ConstGeneral.SFA) {
-                    BOSSModel boss = new BOSSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
-                    BagOfPattern bag3 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
-                    buffer.getBOPBoss().add(bag3); //Boss model?
-
-                    updateModelBossVs(buffer);
-                    classifyBossVs(bag3, buffer.getMatrixBossVs());
-                } else {
-                    updateLog("Need to be choose SFA discretization algorithm!");
-                }
-                break;
-            case "Weasel":
-                if (ConstGeneral.SFA) {
-                    LinkedList<Integer> windowLengths = new LinkedList<>(); //Cria diferentes tamanhos de janelas, ver uma solucao pra ca
-                    windowLengths.add(Parameters.WINDOW_SIZE);
-                    WEASELModel weasel = new WEASELModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
-                            windowLengths, true, true);
-                    BagOfBigrams bag4 = createBagOfBigramWEASEL(weasel, buffer.getBufferWord(), label, windowLengths);
-                    buffer.getBOPWeasel().add(bag4);
-
-                    updateModelWeasel(weasel, buffer);
-                    classifyWeasel(bag4, buffer);
-                } else {
-                    updateLog("Need to be choose SFA discretization algorithm!");
-                }
-                break;
+//            case "BossModel":
+//                if (ConstGeneral.SFA) {
+//                    BOSS boss = new BOSS(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
+//                    BagOfPattern bag2 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
+//                    buffer.getBOPBoss().add(bag2); //Boss model?
+//
+//                    classifyBossModel(bag2, buffer.getBOPBoss());
+//                } else {
+//                    updateLog("Need to be choose SFA discretization algorithm!");
+//                }
+//                break;
+//            case "BossVS":
+//                if (ConstGeneral.SFA) {
+//                    BOSS boss = new BOSS(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.WINDOW_SIZE, true);
+//                    BagOfPattern bag3 = createBagOfPatternBOSS(boss, buffer.getBufferWord(), label);
+//                    buffer.getBOPBoss().add(bag3); //Boss model?
+//
+//                    updateModelBossVs(buffer);
+//                    classifyBossVs(bag3, buffer.getMatrixBossVs());
+//                } else {
+//                    updateLog("Need to be choose SFA discretization algorithm!");
+//                }
+//                break;
+//            case "Weasel":
+//                if (ConstGeneral.SFA) {
+//                    int[] windowLengths = new int[]{Parameters.WINDOW_SIZE}; //Cria diferentes tamanhos de janelas, ver uma solucao pra ca
+//                    WEASEL weasel = new WEASEL(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
+//                            windowLengths, true, true);
+//                    BagOfBigrams bag4 = createBagOfBigramWEASEL(weasel, buffer.getBufferWord(), label, windowLengths);
+//                    buffer.getBOPWeasel().add(bag4);
+//
+//                    updateModelWeasel(weasel, buffer);
+//                    classifyWeasel(bag4, buffer);
+//                } else {
+//                    updateLog("Need to be choose SFA discretization algorithm!");
+//                }
+//                break;
             default:
                 Messages messages = new Messages();
                 messages.aviso("Need to be choose SFA discretization algorithm!");
@@ -277,7 +271,7 @@ public class SymbolicView {
         lineGraphic.addMarker(position, position, Color.black);
     }
 
-    private BagOfPattern createBagOfPatternBOSS(BOSSModel boss, List<WordRecord> listWords, String label) {
+    private BagOfPattern createBagOfPatternBOSS(BOSS boss, List<WordRecord> listWords, double label) {
         int[] words = new int[listWords.size()];
         for (int wordIndex = 0; wordIndex < listWords.size(); wordIndex++) {
             //Get word int value from word bit value
@@ -290,9 +284,9 @@ public class SymbolicView {
         return bag;
     }
 
-    private BagOfBigrams createBagOfBigramWEASEL(WEASELModel weasel, List<WordRecord> listWords, String label,
-            LinkedList<Integer> windowLengths) {
-        int[][] words = new int[windowLengths.size()][listWords.size()];
+    private BagOfBigrams createBagOfBigramWEASEL(WEASEL weasel, List<WordRecord> listWords, double label,
+            int[] windowLengths) {
+        int[][] words = new int[windowLengths.length][listWords.size()];
         for (int wordIndex = 0; wordIndex < listWords.size(); wordIndex++) {
             //Get word int value from word bit value
             int wordInt = (int) Words.createWord(listWords.get(wordIndex).getWordBit(), Parameters.WORD_LENGTH_PAA,
@@ -304,41 +298,41 @@ public class SymbolicView {
         return bag;
     }
 
-    private void updateModelBossVs(BufferStreaming buffer) {
-        BOSSVSModel bossVsModel = new BOSSVSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
-                Parameters.WINDOW_SIZE, true);
-        ObjectObjectHashMap<String, IntFloatHashMap> matrixTrain = bossVsModel.createTfIdf(
-                buffer.getBOPBoss().toArray(new BagOfPattern[]{}), uniqueLabels);
-        buffer.setMatrixBossVs(matrixTrain);
-    }
+//    private void updateModelBossVs(BufferStreaming buffer) {
+//        BOSSVSModel bossVsModel = new BOSSVSModel(Parameters.WORD_LENGTH_PAA, Parameters.SYMBOLS_ALPHABET_SIZE,
+//                Parameters.WINDOW_SIZE, true);
+//        ObjectObjectHashMap<String, IntFloatHashMap> matrixTrain = bossVsModel.createTfIdf(
+//                buffer.getBOPBoss().toArray(new BagOfPattern[]{}), uniqueLabels);
+//        buffer.setMatrixBossVs(matrixTrain);
+//    }
+//
+//    private void updateModelWeasel(WEASEL weasel, BufferStreaming buffer) {
+//        List<BagOfBigrams> bop = buffer.getBOPWeasel();
+//        weasel.filterChiSquared(bop.toArray(new BagOfBigrams[]{}), chi);
+//        Problem problem = WEASELClassifier.initLibLinearProblem(bop.toArray(new BagOfBigrams[]{}), weasel.dict,
+//                WEASELClassifier.bias);
+//        Model linearModel = Linear.train(problem, new Parameter(solverType, c, iterations, p));
+//        WScore score = new WScore(0., true, Parameters.WORD_LENGTH_PAA, weasel, linearModel);
+//        buffer.setWeaselModel(score);
+//    }
+//
+//    private void classifyBossModel(BagOfPattern bag, List<BagOfPattern> BOP) {
+//        BOSSClassifier bossModel = new BOSSClassifier(Parameters.WINDOW_SIZE);
+//        Predictions pBoss = bossModel.predictStream(bag, BOP.toArray(new BagOfPattern[]{}));
+//        updateLog("BOSS: " + pBoss.labels[0]);
+//    }
 
-    private void updateModelWeasel(WEASELModel weasel, BufferStreaming buffer) {
-        List<BagOfBigrams> bop = buffer.getBOPWeasel();
-        weasel.filterChiSquared(bop.toArray(new BagOfBigrams[]{}), chi);
-        Problem problem = WEASELClassifier.initLibLinearProblem(bop.toArray(new BagOfBigrams[]{}), weasel.dict,
-                WEASELClassifier.bias);
-        Model linearModel = Linear.train(problem, new Parameter(solverType, c, iter, p));
-        WScore score = new WScore(0., true, Parameters.WORD_LENGTH_PAA, weasel, linearModel);
-        buffer.setWeaselModel(score);
-    }
-
-    private void classifyBossModel(BagOfPattern bag, List<BagOfPattern> BOP) {
-        BOSSClassifier bossModel = new BOSSClassifier(Parameters.WINDOW_SIZE);
-        Predictions pBoss = bossModel.predictStream(bag, BOP.toArray(new BagOfPattern[]{}));
-        updateLog("BOSS: " + pBoss.labels[0]);
-    }
-
-    private void classifyBossVs(BagOfPattern bag, ObjectObjectHashMap<String, IntFloatHashMap> matrixBossVs) {
-        BOSSVSClassifier bossVs = new BOSSVSClassifier();
-        Predictions pBossVs = bossVs.predictStream(bag, matrixBossVs); //BOSS VS
-        updateLog("BOSS VS: " + pBossVs.labels[0]);
-    }
-
-    private void classifyWeasel(BagOfBigrams bag, BufferStreaming buffer) {
-        WEASELClassifier weasel = new WEASELClassifier();
-        int result = weasel.predictStream(buffer.getWeaselModel(), bag);
-        updateLog("Weasel: " + result);
-    }
+//    private void classifyBossVs(BagOfPattern bag, ObjectObjectHashMap<String, IntFloatHashMap> matrixBossVs) {
+//        BOSSVSClassifier bossVs = new BOSSVSClassifier();
+//        Predictions pBossVs = bossVs.predictStream(bag, matrixBossVs); //BOSS VS
+//        updateLog("BOSS VS: " + pBossVs.labels[0]);
+//    }
+//
+//    private void classifyWeasel(BagOfBigrams bag, BufferStreaming buffer) {
+//        WEASELClassifier weasel = new WEASELClassifier();
+//        int result = weasel.predictStream(buffer.getWeaselModel(), bag);
+//        updateLog("Weasel: " + result);
+//    }
 
     /*
      *   Other methods

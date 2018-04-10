@@ -8,8 +8,8 @@ import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.cursors.*;
 import controle.SFA.classification.Classifier.Words;
 import controle.SFA.transformation.SFA.HistogramType;
+import datasets.timeseries.MultiVariateTimeSeries;
 import datasets.timeseries.TimeSeries;
-import datasets.timeseries.TimeSeriesMD;
 
 import java.util.HashSet;
 
@@ -19,11 +19,11 @@ import java.util.HashSet;
  *
  * @author bzcschae
  */
-public class BOSSModelMDStack extends BOSSModel {
+public class BOSSMDStack extends BOSS {
 
     public SFA[] signatures;
 
-    public BOSSModelMDStack(int maxF, int maxS, int windowLength, boolean normMean) {
+    public BOSSMDStack(int maxF, int maxS, int windowLength, boolean normMean) {
         super(maxF, maxS, windowLength, normMean);
     }
 
@@ -35,9 +35,9 @@ public class BOSSModelMDStack extends BOSSModel {
         return indices;
     }
 
-    public ObjectObjectHashMap<String, LongFloatHashMap> createTfIdf(
+    public ObjectObjectHashMap<Double, LongFloatHashMap> createTfIdf(
             final BagOfPattern[] bagOfPatterns,
-            final HashSet<String> uniqueLabels) {
+            final HashSet<Double> uniqueLabels) {
         int[] sampleIndices = createIndices(bagOfPatterns.length);
         return createTfIdf(bagOfPatterns, sampleIndices, uniqueLabels);
     }
@@ -52,16 +52,16 @@ public class BOSSModelMDStack extends BOSSModel {
      * @param uniqueLabels The unique class labels in the dataset
      * @return
      */
-    public ObjectObjectHashMap<String, LongFloatHashMap> createTfIdf(
+    public ObjectObjectHashMap<Double, LongFloatHashMap> createTfIdf(
             final BagOfPattern[] bagOfPatterns,
             final int[] sampleIndices,
-            final HashSet<String> uniqueLabels) {
+            final HashSet<Double> uniqueLabels) {
 
-        ObjectObjectHashMap<String, LongFloatHashMap> matrix = new ObjectObjectHashMap<>(uniqueLabels.size());
+        ObjectObjectHashMap<Double, LongFloatHashMap> matrix = new ObjectObjectHashMap<>(uniqueLabels.size());
         initMatrix(matrix, uniqueLabels, bagOfPatterns);
 
         for (int j : sampleIndices) {
-            String label = bagOfPatterns[j].label;
+            Double label = bagOfPatterns[j].label;
             LongFloatHashMap wordInBagFreq = matrix.get(label);
             for (IntIntCursor key : bagOfPatterns[j].bag) {
                 wordInBagFreq.putOrAdd(key.key, key.value, key.value);
@@ -79,7 +79,7 @@ public class BOSSModelMDStack extends BOSSModel {
         }
 
         // calculate the tfIDF value for each class
-        for (ObjectObjectCursor<String, LongFloatHashMap> stat : matrix) {
+        for (ObjectObjectCursor<Double, LongFloatHashMap> stat : matrix) {
             LongFloatHashMap tfIDFs = stat.value;
             // calculate the tfIDF value for each word
             for (LongFloatCursor patternFrequency : tfIDFs) {
@@ -106,10 +106,10 @@ public class BOSSModelMDStack extends BOSSModel {
     }
 
     protected void initMatrix(
-            final ObjectObjectHashMap<String, LongFloatHashMap> matrix,
-            final HashSet<String> uniqueLabels,
+            final ObjectObjectHashMap<Double, LongFloatHashMap> matrix,
+            final HashSet<Double> uniqueLabels,
             final BagOfPattern[] bag) {
-        for (String label : uniqueLabels) {
+        for (Double label : uniqueLabels) {
             LongFloatHashMap stat = matrix.get(label);
             if (stat == null) {
                 matrix.put(label, new LongFloatHashMap(bag[0].bag.size() * bag.length));
@@ -119,7 +119,7 @@ public class BOSSModelMDStack extends BOSSModel {
         }
     }
 
-    public TimeSeries[][] splitMultiDimTimeSeries(int numSources, TimeSeriesMD[] samples) {
+    public TimeSeries[][] splitMultiDimTimeSeries(int numSources, MultiVariateTimeSeries[] samples) {
 
         TimeSeries[][] samplesModified = new TimeSeries[numSources][samples.length];
         for (int indexOfSource = 0; indexOfSource < numSources; indexOfSource++) {
@@ -136,7 +136,7 @@ public class BOSSModelMDStack extends BOSSModel {
      *
      * @param classStatistics
      */
-    public void normalizeTfIdf(final ObjectObjectHashMap<String, LongFloatHashMap> classStatistics) {
+    public void normalizeTfIdf(final ObjectObjectHashMap<Double, LongFloatHashMap> classStatistics) {
         for (ObjectCursor<LongFloatHashMap> classStat : classStatistics.values()) {
             double squareSum = 0.0;
             for (FloatCursor entry : classStat.value.values()) {
@@ -152,11 +152,10 @@ public class BOSSModelMDStack extends BOSSModel {
         }
     }
 
-    public long[][][] createWordsMDStack(final TimeSeriesMD[] samples) {
+    public long[][][] createWordsMDStack(final MultiVariateTimeSeries[] samples) {
         int numSources = samples[0].getNumSources();
-        
-//        System.out.println(numSources);
 
+//        System.out.println(numSources);
         final long[][][] words = new long[numSources][samples.length][];
 
         TimeSeries[][] samplesModified = splitMultiDimTimeSeries(numSources, samples);
@@ -172,10 +171,9 @@ public class BOSSModelMDStack extends BOSSModel {
 
         for (int idSource = 0; idSource < numSources; idSource++) {
             for (int i = 0; i < samples.length; i++) {
-                
-//                System.out.println(">> " + samples[0].getLength());
 
-                short[][] sfaWords = signatures[idSource].transformWindowing(samples[i].getTimeSeriesOfOneSource(idSource), maxF);
+//                System.out.println(">> " + samples[0].getLength());
+                short[][] sfaWords = signatures[idSource].transformWindowing(samples[i].getTimeSeriesOfOneSource(idSource));
                 words[idSource][i] = new long[sfaWords.length];
                 for (int j = 0; j < sfaWords.length; j++) {
                     //Aqui pode ser long palabras maiores
@@ -183,15 +181,14 @@ public class BOSSModelMDStack extends BOSSModel {
                 }
             }
         }
-        
-//        System.out.println("================");
 
+//        System.out.println("================");
         return words;
     }
 
     public BagOfPattern[] createBagOfPatternMDStack(
             final long[][][] words,
-            final TimeSeriesMD[] samples,
+            final MultiVariateTimeSeries[] samples,
             final int wordLength) {
         BagOfPattern[] bagOfPatterns = new BagOfPattern[samples.length];
 

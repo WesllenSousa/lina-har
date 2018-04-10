@@ -29,7 +29,7 @@ public class WordBag implements Cloneable {
     public WordBag(String bagLabel) {
         super();
         this.label = bagLabel.substring(0);
-        this.words = new HashMap<String, AtomicInteger>();
+        this.words = new HashMap<>();
     }
 
     /**
@@ -40,7 +40,7 @@ public class WordBag implements Cloneable {
      */
     public WordBag(String bagName, HashMap<String, Integer> words) {
         this.label = bagName;
-        this.words = new HashMap<String, AtomicInteger>();
+        this.words = new HashMap<>();
         for (Entry<String, Integer> e : words.entrySet()) {
             this.words.put(e.getKey(), new AtomicInteger(e.getValue()));
         }

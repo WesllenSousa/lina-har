@@ -2,19 +2,19 @@ package controle.SFA.transformation;
 
 import controle.SFA.classification.ClassifierMD.Words;
 import controle.SFA.transformation.SFA.HistogramType;
+import datasets.timeseries.MultiVariateTimeSeries;
 import datasets.timeseries.TimeSeries;
-import datasets.timeseries.TimeSeriesMD;
 import java.util.ArrayList;
 
-public class BOSSModelMDWords extends BOSSModelMDStack {
+public class BOSSMDWords extends BOSSMDStack {
 
     public SFA[] signatures;
 
-    public BOSSModelMDWords(int maxF, int maxS, int windowLength, boolean normMean) {
+    public BOSSMDWords(int maxF, int maxS, int windowLength, boolean normMean) {
         super(maxF, maxS, windowLength, normMean);
     }
 
-    public long[][] createWordsMDWords(final TimeSeriesMD[] samples) {
+    public long[][] createWordsMDWords(final MultiVariateTimeSeries[] samples) {
 
         final int numSources = samples[0].getNumSources();
 
@@ -32,7 +32,7 @@ public class BOSSModelMDWords extends BOSSModelMDStack {
 
         for (int i = 0; i < samples.length; i++) {
             for (int idSource = 0; idSource < numSources; idSource++) {
-                short[][] sfaWords = signatures[idSource].transformWindowing(samples[i].getTimeSeriesOfOneSource(idSource), maxF);
+                short[][] sfaWords = signatures[idSource].transformWindowing(samples[i].getTimeSeriesOfOneSource(idSource));
                 words[i][idSource] = sfaWords;
             }
         }
@@ -87,7 +87,7 @@ public class BOSSModelMDWords extends BOSSModelMDStack {
 
     public BagOfPattern[] createBagOfPatternMDWords(
             final long[][] mdWords,
-            final TimeSeriesMD[] samples) {
+            final MultiVariateTimeSeries[] samples) {
 
         final BagOfPattern[] bagOfPatterns = new BagOfPattern[samples.length];
 

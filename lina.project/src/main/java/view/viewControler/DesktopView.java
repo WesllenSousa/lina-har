@@ -387,7 +387,7 @@ public class DesktopView {
         defaultListModel.addElement(ConstGeneral.AL_MultilayerPerceptron);
         defaultListModel.addElement(ConstGeneral.AL_AdaBoost);
         defaultListModel.addElement(ConstGeneral.AL_SAX_VSM);
-        defaultListModel.addElement(ConstGeneral.AL_BOSS_MODEL);
+        //defaultListModel.addElement(ConstGeneral.AL_BOSS_MODEL);
         defaultListModel.addElement(ConstGeneral.AL_BOSS_ENSEMBLE);
         defaultListModel.addElement(ConstGeneral.AL_BOSS_VS);
         defaultListModel.addElement(ConstGeneral.AL_WEASEL);
@@ -395,6 +395,7 @@ public class DesktopView {
         defaultListModel.addElement(ConstGeneral.AL_SHOTGUN_ENSEMBLE);
         defaultListModel.addElement(ConstGeneral.AL_BOSS_MD_STACK);
         defaultListModel.addElement(ConstGeneral.AL_BOSS_MD_WORDS);
+        defaultListModel.addElement(ConstGeneral.AL_MUSE);
         list.setModel(defaultListModel);
     }
 
