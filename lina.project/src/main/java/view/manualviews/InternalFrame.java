@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
-import constants.ConstGeneral;
+import controle.constants.ConstGeneral;
 import view.viewControler.DesktopView;
 
 /**

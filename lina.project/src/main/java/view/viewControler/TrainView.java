@@ -8,21 +8,21 @@ package view.viewControler;
 import controle.weka.WekaUtil;
 import java.util.HashMap;
 import java.util.LinkedList;
-import constants.ConstDataset;
-import constants.ConstGeneral;
-import constants.Parameters;
-import controle.SAX.Params;
-import controle.SAX.SAX_VSM;
-import controle.SFA.classification.BOSSEnsembleClassifier;
-import controle.SFA.classification.BOSSMDStackClassifier;
-import controle.SFA.classification.BOSSMDWordsClassifier;
-import controle.SFA.classification.BOSSVSClassifier;
-import controle.SFA.classification.Classifier.Score;
-import controle.SFA.classification.ClassifierMD;
-import controle.SFA.classification.MUSEClassifier;
-import controle.SFA.classification.ShotgunClassifier;
-import controle.SFA.classification.ShotgunEnsembleClassifier;
-import controle.SFA.classification.WEASELClassifier;
+import controle.constants.ConstDataset;
+import controle.constants.ConstGeneral;
+import controle.constants.Parameters;
+import algorithms.SAX.Params;
+import algorithms.SAX.SAXVSM;
+import algorithms.SFA.classification.BOSSEnsembleClassifier;
+import algorithms.SFA.classification.BOSSMDStackClassifier;
+import algorithms.SFA.classification.BOSSMDWordsClassifier;
+import algorithms.SFA.classification.BOSSVSClassifier;
+import algorithms.SFA.classification.Classifier.Score;
+import algorithms.SFA.classification.ClassifierMD;
+import algorithms.SFA.classification.MUSEClassifier;
+import algorithms.SFA.classification.ShotgunClassifier;
+import algorithms.SFA.classification.ShotgunEnsembleClassifier;
+import algorithms.SFA.classification.WEASELClassifier;
 import datasets.timeseries.MultiVariateTimeSeries;
 import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
@@ -147,8 +147,8 @@ public class TrainView {
             window = trainSamples[0].getLength();
         }
 
-        controle.SFA.classification.Classifier.DEBUG = true;
-        controle.SFA.classification.Classifier classifier = null;
+        algorithms.SFA.classification.Classifier.DEBUG = true;
+        algorithms.SFA.classification.Classifier classifier = null;
 
         if (algorithm.equals(ConstGeneral.AL_BOSS_ENSEMBLE)) {
             classifier = new BOSSEnsembleClassifier();
@@ -196,7 +196,7 @@ public class TrainView {
 
             String result = null;
             if (algorithm.equals(ConstGeneral.AL_SAX_VSM)) {
-                SAX_VSM sax_vsm = new SAX_VSM();
+                SAXVSM sax_vsm = new SAXVSM();
                 result = sax_vsm.eval(trainData, testData, params);
             }
 

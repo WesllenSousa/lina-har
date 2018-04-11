@@ -1,12 +1,6 @@
 
 Afazeres de implementação
-1) Fazer com que o Page Hinkley se adapte seu theshold de disparo maseado no histórico de disparo.
-2) O problema da media negativa do PageHinkley pode ser resolvido com Magnitude
-3) Testar o overlap de 50% na geração das bases de dados no formato horizontal
-4) Atualiza API do SFA
-5) Verificar formula cossena SFA.
-6) Erro overlap, dominio de frequencia.
-7) Selecao de intervalos de palavras na aba de data stream estranho
+1) Selecao de intervalos de palavras na aba de data stream estranho
 
 Notas de Inovação
 

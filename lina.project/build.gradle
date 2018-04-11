@@ -41,6 +41,7 @@ dependencies {
     compile group: 'com.esotericsoftware', name: 'kryo', version: '4.0.1'
     compile group: 'com.carrotsearch', name: 'hppc', version: '0.7.2'
     compile group: 'com.github.wendykierp', name: 'JTransforms', version: '3.1'
+    compile group: 'nz.ac.waikato.cms.moa', name: 'moa', version: '2012.08'
     
     compile files('libs/jahmm-0.6.2.jar')
     compile files('libs/riso.jar')

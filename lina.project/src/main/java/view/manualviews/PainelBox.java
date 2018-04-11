@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
-import constants.ConstGeneral;
-import constants.ConstImagens;
+import controle.constants.ConstGeneral;
+import controle.constants.ConstImagens;
 import util.ImagemUtil;
 
 /**

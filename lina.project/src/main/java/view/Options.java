@@ -1,8 +1,8 @@
 package view;
 
-import constants.ConstDataset;
-import constants.ConstGeneral;
-import constants.Parameters;
+import controle.constants.ConstDataset;
+import controle.constants.ConstGeneral;
+import controle.constants.Parameters;
 import util.Validation;
 
 /**

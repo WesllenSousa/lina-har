@@ -307,6 +307,7 @@ public class EditDataset extends javax.swing.JDialog {
     }//GEN-LAST:event_mi_settingsActionPerformed
 
     private void mi_convHorizontalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_convHorizontalActionPerformed
+        messages.aviso("This function is based on Window Size and Frequency");
         sx_busy.setBusy(true);
         LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
         LinkedList<GenericRowBean> dataConverted = HandleGenericDataset.convertToHorizontalFormat(dataTable);
@@ -315,12 +316,13 @@ public class EditDataset extends javax.swing.JDialog {
     }//GEN-LAST:event_mi_convHorizontalActionPerformed
 
     private void mi_convVerticalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_convVerticalActionPerformed
+        messages.aviso("This function is based on Window Size and Frequency");
         sx_busy.setBusy(true);
-//        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
-//        LinkedList<GenericRowBean> dataConverted = HandleGenericDataset.convertToVerticalFormat(dataTable);
-//        populaTabela(dataConverted);
-//        populaComboboxColumn();
-        messages.aviso("Function in mantenaince!");
+        String numCol = messages.inserirDados("How many columns?");
+        LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
+        LinkedList<GenericRowBean> dataConverted = HandleGenericDataset.convertToVerticalFormat(dataTable, Integer.parseInt(numCol));
+        populaTabela(dataConverted);
+        populaComboboxColumn();
         sx_busy.setBusy(false);
     }//GEN-LAST:event_mi_convVerticalActionPerformed
 
@@ -441,7 +443,7 @@ public class EditDataset extends javax.swing.JDialog {
         sx_busy.setBusy(true);
         List<GenericRowBean> toRemove = new ArrayList<>();
         LinkedList<GenericRowBean> dataTable = ((GenericTableModel) tb_data.getModel()).getLinhas();
-    
+
         if (Validation.isEmptyString(tf_dellLine.getText())) {
             toRemove = toRemove();
         } else {

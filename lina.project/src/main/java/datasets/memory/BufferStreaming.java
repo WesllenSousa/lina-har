@@ -7,10 +7,10 @@ package datasets.memory;
 
 import com.carrotsearch.hppc.IntFloatHashMap;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
-import controle.SAX.saxvsm.text.WordBag;
-import controle.SFA.transformation.BOSS.BagOfPattern;
-import controle.SFA.transformation.SFA;
-import controle.SFA.transformation.WEASEL.BagOfBigrams;
+import algorithms.SAX.saxvsm.text.WordBag;
+import algorithms.SFA.transformation.BOSS.BagOfPattern;
+import algorithms.SFA.transformation.SFA;
+import algorithms.SFA.transformation.WEASEL.BagOfBigrams;
 import datasets.timeseries.TimeSeries;
 import java.util.ArrayList;
 import java.util.HashMap;

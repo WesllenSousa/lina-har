@@ -1,7 +1,7 @@
 package datasets.generic;
 
-import controle.arff.DataToARFF;
-import controle.arff.FilePatternARFF;
+import controle.weka.DataToARFF;
+import controle.weka.FilePatternARFF;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,9 +13,9 @@ import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import constants.ConstDataset;
-import constants.ConstGeneral;
-import constants.Parameters;
+import controle.constants.ConstDataset;
+import controle.constants.ConstGeneral;
+import controle.constants.Parameters;
 import java.util.HashMap;
 import util.FileUtil;
 import util.Messages;
@@ -28,8 +28,8 @@ import util.Validation;
 public class HandleGenericDataset {
 
     public static LinkedList<GenericRowBean> convertToHorizontalFormat(LinkedList<GenericRowBean> data) {
-        LinkedList<GenericRowBean> horizList = new LinkedList<>();
-        LinkedList<String> tuplaHoriz = new LinkedList<>();
+        LinkedList<GenericRowBean> rowHorizList = new LinkedList<>();
+        LinkedList<String> rowHoriz = new LinkedList<>();
         LinkedList<String> classes = new LinkedList<>();
 
         //Inicialize the object with the amount of column
@@ -41,7 +41,7 @@ public class HandleGenericDataset {
             col++;
         }
 
-        int tsSize = (int) (Math.abs(Parameters.WINDOW_SEC) * Parameters.FREQUENCY);
+        int windowSize = (int) (Math.abs(Parameters.WINDOW_SEC) * Parameters.FREQUENCY);
         int row = 0;
         for (GenericRowBean bean : data) {
             if (row == 0) {
@@ -54,22 +54,22 @@ public class HandleGenericDataset {
                 columns.get(col).add(value);
                 col++;
             }
-            if (row % tsSize == 0) {
+            if (row % windowSize == 0) {
                 String classe = stringMoreFrequency(classes, ConstGeneral.HORIZONTAL_FORMAT_NOISE);
                 //Ingnoring noise columns
                 if (classe != null && !classe.equals(ConstDataset.NOISE)) {
-                    tuplaHoriz.addFirst(classe);
+                    rowHoriz.addFirst(classe);
                     for (LinkedList<String> column : columns) {
                         for (String value : column) {
-                            tuplaHoriz.addLast(value);
+                            rowHoriz.addLast(value);
                         }
                     }
                     GenericRowBean newBean = new GenericRowBean();
-                    newBean.setTupla((LinkedList<String>) tuplaHoriz.clone());
-                    horizList.add(newBean);
+                    newBean.setTupla((LinkedList<String>) rowHoriz.clone());
+                    rowHorizList.add(newBean);
                 }
 
-                tuplaHoriz.clear();
+                rowHoriz.clear();
                 for (LinkedList<String> column : columns) {
                     column.clear();
                 }
@@ -77,32 +77,44 @@ public class HandleGenericDataset {
             }
             row++;
         }
-        return horizList;
+        return rowHorizList;
     }
 
-    public static LinkedList<GenericRowBean> convertToVerticalFormat(LinkedList<GenericRowBean> data) {
-        LinkedList<GenericRowBean> vertList = new LinkedList<>();
+    public static LinkedList<GenericRowBean> convertToVerticalFormat(LinkedList<GenericRowBean> data, int numCol) {
+        LinkedList<GenericRowBean> rowVertList = new LinkedList<>();
+        LinkedList<GenericRowBean> rowVertTemp = new LinkedList<>();
 
-        for (GenericRowBean bean : data) {
-            String classe = "";
-            int col = 0;
-            for (String value : bean.getTupla()) {
-                if (col == 0) {
-                    classe = value;
+        for (GenericRowBean rowHoriz : data) {
+            String classe = rowHoriz.getTupla().getFirst();
+            float numData = (rowHoriz.getTupla().size() - 1) / numCol;
+
+            int col = 1;
+            for (int j = 1; j <= numCol; j++) {
+                if (j == 1) {
+                    for (int i = 0; i < numData; i++) {
+                        LinkedList<String> tupla = new LinkedList<>();
+                        tupla.add(rowHoriz.getTupla().get(col));
+
+                        GenericRowBean newBean = new GenericRowBean();
+                        newBean.setClasse(classe);
+                        newBean.setTupla(tupla);
+                        rowVertTemp.add(newBean);
+                        col++;
+                    }
                 } else {
-                    LinkedList<String> tupla = new LinkedList<>();
-                    tupla.add(value);
-
-                    GenericRowBean newBean = new GenericRowBean();
-                    newBean.setClasse(classe);
-                    newBean.setTupla(tupla);
-                    vertList.add(newBean);
+                    for (GenericRowBean newBean : rowVertTemp) {
+                        newBean.getTupla().add(rowHoriz.getTupla().get(col));
+                        col++;
+                    }
                 }
-                col++;
             }
+            for (GenericRowBean bean : rowVertTemp) {
+                rowVertList.add(bean);
+            }
+            rowVertTemp.clear();
         }
 
-        return vertList;
+        return rowVertList;
     }
 
     public static LinkedList<GenericRowBean> bufferFileInMemory(String separador, String inputSource) {

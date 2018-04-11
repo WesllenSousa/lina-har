@@ -7,27 +7,27 @@ package view.viewControler;
 
 import com.carrotsearch.hppc.IntFloatHashMap;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
-import constants.ConstGeneral;
-import constants.Parameters;
-import controle.SAX.Params;
-import controle.SAX.SAX;
-import controle.SAX.SAX_VSM;
-import controle.SAX.saxvsm.text.WordBag;
-import controle.SFA.classification.Classifier.Predictions;
-import controle.SFA.classification.Classifier.Words;
-import controle.SFA.classification.WEASELClassifier;
-import static controle.SFA.classification.WEASELClassifier.c;
-import static controle.SFA.classification.WEASELClassifier.chi;
-import static controle.SFA.classification.WEASELClassifier.iterations;
-import static controle.SFA.classification.WEASELClassifier.p;
-import static controle.SFA.classification.WEASELClassifier.solverType;
-import controle.SFA.transformation.BOSS;
-import controle.SFA.transformation.BOSS.BagOfPattern;
-import controle.SFA.transformation.SFA;
-import controle.SFA.transformation.WEASEL;
-import controle.SFA.transformation.WEASEL.BagOfBigrams;
-import controle.pageHinkley.PageHinkley;
-import controle.pageHinkley.PageHinkleyBean;
+import controle.constants.ConstGeneral;
+import controle.constants.Parameters;
+import algorithms.SAX.Params;
+import algorithms.SAX.SAX;
+import algorithms.SAX.SAXVSM;
+import algorithms.SAX.saxvsm.text.WordBag;
+import algorithms.SFA.classification.Classifier.Predictions;
+import algorithms.SFA.classification.Classifier.Words;
+import algorithms.SFA.classification.WEASELClassifier;
+import static algorithms.SFA.classification.WEASELClassifier.c;
+import static algorithms.SFA.classification.WEASELClassifier.chi;
+import static algorithms.SFA.classification.WEASELClassifier.iterations;
+import static algorithms.SFA.classification.WEASELClassifier.p;
+import static algorithms.SFA.classification.WEASELClassifier.solverType;
+import algorithms.SFA.transformation.BOSS;
+import algorithms.SFA.transformation.BOSS.BagOfPattern;
+import algorithms.SFA.transformation.SFA;
+import algorithms.SFA.transformation.WEASEL;
+import algorithms.SFA.transformation.WEASEL.BagOfBigrams;
+import algorithms.PageHinkley.PageHinkley2;
+import algorithms.PageHinkley.PageHinkleyBean;
 import datasets.memory.BufferStreaming;
 import datasets.memory.WordInterval;
 import datasets.memory.WordRecord;
@@ -58,7 +58,7 @@ public class SymbolicView {
 
     private final TimeSeries[] data;
     private List<BufferStreaming> bufferStreaming = new ArrayList<>();
-    private List<PageHinkley> listPH = new ArrayList<>();
+    private List<PageHinkley2> listPH = new ArrayList<>();
 
     private HashSet<Double> uniqueLabels = new HashSet<>();
     private WordRecord previousWord;
@@ -87,7 +87,7 @@ public class SymbolicView {
             initialSample.add(sample);
 
             //Apply page hinkley to the first subsequence
-            PageHinkley ph = new PageHinkley(new Color(randomCor.nextInt(255), randomCor.nextInt(255), randomCor.nextInt(255)), this);
+            PageHinkley2 ph = new PageHinkley2(new Color(randomCor.nextInt(255), randomCor.nextInt(255), randomCor.nextInt(255)), this);
             ph.runTs(sample.getData());
             listPH.add(dataColumn, ph);
 
@@ -212,7 +212,7 @@ public class SymbolicView {
         switch (ConstGeneral.MODEL) {
             case "SaxVsm":
                 if (!ConstGeneral.SFA) {
-                    SAX_VSM sax_vsm = new SAX_VSM();
+                    SAXVSM sax_vsm = new SAXVSM();
                     WordBag bag1 = sax_vsm.wordsToWordBag(buffer.getBufferWord(), label);
                     buffer.getBOPSax().add(bag1); //verificar e mudar para SAX model?
 
@@ -368,7 +368,7 @@ public class SymbolicView {
     }
 
     public void showPageHinkleyChanges() {
-        for (PageHinkley ph : listPH) {
+        for (PageHinkley2 ph : listPH) {
             for (PageHinkleyBean bean : ph.getListChanges()) {
                 lineGraphic.addMarker(bean.getPosition(), bean.getPosition(), bean.getCor());
             }

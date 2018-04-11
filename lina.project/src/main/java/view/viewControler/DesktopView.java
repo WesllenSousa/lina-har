@@ -9,8 +9,8 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import constants.ConstGeneral;
-import controle.features.ProcessingFeatures;
+import controle.constants.ConstGeneral;
+import algorithms.Features.ProcessingFeatures;
 import datasets.generic.HandleGenericDataset;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -41,7 +41,7 @@ public class DesktopView {
     /*
      *   Processing
      */
-    public void signalProcessing(JList lt_filtersRight, Float window, Integer hertz, Integer offset) {
+    public void signalProcessing(JList lt_filtersRight, Float window, Integer hertz) {
         LinkedList<String> methodsSignals = new LinkedList<>();
         if (lt_filtersRight.getModel().getSize() != 0) {
             for (int i = 0; i < lt_filtersRight.getModel().getSize(); i++) {
@@ -50,7 +50,7 @@ public class DesktopView {
         }
         if (!methodsSignals.isEmpty()) {
             LinkedList<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsSignals,
-                    window * hertz, offset, hertz);
+                    window * hertz, 0, hertz);
             processingFeatures.ajustLineColumns(lineColumns);
             if (!lineColumns.isEmpty()) {
                 getData().clear();
@@ -81,7 +81,7 @@ public class DesktopView {
         }
     }
 
-    public void principalFeatureProcessing(JList lt_principalFeaturesRight, Float window, Integer hertz, Integer voltar) {
+    public void principalFeatureProcessing(JList lt_principalFeaturesRight, Float window, Integer hertz) {
         LinkedList<String> principalFeatures = new LinkedList<>();
         if (lt_principalFeaturesRight.getModel().getSize() != 0) {
             for (int i = 0; i < lt_principalFeaturesRight.getModel().getSize(); i++) {
@@ -90,7 +90,7 @@ public class DesktopView {
         }
         if (!principalFeatures.isEmpty()) {
             LinkedList<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), principalFeatures,
-                    window * hertz, voltar, hertz);
+                    window * hertz, 0, hertz);
             processingFeatures.ajustLineColumns(lineColumns);
             if (!lineColumns.isEmpty()) {
                 getData().clear();
@@ -101,7 +101,7 @@ public class DesktopView {
     }
 
     public void featureExtraction(JList lt_timeFeaturesRight, JList lt_frequencyFeaturesRight, Float window, Integer hertz,
-            Integer voltar) {
+            Integer offset) {
         LinkedList<String> methodsFeatures = new LinkedList<>();
         if (lt_timeFeaturesRight.getModel().getSize() != 0) {
             for (int i = 0; i < lt_timeFeaturesRight.getModel().getSize(); i++) {
@@ -116,7 +116,7 @@ public class DesktopView {
         getDataFeatures().clear();
         if (!methodsFeatures.isEmpty()) {
             LinkedList<LinkedList<String>> lineColumns = processingFeatures.applyPreprocessing(getData(), methodsFeatures,
-                    window * hertz, voltar, hertz);
+                    window * hertz, offset, hertz);
             if (!lineColumns.isEmpty()) {
                 getDataFeatures().clear();
                 setDataFeatures(HandleGenericDataset.convertColumnsToGenericData(lineColumns));

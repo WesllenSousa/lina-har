@@ -1,7 +1,7 @@
 package view;
 
-import constants.ConstDataset;
-import constants.ConstGeneral;
+import controle.constants.ConstDataset;
+import controle.constants.ConstGeneral;
 import datasets.generic.GenericRowBean;
 import datasets.generic.HandleGenericDataset;
 import java.util.LinkedList;

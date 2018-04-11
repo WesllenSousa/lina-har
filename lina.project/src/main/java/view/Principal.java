@@ -11,9 +11,9 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-import constants.ConstDataset;
-import constants.ConstGeneral;
-import constants.Parameters;
+import controle.constants.ConstDataset;
+import controle.constants.ConstGeneral;
+import controle.constants.Parameters;
 import datasets.memory.WordInterval;
 import datasets.memory.WordRecord;
 import datasets.timeseries.TimeSeries;
@@ -3058,10 +3058,10 @@ public class Principal extends javax.swing.JFrame {
             setWindowParameter();
             Integer overlap = sl_overlap.getValue();
             Integer offset = Math.round((overlap / 100f) * Parameters.WINDOW_SEC * Parameters.FREQUENCY);
-
-            desktopView.signalProcessing(lt_filtersRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY, offset);
+            
+            desktopView.signalProcessing(lt_filtersRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY);
             desktopView.dataFusionProcessing(lt_dataFusionRight, lt_rawData.getSelectedValue());
-            desktopView.principalFeatureProcessing(lt_principalFeaturesRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY, offset);
+            desktopView.principalFeatureProcessing(lt_principalFeaturesRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY);
             desktopView.featureExtraction(lt_timeFeaturesRight, lt_frequencyFeaturesRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY, offset);
 
             desktopView.updateGraphic();

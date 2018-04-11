@@ -2,7 +2,7 @@ package util;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import constants.ConstImagens;
+import controle.constants.ConstImagens;
 
 /**
  *
