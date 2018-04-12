@@ -4,29 +4,8 @@ Afazeres de implementação
 
 Notas de Inovação
 
-1) Fase
-    1) O codigo do SFA aplica o lowpass filter naturalmente com o primeiro coeficiente do FFT.
-    2) Fusão de dados no raw data com Magnitude, PCA, Kalman Filter (Hendrio) e fusao das características (Kevin)
-    3) Eliminar ruídos na conversão da base para formato horizontal (stringMoreFrequency no HandleGenericDataset), i.e., janela que contenha mais de uma atividade.
-
-2) Fase
     1) Alinhamento das palavras (Sequitur, MED - PNL, palavras com letras iguais e ordenadas, shotgun?)
         1.1) OBS: O simples fato dos histogramas não se preocuparem com a ordem das palavras o autor fala que é livre de alinhamento!
         1.2) Palavras com intervalos sobreposto são iguais a palavras desalinhadas
     2) Adicionar informação de contexto a cada palavra. Exemplo, media do Page Hinkley.    
-    3) Tentar aplicar ideias de modelos n-gramas (PLN)
-    4) utilizar a gramatica (repair) para descobrir n-gramas. Melhor do que o weasel cujo limite é bigrama?
-    5) Definir o melhor tamanho de janela para no contexto de HAR (O ensemble do BOSS resolve)
-    6) Discords podem ser considerados transição entre atividades.
-    7) Os motifs podem ser utilizados para agrupar palavras (atividades).
-    8) Procurar uma forma de gerar histogramas de referência
-    9) Testar algum algoritmo de agrupamento: dendograma. (API SAX tem)
     
-3) Fase
-    1) Criar ou atualizar o MCB toda vez que o sinal mudar de padrao, guardar os MCB's de sinais anteriores (Datastreaming)    
-        1.1) OBS: Talvez tenha que atualizar as palavras também 
-    2) guardar em uma base de dados a parte as palavras desconhecidas (OOV's) out of vocabulary
-        2.2) As palavras pouco frequentes do histograma de um buffer.
-    3) Manter um histograma de referencia e monitorar os histogramas que são similares, mas possuem uma alta variacao.
-        3.3) Entender o conceito de histograma de referência do Hendrio
-    4) O histograma de referencia pode ser definido quando ele não varia muito.

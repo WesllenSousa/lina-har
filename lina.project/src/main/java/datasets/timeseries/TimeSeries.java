@@ -30,7 +30,7 @@ public class TimeSeries implements Serializable {
         this(data);
         this.label = label;
     }
-    
+
     public boolean isNormed() {
         return this.normed;
     }
@@ -171,13 +171,17 @@ public class TimeSeries implements Serializable {
     /**
      * Get a subsequence starting at offset with queryLength windowSize.
      *
+     * @param offset
      * @param windowSize
+     * @param norm
      * @return
      */
-    public TimeSeries getSubsequence(int offset, int windowSize) {
+    public TimeSeries getSubsequence(int offset, int windowSize, boolean norm) {
         double[] subsequenceData = Arrays.copyOfRange(this.data, offset, Math.min(data.length, offset + windowSize));
         TimeSeries sequence = new TimeSeries(subsequenceData);
-        sequence.norm();
+        if (norm) {
+            sequence.norm();
+        }
         return sequence;
     }
 

@@ -5,16 +5,10 @@
  */
 package datasets.memory;
 
-import com.carrotsearch.hppc.IntFloatHashMap;
-import com.carrotsearch.hppc.ObjectObjectHashMap;
-import algorithms.SAX.saxvsm.text.WordBag;
-import algorithms.SFA.transformation.BOSS.BagOfPattern;
-import algorithms.SFA.transformation.SFA;
-import algorithms.SFA.transformation.WEASEL.BagOfBigrams;
+import controle.constants.Parameters;
 import datasets.timeseries.TimeSeries;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,74 +17,56 @@ import java.util.List;
  */
 public class BufferStreaming {
 
-    private LinkedList<TimeSeries> bufferMCB = new LinkedList<>();
-    private SFA mcb;
+    private TimeSeries subSequence = new TimeSeries();
 
-    private List<WordRecord> bufferWord = new ArrayList<>();
-    private List<WordRecord> bufferWordOOV = new ArrayList<>();
+    private List<WordRecord> histogram = new ArrayList<>();
+    private List<WordRecord> histogramOOV = new ArrayList<>();
 
-    private List<WordBag> BOPSax = new ArrayList<>();
-    private List<BagOfPattern> BOPBoss = new ArrayList<>();
-    private List<BagOfBigrams> BOPWeasel = new ArrayList<>();
+    private HashMap<String, HashMap<String, Double>> modelSaxVsm;
 
-    private ObjectObjectHashMap<String, IntFloatHashMap> matrixBossVs;
-    private HashMap<String, HashMap<String, Double>> matrixSaxVsm;
-    //private WScore weaselModel;
-
-    public SFA getMcb() {
-        return mcb;
+    /*
+     *   Geters Setters
+     */
+    public TimeSeries getSubSequence() {
+        return subSequence;
     }
 
-    public void setMcb(SFA mcb) {
-        this.mcb = mcb;
+    public void setSubSequence(TimeSeries subSequence) {
+        this.subSequence = subSequence;
     }
 
-    public LinkedList<TimeSeries> getBufferMCB() {
-        return bufferMCB;
+    public List<WordRecord> getHistogram() {
+        return histogram;
     }
 
-    public List<WordRecord> getBufferWord() {
-        return bufferWord;
+    public List<WordRecord> getHistogramOOV() {
+        return histogramOOV;
     }
 
-    public List<WordRecord> getBufferWordOOV() {
-        return bufferWordOOV;
+    public HashMap<String, HashMap<String, Double>> getModelSaxVsm() {
+        return modelSaxVsm;
     }
 
-    public List<WordBag> getBOPSax() {
-        return BOPSax;
+    public void setModelSaxVsm(HashMap<String, HashMap<String, Double>> modelSaxVsm) {
+        this.modelSaxVsm = modelSaxVsm;
     }
 
-    public List<BagOfPattern> getBOPBoss() {
-        return BOPBoss;
+    /*
+     *   Handle Word Record
+     */
+    public WordRecord populaWordRecord(String word, int initialPosition) {
+        WordRecord wordRecord = new WordRecord();
+        wordRecord.setWord(word);
+        wordRecord.setFrequency(1);
+        wordRecord.getIntervals().add(getWordInterval(initialPosition));
+        return wordRecord;
     }
 
-    public List<BagOfBigrams> getBOPWeasel() {
-        return BOPWeasel;
+    public WordInterval getWordInterval(int initialPosition) {
+        WordInterval wordInterval = new WordInterval();
+        wordInterval.setPositionInit(initialPosition);
+        wordInterval.setPositionEnd(initialPosition + Parameters.WINDOW_SIZE);
+        return wordInterval;
     }
-
-    public ObjectObjectHashMap<String, IntFloatHashMap> getMatrixBossVs() {
-        return matrixBossVs;
-    }
-
-    public void setMatrixBossVs(ObjectObjectHashMap<String, IntFloatHashMap> matrixBossVs) {
-        this.matrixBossVs = matrixBossVs;
-    }
-
-    public HashMap<String, HashMap<String, Double>> getMatrixSaxVsm() {
-        return matrixSaxVsm;
-    }
-
-    public void setMatrixSaxVsm(HashMap<String, HashMap<String, Double>> matrixSaxVsm) {
-        this.matrixSaxVsm = matrixSaxVsm;
-    }
-
-//    public WScore getWeaselModel() {
-//        return weaselModel;
-//    }
-//
-//    public void setWeaselModel(WScore weaselModel) {
-//        this.weaselModel = weaselModel;
-//    }
 
 }

@@ -10,8 +10,8 @@ public class BossVSClassifierTest {
     public static void main(String[] args) {
 
         //uci_symbolic, shoaib_symbolic
-        String test = System.getProperty("user.home") + "\\Lina\\Datasets\\Test\\shoaib_symbolic.csv";
-        String train = System.getProperty("user.home") + "\\Lina\\Datasets\\Train\\shoaib_symbolic.csv";
+        String test = System.getProperty("user.home") + "\\Lina\\Datasets\\Test\\shoaib_symbolic_pca.csv";
+        String train = System.getProperty("user.home") + "\\Lina\\Datasets\\Train\\shoaib_symbolic_pca.csv";
 
         // Load the train/test splits
         TimeSeries[] testSamples = TimeSeriesLoader.loadHorizontalData(test, ",", false);

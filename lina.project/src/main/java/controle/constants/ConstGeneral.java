@@ -17,12 +17,9 @@ public class ConstGeneral {
     /**
      * Screen Parameters
      */
-    public static boolean SFA = true;
     public static int OFFSET = 1;
-    public static boolean NORM = true;
     public static boolean NUM_REDUCTION = true;
     public static boolean ALINGMENT = true;
-    public static String MODEL = "";
     public static boolean CLEAR_HIST = true;
     public static boolean HORIZONTAL_FORMAT_NOISE = true;
 
@@ -30,7 +27,6 @@ public class ConstGeneral {
     public static int PP_DELETE = 3;
 
     public static String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
-    public static double PERCENT_QUEDA_THRESHOULD = 30;
 
     //Signal Processing
     public static String SP_GausianLowpass = "GaussianLowpass";
@@ -113,7 +109,6 @@ public class ConstGeneral {
     public static String AL_AdaBoost = "AdaBoost";
 
     public static String AL_SAX_VSM = "SaxVsm";
-    //public static String AL_BOSS_MODEL = "BossModel";
     public static String AL_BOSS_ENSEMBLE = "BossEnsemble";
     public static String AL_BOSS_VS = "BossVS";
     public static String AL_WEASEL = "Weasel";

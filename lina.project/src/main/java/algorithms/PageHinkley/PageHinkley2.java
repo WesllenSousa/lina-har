@@ -22,6 +22,7 @@ public class PageHinkley2 {
     private Color cor;
 
     final double PERCENT_ALPHA = 0.25;
+    final int PERCENT_QUEDA_THRESHOULD = 30;
 
     private double UT = 0., lastUT = 0., minUT = Double.MAX_VALUE, PHu = 0.;
     private double LT = 0., lastLT = 0., maxLT = Double.MIN_VALUE, PHl = 0.;
@@ -115,8 +116,8 @@ public class PageHinkley2 {
             double percentThresholdVariation = 100 - (threshold / lastThreshold) * 100;
             //log(" >>> " + percentThresholdVariation + " \n");
 
-            if (percentThresholdVariation > ConstGeneral.PERCENT_QUEDA_THRESHOULD
-                    || percentThresholdVariation < (ConstGeneral.PERCENT_QUEDA_THRESHOULD * -1)) { //--------------
+            if (percentThresholdVariation > PERCENT_QUEDA_THRESHOULD
+                    || percentThresholdVariation < (PERCENT_QUEDA_THRESHOULD * -1)) { //--------------
                 listChanges.add(setPageHinkley(position, "down", percentThresholdVariation));
                 //log(" >>>> down \n");
                 return true;
@@ -130,8 +131,8 @@ public class PageHinkley2 {
             double percentThresholdVariation = ((threshold - lastThreshold) / lastThreshold) * 100;
             //log(" >>> " + percentThresholdVariation + " \n");
 
-            if (percentThresholdVariation > ConstGeneral.PERCENT_QUEDA_THRESHOULD
-                    || percentThresholdVariation < (ConstGeneral.PERCENT_QUEDA_THRESHOULD * -1)) { //--------------
+            if (percentThresholdVariation > PERCENT_QUEDA_THRESHOULD
+                    || percentThresholdVariation < (PERCENT_QUEDA_THRESHOULD * -1)) { //--------------
                 listChanges.add(setPageHinkley(position, "up", percentThresholdVariation));
                 //log(" >>>> up \n");
                 return true;
@@ -158,8 +159,8 @@ public class PageHinkley2 {
 
     private void log(String text) {
         if (ConstGeneral.TELA_PRINCIPAL != null) {
-            symbolicView.showPageHinkleyChanges();
-            symbolicView.updateLog(text);
+//            symbolicView.showPageHinkleyChanges();
+//            symbolicView.updateLog(text);
         } else {
             System.out.print(text);
         }

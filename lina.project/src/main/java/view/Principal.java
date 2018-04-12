@@ -223,14 +223,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel23 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lt_timeSeriesData = new javax.swing.JList<>();
-        jPanel28 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        jRadioButton6 = new javax.swing.JRadioButton();
-        jRadioButton7 = new javax.swing.JRadioButton();
         jPanel26 = new javax.swing.JPanel();
-        rd_sax = new javax.swing.JRadioButton();
-        rd_sfa = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         tf_symOffset = new javax.swing.JTextField();
         tf_symWordLength = new javax.swing.JTextField();
@@ -245,15 +238,9 @@ public class Principal extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         rd_alingmentYes = new javax.swing.JRadioButton();
         rd_alingmentNo = new javax.swing.JRadioButton();
-        jLabel7 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         rd_normYes = new javax.swing.JRadioButton();
         td_normNo = new javax.swing.JRadioButton();
-        jPanel4 = new javax.swing.JPanel();
-        rd_algSAXVSM = new javax.swing.JRadioButton();
-        rd_algBOSS = new javax.swing.JRadioButton();
-        rd_algBOSSVS = new javax.swing.JRadioButton();
-        rd_algWeasel = new javax.swing.JRadioButton();
         jPanel8 = new javax.swing.JPanel();
         pn_graphicLine = new javax.swing.JPanel();
         pn_graphicBar = new javax.swing.JPanel();
@@ -1101,7 +1088,7 @@ public class Principal extends javax.swing.JFrame {
         pn_box.setLayout(pn_boxLayout);
         pn_boxLayout.setHorizontalGroup(
             pn_boxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 724, Short.MAX_VALUE)
+            .addGap(0, 736, Short.MAX_VALUE)
         );
         pn_boxLayout.setVerticalGroup(
             pn_boxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1292,7 +1279,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(bt_saveResultTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1424,7 +1411,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
+            .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1484,62 +1471,7 @@ public class Principal extends javax.swing.JFrame {
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
         );
 
-        jPanel28.setBorder(javax.swing.BorderFactory.createTitledBorder("Segmentation"));
-
-        jButton2.setText("Show Page Hinkley");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setText("Page Hinkley:");
-
-        gp_pageHinkley.add(jRadioButton6);
-        jRadioButton6.setSelected(true);
-        jRadioButton6.setText("Yes");
-
-        gp_pageHinkley.add(jRadioButton7);
-        jRadioButton7.setText("No");
-
-        javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
-        jPanel28.setLayout(jPanel28Layout);
-        jPanel28Layout.setHorizontalGroup(
-            jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel28Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel28Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton7)
-                        .addGap(0, 45, Short.MAX_VALUE))
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(6, 6, 6))
-        );
-        jPanel28Layout.setVerticalGroup(
-            jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel28Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jRadioButton6)
-                    .addComponent(jRadioButton7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder("Discretization"));
-
-        gp_algDiscretization.add(rd_sax);
-        rd_sax.setText("SAX");
-
-        gp_algDiscretization.add(rd_sfa);
-        rd_sfa.setSelected(true);
-        rd_sfa.setText("SFA");
 
         jLabel4.setText("Offset:");
 
@@ -1575,15 +1507,13 @@ public class Principal extends javax.swing.JFrame {
         gp_alingment.add(rd_alingmentNo);
         rd_alingmentNo.setText("No");
 
-        jLabel7.setText("Algorithms:");
-
         jLabel12.setText("Normalized:");
 
         gp_normalized.add(rd_normYes);
-        rd_normYes.setSelected(true);
         rd_normYes.setText("Yes");
 
         gp_normalized.add(td_normNo);
+        td_normNo.setSelected(true);
         td_normNo.setText("No");
 
         javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
@@ -1596,17 +1526,12 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel26Layout.createSequentialGroup()
-                        .addComponent(rd_sax, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rd_sfa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(tf_symWindow)
                     .addComponent(tf_symSymbolAlphabet)
                     .addComponent(tf_symWordLength)
@@ -1615,22 +1540,17 @@ public class Principal extends javax.swing.JFrame {
                         .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(rd_alingmentYes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rd_numReductionYes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rd_normYes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(rd_normYes))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(td_normNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(td_normNo, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
                             .addComponent(rd_numReductionNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rd_alingmentNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
+                .addGap(16, 16, 16))
         );
         jPanel26Layout.setVerticalGroup(
             jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel26Layout.createSequentialGroup()
-                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rd_sax)
-                    .addComponent(rd_sfa)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(5, 5, 5)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tf_symWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1661,51 +1581,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(rd_alingmentYes))
-                    .addComponent(rd_alingmentNo))
-                .addContainerGap())
-        );
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Models"));
-
-        gp_model.add(rd_algSAXVSM);
-        rd_algSAXVSM.setText("SAX-VSM");
-
-        gp_model.add(rd_algBOSS);
-        rd_algBOSS.setText("BOSS");
-
-        gp_model.add(rd_algBOSSVS);
-        rd_algBOSSVS.setText("BOSS-VS");
-
-        gp_model.add(rd_algWeasel);
-        rd_algWeasel.setSelected(true);
-        rd_algWeasel.setText("WEASEL");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(rd_algBOSSVS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rd_algSAXVSM, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rd_algBOSS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rd_algWeasel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rd_algSAXVSM)
-                    .addComponent(rd_algBOSS))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rd_algBOSSVS)
-                    .addComponent(rd_algWeasel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(rd_alingmentNo)))
         );
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -1714,12 +1590,10 @@ public class Principal extends javax.swing.JFrame {
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel26, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel23, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1727,12 +1601,8 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(312, Short.MAX_VALUE))
         );
 
         jScrollPane4.setViewportView(jPanel11);
@@ -1769,7 +1639,7 @@ public class Principal extends javax.swing.JFrame {
         pn_graphicBar.setLayout(pn_graphicBarLayout);
         pn_graphicBarLayout.setHorizontalGroup(
             pn_graphicBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 407, Short.MAX_VALUE)
+            .addGap(0, 419, Short.MAX_VALUE)
         );
         pn_graphicBarLayout.setVerticalGroup(
             pn_graphicBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2526,10 +2396,6 @@ public class Principal extends javax.swing.JFrame {
         paintWordInterval();
     }//GEN-LAST:event_tb_wordsMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        symbolicView.showPageHinkleyChanges();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void lt_trainDataTestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lt_trainDataTestMouseClicked
         if (lt_trainDataTest.getSelectedIndex() != -1 && evt.getButton() == MouseEvent.BUTTON3) {
             lt_trainDataTest.setFocusable(true);
@@ -2631,7 +2497,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.ButtonGroup gp_numerosityReduction;
     private javax.swing.ButtonGroup gp_pageHinkley;
     private javax.swing.ButtonGroup gp_settings;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -2641,8 +2506,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -2667,7 +2530,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
-    private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
@@ -2677,14 +2539,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel36;
     private javax.swing.JPanel jPanel39;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton6;
-    private javax.swing.JRadioButton jRadioButton7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
@@ -2765,17 +2624,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem ppi_saveClassifier;
     private javax.swing.JMenuItem ppi_sideBySide;
     private javax.swing.JMenuItem ppi_viewDatasetBox;
-    private javax.swing.JRadioButton rd_algBOSS;
-    private javax.swing.JRadioButton rd_algBOSSVS;
-    private javax.swing.JRadioButton rd_algSAXVSM;
-    private javax.swing.JRadioButton rd_algWeasel;
     private javax.swing.JRadioButton rd_alingmentNo;
     private javax.swing.JRadioButton rd_alingmentYes;
     private javax.swing.JRadioButton rd_normYes;
     private javax.swing.JRadioButton rd_numReductionNo;
     private javax.swing.JRadioButton rd_numReductionYes;
-    private javax.swing.JRadioButton rd_sax;
-    private javax.swing.JRadioButton rd_sfa;
     private javax.swing.JSlider sl_overlap;
     private javax.swing.JScrollPane sp_trainTest;
     private org.jdesktop.swingx.JXBusyLabel sx_busy;
@@ -3182,8 +3035,8 @@ public class Principal extends javax.swing.JFrame {
                     ConstDataset.DS_STREAM + lt_timeSeriesData.getSelectedValue(), false,
                     ConstDataset.SEPARATOR);
 
-            symbolicView = new SymbolicView(lineGraphic, barGraphic, data);
-            symbolicView.runDataset();
+            symbolicView = new SymbolicView(lineGraphic, barGraphic);
+            symbolicView.runDataset(data, rd_normYes.isSelected());
         } else {
             messages.aviso("Select a signal!");
         }
@@ -3194,16 +3047,6 @@ public class Principal extends javax.swing.JFrame {
         Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symWordLength.getText());
         Parameters.SYMBOLS_ALPHABET_SIZE = Integer.parseInt(tf_symSymbolAlphabet.getText());
         ConstGeneral.OFFSET = Integer.parseInt(tf_symOffset.getText());
-        if (rd_sax.isSelected()) {
-            ConstGeneral.SFA = false;
-        } else {
-            ConstGeneral.SFA = true;
-        }
-        if (rd_normYes.isSelected()) {
-            ConstGeneral.NORM = true;
-        } else {
-            ConstGeneral.NORM = false;
-        }
         if (rd_numReductionYes.isSelected()) {
             ConstGeneral.NUM_REDUCTION = true;
         } else {
@@ -3213,15 +3056,6 @@ public class Principal extends javax.swing.JFrame {
             ConstGeneral.ALINGMENT = true;
         } else {
             ConstGeneral.ALINGMENT = false;
-        }
-        if (rd_algBOSS.isSelected()) {
-            //ConstGeneral.MODEL = ConstGeneral.AL_BOSS_MODEL;
-        } else if (rd_algBOSSVS.isSelected()) {
-            ConstGeneral.MODEL = ConstGeneral.AL_BOSS_VS;
-        } else if (rd_algWeasel.isSelected()) {
-            ConstGeneral.MODEL = ConstGeneral.AL_WEASEL;
-        } else if (rd_algSAXVSM.isSelected()) {
-            ConstGeneral.MODEL = ConstGeneral.AL_SAX_VSM;
         }
     }
 
@@ -3255,6 +3089,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void clearLineGraphic() {
         lineGraphic.getSeriesCollection().removeAllSeries();
+        lineGraphic.getTimeseriesPlot().clearDomainMarkers();
         lineGraphic.repaint();
     }
 

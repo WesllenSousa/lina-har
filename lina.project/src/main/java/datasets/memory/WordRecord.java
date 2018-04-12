@@ -19,6 +19,10 @@ public class WordRecord {
     private String label;
     private ArrayList<WordInterval> intervals = new ArrayList<>();
     private int frequency;
+    
+    public void incrementFrequency() {
+        frequency += 1;
+    }
 
     public String getWord() {
         return word;

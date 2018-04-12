@@ -41,7 +41,7 @@ public abstract class Classifier {
     protected int[][] trainIndices;
     public static int folds = 10;
 
-    public static int maxWordLength = 6; // 12
+    public static int maxWordLength = 8; // 12
     public static int minWordLenth = 4;  // 4
     public static int maxSymbol = 4;  // 8
     public static int maxWindowLength = 100;

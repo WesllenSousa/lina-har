@@ -5,13 +5,13 @@ import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
 
 public class AdwinTest {
-    
+
     public static void main(String[] args) {
 
         //0 = all lines 
         //sinusoid, 215218, sinusoidLacunas
         TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_STREAM + "215218.csv", false, ",");
-        
+
         ADWIN adwin = new ADWIN(.01); // Init Adwin with delta=.01
         for (int s = 0; s < timeSeries.length; s++) {
             for (int i = 0; i < timeSeries[s].getLength(); i++) {
@@ -28,5 +28,5 @@ public class AdwinTest {
         System.out.println("Stand. dev:" + Math.sqrt(adwin.getVariance()));
         System.out.println("Width:" + adwin.getWidth());
     }
-    
+
 }

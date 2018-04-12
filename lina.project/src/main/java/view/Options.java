@@ -62,16 +62,11 @@ public class Options extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         tf_minWinLegth = new javax.swing.JTextField();
         tf_maxWinLegth = new javax.swing.JTextField();
-        jLabel16 = new javax.swing.JLabel();
-        tf_sourceNumber = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton3 = new javax.swing.JRadioButton();
-        ck_clearHist = new javax.swing.JCheckBox();
-        jLabel6 = new javax.swing.JLabel();
-        tf_fallThPagehinkey = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         tf_maxSymbol = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -79,10 +74,9 @@ public class Options extends javax.swing.JDialog {
         tf_maxWordLegth = new javax.swing.JTextField();
         tf_minWordLength = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
-        tf_mcb = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         tf_bop = new javax.swing.JTextField();
+        ck_clearHist = new javax.swing.JCheckBox();
         bt_apply = new javax.swing.JButton();
 
         jButton2.setText("Apply");
@@ -144,7 +138,7 @@ public class Options extends javax.swing.JDialog {
                     .addComponent(tf_columnTimestamp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ck_horizontalFormatNoise)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         tb_pane.addTab("Preprocessing", jPanel2);
@@ -157,31 +151,23 @@ public class Options extends javax.swing.JDialog {
 
         jLabel8.setText("Min window length:");
 
-        jLabel16.setText("Source number:");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
-                        .addComponent(tf_sourceNumber))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tf_windowSec, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                            .addComponent(tf_frequency, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tf_minWinLegth)
-                            .addComponent(tf_maxWinLegth, javax.swing.GroupLayout.Alignment.LEADING))))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tf_windowSec, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                    .addComponent(tf_frequency, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tf_minWinLegth)
+                    .addComponent(tf_maxWinLegth, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -203,11 +189,7 @@ public class Options extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(tf_minWinLegth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(tf_sourceNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         tb_pane.addTab("Segmentation", jPanel3);
@@ -220,11 +202,6 @@ public class Options extends javax.swing.JDialog {
         jRadioButton2.setText("Fast");
 
         jRadioButton3.setText("None");
-
-        ck_clearHist.setSelected(true);
-        ck_clearHist.setText("Clear histogram");
-
-        jLabel6.setText("Threshold Page Hinkley:");
 
         jLabel9.setText("Amount of symbol:");
 
@@ -246,17 +223,14 @@ public class Options extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(ck_clearHist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jRadioButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tf_fallThPagehinkey)
                             .addComponent(tf_maxSymbol)
                             .addComponent(tf_maxWordLegth)
                             .addComponent(tf_minWordLength, javax.swing.GroupLayout.Alignment.TRAILING))))
@@ -271,13 +245,7 @@ public class Options extends javax.swing.JDialog {
                     .addComponent(jRadioButton1)
                     .addComponent(jRadioButton2)
                     .addComponent(jRadioButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ck_clearHist)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(tf_fallThPagehinkey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(tf_maxSymbol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -289,14 +257,15 @@ public class Options extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(tf_minWordLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         tb_pane.addTab("Symbolic", jPanel1);
 
-        jLabel14.setText("MCB Size:");
-
         jLabel15.setText("BOP Size:");
+
+        ck_clearHist.setSelected(true);
+        ck_clearHist.setText("Clear histogram");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -306,13 +275,12 @@ public class Options extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tf_mcb, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tf_bop)))
+                        .addComponent(tf_bop, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(ck_clearHist)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -320,13 +288,11 @@ public class Options extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(tf_mcb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
                     .addComponent(tf_bop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ck_clearHist)
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         tb_pane.addTab("Streaming", jPanel4);
@@ -351,7 +317,7 @@ public class Options extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(tb_pane)
+                .addComponent(tb_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bt_apply)
                 .addContainerGap())
@@ -394,19 +360,8 @@ public class Options extends javax.swing.JDialog {
                 if (tf_minWinLegth.getText() != null && Validation.isInteger(tf_minWinLegth.getText())) {
                     Parameters.MIN_WINDOW_LENGTH = Integer.parseInt(tf_minWinLegth.getText());
                 }
-                if (tf_sourceNumber.getText() != null && Validation.isInteger(tf_sourceNumber.getText())) {
-                    Parameters.SOURCE_NUMBER = Integer.parseInt(tf_sourceNumber.getText());
-                }
                 break;
             case 2:
-                if (ck_clearHist.isSelected()) {
-                    ConstGeneral.CLEAR_HIST = true;
-                } else {
-                    ConstGeneral.CLEAR_HIST = false;
-                }
-                if (tf_fallThPagehinkey.getText() != null && Validation.isDouble(tf_fallThPagehinkey.getText())) {
-                    ConstGeneral.PERCENT_QUEDA_THRESHOULD = Double.parseDouble(tf_fallThPagehinkey.getText());
-                }
                 if (tf_maxSymbol.getText() != null && Validation.isInteger(tf_maxSymbol.getText())) {
                     Parameters.MAX_SYMBOL = Integer.parseInt(tf_maxSymbol.getText());
                 }
@@ -418,11 +373,13 @@ public class Options extends javax.swing.JDialog {
                 }
                 break;
             case 3:
-                if (tf_mcb.getText() != null && Validation.isInteger(tf_mcb.getText())) {
-                    Parameters.MCB_SIZE = Integer.parseInt(tf_mcb.getText());
-                }
                 if (tf_bop.getText() != null && Validation.isInteger(tf_bop.getText())) {
                     Parameters.BOP_SIZE = Integer.parseInt(tf_bop.getText());
+                }
+                if (ck_clearHist.isSelected()) {
+                    ConstGeneral.CLEAR_HIST = true;
+                } else {
+                    ConstGeneral.CLEAR_HIST = false;
                 }
                 break;
             default:
@@ -441,14 +398,11 @@ public class Options extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -464,16 +418,13 @@ public class Options extends javax.swing.JDialog {
     private javax.swing.JTextField tf_columnClass;
     private javax.swing.JTextField tf_columnTimestamp;
     private javax.swing.JTextField tf_dateFormat;
-    private javax.swing.JTextField tf_fallThPagehinkey;
     private javax.swing.JTextField tf_frequency;
     private javax.swing.JTextField tf_maxSymbol;
     private javax.swing.JTextField tf_maxWinLegth;
     private javax.swing.JTextField tf_maxWordLegth;
-    private javax.swing.JTextField tf_mcb;
     private javax.swing.JTextField tf_minWinLegth;
     private javax.swing.JTextField tf_minWordLength;
     private javax.swing.JTextField tf_separatorFile;
-    private javax.swing.JTextField tf_sourceNumber;
     private javax.swing.JTextField tf_windowSec;
     // End of variables declaration//GEN-END:variables
 
@@ -490,19 +441,16 @@ public class Options extends javax.swing.JDialog {
         tf_windowSec.setText(Parameters.WINDOW_SEC + "");
         tf_maxWinLegth.setText(Parameters.MAX_WINDOW_LENGTH + "");
         tf_minWinLegth.setText(Parameters.MIN_WINDOW_LENGTH + "");
-        tf_sourceNumber.setText(Parameters.SOURCE_NUMBER + "");
     }
 
     private void fillSymbolicOptions() {
         ck_clearHist.setSelected(ConstGeneral.CLEAR_HIST);
-        tf_fallThPagehinkey.setText(ConstGeneral.PERCENT_QUEDA_THRESHOULD + "");
         tf_maxSymbol.setText(Parameters.MAX_SYMBOL + "");
         tf_maxWordLegth.setText(Parameters.MAX_WORD_LENGTH + "");
         tf_minWordLength.setText(Parameters.MIN_WORD_LENGTH + "");
     }
 
     private void fillStreaming() {
-        tf_mcb.setText(Parameters.MCB_SIZE + "");
         tf_bop.setText(Parameters.BOP_SIZE + "");
     }
 

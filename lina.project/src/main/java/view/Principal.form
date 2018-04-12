@@ -1417,7 +1417,7 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="724" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="736" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
@@ -1762,7 +1762,7 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane7" pref="484" max="32767" attributes="0"/>
+                              <Component id="jScrollPane7" pref="496" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Component id="bt_saveResultTrain" min="-2" pref="85" max="-2" attributes="0"/>
@@ -2007,7 +2007,7 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane11" alignment="0" pref="717" max="32767" attributes="0"/>
+                              <Component id="jScrollPane11" alignment="0" pref="729" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
@@ -2096,13 +2096,11 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="jPanel4" max="32767" attributes="0"/>
-                                          <Component id="jPanel26" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jPanel28" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jPanel23" alignment="0" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jPanel23" max="32767" attributes="0"/>
+                                          <Component id="jPanel26" max="32767" attributes="0"/>
                                       </Group>
-                                      <EmptySpace pref="30" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2112,12 +2110,8 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jPanel23" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jPanel28" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jPanel26" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="75" max="32767" attributes="0"/>
+                                      <EmptySpace pref="312" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2172,84 +2166,6 @@
                                 </Container>
                               </SubComponents>
                             </Container>
-                            <Container class="javax.swing.JPanel" name="jPanel28">
-                              <Properties>
-                                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                                    <TitledBorder title="Segmentation"/>
-                                  </Border>
-                                </Property>
-                              </Properties>
-
-                              <Layout>
-                                <DimensionLayout dim="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" attributes="0">
-                                                  <Component id="jLabel8" min="-2" pref="87" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jRadioButton6" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jRadioButton7" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace min="0" pref="45" max="32767" attributes="0"/>
-                                              </Group>
-                                              <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                </DimensionLayout>
-                                <DimensionLayout dim="1">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jRadioButton6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jRadioButton7" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                </DimensionLayout>
-                              </Layout>
-                              <SubComponents>
-                                <Component class="javax.swing.JButton" name="jButton2">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="Show Page Hinkley"/>
-                                  </Properties>
-                                  <Events>
-                                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
-                                  </Events>
-                                </Component>
-                                <Component class="javax.swing.JLabel" name="jLabel8">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="Page Hinkley:"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JRadioButton" name="jRadioButton6">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_pageHinkley"/>
-                                    </Property>
-                                    <Property name="selected" type="boolean" value="true"/>
-                                    <Property name="text" type="java.lang.String" value="Yes"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JRadioButton" name="jRadioButton7">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_pageHinkley"/>
-                                    </Property>
-                                    <Property name="text" type="java.lang.String" value="No"/>
-                                  </Properties>
-                                </Component>
-                              </SubComponents>
-                            </Container>
                             <Container class="javax.swing.JPanel" name="jPanel26">
                               <Properties>
                                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -2262,25 +2178,19 @@
                               <Layout>
                                 <DimensionLayout dim="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="jLabel10" max="32767" attributes="0"/>
                                               <Component id="jLabel9" alignment="1" max="32767" attributes="0"/>
                                               <Component id="jLabel4" alignment="1" max="32767" attributes="0"/>
-                                              <Component id="jLabel7" alignment="1" max="32767" attributes="0"/>
                                               <Component id="jLabel1" alignment="1" max="32767" attributes="0"/>
                                               <Component id="jLabel2" alignment="1" max="32767" attributes="0"/>
                                               <Component id="jLabel3" alignment="1" max="32767" attributes="0"/>
-                                              <Component id="jLabel12" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="jLabel12" alignment="1" min="-2" pref="75" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="rd_sax" min="-2" pref="60" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="rd_sfa" max="32767" attributes="0"/>
-                                              </Group>
                                               <Component id="tf_symWindow" alignment="0" max="32767" attributes="0"/>
                                               <Component id="tf_symSymbolAlphabet" alignment="0" max="32767" attributes="0"/>
                                               <Component id="tf_symWordLength" max="32767" attributes="0"/>
@@ -2289,29 +2199,23 @@
                                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                                       <Component id="rd_alingmentYes" max="32767" attributes="0"/>
                                                       <Component id="rd_numReductionYes" max="32767" attributes="0"/>
-                                                      <Component id="rd_normYes" max="32767" attributes="0"/>
+                                                      <Component id="rd_normYes" min="-2" max="-2" attributes="0"/>
                                                   </Group>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="td_normNo" max="32767" attributes="0"/>
+                                                      <Component id="td_normNo" pref="104" max="32767" attributes="0"/>
                                                       <Component id="rd_numReductionNo" max="32767" attributes="0"/>
                                                       <Component id="rd_alingmentNo" max="32767" attributes="0"/>
                                                   </Group>
                                               </Group>
                                           </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="rd_sax" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="rd_sfa" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jLabel7" alignment="3" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="3" attributes="0">
                                               <Component id="tf_symWindow" alignment="3" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel1" alignment="3" max="32767" attributes="0"/>
@@ -2351,29 +2255,11 @@
                                               </Group>
                                               <Component id="rd_alingmentNo" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>
                               </Layout>
                               <SubComponents>
-                                <Component class="javax.swing.JRadioButton" name="rd_sax">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_algDiscretization"/>
-                                    </Property>
-                                    <Property name="text" type="java.lang.String" value="SAX"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JRadioButton" name="rd_sfa">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_algDiscretization"/>
-                                    </Property>
-                                    <Property name="selected" type="boolean" value="true"/>
-                                    <Property name="text" type="java.lang.String" value="SFA"/>
-                                  </Properties>
-                                </Component>
                                 <Component class="javax.swing.JLabel" name="jLabel4">
                                   <Properties>
                                     <Property name="text" type="java.lang.String" value="Offset:"/>
@@ -2458,11 +2344,6 @@
                                     <Property name="text" type="java.lang.String" value="No"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JLabel" name="jLabel7">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="Algorithms:"/>
-                                  </Properties>
-                                </Component>
                                 <Component class="javax.swing.JLabel" name="jLabel12">
                                   <Properties>
                                     <Property name="text" type="java.lang.String" value="Normalized:"/>
@@ -2473,7 +2354,6 @@
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="gp_normalized"/>
                                     </Property>
-                                    <Property name="selected" type="boolean" value="true"/>
                                     <Property name="text" type="java.lang.String" value="Yes"/>
                                   </Properties>
                                 </Component>
@@ -2482,87 +2362,8 @@
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="gp_normalized"/>
                                     </Property>
-                                    <Property name="text" type="java.lang.String" value="No"/>
-                                  </Properties>
-                                </Component>
-                              </SubComponents>
-                            </Container>
-                            <Container class="javax.swing.JPanel" name="jPanel4">
-                              <Properties>
-                                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                                    <TitledBorder title="Models"/>
-                                  </Border>
-                                </Property>
-                              </Properties>
-
-                              <Layout>
-                                <DimensionLayout dim="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="rd_algBOSSVS" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="rd_algSAXVSM" alignment="0" pref="99" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="rd_algBOSS" max="32767" attributes="0"/>
-                                              <Component id="rd_algWeasel" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                </DimensionLayout>
-                                <DimensionLayout dim="1">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="rd_algSAXVSM" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="rd_algBOSS" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="rd_algBOSSVS" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="rd_algWeasel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                </DimensionLayout>
-                              </Layout>
-                              <SubComponents>
-                                <Component class="javax.swing.JRadioButton" name="rd_algSAXVSM">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_model"/>
-                                    </Property>
-                                    <Property name="text" type="java.lang.String" value="SAX-VSM"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JRadioButton" name="rd_algBOSS">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_model"/>
-                                    </Property>
-                                    <Property name="text" type="java.lang.String" value="BOSS"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JRadioButton" name="rd_algBOSSVS">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_model"/>
-                                    </Property>
-                                    <Property name="text" type="java.lang.String" value="BOSS-VS"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JRadioButton" name="rd_algWeasel">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_model"/>
-                                    </Property>
                                     <Property name="selected" type="boolean" value="true"/>
-                                    <Property name="text" type="java.lang.String" value="WEASEL"/>
+                                    <Property name="text" type="java.lang.String" value="No"/>
                                   </Properties>
                                 </Component>
                               </SubComponents>
@@ -2639,7 +2440,7 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <EmptySpace min="0" pref="407" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="419" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">

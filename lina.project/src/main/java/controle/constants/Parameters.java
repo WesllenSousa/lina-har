@@ -14,7 +14,6 @@ public class Parameters {
     public static int WINDOW_SIZE = 50;
     public static int FREQUENCY = 50;
     public static float WINDOW_SEC = 5;
-    public static int SOURCE_NUMBER = 3;
 
     /**
      * SAX Parameters
@@ -33,7 +32,6 @@ public class Parameters {
     /**
      * SFA Parameters
      */
-    public static int MCB_SIZE = 50;
     public static int BOP_SIZE = 250;
 
     /**

@@ -204,7 +204,7 @@ public class SFABulkLoadTest {
     // each subsequence in constant time
     for (int i = 0, a = 0; i < timeSeries.getLength(); i += chunkSize, a++) {
       System.out.println("Transforming Chunk: " + (a + 1));
-      TimeSeries subsequence = timeSeries.getSubsequence(i, chunkSize + n - 1);
+      TimeSeries subsequence = timeSeries.getSubsequence(i, chunkSize + n - 1, true);
       double[][] words = sfa.transformWindowingDouble(subsequence);
       for (int pos = 0; pos < words.length; pos++) {
         byte[] w = sfa.quantizationByte(words[pos]);
