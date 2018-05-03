@@ -5,19 +5,16 @@
  */
 package view.viewControler;
 
-import algorithms.ADWIN.ADWIN;
+import algorithms.NOHAR.NOHAR;
+import com.vividsolutions.jts.geom.Polygon;
 import controle.constants.ConstGeneral;
 import controle.constants.Parameters;
-import algorithms.SAX.Params;
-import algorithms.SAX.SAX;
 import datasets.memory.BufferStreaming;
-import datasets.memory.WordInterval;
 import datasets.memory.WordRecord;
 import datasets.timeseries.TimeSeries;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import net.seninp.jmotif.sax.NumerosityReductionStrategy;
 import view.manualviews.BarGraphic;
 import view.manualviews.LineGraphic;
 
@@ -30,21 +27,15 @@ public class SymbolicView {
     private final LineGraphic lineGraphic;
     private final BarGraphic barGraphic;
 
-    private List<BufferStreaming> bufferStreaming;
-    private ADWIN adwin;
-
-    private WordRecord previousWord;
-    private int lastPosPreviusWord = 0;
-    private Params params;
+    private final List<BufferStreaming> bufferStreaming;
+    private final NOHAR nohar;
 
     public SymbolicView(LineGraphic lineGraphic, BarGraphic barGraphic) {
         this.lineGraphic = lineGraphic;
         this.barGraphic = barGraphic;
         this.bufferStreaming = new ArrayList<>();
-        adwin = new ADWIN(.01);
 
-        params = new Params(Parameters.WINDOW_SIZE, Parameters.WORD_LENGTH_PAA,
-                Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.EXACT);
+        this.nohar = new NOHAR(this);
     }
 
     public void runDataset(TimeSeries[] data, boolean norm) {
@@ -73,129 +64,52 @@ public class SymbolicView {
                 BufferStreaming buffer = bufferStreaming.get(dataColumn);
                 buffer.setSubSequence(subsequence); //Chunk size = 1 in this case
 
-                processStream(currentValue, buffer, position);
+                processStream(buffer, currentValue, position);
 
                 values[dataColumn] = currentValue;
                 dataColumn++;
             }
 
-            //Add values in GUI
-            lineGraphic.addData(values);
-            lineGraphic.espera(10);
+            addDataGraphLine(values);
         }
     }
 
-    private void processStream(double currentValue, BufferStreaming buffer, int position) {
-        //Monitor changin in the data
-        if (!changeDetected(currentValue, position)) {
-            //Discretize
-            WordRecord word = discretize(buffer, position);
-
-            //Histogram
-            createHistogram(buffer, word);
-
-            //Handle model
-            if (position % Parameters.BOP_SIZE == 0) { //*** change threhold to BOP 
-                //Learning
-                learning(buffer);
-
-                clearGUIbar(buffer);
-                lineGraphic.addMarker(position, position, Color.black);
-            }
+    private void processStream(BufferStreaming buffer, double currentValue, int position) {
+        if (nohar != null) {
+            nohar.runStream(buffer, currentValue, position);
         }
-    }
-
-    private boolean changeDetected(double currentValue, int position) {
-        if (adwin.setInput(currentValue)) {
-            System.out.println("Change Detected: " + position);
-            updateLog("Change Detected: " + position);
-            lineGraphic.addMarker(position, position, Color.red);
-            return true;
-        }
-        return false;
-    }
-
-    private WordRecord discretize(BufferStreaming buffer, int position) {
-        SAX sax = new SAX(params);
-        String word = sax.serieToWord(buffer.getSubSequence().getData());
-        WordRecord wordRecord = buffer.populaWordRecord(word, position - Parameters.WINDOW_SIZE);
-        return wordRecord;
-    }
-
-    private void createHistogram(BufferStreaming buffer, WordRecord word) {
-        if (word == null) {
-            return;
-        }
-        //Redução de numerozidade por EXACT Strategy 
-        if (ConstGeneral.NUM_REDUCTION && previousWord != null && lastPosPreviusWord < Parameters.WINDOW_SIZE
-                && previousWord.getWord().equals(word.getWord())) {
-            //For word that repeat always, we update the frequency
-            lastPosPreviusWord++;
-            return;
-        }
-        lastPosPreviusWord = 0;
-
-        //Verify if word is in the buffer BOP
-        if (buffer.getHistogram().contains(word)) { //Bloco de código passivel de futuras otimizacoes
-            for (WordRecord wordRecord : buffer.getHistogram()) {
-                if (wordRecord.getWord().equals(word.getWord())) {
-                    //Verify interval overlaped to same words: alingments
-                    if (ConstGeneral.ALINGMENT && !overlap(wordRecord, word)) {
-                        wordRecord.getIntervals().add(word.getIntervals().get(0));
-                        wordRecord.incrementFrequency();
-                    } else {
-                        wordRecord.getIntervals().add(word.getIntervals().get(0));
-                        wordRecord.incrementFrequency();
-                    }
-                    previousWord = word;
-                    updateGUIbar(buffer, wordRecord);
-                }
-            }
-        } else {
-            //Add word in buffer
-            previousWord = word;
-            buffer.getHistogram().add(word);
-            updateGUIbar(buffer, word);
-        }
-    }
-
-    private void learning(BufferStreaming buffer) {
-    }
-
-    /*
-     *   Other methods
-     */
-    //O overlap já é uma espécie de alinhamento de palavras iguais
-    private boolean overlap(WordRecord words, WordRecord word) {
-        int init = word.getIntervals().get(0).getPositionInit();
-        int end = word.getIntervals().get(0).getPositionEnd();
-        for (WordInterval interval : words.getIntervals()) {
-            int cInit = interval.getPositionInit();
-            int cEnd = interval.getPositionEnd();
-            if ((init >= cInit && init <= cEnd) || (end >= cInit && end <= cEnd)
-                    || (cInit >= init && cInit <= end) || (cEnd >= init && cEnd <= end)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /*
      *   GUI
      */
-    private void updateGUIbar(BufferStreaming buffer, WordRecord word) {
+    public void addDataGraphLine(double[] values) {
+        //Add values in GUI
+        lineGraphic.addData(values);
+        lineGraphic.espera(10);
+    }
+
+    public void addMarkerGraphLine(int position, Color color) {
+        lineGraphic.addMarker(position, position, color);
+    }
+
+    public void updateCurrentHistogram(BufferStreaming buffer, WordRecord word) {
         barGraphic.addUpdateData(word.getWord(), word.getFrequency());
         ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, buffer.getHistogram().size());
     }
 
-    private void clearGUIbar(BufferStreaming buffer) {
-        if (ConstGeneral.CLEAR_HIST) {
-            buffer.getHistogram().clear();
-            ConstGeneral.TELA_PRINCIPAL.clearBarGraphic();
-        }
+    public void clearCurrentHistogram(BufferStreaming buffer) {
+        buffer.getHistograms().add(buffer.getHistogram());
+        ConstGeneral.TELA_PRINCIPAL.addHistograms(buffer.getHistograms());
+        buffer.setHistogram(new ArrayList<>());
+        ConstGeneral.TELA_PRINCIPAL.clearCurrentHistogram();
     }
 
-    private void updateLog(String text) {
+    public void addPolygons(ArrayList<Polygon> polygons) {
+        ConstGeneral.TELA_PRINCIPAL.addPolygons(polygons);
+    }
+
+    public void updateLog(String text) {
         ConstGeneral.TELA_PRINCIPAL.updateSymbolicLog(text);
     }
 

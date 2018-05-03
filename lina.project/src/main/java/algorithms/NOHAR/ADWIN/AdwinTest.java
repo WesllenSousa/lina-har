@@ -1,4 +1,4 @@
-package algorithms.ADWIN;
+package algorithms.NOHAR.ADWIN;
 
 import controle.constants.ConstDataset;
 import datasets.timeseries.TimeSeries;
@@ -12,7 +12,7 @@ public class AdwinTest {
         //sinusoid, 215218, sinusoidLacunas
         TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_STREAM + "215218.csv", false, ",");
 
-        ADWIN adwin = new ADWIN(.01); // Init Adwin with delta=.01
+        Adwin adwin = new Adwin(.01); // Init Adwin with delta=.01
         for (int s = 0; s < timeSeries.length; s++) {
             for (int i = 0; i < timeSeries[s].getLength(); i++) {
                 //System.out.println(timeSeries[s].getData(i));

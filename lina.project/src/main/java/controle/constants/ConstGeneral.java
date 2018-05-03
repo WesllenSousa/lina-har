@@ -20,7 +20,6 @@ public class ConstGeneral {
     public static int OFFSET = 1;
     public static boolean NUM_REDUCTION = true;
     public static boolean ALINGMENT = true;
-    public static boolean CLEAR_HIST = true;
     public static boolean HORIZONTAL_FORMAT_NOISE = true;
 
     public static int PP_EDIT = 2;

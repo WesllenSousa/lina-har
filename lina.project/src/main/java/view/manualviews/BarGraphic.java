@@ -14,7 +14,7 @@ import org.jfree.data.UnknownKeyException;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
- * Wesllen Sousa
+ * Lina Tool Wesllen Sousa
  */
 public class BarGraphic extends JPanel implements ChartProgressListener {
 
@@ -23,14 +23,14 @@ public class BarGraphic extends JPanel implements ChartProgressListener {
 
     private boolean autoRange = true;
 
-    public BarGraphic(String title) {
+    public BarGraphic(String title, boolean showLegend) {
         this.setLayout(new BorderLayout());
-        createChart(title);
+        createChart(title, showLegend);
         final ChartPanel chartPanel = new ChartPanel(chart);
         this.add(chartPanel, BorderLayout.CENTER);
     }
 
-    private void createChart(String title) {
+    private void createChart(String title, boolean showLegend) {
         // set the renderer
         BarRenderer renderer = new BarRenderer();
         renderer.setDrawBarOutline(false);
@@ -39,11 +39,10 @@ public class BarGraphic extends JPanel implements ChartProgressListener {
         String xaxis = "Words";
         String yaxis = "Counts";
         PlotOrientation orientation = PlotOrientation.VERTICAL;
-        boolean show = true;
         boolean toolTips = false;
         boolean urls = false;
 
-        chart = ChartFactory.createBarChart(title, xaxis, yaxis, datasetCollection, orientation, show, toolTips, urls);
+        chart = ChartFactory.createBarChart(title, xaxis, yaxis, datasetCollection, orientation, showLegend, toolTips, urls);
         chart.addProgressListener(this);
         chart.setNotify(true);
         //chart.setBackgroundPaint(Color.white);
@@ -58,7 +57,7 @@ public class BarGraphic extends JPanel implements ChartProgressListener {
         datasetCollection.addValue(frequency, palavra, "category");
         repaint();
     }
-    
+
     public void clearData() {
         datasetCollection.clear();
         repaint();

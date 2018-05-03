@@ -42,5 +42,10 @@ public class Parameters {
     public static int MAX_SYMBOL = 4;
     public static int MAX_WORD_LENGTH = 8;
     public static int MIN_WORD_LENGTH = 4;
+    
+    /**
+     * NOHAR
+     */
+    public static int SCALA = 5;
 
 }

@@ -17,11 +17,11 @@
  *    along with this program; if not, write to the Free Software
  *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-package algorithms.ADWIN;
+package algorithms.NOHAR.ADWIN;
 
 import moa.core.SizeOf;
 
-public class ADWIN { //extends Estimator {
+public class Adwin { //extends Estimator {
 
     private class List {
 
@@ -130,7 +130,7 @@ public class ADWIN { //extends Estimator {
         protected ListItem next;
         protected ListItem previous;
         protected int bucketSizeRow = 0;
-        protected int MAXBUCKETS = ADWIN.MAXBUCKETS;
+        protected int MAXBUCKETS = Adwin.MAXBUCKETS;
         protected double bucketTotal[] = new double[MAXBUCKETS + 1];
         protected double bucketVariance[] = new double[MAXBUCKETS + 1];
 
@@ -546,7 +546,7 @@ public class ADWIN { //extends Estimator {
         return (Math.abs(absvalue) > epsilon);
     }
 
-    public ADWIN() {
+    public Adwin() {
         mdbldelta = DELTA;
         initBuckets();
         Detect = 0;
@@ -555,7 +555,7 @@ public class ADWIN { //extends Estimator {
 
     }
 
-    public ADWIN(double d) {
+    public Adwin(double d) {
         mdbldelta = d;
         initBuckets();
         Detect = 0;
@@ -563,7 +563,7 @@ public class ADWIN { //extends Estimator {
         DetectTwice = 0;
     }
 
-    public ADWIN(int cl) {
+    public Adwin(int cl) {
         mdbldelta = DELTA;
         initBuckets();
         Detect = 0;

@@ -12,14 +12,14 @@ import java.util.Objects;
  *
  * @author Wesllen Sousa
  */
-public class WordRecord {
+public class WordRecord implements Comparable<WordRecord> {
 
     private String word;
     private short[] wordBit;
     private String label;
     private ArrayList<WordInterval> intervals = new ArrayList<>();
     private int frequency;
-    
+
     public void incrementFrequency() {
         frequency += 1;
     }
@@ -84,6 +84,11 @@ public class WordRecord {
         }
         final WordRecord other = (WordRecord) obj;
         return Objects.equals(this.word, other.word);
+    }
+
+    @Override
+    public int compareTo(WordRecord o) {
+        return this.word.compareTo(o.word);
     }
 
 }

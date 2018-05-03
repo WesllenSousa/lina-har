@@ -5,10 +5,10 @@
  */
 package datasets.memory;
 
+import com.vividsolutions.jts.geom.Polygon;
 import controle.constants.Parameters;
 import datasets.timeseries.TimeSeries;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,8 +21,9 @@ public class BufferStreaming {
 
     private List<WordRecord> histogram = new ArrayList<>();
     private List<WordRecord> histogramOOV = new ArrayList<>();
+    private List<List<WordRecord>> histograms = new ArrayList<>();
 
-    private HashMap<String, HashMap<String, Double>> modelSaxVsm;
+    private ArrayList<Polygon> polygons = new ArrayList<>();
 
     /*
      *   Geters Setters
@@ -39,16 +40,32 @@ public class BufferStreaming {
         return histogram;
     }
 
+    public void setHistogram(List<WordRecord> histogram) {
+        this.histogram = histogram;
+    }
+
     public List<WordRecord> getHistogramOOV() {
         return histogramOOV;
     }
 
-    public HashMap<String, HashMap<String, Double>> getModelSaxVsm() {
-        return modelSaxVsm;
+    public void setHistogramOOV(List<WordRecord> histogramOOV) {
+        this.histogramOOV = histogramOOV;
     }
 
-    public void setModelSaxVsm(HashMap<String, HashMap<String, Double>> modelSaxVsm) {
-        this.modelSaxVsm = modelSaxVsm;
+    public List<List<WordRecord>> getHistograms() {
+        return histograms;
+    }
+
+    public void setHistograms(List<List<WordRecord>> histograms) {
+        this.histograms = histograms;
+    }
+
+    public ArrayList<Polygon> getPolygons() {
+        return polygons;
+    }
+
+    public void setPolygons(ArrayList<Polygon> polygons) {
+        this.polygons = polygons;
     }
 
     /*

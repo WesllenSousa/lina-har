@@ -1,5 +1,8 @@
 package view;
 
+import algorithms.NOHAR.Polygon.PolygonLabel;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
 import controle.weka.WekaUtil;
 import datasets.generic.HandleGenericDataset;
 import datasets.generic.GenericRowBean;
@@ -20,6 +23,7 @@ import datasets.timeseries.TimeSeries;
 import datasets.timeseries.TimeSeriesLoader;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import util.FileUtil;
 import util.Messages;
@@ -49,7 +53,7 @@ public class Principal extends javax.swing.JFrame {
     private SymbolicView symbolicView;
     private WordTableModel wordTableModel;
     private LineGraphic lineGraphic;
-    private BarGraphic barGraphic;
+    private BarGraphic currentHistogram;
     private Thread play;
     private boolean paused = false;
 
@@ -69,7 +73,7 @@ public class Principal extends javax.swing.JFrame {
         SwingUtil.listFilesList(lt_rawData, ConstDataset.DS_RAW);
 
         addLineGraphic();
-        addBarGraphic();
+        addCurrentHistogram();
         wordTableModel = new WordTableModel(new ArrayList<>());
         tb_words.setModel(wordTableModel);
     }
@@ -243,7 +247,6 @@ public class Principal extends javax.swing.JFrame {
         td_normNo = new javax.swing.JRadioButton();
         jPanel8 = new javax.swing.JPanel();
         pn_graphicLine = new javax.swing.JPanel();
-        pn_graphicBar = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane16 = new javax.swing.JScrollPane();
         ta_symbolic = new javax.swing.JTextArea();
@@ -251,6 +254,12 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tb_words = new javax.swing.JTable();
         lb_tableInfo = new javax.swing.JLabel();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
+        pn_currentHistogram = new javax.swing.JPanel();
+        sc_polygons = new javax.swing.JScrollPane();
+        pn_histograms = new javax.swing.JPanel();
+        sc_histograms = new javax.swing.JScrollPane();
+        pn_polygons = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btt_openRawData = new javax.swing.JButton();
@@ -1088,7 +1097,7 @@ public class Principal extends javax.swing.JFrame {
         pn_box.setLayout(pn_boxLayout);
         pn_boxLayout.setHorizontalGroup(
             pn_boxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 736, Short.MAX_VALUE)
+            .addGap(0, 759, Short.MAX_VALUE)
         );
         pn_boxLayout.setVerticalGroup(
             pn_boxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1279,7 +1288,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(bt_saveResultTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1411,7 +1420,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
+            .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1633,19 +1642,6 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 165, Short.MAX_VALUE)
         );
 
-        pn_graphicBar.setBorder(javax.swing.BorderFactory.createTitledBorder("Current histogram"));
-
-        javax.swing.GroupLayout pn_graphicBarLayout = new javax.swing.GroupLayout(pn_graphicBar);
-        pn_graphicBar.setLayout(pn_graphicBarLayout);
-        pn_graphicBarLayout.setHorizontalGroup(
-            pn_graphicBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 419, Short.MAX_VALUE)
-        );
-        pn_graphicBarLayout.setVerticalGroup(
-            pn_graphicBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
         ta_symbolic.setColumns(20);
         ta_symbolic.setRows(5);
         jScrollPane16.setViewportView(ta_symbolic);
@@ -1694,6 +1690,49 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Words", jPanel17);
 
+        javax.swing.GroupLayout pn_currentHistogramLayout = new javax.swing.GroupLayout(pn_currentHistogram);
+        pn_currentHistogram.setLayout(pn_currentHistogramLayout);
+        pn_currentHistogramLayout.setHorizontalGroup(
+            pn_currentHistogramLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 437, Short.MAX_VALUE)
+        );
+        pn_currentHistogramLayout.setVerticalGroup(
+            pn_currentHistogramLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 507, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Current Histogram", pn_currentHistogram);
+
+        javax.swing.GroupLayout pn_histogramsLayout = new javax.swing.GroupLayout(pn_histograms);
+        pn_histograms.setLayout(pn_histogramsLayout);
+        pn_histogramsLayout.setHorizontalGroup(
+            pn_histogramsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 435, Short.MAX_VALUE)
+        );
+        pn_histogramsLayout.setVerticalGroup(
+            pn_histogramsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 505, Short.MAX_VALUE)
+        );
+
+        sc_polygons.setViewportView(pn_histograms);
+
+        jTabbedPane2.addTab("Histograms", sc_polygons);
+
+        javax.swing.GroupLayout pn_polygonsLayout = new javax.swing.GroupLayout(pn_polygons);
+        pn_polygons.setLayout(pn_polygonsLayout);
+        pn_polygonsLayout.setHorizontalGroup(
+            pn_polygonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 435, Short.MAX_VALUE)
+        );
+        pn_polygonsLayout.setVerticalGroup(
+            pn_polygonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 505, Short.MAX_VALUE)
+        );
+
+        sc_histograms.setViewportView(pn_polygons);
+
+        jTabbedPane2.addTab("Polygons", sc_histograms);
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -1702,7 +1741,8 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pn_graphicBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jTabbedPane2)
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1710,8 +1750,8 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(pn_graphicLine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pn_graphicBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane1)))
+                    .addComponent(jTabbedPane1)
+                    .addComponent(jTabbedPane2)))
         );
 
         jSplitPane2.setRightComponent(jPanel8);
@@ -2379,8 +2419,7 @@ public class Principal extends javax.swing.JFrame {
                     stopInternalFrameProcess();
                     break;
                 case 3:
-                    clearLineGraphic();
-                    clearBarGraphic();
+                    clearTabStream();
                     break;
                 default:
                     break;
@@ -2579,6 +2618,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane5;
     private javax.swing.JSplitPane jSplitPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lb_tableInfo;
     private javax.swing.JList<String> lt_algorithms;
@@ -2606,9 +2646,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel pn_2;
     private javax.swing.JPanel pn_3;
     private javax.swing.JPanel pn_box;
-    private javax.swing.JPanel pn_graphicBar;
+    private javax.swing.JPanel pn_currentHistogram;
     private javax.swing.JPanel pn_graphicLine;
+    private javax.swing.JPanel pn_histograms;
     private javax.swing.JPanel pn_menu;
+    private javax.swing.JPanel pn_polygons;
     private javax.swing.JPanel pn_trainTest;
     private javax.swing.JPopupMenu pp_box;
     private javax.swing.JPopupMenu pp_classifier;
@@ -2629,6 +2671,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JRadioButton rd_normYes;
     private javax.swing.JRadioButton rd_numReductionNo;
     private javax.swing.JRadioButton rd_numReductionYes;
+    private javax.swing.JScrollPane sc_histograms;
+    private javax.swing.JScrollPane sc_polygons;
     private javax.swing.JSlider sl_overlap;
     private javax.swing.JScrollPane sp_trainTest;
     private org.jdesktop.swingx.JXBusyLabel sx_busy;
@@ -2855,7 +2899,6 @@ public class Principal extends javax.swing.JFrame {
         if (play != null && play.isAlive()) {
             if (paused) {
                 play.resume();
-
                 paused = false;
             } else {
                 play.suspend();
@@ -2911,7 +2954,7 @@ public class Principal extends javax.swing.JFrame {
             setWindowParameter();
             Integer overlap = sl_overlap.getValue();
             Integer offset = Math.round((overlap / 100f) * Parameters.WINDOW_SEC * Parameters.FREQUENCY);
-            
+
             desktopView.signalProcessing(lt_filtersRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY);
             desktopView.dataFusionProcessing(lt_dataFusionRight, lt_rawData.getSelectedValue());
             desktopView.principalFeatureProcessing(lt_principalFeaturesRight, Parameters.WINDOW_SEC, Parameters.FREQUENCY);
@@ -3026,8 +3069,8 @@ public class Principal extends javax.swing.JFrame {
      */
     private void executeSymbolic() {
         if (lt_timeSeriesData.getSelectedIndex() != -1) {
-            clearLineGraphic();
-            clearBarGraphic();
+            clearTabStream();
+
             ta_symbolic.setText("");
             setParameters();
 
@@ -3035,7 +3078,7 @@ public class Principal extends javax.swing.JFrame {
                     ConstDataset.DS_STREAM + lt_timeSeriesData.getSelectedValue(), false,
                     ConstDataset.SEPARATOR);
 
-            symbolicView = new SymbolicView(lineGraphic, barGraphic);
+            symbolicView = new SymbolicView(lineGraphic, currentHistogram);
             symbolicView.runDataset(data, rd_normYes.isSelected());
         } else {
             messages.aviso("Select a signal!");
@@ -3068,13 +3111,49 @@ public class Principal extends javax.swing.JFrame {
         pn_graphicLine.updateUI();
     }
 
-    private void addBarGraphic() {
-        pn_graphicBar.removeAll();
-        barGraphic = new BarGraphic("Words Histogram");
-        barGraphic.setPreferredSize(pn_graphicBar.getSize());
-        pn_graphicBar.setLayout(new BorderLayout());
-        pn_graphicBar.add(barGraphic, BorderLayout.CENTER);
-        pn_graphicBar.updateUI();
+    private void addCurrentHistogram() {
+        pn_currentHistogram.removeAll();
+        currentHistogram = new BarGraphic("Words Histogram", true);
+        currentHistogram.setPreferredSize(pn_currentHistogram.getSize());
+        pn_currentHistogram.setLayout(new BorderLayout());
+        pn_currentHistogram.add(currentHistogram, BorderLayout.CENTER);
+        pn_currentHistogram.updateUI();
+    }
+
+    public void addHistograms(List<List<WordRecord>> histograms) {
+        pn_histograms.removeAll();
+        pn_histograms.setLayout(new FlowLayout(FlowLayout.CENTER));
+        for (List<WordRecord> histogram : histograms) {
+            BarGraphic barGraphic = new BarGraphic("", false);
+            //Dimension d = new Dimension(sc_histograms.getWidth() / histograms.size(), sc_histograms.getHeight() / histograms.size());
+            Dimension d = new Dimension(500, 300);
+            barGraphic.setPreferredSize(d);
+            for (WordRecord word : histogram) {
+                barGraphic.addUpdateData(word.getWord(), word.getFrequency());
+            }
+            pn_histograms.add(barGraphic);
+            pn_histograms.updateUI();
+        }
+    }
+
+    public void addPolygons(ArrayList<Polygon> polygons) {
+        pn_polygons.removeAll();
+        pn_polygons.setLayout(new FlowLayout(FlowLayout.CENTER));
+        for (Polygon polygon : polygons) {
+            //PolygonLabel panel = new PolygonLabel(pn_polygons.getWidth() / polygons.size(), pn_polygons.getHeight() / polygons.size());
+            PolygonLabel panel = new PolygonLabel(500, 300);
+            //Print smoothed and buffer polygon
+            if (true) {
+                ArrayList<Geometry> ps = new ArrayList<>();
+                ps.add(polygon);
+                //ps.add(panel.getSmoothedPolygon(polygon, 0.5));
+                ps.add(panel.getPolygonBuffer(polygon));
+                pn_polygons.add(panel.drawPolygons(ps, Parameters.SCALA));
+            } else {
+                pn_polygons.add(panel.drawPolygon(polygon, Parameters.SCALA));
+            }
+        }
+        pn_polygons.updateUI();
     }
 
     private void paintWordInterval() {
@@ -3082,20 +3161,30 @@ public class Principal extends javax.swing.JFrame {
             WordRecord wordRecord = (WordRecord) wordTableModel.getValueAt(tb_words.getSelectedRow(), -1);
             lineGraphic.getTimeseriesPlot().clearDomainMarkers();
             for (WordInterval interval : wordRecord.getIntervals()) {
-                lineGraphic.addMarker(interval.getPositionInit(), interval.getPositionEnd(), Color.blue);
+                lineGraphic.addMarker(interval.getPositionInit(), interval.getPositionEnd(), Color.BLUE);
             }
         }
     }
 
-    private void clearLineGraphic() {
+    private void clearTabStream() {
         lineGraphic.getSeriesCollection().removeAllSeries();
         lineGraphic.getTimeseriesPlot().clearDomainMarkers();
         lineGraphic.repaint();
+        currentHistogram.getDatasetCollection().clear();
+        currentHistogram.repaint();
+        tb_words.clearSelection();
+        wordTableModel.getLinhas().clear();
+        tb_words.repaint();
+
+        pn_histograms.removeAll();
+        pn_histograms.updateUI();
+        pn_polygons.removeAll();
+        pn_polygons.updateUI();
     }
 
-    public void clearBarGraphic() {
-        barGraphic.getDatasetCollection().clear();
-        barGraphic.repaint();
+    public void clearCurrentHistogram() {
+        currentHistogram.getDatasetCollection().clear();
+        currentHistogram.repaint();
         tb_words.clearSelection();
         wordTableModel.getLinhas().clear();
         tb_words.repaint();

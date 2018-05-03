@@ -76,7 +76,8 @@ public class Options extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         tf_bop = new javax.swing.JTextField();
-        ck_clearHist = new javax.swing.JCheckBox();
+        jLabel16 = new javax.swing.JLabel();
+        tf_scalaPolygon = new javax.swing.JTextField();
         bt_apply = new javax.swing.JButton();
 
         jButton2.setText("Apply");
@@ -264,8 +265,7 @@ public class Options extends javax.swing.JDialog {
 
         jLabel15.setText("BOP Size:");
 
-        ck_clearHist.setSelected(true);
-        ck_clearHist.setText("Clear histogram");
+        jLabel16.setText("Scala Polygon:");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -279,8 +279,9 @@ public class Options extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tf_bop, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(ck_clearHist)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tf_scalaPolygon)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -291,8 +292,10 @@ public class Options extends javax.swing.JDialog {
                     .addComponent(jLabel15)
                     .addComponent(tf_bop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ck_clearHist)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(tf_scalaPolygon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
 
         tb_pane.addTab("Streaming", jPanel4);
@@ -317,7 +320,7 @@ public class Options extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(tb_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                .addComponent(tb_pane)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bt_apply)
                 .addContainerGap())
@@ -376,10 +379,8 @@ public class Options extends javax.swing.JDialog {
                 if (tf_bop.getText() != null && Validation.isInteger(tf_bop.getText())) {
                     Parameters.BOP_SIZE = Integer.parseInt(tf_bop.getText());
                 }
-                if (ck_clearHist.isSelected()) {
-                    ConstGeneral.CLEAR_HIST = true;
-                } else {
-                    ConstGeneral.CLEAR_HIST = false;
+                if (tf_scalaPolygon.getText() != null && Validation.isInteger(tf_scalaPolygon.getText())) {
+                    Parameters.SCALA = Integer.parseInt(tf_scalaPolygon.getText());
                 }
                 break;
             default:
@@ -390,7 +391,6 @@ public class Options extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_apply;
-    private javax.swing.JCheckBox ck_clearHist;
     private javax.swing.JCheckBox ck_horizontalFormatNoise;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -399,6 +399,7 @@ public class Options extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -424,6 +425,7 @@ public class Options extends javax.swing.JDialog {
     private javax.swing.JTextField tf_maxWordLegth;
     private javax.swing.JTextField tf_minWinLegth;
     private javax.swing.JTextField tf_minWordLength;
+    private javax.swing.JTextField tf_scalaPolygon;
     private javax.swing.JTextField tf_separatorFile;
     private javax.swing.JTextField tf_windowSec;
     // End of variables declaration//GEN-END:variables
@@ -444,7 +446,6 @@ public class Options extends javax.swing.JDialog {
     }
 
     private void fillSymbolicOptions() {
-        ck_clearHist.setSelected(ConstGeneral.CLEAR_HIST);
         tf_maxSymbol.setText(Parameters.MAX_SYMBOL + "");
         tf_maxWordLegth.setText(Parameters.MAX_WORD_LENGTH + "");
         tf_minWordLength.setText(Parameters.MIN_WORD_LENGTH + "");
@@ -452,6 +453,7 @@ public class Options extends javax.swing.JDialog {
 
     private void fillStreaming() {
         tf_bop.setText(Parameters.BOP_SIZE + "");
+        tf_scalaPolygon.setText(Parameters.SCALA + "");
     }
 
 }
