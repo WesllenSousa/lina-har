@@ -18,6 +18,8 @@ import datasets.timeseries.TimeSeriesLoader2;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 
 
 @RunWith(JUnit4.class)

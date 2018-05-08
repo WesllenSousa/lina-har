@@ -7,7 +7,6 @@ import algorithms.SFA.classification.Classifier;
 import algorithms.SFA.classification.MUSEClassifier;
 import datasets.timeseries.MultiVariateTimeSeries;
 import datasets.timeseries.TimeSeries;
-import datasets.timeseries.TimeSeriesLoader;
 import datasets.timeseries.TimeSeriesLoader2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,8 +64,8 @@ public class MTSClassificationTest {
                             Classifier.DEBUG = false;
 
                             boolean useDerivatives = true;
-                            MultiVariateTimeSeries[] trainSamples = TimeSeriesLoader2.loadMultivariateDatset(train, ConstDataset.SEPARATOR, useDerivatives);
-                            MultiVariateTimeSeries[] testSamples = TimeSeriesLoader2.loadMultivariateDatset(test, ConstDataset.SEPARATOR, useDerivatives);
+                            MultiVariateTimeSeries[] trainSamples = TimeSeriesLoader2.loadMultivariateDataset(train, ConstDataset.SEPARATOR, useDerivatives);
+                            MultiVariateTimeSeries[] testSamples = TimeSeriesLoader2.loadMultivariateDataset(test, ConstDataset.SEPARATOR, useDerivatives);
 
                             MUSEClassifier muse = new MUSEClassifier();
                             MUSEClassifier.BIGRAMS = true;

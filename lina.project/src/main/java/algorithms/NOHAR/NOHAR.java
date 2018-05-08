@@ -6,9 +6,13 @@
 package algorithms.NOHAR;
 
 import algorithms.NOHAR.ADWIN.Adwin;
+import algorithms.NOHAR.Polygon.PolygonInfo;
+import algorithms.NOHAR.Polygon.PolygonLabel;
+import algorithms.NOHAR.PageHinkley.PageHinkley;
 import algorithms.SAX.Params;
 import algorithms.SAX.SAX;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
@@ -18,6 +22,8 @@ import datasets.memory.BufferStreaming;
 import datasets.memory.WordInterval;
 import datasets.memory.WordRecord;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import net.seninp.jmotif.sax.NumerosityReductionStrategy;
@@ -29,17 +35,19 @@ import view.viewControler.SymbolicView;
  */
 public class NOHAR {
 
-    private SymbolicView symbolicView;
+    private final SymbolicView symbolicView;
+    private final Adwin adwin;
+    private final PageHinkley pageHinkley;
+    private final Params params;
 
-    private Adwin adwin;
-    private Params params;
     private WordRecord previousWord;
     private int lastPosPreviusWord = 0;
 
     public NOHAR(SymbolicView symbolicView) {
         this.symbolicView = symbolicView;
 
-        adwin = new Adwin(.01);
+        adwin = new Adwin(.1, Parameters.BOP_SIZE);
+        pageHinkley = new PageHinkley();
         params = new Params(Parameters.WINDOW_SIZE, Parameters.WORD_LENGTH_PAA,
                 Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.EXACT);
     }
@@ -58,13 +66,12 @@ public class NOHAR {
                 //Convert histogram to Polygon
                 Collections.sort(buffer.getHistogram());
                 Polygon polygon = convertHistogramToPolygon(buffer.getHistogram());
-                buffer.getPolygons().add(polygon);
 
                 //Learning
-                learning(buffer);
+                learning(buffer, polygon);
 
                 symbolicView.clearCurrentHistogram(buffer);
-                symbolicView.addPolygons(buffer.getPolygons());
+                symbolicView.addPolygons((ArrayList<PolygonInfo>) buffer.getPolygons());
                 symbolicView.addMarkerGraphLine(position, Color.BLACK);
             }
         }
@@ -74,8 +81,13 @@ public class NOHAR {
      *   Detecção de mudança
      */
     private boolean changeDetected(double currentValue, int position) {
-        if (adwin.setInput(currentValue)) {
-            System.out.println("Change Detected: " + position);
+        if (Parameters.CHANGE_DETECTION == 0) {
+            if (adwin.setInput(currentValue)) {
+                symbolicView.updateLog("Change Detected: " + position);
+                symbolicView.addMarkerGraphLine(position, Color.RED);
+                return true;
+            }
+        } else if (pageHinkley.runStreaming(currentValue, position)) {
             symbolicView.updateLog("Change Detected: " + position);
             symbolicView.addMarkerGraphLine(position, Color.RED);
             return true;
@@ -154,16 +166,16 @@ public class NOHAR {
     public Polygon convertHistogramToPolygon(List<WordRecord> histogram) {
         //Get frequency polygon
         Coordinate[] coords = new Coordinate[histogram.size() + 3];
-        int index = 0, scala = 1;
+        int index = 0;
         for (WordRecord word : histogram) {
-            Coordinate coordinate = new Coordinate((index + 1) * scala, word.getFrequency() * scala);
+            Coordinate coordinate = new Coordinate((index + 1) /** Parameters.SCALA*/, word.getFrequency() /** Parameters.SCALA*/);
             coords[index] = coordinate;
             index++;
         }
         //Close histogram polygon
-        Coordinate coordinate = new Coordinate(index * scala, 0);
+        Coordinate coordinate = new Coordinate(index /** Parameters.SCALA*/, 0);
         coords[index] = coordinate;
-        Coordinate coordinate2 = new Coordinate(1 * scala, 0);
+        Coordinate coordinate2 = new Coordinate(1 /** Parameters.SCALA*/, 0);
         coords[index + 1] = coordinate2;
         coords[index + 2] = coords[0];
 
@@ -177,8 +189,64 @@ public class NOHAR {
     /*
      *   Aprendizagem
      */
-    private void learning(BufferStreaming buffer) {
+    private void learning(BufferStreaming buffer, Polygon pTest) {
 
+        if (buffer.getPolygons().isEmpty()) {
+            newClass(buffer, pTest);
+        } else {
+            boolean updated = false, classified = false;
+            for (PolygonInfo pClass : buffer.getPolygons()) {
+
+                Geometry diffPClass = pClass.getPolygon().difference(pTest);
+
+                if (!diffPClass.isEmpty() && diffPClass.getArea() <= pClass.getPolygon().getArea() * 0.1) { //10%
+                    classify(pClass);
+                    classified = true;
+                } else {
+                    Geometry pClassBorder = PolygonLabel.getPolygonBuffer(pClass.getPolygon(), Parameters.DISTANCE_BORDER);
+                    Geometry pOnlyBorder = pClassBorder.difference(pClass.getPolygon());
+                    Geometry diffTestBorder = pClassBorder.difference(pTest);
+
+                    if (diffTestBorder.getArea() <= pOnlyBorder.getArea()) { //Within
+                        update(pClass, pTest);
+                        updated = true;
+                    }
+                }
+            }
+            if (!classified && !updated) {
+                newClass(buffer, pTest);
+            }
+        }
+    }
+
+    private void classify(PolygonInfo polygon) {
+
+        polygon.setCountClassified(polygon.getCountClassified() + 1);
+        polygon.setCreated(Calendar.getInstance());
+
+        System.out.println("Classify polygon");
+        symbolicView.updateLog("Classify polygon");
+    }
+
+    private void update(PolygonInfo polygon, Polygon pTest) {
+
+        polygon.setPolygon(pTest);
+        polygon.setCountUpdated(polygon.getCountUpdated() + 1);
+        polygon.setCreated(Calendar.getInstance());
+
+        System.out.println("Update polygon");
+        symbolicView.updateLog("Update polygon");
+    }
+
+    private void newClass(BufferStreaming buffer, Polygon pTest) {
+
+        PolygonInfo polygonInfo = new PolygonInfo();
+        polygonInfo.setPolygon(pTest);
+        polygonInfo.setName("new");
+        buffer.getPolygons().add(polygonInfo);
+
+        System.out.println("New polygon");
+        symbolicView.updateLog("New polygon");
     }
 
 }

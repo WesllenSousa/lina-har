@@ -80,14 +80,14 @@ public class PolygonTest {
 
         //Analises entre dois poligonos 
         System.out.println("Analises entre dois poligonos ");
-        System.out.println(polygon1.disjoint(polygon2));
-        System.out.println(polygon1.intersects(polygon2));
-        System.out.println(polygon1.touches(polygon2));
-        System.out.println(polygon1.crosses(polygon2));
-        System.out.println(polygon1.within(polygon2));
-        System.out.println(polygon1.contains(polygon2));
-        System.out.println(polygon1.overlaps(polygon2));
-        System.out.println(polygon1.convexHull());
+        System.out.println("disjoint: " + polygon1.disjoint(polygon2));
+        System.out.println("intersects: " + polygon1.intersects(polygon2));
+        System.out.println("touches: " + polygon1.touches(polygon2));
+        System.out.println("crosses: " + polygon1.crosses(polygon3));
+        System.out.println("within: " + polygon1.within(polygon2));
+        System.out.println("contains: " + polygon1.contains(polygon2));
+        System.out.println("overlaps: " + polygon1.overlaps(polygon2));
+        System.out.println("convexHull: " + polygon1.convexHull());
         System.out.println("===============");
 
         //Propriedades

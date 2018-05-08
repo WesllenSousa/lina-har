@@ -8,7 +8,9 @@ package algorithms.Features;
 import controle.constants.ConstDataset;
 import controle.weka.WekaUtil;
 import datasets.generic.GenericRowBean;
+import datasets.timeseries.TimeSeries;
 import java.util.LinkedList;
+import org.netlib.util.doubleW;
 import util.FileUtil;
 import util.Validation;
 import weka.core.Instance;
@@ -39,9 +41,31 @@ public class DataFusion {
         return magnitude;
     }
 
+    public static double Magnitude(double[] values) {
+        double sum = 0.0;
+        for (int i = 0; i < values.length; i++) {
+            sum += Math.pow(values[i], 2);
+        }
+        return Math.sqrt(sum);
+    }
+
+    public static TimeSeries Magnitude(TimeSeries[] data) {
+        double[] magnitude = new double[data[0].getData().length];
+        for (int j = 0; j < data[0].getData().length; j++) {
+            double sum = 0.0;
+            for (int i = 0; i < data.length; i++) {
+                sum += Math.pow(data[i].getData(j), 2);
+            }
+            magnitude[j] = Math.sqrt(sum);
+        }
+        TimeSeries timeSeries = new TimeSeries();
+        timeSeries.setData(magnitude);
+        return timeSeries;
+    }
+
     public static LinkedList<Double> PCA(String dir, String nameFile) {
         try {
-            
+
             LinkedList<String> columns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR,
                     dir + nameFile);
             WekaUtil wekaUtil = new WekaUtil(dir + nameFile, columns.size());

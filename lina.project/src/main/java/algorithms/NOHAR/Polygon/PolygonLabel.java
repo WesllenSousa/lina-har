@@ -106,16 +106,15 @@ public class PolygonLabel {
         return new Color(r, g, b);
     }
     
-    public Geometry getSmoothedPolygon(com.vividsolutions.jts.geom.Polygon polygon, double fit) {
+    public static Geometry getSmoothedPolygon(com.vividsolutions.jts.geom.Polygon polygon, double fit) {
         return JTS.smooth(polygon, fit);
     }
     
-    public Geometry getPolygonBuffer(com.vividsolutions.jts.geom.Polygon polygon) {
-        int distance = 1;
+    public static Geometry getPolygonBuffer(com.vividsolutions.jts.geom.Polygon polygon, int distanceBorder) {
         BufferOp op = new BufferOp(polygon);
         op.setEndCapStyle(BufferOp.CAP_ROUND);
         op.setQuadrantSegments(4); //ver item 5 doc
-        return op.getResultGeometry(distance);
+        return op.getResultGeometry(distanceBorder);
     }
 
 }

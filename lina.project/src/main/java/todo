@@ -1,16 +1,17 @@
 
-conjunto de palavras diferentes podem gerar a mesma forma
-
 Afazeres de implementação
 1) Selecao de intervalos de palavras na aba de data stream estranho
 
 Polígono de frequência
-1) O ponto médio tem que da um jeito de ordenadar as palavras? para evitar que palavras desordenadas possam alterar a forma do polígono
-2) Da um smothing no poligono para suavisar a forma para erra menos OU fazer um buffer da geometria
-2) http://docs.geotools.org/latest/userguide/library/jts/relate.html#relates
-3) http://docs.geotools.org/latest/userguide/library/jts/geometry.html#creating-a-polygon
+1) http://docs.geotools.org/latest/userguide/library/jts/relate.html#relates
+2) http://docs.geotools.org/latest/userguide/library/jts/geometry.html#creating-a-polygon
 3) https://github.com/locationtech/jts
-3) http://docs.geotools.org/latest/userguide/library/jts/geometry.html#precisionmodel
+4) http://docs.geotools.org/latest/userguide/library/jts/geometry.html#precisionmodel
+
+
+OBS: 
+1) O ponto médio tem que da um jeito de ordenadar as palavras? para evitar que palavras desordenadas possam alterar a forma do polígono
+2) Conjunto de palavras diferentes podem gerar a mesma forma
 
 bilioteca import
 http://docs.geotools.org/latest/userguide/_sources/library/jts/index.rst.txt

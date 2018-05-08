@@ -5,7 +5,7 @@
  */
 package datasets.memory;
 
-import com.vividsolutions.jts.geom.Polygon;
+import algorithms.NOHAR.Polygon.PolygonInfo;
 import controle.constants.Parameters;
 import datasets.timeseries.TimeSeries;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class BufferStreaming {
     private List<WordRecord> histogramOOV = new ArrayList<>();
     private List<List<WordRecord>> histograms = new ArrayList<>();
 
-    private ArrayList<Polygon> polygons = new ArrayList<>();
+    private List<PolygonInfo> polygons = new ArrayList<>();
 
     /*
      *   Geters Setters
@@ -60,11 +60,11 @@ public class BufferStreaming {
         this.histograms = histograms;
     }
 
-    public ArrayList<Polygon> getPolygons() {
+    public List<PolygonInfo> getPolygons() {
         return polygons;
     }
 
-    public void setPolygons(ArrayList<Polygon> polygons) {
+    public void setPolygons(List<PolygonInfo> polygons) {
         this.polygons = polygons;
     }
 

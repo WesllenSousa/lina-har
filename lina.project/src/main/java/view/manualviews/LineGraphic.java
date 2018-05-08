@@ -87,6 +87,13 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
         }
     }
 
+    public void prepareStream() {
+        //Adiciona a time series a coleção de time series 
+        seriesCollection.removeAllSeries();
+        seriesCollection.addSeries(new XYSeries(0));
+        fitAxis();
+    }
+
     public void prepareStream(TimeSeries[] data) {
         if (data.length > 0) {
             LinkedList<XYSeries> timeSeries = new LinkedList<>();
