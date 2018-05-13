@@ -17,9 +17,6 @@ public class ConstGeneral {
     /**
      * Screen Parameters
      */
-    public static int OFFSET = 1;
-    public static boolean NUM_REDUCTION = true;
-    public static boolean ALINGMENT = true;
     public static boolean HORIZONTAL_FORMAT_NOISE = true;
 
     public static int PP_EDIT = 2;
@@ -121,5 +118,10 @@ public class ConstGeneral {
     public static String DF_MAGNITUDE = "Magnitude";
     public static String DF_PCA = "PCA";
     public static String DF_KALMAN = "Kalman";
+    
+    /**
+     * Streaming
+     */
+    public static boolean SHOW_GRAPHIC = true;
 
 }

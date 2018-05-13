@@ -37,16 +37,18 @@ public class Parameters {
     public static int MAX_SYMBOL = 4;
     public static int MAX_WORD_LENGTH = 8;
     public static int MIN_WORD_LENGTH = 4;
-    
+
     /**
      * NOHAR
      */
+    public static int OFFSET = 1;
+    public static boolean NUM_REDUCTION = true;
+    public static boolean ALINGMENT = true;
     public static int CHANGE_DETECTION = 1;
-    
     public static int BOP_SIZE = 250;
-    
+
     //Só serve para exibicao na GUI
-    public static int SCALA = 5;  
+    public static int SCALA = 5;
     public static int DISTANCE_BORDER = 1;
 
 }

@@ -36,10 +36,6 @@ public class TimeSeriesLoader {
 
     public static TimeSeries[] loadVerticalData(String limitStr, String dataFileName, Boolean normalize, String separator) {
 
-        ArrayList<TimeSeries> samples = new ArrayList<>();
-        double[] ts = new double[]{};
-        Double label = null;
-
         // check if everything is ready
         if ((null == dataFileName) || dataFileName.isEmpty()) {
             System.out.println("unable to load data - no data source selected yet");
@@ -121,7 +117,9 @@ public class TimeSeriesLoader {
         }
 
         // convert to simple doubles array and clean the variable
-        if (!(dataset.isEmpty())) {
+        ArrayList<TimeSeries> samples = new ArrayList<>();
+        double[] ts = new double[]{};
+        if (!dataset.isEmpty()) {
             for (LinkedList<Double> coluna : dataset) {
                 ts = new double[coluna.size()];
                 int i = 0;
@@ -129,8 +127,10 @@ public class TimeSeriesLoader {
                     ts[i] = value;
                     i++;
                 }
-                TimeSeries timeSeries = new TimeSeries(ts, label);
-                timeSeries.norm(normalize);
+                TimeSeries timeSeries = new TimeSeries(ts, null);
+                if (normalize) {
+                    timeSeries.norm();
+                }
                 samples.add(timeSeries);
             }
         }
@@ -227,7 +227,7 @@ public class TimeSeriesLoader {
         } else {
             System.out.println("Data format incorrect!");
         }
-        
+
         MultiVariateTimeSeries[] m = samplesMD.toArray(new MultiVariateTimeSeries[]{});
         return (derivatives) ? getDerivatives(m) : m;
     }
@@ -251,7 +251,9 @@ public class TimeSeriesLoader {
 
         if (j > 0) {
             TimeSeries ts = new TimeSeries(Arrays.copyOfRange(data, 0, j));
-            ts.norm(normalize);
+            if (normalize) {
+                ts.norm();
+            }
             return ts;
         }
         return null;

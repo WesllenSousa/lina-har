@@ -17,9 +17,12 @@ public class PolygonInfo {
 
     private Polygon polygon;
     private String name;
+    private double classe;
     private int countClassified = 0;
     private int countUpdated = 0;
     private Calendar created = Calendar.getInstance();
+    private Calendar updated;
+    private int weight;
 
     public Polygon getPolygon() {
         return polygon;
@@ -35,6 +38,14 @@ public class PolygonInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getClasse() {
+        return classe;
+    }
+
+    public void setClasse(double classe) {
+        this.classe = classe;
     }
 
     public int getCountClassified() {
@@ -61,11 +72,27 @@ public class PolygonInfo {
         this.created = created;
     }
 
+    public Calendar getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Calendar updated) {
+        this.updated = updated;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 37 * hash + Objects.hashCode(this.polygon);
-        hash = 37 * hash + Objects.hashCode(this.name);
+        hash = 37 * hash + Objects.hashCode(this.classe);
         hash = 37 * hash + this.countClassified;
         hash = 37 * hash + this.countUpdated;
         hash = 37 * hash + Objects.hashCode(this.created);
@@ -90,7 +117,7 @@ public class PolygonInfo {
         if (this.countUpdated != other.countUpdated) {
             return false;
         }
-        if (!Objects.equals(this.name, other.name)) {
+        if (!Objects.equals(this.classe, other.classe)) {
             return false;
         }
         if (!Objects.equals(this.polygon, other.polygon)) {
@@ -104,7 +131,7 @@ public class PolygonInfo {
 
     @Override
     public String toString() {
-        return "PolygonInfo{" + "name=" + name + ", countClassified=" + countClassified + ", countUpdated=" + countUpdated + ", created=" + created + '}';
+        return "Classe=" + classe + ", countClassified=" + countClassified + ", countUpdated=" + countUpdated;
     }
 
 }

@@ -19,11 +19,14 @@ public class BufferStreaming {
 
     private TimeSeries subSequence = new TimeSeries();
 
+    private int countChangeHistogram = 0; //count the amount of change in the subsequence that generate the histogram
     private List<WordRecord> histogram = new ArrayList<>();
-    private List<WordRecord> histogramOOV = new ArrayList<>();
+    private List<WordRecord> histogramOOV = new ArrayList<>(); //Maybe polygonUnknown
     private List<List<WordRecord>> histograms = new ArrayList<>();
 
-    private List<PolygonInfo> polygons = new ArrayList<>();
+    private List<PolygonInfo> polygonKnown = new ArrayList<>();
+    private List<PolygonInfo> polygonNovel = new ArrayList<>();
+    private List<PolygonInfo> polygonUnknown = new ArrayList<>();
 
     /*
      *   Geters Setters
@@ -60,12 +63,32 @@ public class BufferStreaming {
         this.histograms = histograms;
     }
 
-    public List<PolygonInfo> getPolygons() {
-        return polygons;
+    public List<PolygonInfo> getPolygonKnown() {
+        return polygonKnown;
     }
 
-    public void setPolygons(List<PolygonInfo> polygons) {
-        this.polygons = polygons;
+    public void setPolygonKnown(List<PolygonInfo> polygonKnown) {
+        this.polygonKnown = polygonKnown;
+    }
+
+    public List<PolygonInfo> getPolygonNovel() {
+        return polygonNovel;
+    }
+
+    public void setPolygonNovel(List<PolygonInfo> polygonNovel) {
+        this.polygonNovel = polygonNovel;
+    }
+
+    public List<PolygonInfo> getPolygonUnknown() {
+        return polygonUnknown;
+    }
+
+    public void setPolygonUnknown(List<PolygonInfo> polygonUnknown) {
+        this.polygonUnknown = polygonUnknown;
+    }
+
+    public int getCountChangeHistogram() {
+        return countChangeHistogram;
     }
 
     /*
@@ -84,6 +107,18 @@ public class BufferStreaming {
         wordInterval.setPositionInit(initialPosition);
         wordInterval.setPositionEnd(initialPosition + Parameters.WINDOW_SIZE);
         return wordInterval;
+    }
+
+    public int getAmoutPolygons() {
+        return polygonKnown.size() + polygonNovel.size() + polygonUnknown.size();
+    }
+
+    public void resetChangeHistogram() {
+        countChangeHistogram = 0;
+    }
+
+    public void incrementChangeHistogram() {
+        countChangeHistogram++;
     }
 
 }

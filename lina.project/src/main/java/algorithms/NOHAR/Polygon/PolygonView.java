@@ -20,7 +20,7 @@ public class PolygonView extends javax.swing.JFrame {
     public PolygonView() {
         initComponents();
 
-        polygonLabel = new PolygonLabel(getWidth(), getHeight());
+        polygonLabel = new PolygonLabel();
     }
 
     /**
@@ -82,7 +82,7 @@ public class PolygonView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     public void drawPolygons(ArrayList<Geometry> geometries) {
         setLayout(new FlowLayout());
-        getContentPane().add(polygonLabel.drawPolygons(geometries, 1));
+        getContentPane().add(polygonLabel.drawPolygons(geometries, "", 1));
         revalidate();
         repaint();
     }

@@ -61,7 +61,7 @@ public class PageHinkley {
 
         if (PHu >= threshold || PHl >= threshold) {
             resetVariables();
-            System.out.println(" >> " + position + " - " + threshold + "\n");
+//            System.out.println(" >> " + position + " - " + threshold + "\n");
             return true;
         }
 

@@ -264,7 +264,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane13" alignment="0" pref="765" max="32767" attributes="0"/>
+                          <Component id="jScrollPane13" alignment="0" pref="668" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -353,7 +353,7 @@
                                   <Layout>
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="jScrollPane1" pref="279" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane1" pref="264" max="32767" attributes="0"/>
                                       </Group>
                                     </DimensionLayout>
                                     <DimensionLayout dim="1">
@@ -423,7 +423,7 @@
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" alignment="0" attributes="0">
                                                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                                                  <Component id="jScrollPane18" pref="106" max="32767" attributes="0"/>
+                                                  <Component id="jScrollPane18" pref="99" max="32767" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                       <Component id="bt_signalSelectionLeft1" max="32767" attributes="0"/>
@@ -432,7 +432,7 @@
                                                       <Component id="bt_signalSelectionRight" alignment="0" max="32767" attributes="0"/>
                                                   </Group>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jScrollPane19" pref="107" max="32767" attributes="0"/>
+                                                  <Component id="jScrollPane19" pref="99" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -556,7 +556,7 @@
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="tf_windowSec" pref="158" max="32767" attributes="0"/>
+                                                  <Component id="tf_windowSec" pref="143" max="32767" attributes="0"/>
                                                   <Component id="tf_frequency" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
@@ -669,7 +669,7 @@
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jScrollPane5" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane5" pref="100" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="bt_filtersLeft" alignment="0" max="32767" attributes="0"/>
@@ -678,7 +678,7 @@
                                                   <Component id="bt_signalSelectionLeft4" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane22" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane22" pref="99" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                     </DimensionLayout>
@@ -795,7 +795,7 @@
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jScrollPane8" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane8" pref="100" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="bt_filtersLeft1" alignment="0" max="32767" attributes="0"/>
@@ -804,7 +804,7 @@
                                                   <Component id="bt_signalSelectionLeft12" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane23" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane23" pref="99" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                     </DimensionLayout>
@@ -954,7 +954,7 @@
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jScrollPane20" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane20" pref="100" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="bt_timeFeatureLeft" alignment="0" max="32767" attributes="0"/>
@@ -963,7 +963,7 @@
                                                   <Component id="bt_timeFeatureRight" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane24" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane24" pref="99" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                     </DimensionLayout>
@@ -1093,7 +1093,7 @@
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jScrollPane21" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane21" pref="100" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="bt_frequencyFeatureLeft" alignment="0" max="32767" attributes="0"/>
@@ -1102,7 +1102,7 @@
                                                   <Component id="bt_signalSelectionLeft10" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane25" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane25" pref="99" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                     </DimensionLayout>
@@ -1224,7 +1224,7 @@
                                     <DimensionLayout dim="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jScrollPane6" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane6" pref="100" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="bt_principalFeatureLeft" alignment="0" max="32767" attributes="0"/>
@@ -1233,7 +1233,7 @@
                                                   <Component id="bt_signalSelectionLeft6" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane27" pref="107" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane27" pref="99" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                     </DimensionLayout>
@@ -1413,12 +1413,12 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="759" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="777" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="735" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="638" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -1490,7 +1490,7 @@
                               <Component id="pn_trainTest" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel36" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="182" max="32767" attributes="0"/>
+                              <EmptySpace pref="85" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1712,7 +1712,7 @@
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane12" alignment="0" pref="714" max="32767" attributes="0"/>
+                              <Component id="jScrollPane12" alignment="0" pref="617" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -1758,7 +1758,7 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane7" pref="519" max="32767" attributes="0"/>
+                              <Component id="jScrollPane7" pref="537" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Component id="bt_saveResultTrain" min="-2" pref="85" max="-2" attributes="0"/>
@@ -1862,7 +1862,7 @@
                               <Component id="jPanel30" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel29" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="403" max="32767" attributes="0"/>
+                              <EmptySpace pref="306" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2003,12 +2003,12 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane11" alignment="0" pref="752" max="32767" attributes="0"/>
+                              <Component id="jScrollPane11" alignment="0" pref="770" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane11" alignment="0" pref="740" max="32767" attributes="0"/>
+                              <Component id="jScrollPane11" alignment="0" pref="643" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -2076,7 +2076,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane4" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jScrollPane4" alignment="0" pref="668" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -2527,7 +2527,7 @@
                                 </Component>
                                 <Component class="javax.swing.JTextField" name="tf_scalaPolygon">
                                   <Properties>
-                                    <Property name="text" type="java.lang.String" value="5"/>
+                                    <Property name="text" type="java.lang.String" value="3"/>
                                   </Properties>
                                 </Component>
                                 <Component class="javax.swing.JLabel" name="jLabel19">
@@ -2559,12 +2559,7 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pn_graphicLine" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="jTabbedPane1" min="-2" pref="303" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTabbedPane2" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jPanel33" alignment="0" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
@@ -2572,10 +2567,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="pn_graphicLine" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jTabbedPane1" max="32767" attributes="0"/>
-                                  <Component id="jTabbedPane2" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="jPanel33" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2603,175 +2595,224 @@
                         </DimensionLayout>
                       </Layout>
                     </Container>
-                    <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+                    <Container class="javax.swing.JPanel" name="jPanel33">
 
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
-                      <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane16">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                              <JTabbedPaneConstraints tabName="Log">
-                                <Property name="tabTitle" type="java.lang.String" value="Log"/>
-                              </JTabbedPaneConstraints>
-                            </Constraint>
-                          </Constraints>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JTextArea" name="ta_symbolic">
-                              <Properties>
-                                <Property name="columns" type="int" value="20"/>
-                                <Property name="rows" type="int" value="5"/>
-                              </Properties>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                        <Container class="javax.swing.JPanel" name="jPanel17">
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                              <JTabbedPaneConstraints tabName="Words">
-                                <Property name="tabTitle" type="java.lang.String" value="Words"/>
-                              </JTabbedPaneConstraints>
-                            </Constraint>
-                          </Constraints>
-
-                          <Layout>
-                            <DimensionLayout dim="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jScrollPane3" pref="298" max="32767" attributes="0"/>
-                                  <Component id="lb_tableInfo" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                            </DimensionLayout>
-                            <DimensionLayout dim="1">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jScrollPane3" pref="515" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="lb_tableInfo" min="-2" max="-2" attributes="0"/>
+                      <Layout>
+                        <DimensionLayout dim="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="ck_showGraphic" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jTabbedPane1" min="-2" pref="303" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jTabbedPane2" max="32767" attributes="0"/>
+                                      </Group>
                                   </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
                               </Group>
-                            </DimensionLayout>
-                          </Layout>
+                          </Group>
+                        </DimensionLayout>
+                        <DimensionLayout dim="1">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="ck_showGraphic" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jTabbedPane2" max="32767" attributes="0"/>
+                                      <Component id="jTabbedPane1" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                        </DimensionLayout>
+                      </Layout>
+                      <SubComponents>
+                        <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
                           <SubComponents>
-                            <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+                            <Container class="javax.swing.JScrollPane" name="jScrollPane16">
                               <AuxValues>
                                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                               </AuxValues>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                                  <JTabbedPaneConstraints tabName="Log">
+                                    <Property name="tabTitle" type="java.lang.String" value="Log"/>
+                                  </JTabbedPaneConstraints>
+                                </Constraint>
+                              </Constraints>
 
                               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                               <SubComponents>
-                                <Component class="javax.swing.JTable" name="tb_words">
+                                <Component class="javax.swing.JTextArea" name="ta_symbolic">
                                   <Properties>
-                                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                                      <Table columnCount="4" rowCount="4">
-                                        <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                                        <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                                        <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                                        <Column editable="true" title="Title 4" type="java.lang.Object"/>
-                                      </Table>
-                                    </Property>
+                                    <Property name="columns" type="int" value="20"/>
+                                    <Property name="rows" type="int" value="5"/>
                                   </Properties>
-                                  <Events>
-                                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tb_wordsMouseClicked"/>
-                                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tb_wordsKeyReleased"/>
-                                  </Events>
                                 </Component>
                               </SubComponents>
                             </Container>
-                            <Component class="javax.swing.JLabel" name="lb_tableInfo">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="jLabel1"/>
-                              </Properties>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JTabbedPane" name="jTabbedPane2">
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
-                      <SubComponents>
-                        <Container class="javax.swing.JPanel" name="pn_currentHistogram">
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                              <JTabbedPaneConstraints tabName="Current Histogram">
-                                <Property name="tabTitle" type="java.lang.String" value="Current Histogram"/>
-                              </JTabbedPaneConstraints>
-                            </Constraint>
-                          </Constraints>
-
-                          <Layout>
-                            <DimensionLayout dim="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="437" max="32767" attributes="0"/>
-                              </Group>
-                            </DimensionLayout>
-                            <DimensionLayout dim="1">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="538" max="32767" attributes="0"/>
-                              </Group>
-                            </DimensionLayout>
-                          </Layout>
-                        </Container>
-                        <Container class="javax.swing.JScrollPane" name="sc_polygons">
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                              <JTabbedPaneConstraints tabName="Histograms">
-                                <Property name="tabTitle" type="java.lang.String" value="Histograms"/>
-                              </JTabbedPaneConstraints>
-                            </Constraint>
-                          </Constraints>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Container class="javax.swing.JPanel" name="pn_histograms">
+                            <Container class="javax.swing.JPanel" name="jPanel17">
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                                  <JTabbedPaneConstraints tabName="Words">
+                                    <Property name="tabTitle" type="java.lang.String" value="Words"/>
+                                  </JTabbedPaneConstraints>
+                                </Constraint>
+                              </Constraints>
 
                               <Layout>
                                 <DimensionLayout dim="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <EmptySpace min="0" pref="435" max="32767" attributes="0"/>
+                                      <Component id="jScrollPane3" pref="298" max="32767" attributes="0"/>
+                                      <Component id="lb_tableInfo" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <EmptySpace min="0" pref="536" max="32767" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jScrollPane3" pref="368" max="32767" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lb_tableInfo" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                                 </DimensionLayout>
                               </Layout>
+                              <SubComponents>
+                                <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+                                  <AuxValues>
+                                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                                  </AuxValues>
+
+                                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                                  <SubComponents>
+                                    <Component class="javax.swing.JTable" name="tb_words">
+                                      <Properties>
+                                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                                          <Table columnCount="4" rowCount="4">
+                                            <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                                            <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                                            <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                                            <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                                          </Table>
+                                        </Property>
+                                      </Properties>
+                                      <Events>
+                                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tb_wordsMouseClicked"/>
+                                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tb_wordsKeyReleased"/>
+                                      </Events>
+                                    </Component>
+                                  </SubComponents>
+                                </Container>
+                                <Component class="javax.swing.JLabel" name="lb_tableInfo">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Size"/>
+                                  </Properties>
+                                </Component>
+                              </SubComponents>
                             </Container>
                           </SubComponents>
                         </Container>
-                        <Container class="javax.swing.JScrollPane" name="sc_histograms">
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                              <JTabbedPaneConstraints tabName="Polygons">
-                                <Property name="tabTitle" type="java.lang.String" value="Polygons"/>
-                              </JTabbedPaneConstraints>
-                            </Constraint>
-                          </Constraints>
+                        <Container class="javax.swing.JTabbedPane" name="jTabbedPane2">
 
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
                           <SubComponents>
-                            <Container class="javax.swing.JPanel" name="pn_polygons">
+                            <Container class="javax.swing.JPanel" name="pn_currentHistogram">
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                                  <JTabbedPaneConstraints tabName="Current Histogram">
+                                    <Property name="tabTitle" type="java.lang.String" value="Current Histogram"/>
+                                  </JTabbedPaneConstraints>
+                                </Constraint>
+                              </Constraints>
 
                               <Layout>
                                 <DimensionLayout dim="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <EmptySpace min="0" pref="435" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="443" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <EmptySpace min="0" pref="536" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="391" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                               </Layout>
                             </Container>
+                            <Container class="javax.swing.JScrollPane" name="sc_histograms">
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                                  <JTabbedPaneConstraints tabName="Histograms">
+                                    <Property name="tabTitle" type="java.lang.String" value="Histograms"/>
+                                  </JTabbedPaneConstraints>
+                                </Constraint>
+                              </Constraints>
+
+                              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                              <SubComponents>
+                                <Container class="javax.swing.JPanel" name="pn_histograms">
+
+                                  <Layout>
+                                    <DimensionLayout dim="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <EmptySpace min="0" pref="441" max="32767" attributes="0"/>
+                                      </Group>
+                                    </DimensionLayout>
+                                    <DimensionLayout dim="1">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <EmptySpace min="0" pref="389" max="32767" attributes="0"/>
+                                      </Group>
+                                    </DimensionLayout>
+                                  </Layout>
+                                </Container>
+                              </SubComponents>
+                            </Container>
+                            <Container class="javax.swing.JScrollPane" name="sc_polygons">
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                                  <JTabbedPaneConstraints tabName="Polygons">
+                                    <Property name="tabTitle" type="java.lang.String" value="Polygons"/>
+                                  </JTabbedPaneConstraints>
+                                </Constraint>
+                              </Constraints>
+
+                              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                              <SubComponents>
+                                <Container class="javax.swing.JPanel" name="pn_polygons">
+
+                                  <Layout>
+                                    <DimensionLayout dim="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <EmptySpace min="0" pref="441" max="32767" attributes="0"/>
+                                      </Group>
+                                    </DimensionLayout>
+                                    <DimensionLayout dim="1">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <EmptySpace min="0" pref="389" max="32767" attributes="0"/>
+                                      </Group>
+                                    </DimensionLayout>
+                                  </Layout>
+                                </Container>
+                              </SubComponents>
+                            </Container>
                           </SubComponents>
                         </Container>
+                        <Component class="javax.swing.JCheckBox" name="ck_showGraphic">
+                          <Properties>
+                            <Property name="selected" type="boolean" value="true"/>
+                            <Property name="text" type="java.lang.String" value="Show graphic"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ck_showGraphicActionPerformed"/>
+                          </Events>
+                        </Component>
                       </SubComponents>
                     </Container>
                   </SubComponents>

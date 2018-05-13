@@ -21,5 +21,11 @@ Notas de Inovação
     1) Alinhamento das palavras (Sequitur, MED - PNL, palavras com letras iguais e ordenadas, shotgun?)
         1.1) OBS: O simples fato dos histogramas não se preocuparem com a ordem das palavras o autor fala que é livre de alinhamento!
         1.2) Palavras com intervalos sobreposto são iguais a palavras desalinhadas
-    2) Adicionar informação de contexto a cada palavra. Exemplo, media do Page Hinkley.    
+    2) Adicionar informação de contexto a cada palavra. Exemplo, media do Page Hinkley.  
+
+Ideias:
+A fase de detectar mudanças verifica a coesão dos dados. 
+  1) Se houve mudança resetar o buffer: pode ser o inicio de uma nova atividade - reseta o buffer
+                                        Se for ruido descarta o intervalo com ruido e continua
+     Senão continua alimentando o buffer
     

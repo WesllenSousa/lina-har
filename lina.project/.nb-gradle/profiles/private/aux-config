@@ -6,14 +6,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/NOHAR.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/Features/DataFusion.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/datasets/timeseries/TimeSeriesLoader.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/manualviews/LineGraphic.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/datasets/timeseries/TimeSeries.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/datasets/memory/BufferStreaming.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/todo</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/SymbolicView.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/Polygon/PolygonTest.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/Test.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/Principal.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/Polygon/PolygonLabel.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/Polygon/PolygonInfo.java</file>
       </group>
     </open-files>
@@ -22,10 +19,10 @@
       <group>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/NOHAR.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/Features/DataFusion.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/manualviews/LineGraphic.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/constants/Parameters.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/datasets/timeseries/TimeSeriesLoader.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/datasets/memory/BufferStreaming.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/todo</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/SymbolicView.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/Test.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/Principal.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/Polygon/PolygonLabel.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/Polygon/PolygonInfo.java</file>

@@ -43,21 +43,21 @@ public class SymbolicView {
         this.lineGraphic.prepareStream();
 
         //Access each position from time series - streaming
-        for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position += ConstGeneral.OFFSET) {
+        for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position += Parameters.OFFSET) {
 
             //Get array subsequence
             TimeSeries[] subsequences = getSubsequences(data, position, norm);
 
-            boolean statusFusion = true;
-            TimeSeries subsequence = subsequences[0]; //Caso tenha varias coordenadas pega a primeira!!! isso eh so para teste, o que importa é a magnitude
-            if (statusFusion) {
-                subsequence = DataFusion.Magnitude(subsequences);
-            }
+            //label nao ta muito certo
+            TimeSeries labels = subsequences[subsequences.length - 1];
+            TimeSeries subsequence = DataFusion.Magnitude(subsequences);//====== atencao! metodo alterado
+
             bufferStreaming.setSubSequence(subsequence);
 
             //Get current value and process 
             double currentValue = subsequence.getData(subsequence.getLength() - 1);
-            processStream(currentValue, position);
+            double label = labels.getData(labels.getLength() - 1); //===========Pega o ultimo label: Verificar a maior quantidade de labels
+            processStream(currentValue, position, label);
 
             //values to GUI
             double[] values = new double[1];
@@ -79,23 +79,27 @@ public class SymbolicView {
         return subsequences;
     }
 
-    private void processStream(double currentValue, int position) {
+    private void processStream(double currentValue, int position, double label) {
         if (nohar != null) {
-            nohar.runStream(bufferStreaming, currentValue, position);
+            nohar.runStream(bufferStreaming, currentValue, position, label);
         }
     }
 
     /*
      *   GUI
      */
-    public void addDataGraphLine(double[] values) {
-        //Add values in GUI
-        lineGraphic.addData(values);
-        lineGraphic.espera(10);
+    private void addDataGraphLine(double[] values) {
+        if (ConstGeneral.SHOW_GRAPHIC) {
+            //Add values in GUI
+            lineGraphic.addData(values);
+            lineGraphic.espera(10);
+        }
     }
 
     public void addMarkerGraphLine(int position, Color color) {
-        lineGraphic.addMarker(position, position, color);
+        if (ConstGeneral.SHOW_GRAPHIC) {
+            lineGraphic.addMarker(position, position, color);
+        }
     }
 
     public void updateCurrentHistogram(BufferStreaming buffer, WordRecord word) {
@@ -104,14 +108,13 @@ public class SymbolicView {
     }
 
     public void clearCurrentHistogram(BufferStreaming buffer) {
-        buffer.getHistograms().add(buffer.getHistogram());
-        ConstGeneral.TELA_PRINCIPAL.addHistograms(buffer.getHistograms());
         buffer.setHistogram(new ArrayList<>());
         ConstGeneral.TELA_PRINCIPAL.clearCurrentHistogram();
     }
 
-    public void addPolygons(ArrayList<PolygonInfo> polygons) {
-        ConstGeneral.TELA_PRINCIPAL.addPolygons(polygons);
+    public void addHistogramsAndPolygons(BufferStreaming buffer) {
+        ConstGeneral.TELA_PRINCIPAL.addHistograms(buffer.getHistograms());
+        ConstGeneral.TELA_PRINCIPAL.addPolygons((ArrayList<PolygonInfo>) buffer.getPolygonUnknown());
     }
 
     public void updateLog(String text) {

@@ -27,12 +27,7 @@ import org.geotools.geometry.jts.JTS;
  */
 public class PolygonLabel {
 
-    private Integer width, heigth;
-
-    public PolygonLabel(Integer width, Integer heigth) { //, ArrayList<Polygon> polygons
-        this.width = width;
-        this.heigth = heigth;
-    }
+    private Integer width = 0, heigth = 0;
 
     private BufferedImage getBufferImage() {
         BufferedImage surface = new BufferedImage(width, heigth, BufferedImage.OPAQUE);
@@ -42,32 +37,33 @@ public class PolygonLabel {
         return surface;
     }
 
-    private JLabel getLabel(BufferedImage surface, String tip) {
-        JLabel label = new JLabel(new ImageIcon(surface));
+    private JLabel getLabel(BufferedImage surface, String classe) {
+        JLabel label = new JLabel(classe, new ImageIcon(surface), SwingConstants.LEFT);
         Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
         label.setBorder(border);
-        label.setToolTipText(tip);
         label.setHorizontalAlignment(SwingConstants.LEFT);
         label.setVerticalAlignment(SwingConstants.CENTER);
         return label;
     }
 
-    private JLabel drawBuffer(Graphics g, BufferedImage surface, String tip) {
+    private JLabel drawBuffer(Graphics g, BufferedImage surface, String classe) {
         if (g != null) {
             g.drawImage(surface, 0, 0, null);
             g.dispose();
-            return getLabel(surface, tip);
+            return getLabel(surface, classe);
         } else {
             System.out.println("Erro drawBuffer");
             return null;
         }
     }
 
-    public JLabel drawPolygons(ArrayList<Geometry> geometries, int scala) {
+    public JLabel drawPolygons(ArrayList<Geometry> geometries, String classe, int scala) {
+        width = 0;
+        heigth = 0;
+
         ArrayList<Polygon> polygons = new ArrayList<>();
-        String tip = "Classe";
         for (Geometry geometry : geometries) {
-            //tip += geometry.getBoundary() + "\n";
+            calcDimension(geometry, scala);
             Polygon p = new Polygon();
             for (Coordinate coord : geometry.getCoordinates()) {
                 p.addPoint(Math.round((float) coord.x) * scala, Math.round((float) coord.y) * scala);
@@ -81,10 +77,14 @@ public class PolygonLabel {
             g.setColor(randomColor());
             g.drawPolygon(p);
         }
-        return drawBuffer(g, surface, tip);
+        return drawBuffer(g, surface, classe);
     }
 
     public JLabel drawPolygon(Geometry geometry, int scala) {
+        width = 0;
+        heigth = 0;
+        calcDimension(geometry, scala);
+
         Polygon polygon = new Polygon();
         String tip = geometry.getBoundary().toText();
         for (Coordinate coord : geometry.getCoordinates()) {
@@ -105,16 +105,33 @@ public class PolygonLabel {
         int b = random.nextInt(100);
         return new Color(r, g, b);
     }
-    
+
     public static Geometry getSmoothedPolygon(com.vividsolutions.jts.geom.Polygon polygon, double fit) {
         return JTS.smooth(polygon, fit);
     }
-    
+
     public static Geometry getPolygonBuffer(com.vividsolutions.jts.geom.Polygon polygon, int distanceBorder) {
         BufferOp op = new BufferOp(polygon);
-        op.setEndCapStyle(BufferOp.CAP_ROUND);
+        op.setEndCapStyle(BufferOp.CAP_SQUARE);
         op.setQuadrantSegments(4); //ver item 5 doc
         return op.getResultGeometry(distanceBorder);
+    }
+
+    private void calcDimension(Geometry geometry, int scala) {
+        if (geometry.getNumPoints() > width) {
+            width = geometry.getNumPoints() * scala;
+        }
+        heigth = maxValueHeight(geometry) * scala;
+    }
+
+    private int maxValueHeight(Geometry geometry) {
+        double majorValue = 0;
+        for (int i = 0; i < geometry.getCoordinates().length; i++) {
+            if (geometry.getCoordinates()[i].y > majorValue) {
+                majorValue = geometry.getCoordinates()[i].y;
+            }
+        }
+        return Math.round((float) majorValue + 2);
     }
 
 }
