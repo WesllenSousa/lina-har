@@ -9,6 +9,7 @@ import algorithms.NOHAR.Polygon.PolygonInfo;
 import controle.constants.Parameters;
 import datasets.timeseries.TimeSeries;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class BufferStreaming {
     private int countChangeHistogram = 0; //count the amount of change in the subsequence that generate the histogram
     private List<WordRecord> histogram = new ArrayList<>();
     private List<WordRecord> histogramOOV = new ArrayList<>(); //Maybe polygonUnknown
-    private List<List<WordRecord>> histograms = new ArrayList<>();
+    private LinkedList<List<WordRecord>> histograms = new LinkedList<>();
 
     private List<PolygonInfo> polygonKnown = new ArrayList<>();
     private List<PolygonInfo> polygonNovel = new ArrayList<>();
@@ -59,7 +60,7 @@ public class BufferStreaming {
         return histograms;
     }
 
-    public void setHistograms(List<List<WordRecord>> histograms) {
+    public void setHistograms(LinkedList<List<WordRecord>> histograms) {
         this.histograms = histograms;
     }
 
@@ -109,7 +110,7 @@ public class BufferStreaming {
         return wordInterval;
     }
 
-    public int getAmoutPolygons() {
+    public int getAmountPolygons() {
         return polygonKnown.size() + polygonNovel.size() + polygonUnknown.size();
     }
 

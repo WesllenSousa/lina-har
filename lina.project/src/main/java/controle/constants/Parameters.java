@@ -50,5 +50,6 @@ public class Parameters {
     //Só serve para exibicao na GUI
     public static int SCALA = 5;
     public static int DISTANCE_BORDER = 1;
+    public static double SMOOTHED = 0.5;
 
 }

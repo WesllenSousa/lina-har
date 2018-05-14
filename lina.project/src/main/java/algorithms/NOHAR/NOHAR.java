@@ -42,6 +42,8 @@ public class NOHAR {
     private int lastPosPreviusWord = 0;
     private double label = -1;
 
+    private EvaluationNohar eval;
+
     public NOHAR(SymbolicView symbolicView) {
         this.symbolicView = symbolicView;
 
@@ -49,6 +51,11 @@ public class NOHAR {
         pageHinkley = new PageHinkley();
         params = new Params(Parameters.WINDOW_SIZE, Parameters.WORD_LENGTH_PAA,
                 Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.EXACT);
+        eval = new EvaluationNohar();
+    }
+
+    public EvaluationNohar getEval() {
+        return eval;
     }
 
     public void runStream(BufferStreaming buffer, double currentValue, int position, double label) {
@@ -65,7 +72,10 @@ public class NOHAR {
             if (position % Parameters.BOP_SIZE == 0) { //*** change threhold to BOP 
 
                 if (buffer.getCountChangeHistogram() == 0) {
-                    buffer.getHistograms().add(buffer.getHistogram());//============ deletar os ultimos histogramas para limpar o buffer
+                    buffer.getHistograms().add(buffer.getHistogram());
+                    if (buffer.getHistograms().size() > 2) { //=================deleta os ultimos histogramas para limpar o buffer
+                        buffer.getHistograms().remove(0);
+                    }
 
                     //Convert histogram to Polygon
                     Collections.sort(buffer.getHistogram());
@@ -196,20 +206,25 @@ public class NOHAR {
      *   Aprendizagem
      */
     private void learning(BufferStreaming buffer, Polygon pTest) {
-        if (buffer.getHistograms().isEmpty()
-                || (!verififyPolygons(buffer.getPolygonKnown(), pTest)
-                && !verififyPolygons(buffer.getPolygonNovel(), pTest)
-                && !verififyPolygons(buffer.getPolygonUnknown(), pTest))) {
-            PolygonInfo polygonInfo = new PolygonInfo();
-            polygonInfo.setPolygon(pTest);
-            polygonInfo.setName("" + buffer.getAmoutPolygons());
-            polygonInfo.setClasse(label);
-            buffer.getPolygonUnknown().add(polygonInfo);
-            symbolicView.updateLog("New unknown polygon: " + polygonInfo.getName());
+//        Geometry pSmoothed = PolygonLabel.getSmoothedPolygon(pTest, Parameters.SMOOTHED);
+        if (buffer.getHistograms().isEmpty()) {
+            buffer.getPolygonUnknown().add(newPolygon(buffer, pTest));
+        } else if (!verififyPolygons(buffer.getPolygonKnown(), pTest)) {
+            if (verififyPolygons(buffer.getPolygonNovel(), pTest)) {
+                checkNovel(buffer);
+            } else if (!checkUnknown(buffer, pTest)) {
+                buffer.getPolygonUnknown().add(newPolygon(buffer, pTest));
+            }
         }
-        checkUnknown(buffer);
-        checkNovel(buffer);
         checkForget();
+    }
+
+    private PolygonInfo newPolygon(BufferStreaming buffer, Polygon pTest) {
+        PolygonInfo polygonInfo = new PolygonInfo();
+        polygonInfo.setPolygon(pTest);
+        polygonInfo.setName("" + buffer.getAmountPolygons());
+        symbolicView.updateLog("New unknown polygon: " + polygonInfo.getName());
+        return polygonInfo;
     }
 
     private boolean verififyPolygons(List<PolygonInfo> polygons, Polygon pTest) {
@@ -254,9 +269,8 @@ public class NOHAR {
             pMaior = pTest;
             pMenor = pModel;
         }
-
         Geometry diff = pMaior.difference(pMenor);
-        if (diff.getArea() <= pMaior.getArea() * 0.2) {//=======================
+        if (diff.getArea() <= pMaior.getArea() * 0.25) {//======================
             if (pMenor.within(pMaior)) {
                 return 1;
             } else {
@@ -267,53 +281,63 @@ public class NOHAR {
     }
 
     private void classify(PolygonInfo polygon) {
-        polygon.setCountClassified(polygon.getCountClassified() + 1);
+        polygon.incrementCountClassified();
         symbolicView.updateLog("Classify polygon: " + polygon.getName() + " class: " + polygon.getClasse());
         if (polygon.getClasse() == label) {
+            eval.incrementHists();
             symbolicView.updateLog(">> Acertou");
         } else {
+            eval.incrementErrors();
             symbolicView.updateLog(">> Errou: " + label);
         }
     }
 
     private void update(PolygonInfo pModel, Polygon pTest) {
-        Geometry union = pModel.getPolygon().union(pTest); //===================
-        pModel.setPolygon((Polygon) union);
-        pModel.setCountUpdated(pModel.getCountUpdated() + 1);
+        //Geometry union = pModel.getPolygon().union(pTest); //===================
+        pModel.setPolygon(pTest);
+        pModel.incrementCountUpdated();
         pModel.setUpdated(Calendar.getInstance());
         symbolicView.updateLog("Update polygon: " + pModel.getName() + " class: " + pModel.getClasse());
         if (pModel.getClasse() == label) {
+            eval.incrementHists();
             symbolicView.updateLog(">> Acertou");
         } else {
+            eval.incrementErrors();
             symbolicView.updateLog(">> Errou: " + label);
         }
     }
 
     //Before active learnig
-    private void checkUnknown(BufferStreaming buffer) {
-        //Pensar em um merge aqui
+    private boolean checkUnknown(BufferStreaming buffer, Polygon pTest) {
+        //Pensar em um merge aqui?
         for (int i = 0; i < buffer.getPolygonUnknown().size(); i++) {
             PolygonInfo pUnknown = buffer.getPolygonUnknown().get(i);
-            if (pUnknown.getCountClassified() > 3) { //=========================
-                //Active learning
-                //Messages msg = new Messages();
-                //msg.inserirDadosComValorInicial("Inform the activity!", pUnknown.getName());
+            if (testPolygon(pUnknown.getPolygon(), pTest) > 0) {
+                pUnknown.incrementCountClassified();
                 pUnknown.setClasse(label);
-                buffer.getPolygonNovel().add(pUnknown);
-                symbolicView.updateLog("New novel polygon: " + pUnknown.getName() + " class: " + pUnknown.getClasse());
-                buffer.getPolygonUnknown().remove(i);
+                if (pUnknown.getCountClassified() > 3) { //=====================
+                    //Active learning
+                    //Messages msg = new Messages();
+                    //msg.inserirDadosComValorInicial("Inform the activity!", pUnknown.getName());
+                    buffer.getPolygonNovel().add(pUnknown);
+                    buffer.getPolygonUnknown().remove(i);
+                    symbolicView.updateLog("New novel polygon: " + pUnknown.getName() + " class: " + pUnknown.getClasse());
+                }
+                return true;
             }
         }
+        return false;
     }
 
     //After active learning
     private void checkNovel(BufferStreaming buffer) {
         for (int i = 0; i < buffer.getPolygonNovel().size(); i++) {
             PolygonInfo pNovel = buffer.getPolygonNovel().get(i);
-            if (pNovel.getCountClassified() > 5) { //Testar
+            if (pNovel.getCountClassified() > 5) { //===========================
                 buffer.getPolygonKnown().add(pNovel);
                 symbolicView.updateLog("New known polygon: " + pNovel.getName() + " class: " + pNovel.getClasse());
                 buffer.getPolygonNovel().remove(i);
+                break;
             }
         }
     }

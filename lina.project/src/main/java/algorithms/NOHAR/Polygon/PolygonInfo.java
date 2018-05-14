@@ -52,16 +52,8 @@ public class PolygonInfo {
         return countClassified;
     }
 
-    public void setCountClassified(int countClassified) {
-        this.countClassified = countClassified;
-    }
-
     public int getCountUpdated() {
         return countUpdated;
-    }
-
-    public void setCountUpdated(int countUpdated) {
-        this.countUpdated = countUpdated;
     }
 
     public Calendar getCreated() {
@@ -132,6 +124,14 @@ public class PolygonInfo {
     @Override
     public String toString() {
         return "Classe=" + classe + ", countClassified=" + countClassified + ", countUpdated=" + countUpdated;
+    }
+
+    public void incrementCountClassified() {
+        countClassified++;
+    }
+
+    public void incrementCountUpdated() {
+        countUpdated++;
     }
 
 }

@@ -113,7 +113,7 @@ public class PolygonLabel {
     public static Geometry getPolygonBuffer(com.vividsolutions.jts.geom.Polygon polygon, int distanceBorder) {
         BufferOp op = new BufferOp(polygon);
         op.setEndCapStyle(BufferOp.CAP_SQUARE);
-        op.setQuadrantSegments(4); //ver item 5 doc
+        op.setQuadrantSegments(4); //ver item 5.3 JTS Developer Guide - Quadrant Approximation
         return op.getResultGeometry(distanceBorder);
     }
 
