@@ -125,7 +125,9 @@ public class BOSSMDStackClassifier extends ClassifierMD {
         ArrayList<Integer> windows = new ArrayList<>();
         double count = Math.sqrt(max);
         double distance = ((max - min) / count);
-        //distance = 1;
+        if (distance == 0) {
+            distance = 1;
+        }
         for (int c = min; c <= max; c += distance) {
             windows.add(c);
         }

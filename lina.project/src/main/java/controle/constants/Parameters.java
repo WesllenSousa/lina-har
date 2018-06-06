@@ -32,11 +32,11 @@ public class Parameters {
     /**
      * BOSS Parameters
      */
-    public static int MAX_WINDOW_LENGTH = 80;
+    public static int MAX_WINDOW_LENGTH = 50;
     public static int MIN_WINDOW_LENGTH = 50;
     public static int MAX_SYMBOL = 4;
     public static int MAX_WORD_LENGTH = 8;
-    public static int MIN_WORD_LENGTH = 4;
+    public static int MIN_WORD_LENGTH = 8;
 
     /**
      * NOHAR

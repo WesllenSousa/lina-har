@@ -128,7 +128,7 @@ public class NOHAR {
         if (word == null) {
             return;
         }
-        //Redução de numerozidade por EXACT Strategy 
+        //Redução de numerosidade por EXACT Strategy 
         if (Parameters.NUM_REDUCTION && previousWord != null && lastPosPreviusWord < Parameters.WINDOW_SIZE
                 && previousWord.getWord().equals(word.getWord())) {
             //For word that repeat always, we update the frequency
@@ -293,8 +293,8 @@ public class NOHAR {
     }
 
     private void update(PolygonInfo pModel, Polygon pTest) {
-        //Geometry union = pModel.getPolygon().union(pTest); //===================
-        pModel.setPolygon(pTest);
+        Geometry pUnion = pModel.getPolygon().union(pTest); //==================
+        pModel.setPolygon((Polygon) pUnion);
         pModel.incrementCountUpdated();
         pModel.setUpdated(Calendar.getInstance());
         symbolicView.updateLog("Update polygon: " + pModel.getName() + " class: " + pModel.getClasse());

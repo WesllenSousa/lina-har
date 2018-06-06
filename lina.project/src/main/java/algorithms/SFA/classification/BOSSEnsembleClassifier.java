@@ -89,15 +89,15 @@ public class BOSSEnsembleClassifier extends Classifier {
 
         for (boolean normMean : NORMALIZATION) {
             // train the shotgun models for different window lengths
-            Ensemble<BOSSModel> model = fitEnsemble(windows, normMean, trainSamples);
-            Double[] labels = predict(model, trainSamples);
+            Ensemble<BOSSModel> m = fitEnsemble(windows, normMean, trainSamples);
+            Double[] labels = predict(m, trainSamples);
             Predictions pred = evalLabels(trainSamples, labels);
 
-            if (model == null || bestCorrectTraining < pred.correct.get()) {
+            if (m == null || bestCorrectTraining < pred.correct.get()) {
                 bestCorrectTraining = pred.correct.get();
-                bestScore = model.getHighestScoringModel().score;
+                bestScore = m.getHighestScoringModel().score;
                 bestScore.training = pred.correct.get();
-                this.model = model;
+                this.model = m;
             }
         }
 
@@ -269,11 +269,11 @@ public class BOSSEnsembleClassifier extends Classifier {
 
         return score("BOSS", testSamples, testLabels, usedLengths);
     }
-    
+
     @Override
     public String toString() {
         BOSS boss = model.getHighestScoringModel().boss;
-        
+
         return "Name: " + model.getHighestScoringModel().name + "\n"
                 //+ "Score - " + score.toString() + "\n"
                 + "Word: " + boss.maxF + "\n"

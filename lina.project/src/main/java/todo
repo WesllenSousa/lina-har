@@ -1,6 +1,7 @@
 
 Afazeres de implementação
 1) Selecao de intervalos de palavras na aba de data stream estranho
+2) Revisar o algoritmo de alinhamento
 
 Polígono de frequência
 1) http://docs.geotools.org/latest/userguide/library/jts/relate.html#relates

@@ -180,7 +180,7 @@ public class TrainView {
 
     private void executeTrainSaxVsm(String train, String test, String algorithm) {
         int window = (int) (Parameters.MIN_WINDOW_LENGTH);
-        Params params = new Params(window, Parameters.WORD_LENGTH_PAA,
+        Params params = new Params(window, Parameters.MAX_WORD_LENGTH,
                 Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD,
                 NumerosityReductionStrategy.EXACT);
 

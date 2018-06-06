@@ -3208,7 +3208,7 @@ public class Principal extends javax.swing.JFrame {
         LinkedList<GenericRowBean> data = HandleGenericDataset.bufferFileInMemory(ConstDataset.SEPARATOR,
                 ConstDataset.DS_RAW + lt_rawData.getSelectedValue());
         HandleGenericDataset.setColumnClass(data);
-        HandleGenericDataset.setColumnTimestamp(data);
+        //HandleGenericDataset.setColumnTimestamp(data);
 
         for (int i = 0; i < lt_signalSelectionLeft.getModel().getSize(); i++) {
             String signalUnselected = lt_signalSelectionLeft.getModel().getElementAt(i);
