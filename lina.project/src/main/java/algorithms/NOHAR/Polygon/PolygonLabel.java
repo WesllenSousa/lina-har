@@ -7,7 +7,6 @@ package algorithms.NOHAR.Polygon;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.operation.buffer.BufferOp;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
@@ -19,7 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import org.geotools.geometry.jts.JTS;
 
 /**
  *
@@ -104,17 +102,6 @@ public class PolygonLabel {
         int g = random.nextInt(100);
         int b = random.nextInt(100);
         return new Color(r, g, b);
-    }
-
-    public static Geometry getSmoothedPolygon(com.vividsolutions.jts.geom.Polygon polygon, double fit) {
-        return JTS.smooth(polygon, fit);
-    }
-
-    public static Geometry getPolygonBuffer(com.vividsolutions.jts.geom.Polygon polygon, int distanceBorder) {
-        BufferOp op = new BufferOp(polygon);
-        op.setEndCapStyle(BufferOp.CAP_SQUARE);
-        op.setQuadrantSegments(4); //ver item 5.3 JTS Developer Guide - Quadrant Approximation
-        return op.getResultGeometry(distanceBorder);
     }
 
     private void calcDimension(Geometry geometry, int scala) {

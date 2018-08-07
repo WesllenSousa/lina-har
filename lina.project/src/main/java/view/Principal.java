@@ -1,5 +1,7 @@
 package view;
 
+import algorithms.NOHAR.BOP;
+import algorithms.NOHAR.Polygon.PolygonHandle;
 import algorithms.NOHAR.Polygon.PolygonInfo;
 import algorithms.NOHAR.Polygon.PolygonLabel;
 import com.vividsolutions.jts.geom.Geometry;
@@ -252,10 +254,6 @@ public class Principal extends javax.swing.JFrame {
         rd_adwin = new javax.swing.JRadioButton();
         rd_pageHinkley = new javax.swing.JRadioButton();
         jPanel28 = new javax.swing.JPanel();
-        jLabel18 = new javax.swing.JLabel();
-        tf_scalaPolygon = new javax.swing.JTextField();
-        jLabel19 = new javax.swing.JLabel();
-        tf_tolerance = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         pn_graphicLine = new javax.swing.JPanel();
         jPanel33 = new javax.swing.JPanel();
@@ -270,13 +268,7 @@ public class Principal extends javax.swing.JFrame {
         pn_currentHistogram = new javax.swing.JPanel();
         sc_histograms = new javax.swing.JScrollPane();
         pn_histograms = new javax.swing.JPanel();
-        sc_polygons = new javax.swing.JScrollPane();
-        pn_polygons = new javax.swing.JPanel();
         ck_showGraphic = new javax.swing.JCheckBox();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jLabel6 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btt_openRawData = new javax.swing.JButton();
@@ -1669,41 +1661,15 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel28.setBorder(javax.swing.BorderFactory.createTitledBorder("Learning"));
 
-        jLabel18.setText("Scala Polygon:");
-
-        tf_scalaPolygon.setText("3");
-
-        jLabel19.setText("Tolerance Polygon:");
-
-        tf_tolerance.setText("1");
-
         javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
         jPanel28.setLayout(jPanel28Layout);
         jPanel28Layout.setHorizontalGroup(
             jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel28Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tf_scalaPolygon)
-                    .addComponent(tf_tolerance))
-                .addContainerGap())
+            .addGap(0, 261, Short.MAX_VALUE)
         );
         jPanel28Layout.setVerticalGroup(
             jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel28Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel18)
-                    .addComponent(tf_scalaPolygon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19)
-                    .addComponent(tf_tolerance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -1844,23 +1810,6 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Histograms", sc_histograms);
 
-        pn_polygons.setAutoscrolls(true);
-
-        javax.swing.GroupLayout pn_polygonsLayout = new javax.swing.GroupLayout(pn_polygons);
-        pn_polygons.setLayout(pn_polygonsLayout);
-        pn_polygonsLayout.setHorizontalGroup(
-            pn_polygonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 453, Short.MAX_VALUE)
-        );
-        pn_polygonsLayout.setVerticalGroup(
-            pn_polygonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 389, Short.MAX_VALUE)
-        );
-
-        sc_polygons.setViewportView(pn_polygons);
-
-        jTabbedPane2.addTab("Polygons", sc_polygons);
-
         ck_showGraphic.setSelected(true);
         ck_showGraphic.setText("Show graphic");
         ck_showGraphic.addActionListener(new java.awt.event.ActionListener() {
@@ -1868,33 +1817,6 @@ public class Principal extends javax.swing.JFrame {
                 ck_showGraphicActionPerformed(evt);
             }
         });
-
-        gp_showPolygon.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Unknown");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
-            }
-        });
-
-        gp_showPolygon.add(jRadioButton2);
-        jRadioButton2.setText("Novel");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
-            }
-        });
-
-        gp_showPolygon.add(jRadioButton3);
-        jRadioButton3.setText("Known");
-        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setText("Show:");
 
         javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
         jPanel33.setLayout(jPanel33Layout);
@@ -1905,31 +1827,14 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ck_showGraphic))
-                .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel33Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton3)
-                        .addContainerGap())
-                    .addGroup(jPanel33Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTabbedPane2))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane2))
         );
         jPanel33Layout.setVerticalGroup(
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel33Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ck_showGraphic)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3)
-                    .addComponent(jLabel6))
+                .addComponent(ck_showGraphic)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane2)
@@ -2704,24 +2609,6 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ck_showGraphicActionPerformed
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        ConstGeneral.P_UNKNOWN = true;
-        ConstGeneral.P_NOVEL = false;
-        ConstGeneral.P_KNOWN = false;
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
-
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        ConstGeneral.P_UNKNOWN = false;
-        ConstGeneral.P_NOVEL = true;
-        ConstGeneral.P_KNOWN = false;
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
-
-    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
-        ConstGeneral.P_UNKNOWN = false;
-        ConstGeneral.P_NOVEL = false;
-        ConstGeneral.P_KNOWN = true;
-    }//GEN-LAST:event_jRadioButton3ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bg_graphic;
     private javax.swing.JButton bt_filtersLeft;
@@ -2775,13 +2662,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -2824,9 +2708,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
@@ -2894,7 +2775,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel pn_graphicLine;
     private javax.swing.JPanel pn_histograms;
     private javax.swing.JPanel pn_menu;
-    private javax.swing.JPanel pn_polygons;
     private javax.swing.JPanel pn_trainTest;
     private javax.swing.JPopupMenu pp_box;
     private javax.swing.JPopupMenu pp_classifier;
@@ -2918,7 +2798,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JRadioButton rd_numReductionYes;
     private javax.swing.JRadioButton rd_pageHinkley;
     private javax.swing.JScrollPane sc_histograms;
-    private javax.swing.JScrollPane sc_polygons;
     private javax.swing.JSlider sl_overlap;
     private javax.swing.JScrollPane sp_trainTest;
     private org.jdesktop.swingx.JXBusyLabel sx_busy;
@@ -2932,12 +2811,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JRadioButton td_normNo;
     private javax.swing.JTextField tf_bopSize;
     private javax.swing.JTextField tf_frequency;
-    private javax.swing.JTextField tf_scalaPolygon;
     private javax.swing.JTextField tf_symOffset;
     private javax.swing.JTextField tf_symSymbolAlphabet;
     private javax.swing.JTextField tf_symWindow;
     private javax.swing.JTextField tf_symWordLength;
-    private javax.swing.JTextField tf_tolerance;
     private javax.swing.JTextField tf_windowSec;
     private javax.swing.JTextPane tp_resultClassification;
     private javax.swing.JTextPane tp_resultTrain;
@@ -3345,9 +3222,6 @@ public class Principal extends javax.swing.JFrame {
         }
 
         Parameters.BOP_SIZE = Integer.parseInt(tf_bopSize.getText());
-
-        Parameters.SCALA = Integer.parseInt(tf_scalaPolygon.getText());
-        Parameters.DISTANCE_BORDER = Integer.parseInt(tf_tolerance.getText());
     }
 
     private void addLineGraphic() {
@@ -3368,15 +3242,15 @@ public class Principal extends javax.swing.JFrame {
         pn_currentHistogram.updateUI();
     }
 
-    public void addHistograms(List<List<WordRecord>> histograms) {
+    public void addHistograms(List<BOP> BOPs) {
         pn_histograms.removeAll();
         pn_histograms.setLayout(new BoxLayout(pn_histograms, BoxLayout.Y_AXIS));
-        for (List<WordRecord> histogram : histograms) {
+        for (BOP bop : BOPs) {
             BarGraphic barGraphic = new BarGraphic("", false);
             //Dimension d = new Dimension(sc_histograms.getWidth() / histograms.size(), sc_histograms.getHeight() / histograms.size());
             Dimension d = new Dimension(300, 200);
             barGraphic.setPreferredSize(d);
-            for (WordRecord word : histogram) {
+            for (WordRecord word : bop.getHistogram()) {
                 barGraphic.addUpdateData(word.getWord(), word.getFrequency());
             }
             pn_histograms.add(barGraphic);
@@ -3385,28 +3259,7 @@ public class Principal extends javax.swing.JFrame {
         pn_histograms.updateUI();
         sc_histograms.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
     }
-
-    public void addPolygons(ArrayList<PolygonInfo> polygons) {
-        pn_polygons.removeAll();
-        pn_polygons.setLayout(new BoxLayout(pn_polygons, BoxLayout.Y_AXIS));
-        for (PolygonInfo polygon : polygons) {
-            //PolygonLabel panel = new PolygonLabel(pn_polygons.getWidth() / polygons.size(), pn_polygons.getHeight() / polygons.size());
-            PolygonLabel panel = new PolygonLabel();
-            //Print smoothed and buffer polygon
-            if (true) {
-                ArrayList<Geometry> ps = new ArrayList<>();
-                ps.add(polygon.getPolygon());
-//                ps.add(PolygonLabel.getSmoothedPolygon(polygon.getPolygon(), Parameters.SMOOTHED));
-                ps.add(PolygonLabel.getPolygonBuffer(polygon.getPolygon(), Parameters.DISTANCE_BORDER));
-                pn_polygons.add(panel.drawPolygons(ps, polygon.getName(), Parameters.SCALA));
-            } else {
-                pn_polygons.add(panel.drawPolygon(polygon.getPolygon(), Parameters.SCALA));
-            }
-        }
-        pn_polygons.updateUI();
-        sc_polygons.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-    }
-
+    
     private void paintWordInterval() {
         if (lineGraphic != null) {
             WordRecord wordRecord = (WordRecord) wordTableModel.getValueAt(tb_words.getSelectedRow(), -1);
@@ -3430,8 +3283,6 @@ public class Principal extends javax.swing.JFrame {
 
         pn_histograms.removeAll();
         pn_histograms.updateUI();
-        pn_polygons.removeAll();
-        pn_polygons.updateUI();
     }
 
     public void clearCurrentHistogram() {

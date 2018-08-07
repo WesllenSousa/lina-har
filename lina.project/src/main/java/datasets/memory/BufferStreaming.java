@@ -5,12 +5,10 @@
  */
 package datasets.memory;
 
-import algorithms.NOHAR.Polygon.PolygonInfo;
+import algorithms.NOHAR.BOP;
 import controle.constants.Parameters;
 import datasets.timeseries.TimeSeries;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  *
@@ -20,14 +18,12 @@ public class BufferStreaming {
 
     private TimeSeries subSequence = new TimeSeries();
 
-    private int countChangeHistogram = 0; //count the amount of change in the subsequence that generate the histogram
-    private List<WordRecord> histogram = new ArrayList<>();
-    private List<WordRecord> histogramOOV = new ArrayList<>(); //Maybe polygonUnknown
-    private LinkedList<List<WordRecord>> histograms = new LinkedList<>();
+    private BOP BOP = new BOP();
+    private LinkedList<BOP> bufferBOP = new LinkedList<>();
 
-    private List<PolygonInfo> polygonKnown = new ArrayList<>();
-    private List<PolygonInfo> polygonNovel = new ArrayList<>();
-    private List<PolygonInfo> polygonUnknown = new ArrayList<>();
+    private LinkedList<BOP> listUBOP = new LinkedList<>();
+    private LinkedList<BOP> listNovelBOP = new LinkedList<>();
+    private LinkedList<BOP> model = new LinkedList<>();
 
     /*
      *   Geters Setters
@@ -40,56 +36,44 @@ public class BufferStreaming {
         this.subSequence = subSequence;
     }
 
-    public List<WordRecord> getHistogram() {
-        return histogram;
+    public BOP getBOP() {
+        return BOP;
     }
 
-    public void setHistogram(List<WordRecord> histogram) {
-        this.histogram = histogram;
+    public void setBOP(BOP BOP) {
+        this.BOP = BOP;
     }
 
-    public List<WordRecord> getHistogramOOV() {
-        return histogramOOV;
+    public LinkedList<BOP> getBufferBOP() {
+        return bufferBOP;
     }
 
-    public void setHistogramOOV(List<WordRecord> histogramOOV) {
-        this.histogramOOV = histogramOOV;
+    public void setBufferBOP(LinkedList<BOP> bufferBOP) {
+        this.bufferBOP = bufferBOP;
     }
 
-    public List<List<WordRecord>> getHistograms() {
-        return histograms;
+    public LinkedList<BOP> getListUBOP() {
+        return listUBOP;
     }
 
-    public void setHistograms(LinkedList<List<WordRecord>> histograms) {
-        this.histograms = histograms;
+    public void setListUBOP(LinkedList<BOP> listUBOP) {
+        this.listUBOP = listUBOP;
     }
 
-    public List<PolygonInfo> getPolygonKnown() {
-        return polygonKnown;
+    public LinkedList<BOP> getListNovelBOP() {
+        return listNovelBOP;
     }
 
-    public void setPolygonKnown(List<PolygonInfo> polygonKnown) {
-        this.polygonKnown = polygonKnown;
+    public void setListNovelBOP(LinkedList<BOP> listNovelBOP) {
+        this.listNovelBOP = listNovelBOP;
     }
 
-    public List<PolygonInfo> getPolygonNovel() {
-        return polygonNovel;
+    public LinkedList<BOP> getModel() {
+        return model;
     }
 
-    public void setPolygonNovel(List<PolygonInfo> polygonNovel) {
-        this.polygonNovel = polygonNovel;
-    }
-
-    public List<PolygonInfo> getPolygonUnknown() {
-        return polygonUnknown;
-    }
-
-    public void setPolygonUnknown(List<PolygonInfo> polygonUnknown) {
-        this.polygonUnknown = polygonUnknown;
-    }
-
-    public int getCountChangeHistogram() {
-        return countChangeHistogram;
+    public void setModel(LinkedList<BOP> model) {
+        this.model = model;
     }
 
     /*
@@ -108,18 +92,6 @@ public class BufferStreaming {
         wordInterval.setPositionInit(initialPosition);
         wordInterval.setPositionEnd(initialPosition + Parameters.WINDOW_SIZE);
         return wordInterval;
-    }
-
-    public int getAmountPolygons() {
-        return polygonKnown.size() + polygonNovel.size() + polygonUnknown.size();
-    }
-
-    public void resetChangeHistogram() {
-        countChangeHistogram = 0;
-    }
-
-    public void incrementChangeHistogram() {
-        countChangeHistogram++;
     }
 
 }

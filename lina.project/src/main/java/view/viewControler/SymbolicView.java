@@ -6,16 +6,14 @@
 package view.viewControler;
 
 import algorithms.Features.DataFusion;
+import algorithms.NOHAR.BOP;
 import algorithms.NOHAR.NOHAR;
-import algorithms.NOHAR.Polygon.PolygonInfo;
 import controle.constants.ConstGeneral;
 import controle.constants.Parameters;
 import datasets.memory.BufferStreaming;
 import datasets.memory.WordRecord;
 import datasets.timeseries.TimeSeries;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
 import view.manualviews.BarGraphic;
 import view.manualviews.LineGraphic;
 
@@ -49,7 +47,6 @@ public class SymbolicView {
             //Get array subsequence
             TimeSeries[] subsequences = getSubsequences(data, position, norm);
 
-            //label nao ta muito certo
             TimeSeries labels = subsequences[subsequences.length - 1];
             TimeSeries subsequence = DataFusion.Magnitude(subsequences);//====== atencao! metodo alterado
 
@@ -57,7 +54,8 @@ public class SymbolicView {
 
             //Get current value and process 
             double currentValue = subsequence.getData(subsequence.getLength() - 1);
-            double label = classMoreFrequency(labels);
+            //double label = classMoreFrequency(labels);
+            double label = labels.getData(labels.getLength() - 1);
             processStream(currentValue, position, label);
 
             //values to GUI
@@ -86,6 +84,7 @@ public class SymbolicView {
         return subsequences;
     }
 
+    /*
     public Double classMoreFrequency(TimeSeries labels) {
         HashMap<Double, Integer> frequency = new HashMap<>();
         for (int i = 0; i < labels.getLength(); i++) {
@@ -107,10 +106,11 @@ public class SymbolicView {
         }
         return classe;
     }
-
+     */
     private void processStream(double currentValue, int position, double label) {
         if (nohar != null) {
-            nohar.runStream(bufferStreaming, currentValue, position, label);
+            //System.out.println(position + ") " + label);
+            nohar.runStream(currentValue, position, label);
         }
     }
 
@@ -133,23 +133,21 @@ public class SymbolicView {
 
     public void updateCurrentHistogram(BufferStreaming buffer, WordRecord word) {
         barGraphic.addUpdateData(word.getWord(), word.getFrequency());
-        ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, buffer.getHistogram().size());
+        ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, buffer.getBufferBOP().size());
     }
 
-    public void clearCurrentHistogram(BufferStreaming buffer) {
-        buffer.setHistogram(new ArrayList<>());
-        ConstGeneral.TELA_PRINCIPAL.clearCurrentHistogram();
-    }
-
-    public void addHistogramsAndPolygons(BufferStreaming buffer) {
-        ConstGeneral.TELA_PRINCIPAL.addHistograms(buffer.getHistograms());
-        if (ConstGeneral.P_UNKNOWN) {
-            ConstGeneral.TELA_PRINCIPAL.addPolygons((ArrayList<PolygonInfo>) buffer.getPolygonUnknown());
-        } else if (ConstGeneral.P_NOVEL) {
-            ConstGeneral.TELA_PRINCIPAL.addPolygons((ArrayList<PolygonInfo>) buffer.getPolygonNovel());
-        } else if (ConstGeneral.P_KNOWN) {
-            ConstGeneral.TELA_PRINCIPAL.addPolygons((ArrayList<PolygonInfo>) buffer.getPolygonKnown());
+    public void addHistograms() {
+        //Clean buffer excess
+        bufferStreaming.getBufferBOP().add(bufferStreaming.getBOP());
+        if (bufferStreaming.getBufferBOP().size() > 3) {
+            bufferStreaming.getBufferBOP().remove(0);
         }
+        ConstGeneral.TELA_PRINCIPAL.addHistograms(bufferStreaming.getBufferBOP());
+    }
+
+    public void clearCurrentHistogram() {
+        bufferStreaming.setBOP(new BOP());
+        ConstGeneral.TELA_PRINCIPAL.clearCurrentHistogram();
     }
 
     private void printEvaluation() {
@@ -159,6 +157,10 @@ public class SymbolicView {
 
     public void updateLog(String text) {
         ConstGeneral.TELA_PRINCIPAL.updateSymbolicLog(text);
+    }
+
+    public BufferStreaming getBuffer() {
+        return bufferStreaming;
     }
 
 }

@@ -2,6 +2,8 @@
 Afazeres de implementação
 1) Selecao de intervalos de palavras na aba de data stream estranho
 2) Revisar o algoritmo de alinhamento
+3) Trocar MDBOSS Stack para MBOSS
+4) Experimento com variacao do offset
 
 Polígono de frequência
 1) http://docs.geotools.org/latest/userguide/library/jts/relate.html#relates

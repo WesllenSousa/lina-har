@@ -52,7 +52,7 @@ public class DataFusion {
         double[] magnitude = new double[data[0].getData().length];
         for (int j = 0; j < data[0].getData().length; j++) {
             double sum = 0.0;
-            //-1 = ganbiarra para o NOHAR = pq a classe é a ultima coluna, e o calculo da mag nao inclui a classe
+            //data.length - 1 = ganbiarra para o NOHAR = pq a classe é a ultima coluna, e o calculo da mag nao inclui a classe
             for (int i = 0; i < data.length - 1; i++) {
                 sum += Math.pow(data[i].getData(j), 2);
             }

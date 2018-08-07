@@ -1,4 +1,5 @@
 
+import algorithms.NOHAR.Polygon.PolygonHandle;
 import algorithms.NOHAR.Polygon.PolygonLabel;
 import algorithms.NOHAR.Polygon.PolygonView;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -45,7 +46,7 @@ public class Test {
 
         //Process
         int distance = 1;
-        Polygon buffer = (Polygon) PolygonLabel.getPolygonBuffer(polygon1, distance);
+        Polygon buffer = (Polygon) PolygonHandle.getPolygonBuffer(polygon1, distance);
         Polygon diffP = (Polygon) buffer.difference(polygon2);
 
 //        System.out.println("intersects: " + polygon1.intersection(polygon2).getArea());
