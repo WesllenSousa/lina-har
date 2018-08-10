@@ -7,7 +7,9 @@ package algorithms.NOHAR;
 
 import datasets.memory.WordRecord;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -24,6 +26,24 @@ public class BOP {
 
     private double entropy;
 
+    public void incrementCountUnk() {
+        countUnk++;
+    }
+
+    public void incrementCountNovel() {
+        countNovel++;
+    }
+
+    public void updateWeight() {
+    }
+
+    public void orderWordsHistogram() {
+        Collections.sort(histogram);
+    }
+
+    /*
+        Getters and Setters
+     */
     public List<WordRecord> getHistogram() {
         return histogram;
     }
@@ -55,5 +75,35 @@ public class BOP {
     public float getWeight() {
         return weight;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 61 * hash + Objects.hashCode(this.histogram);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BOP other = (BOP) obj;
+        if (!Objects.equals(this.histogram, other.histogram)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "BOP{" + "label=" + label + '}';
+    }
+
 }

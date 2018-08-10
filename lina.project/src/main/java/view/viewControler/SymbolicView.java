@@ -42,7 +42,7 @@ public class SymbolicView {
         this.lineGraphic.prepareStream();
 
         //Access each position from time series - streaming
-        for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position += Parameters.OFFSET) {
+        for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position++) {
 
             //Get array subsequence
             TimeSeries[] subsequences = getSubsequences(data, position, norm);
@@ -131,15 +131,15 @@ public class SymbolicView {
         }
     }
 
-    public void updateCurrentHistogram(BufferStreaming buffer, WordRecord word) {
+    public void updateCurrentHistogram(WordRecord word) {
         barGraphic.addUpdateData(word.getWord(), word.getFrequency());
-        ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, buffer.getBufferBOP().size());
+        ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, bufferStreaming.getBufferBOP().size());
     }
 
     public void addHistograms() {
         //Clean buffer excess
         bufferStreaming.getBufferBOP().add(bufferStreaming.getBOP());
-        if (bufferStreaming.getBufferBOP().size() > 3) {
+        if (bufferStreaming.getBufferBOP().size() > 5) {
             bufferStreaming.getBufferBOP().remove(0);
         }
         ConstGeneral.TELA_PRINCIPAL.addHistograms(bufferStreaming.getBufferBOP());

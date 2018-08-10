@@ -238,12 +238,6 @@ public class Principal extends javax.swing.JFrame {
         tf_symSymbolAlphabet = new javax.swing.JTextField();
         tf_symWindow = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        rd_numReductionYes = new javax.swing.JRadioButton();
-        rd_numReductionNo = new javax.swing.JRadioButton();
-        jLabel10 = new javax.swing.JLabel();
-        rd_alingmentYes = new javax.swing.JRadioButton();
-        rd_alingmentNo = new javax.swing.JRadioButton();
         jLabel12 = new javax.swing.JLabel();
         rd_normYes = new javax.swing.JRadioButton();
         td_normNo = new javax.swing.JRadioButton();
@@ -1493,7 +1487,7 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel4.setText("Offset:");
 
-        tf_symOffset.setText("1");
+        tf_symOffset.setText("6");
 
         tf_symWordLength.setText("8");
 
@@ -1506,24 +1500,6 @@ public class Principal extends javax.swing.JFrame {
         tf_symWindow.setText("50");
 
         jLabel1.setText("Windows:");
-
-        jLabel9.setText("N. reduction:");
-
-        gp_numerosityReduction.add(rd_numReductionYes);
-        rd_numReductionYes.setSelected(true);
-        rd_numReductionYes.setText("Yes");
-
-        gp_numerosityReduction.add(rd_numReductionNo);
-        rd_numReductionNo.setText("No");
-
-        jLabel10.setText("Alingment:");
-
-        gp_alingment.add(rd_alingmentYes);
-        rd_alingmentYes.setSelected(true);
-        rd_alingmentYes.setText("Yes");
-
-        gp_alingment.add(rd_alingmentNo);
-        rd_alingmentNo.setText("No");
 
         jLabel12.setText("Normalized:");
 
@@ -1541,8 +1517,6 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel26Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1555,15 +1529,9 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(tf_symWordLength)
                     .addComponent(tf_symOffset)
                     .addGroup(jPanel26Layout.createSequentialGroup()
-                        .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(rd_alingmentYes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rd_numReductionYes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rd_normYes))
+                        .addComponent(rd_normYes)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(td_normNo, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
-                            .addComponent(rd_numReductionNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rd_alingmentNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(td_normNo, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)))
                 .addGap(16, 16, 16))
         );
         jPanel26Layout.setVerticalGroup(
@@ -1588,18 +1556,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rd_normYes)
-                    .addComponent(td_normNo))
-                .addGap(5, 5, 5)
-                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rd_numReductionYes)
-                    .addComponent(rd_numReductionNo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rd_alingmentYes))
-                    .addComponent(rd_alingmentNo)))
+                    .addComponent(td_normNo)))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Histogram"));
@@ -1665,11 +1622,11 @@ public class Principal extends javax.swing.JFrame {
         jPanel28.setLayout(jPanel28Layout);
         jPanel28Layout.setHorizontalGroup(
             jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 261, Short.MAX_VALUE)
+            .addGap(0, 252, Short.MAX_VALUE)
         );
         jPanel28Layout.setVerticalGroup(
             jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 34, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -1683,8 +1640,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jPanel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jPanel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1699,7 +1655,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
 
         jScrollPane4.setViewportView(jPanel11);
@@ -2657,7 +2613,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.ButtonGroup gp_settings;
     private javax.swing.ButtonGroup gp_showPolygon;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -2666,7 +2621,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
@@ -2791,11 +2745,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem ppi_sideBySide;
     private javax.swing.JMenuItem ppi_viewDatasetBox;
     private javax.swing.JRadioButton rd_adwin;
-    private javax.swing.JRadioButton rd_alingmentNo;
-    private javax.swing.JRadioButton rd_alingmentYes;
     private javax.swing.JRadioButton rd_normYes;
-    private javax.swing.JRadioButton rd_numReductionNo;
-    private javax.swing.JRadioButton rd_numReductionYes;
     private javax.swing.JRadioButton rd_pageHinkley;
     private javax.swing.JScrollPane sc_histograms;
     private javax.swing.JSlider sl_overlap;
@@ -3205,21 +3155,10 @@ public class Principal extends javax.swing.JFrame {
         } else {
             Parameters.CHANGE_DETECTION = 1;
         }
-
         Parameters.WINDOW_SIZE = Integer.parseInt(tf_symWindow.getText());
         Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symWordLength.getText());
         Parameters.SYMBOLS_ALPHABET_SIZE = Integer.parseInt(tf_symSymbolAlphabet.getText());
         Parameters.OFFSET = Integer.parseInt(tf_symOffset.getText());
-        if (rd_numReductionYes.isSelected()) {
-            Parameters.NUM_REDUCTION = true;
-        } else {
-            Parameters.NUM_REDUCTION = false;
-        }
-        if (rd_alingmentYes.isSelected()) {
-            Parameters.ALINGMENT = true;
-        } else {
-            Parameters.ALINGMENT = false;
-        }
 
         Parameters.BOP_SIZE = Integer.parseInt(tf_bopSize.getText());
     }

@@ -42,8 +42,6 @@ public class Parameters {
      * NOHAR
      */
     public static int OFFSET = 1;
-    public static boolean NUM_REDUCTION = true;
-    public static boolean ALINGMENT = true;
     public static int CHANGE_DETECTION = 1;
     public static int BOP_SIZE = 250;
 
