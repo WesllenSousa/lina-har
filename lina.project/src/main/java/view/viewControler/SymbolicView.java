@@ -77,8 +77,13 @@ public class SymbolicView {
         int dataColumn = 0;
         for (TimeSeries ts : data) {
             //Get current window - windowing
-            TimeSeries subsequence = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, norm);
-            subsequences[dataColumn] = subsequence;
+            if(dataColumn < data.length - 1) {
+                TimeSeries subsequence = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, norm);
+                subsequences[dataColumn] = subsequence;
+            } else {//Because last column is label
+                TimeSeries subsequence = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
+                subsequences[dataColumn] = subsequence;
+            }            
             dataColumn++;
         }
         return subsequences;

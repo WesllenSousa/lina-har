@@ -1487,9 +1487,9 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel4.setText("Offset:");
 
-        tf_symOffset.setText("6");
+        tf_symOffset.setText("8");
 
-        tf_symWordLength.setText("8");
+        tf_symWordLength.setText("6");
 
         jLabel3.setText("Word length:");
 
