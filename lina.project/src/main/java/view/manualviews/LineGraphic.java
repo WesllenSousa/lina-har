@@ -53,10 +53,11 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
 
         // X - the time axis
         NumberAxis timeAxis = new NumberAxis("Item. (zoom: select with mouse; panning: Ctrl+mouse)");
+        timeAxis.setFixedAutoRange(1000);
 
         // Y axis
         NumberAxis valueAxis = new NumberAxis("Values");
-        valueAxis.setAutoRangeIncludesZero(false);
+        valueAxis.setAutoRange(true);
 
         timeseriesPlot = new XYPlot(seriesCollection, timeAxis, valueAxis, xyRenderer);
         timeseriesPlot.setDomainPannable(true);
@@ -144,8 +145,6 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
                 int nextItem = timeSerie.getItemCount() + 1;
                 String value = bean.getTupla().get(i);
                 timeSerie.add(nextItem, Double.parseDouble(value));
-
-                //addMarker(nextItem, nextItem, Color.CYAN);
             } else {
                 Messages msg = new Messages();
                 msg.bug("Missing value!");
@@ -158,8 +157,6 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
             XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(i);
             int nextItem = timeSerie.getItemCount() + 1;
             timeSerie.add(nextItem, values[i]);
-
-            //addMarker(nextItem, nextItem, Color.CYAN);
         }
     }
 
@@ -169,8 +166,6 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
         for (int i = 0; i < values.length; i++) {
             timeSerie.add(nextItem, values[i]);
         }
-
-        //addMarker(nextItem, nextItem, Color.CYAN);
     }
 
     public void addSubsequenceData(TimeSeries[] subTs) {
@@ -198,6 +193,11 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
 
     public XYSeriesCollection getSeriesCollection() {
         return seriesCollection;
+    }
+    
+    public int getItemCount() {
+        XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(0);
+        return timeSerie.getItemCount();
     }
 
 }

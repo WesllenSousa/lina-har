@@ -50,7 +50,6 @@ public class BarGraphic extends JPanel implements ChartProgressListener {
 
     @Override
     public void chartProgress(ChartProgressEvent cpe) {
-
     }
 
     public void addUpdateData(String palavra, double frequency) {
@@ -82,6 +81,10 @@ public class BarGraphic extends JPanel implements ChartProgressListener {
 
     public DefaultCategoryDataset getDatasetCollection() {
         return datasetCollection;
+    }
+    
+    public void setTitle(String title) {
+        chart.setTitle(title);
     }
 
 }

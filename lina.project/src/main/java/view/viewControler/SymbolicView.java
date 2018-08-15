@@ -14,6 +14,7 @@ import datasets.memory.BufferStreaming;
 import datasets.memory.WordRecord;
 import datasets.timeseries.TimeSeries;
 import java.awt.Color;
+import java.util.LinkedList;
 import view.manualviews.BarGraphic;
 import view.manualviews.LineGraphic;
 
@@ -43,7 +44,6 @@ public class SymbolicView {
 
         //Access each position from time series - streaming
         for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position++) {
-
             //Get array subsequence
             TimeSeries[] subsequences = getSubsequences(data, position, norm);
 
@@ -56,16 +56,17 @@ public class SymbolicView {
             double currentValue = subsequence.getData(subsequence.getLength() - 1);
             //double label = classMoreFrequency(labels);
             double label = labels.getData(labels.getLength() - 1);
+            ConstGeneral.TELA_PRINCIPAL.lb_label.setText(label + "");
             processStream(currentValue, position, label);
+
+            if (ConstGeneral.STOP_STREAM) {
+                break;
+            }
 
             //values to GUI
             double[] values = new double[1];
             values[0] = currentValue;
             addDataGraphLine(values);
-
-            if (ConstGeneral.STOP_STREAM) {
-                break;
-            }
         }
 
         printEvaluation();
@@ -77,13 +78,13 @@ public class SymbolicView {
         int dataColumn = 0;
         for (TimeSeries ts : data) {
             //Get current window - windowing
-            if(dataColumn < data.length - 1) {
+            if (dataColumn < data.length - 1) {
                 TimeSeries subsequence = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, norm);
                 subsequences[dataColumn] = subsequence;
             } else {//Because last column is label
                 TimeSeries subsequence = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
                 subsequences[dataColumn] = subsequence;
-            }            
+            }
             dataColumn++;
         }
         return subsequences;
@@ -124,9 +125,8 @@ public class SymbolicView {
      */
     private void addDataGraphLine(double[] values) {
         if (ConstGeneral.SHOW_GRAPHIC) {
-            //Add values in GUI
             lineGraphic.addData(values);
-            lineGraphic.espera(10);
+            lineGraphic.espera(5);
         }
     }
 
@@ -136,23 +136,25 @@ public class SymbolicView {
         }
     }
 
-    public void updateCurrentHistogram(WordRecord word) {
+    public void updateCurrentHistogram(WordRecord word, String title) {
+        barGraphic.setTitle(title);
         barGraphic.addUpdateData(word.getWord(), word.getFrequency());
         ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, bufferStreaming.getBufferBOP().size());
     }
-
-    public void addHistograms() {
-        //Clean buffer excess
-        bufferStreaming.getBufferBOP().add(bufferStreaming.getBOP());
-        if (bufferStreaming.getBufferBOP().size() > 5) {
-            bufferStreaming.getBufferBOP().remove(0);
-        }
-        ConstGeneral.TELA_PRINCIPAL.addHistograms(bufferStreaming.getBufferBOP());
+    
+    public void addHistogramsNovel(LinkedList<BOP> BOP) {
+        ConstGeneral.TELA_PRINCIPAL.addHistograms(
+                ConstGeneral.TELA_PRINCIPAL.sc_novel, ConstGeneral.TELA_PRINCIPAL.pn_novel, BOP);
     }
 
-    public void clearCurrentHistogram() {
-        bufferStreaming.setBOP(new BOP());
+    public void addHistogramsModel(LinkedList<BOP> BOP) {
+        ConstGeneral.TELA_PRINCIPAL.addHistograms(
+                ConstGeneral.TELA_PRINCIPAL.sc_model, ConstGeneral.TELA_PRINCIPAL.pn_model, BOP);
+    }
+
+    public void clearCurrentHistogram() {  
         ConstGeneral.TELA_PRINCIPAL.clearCurrentHistogram();
+        bufferStreaming.setBOP(new BOP());
     }
 
     private void printEvaluation() {
