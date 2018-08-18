@@ -123,7 +123,7 @@ public class ConstGeneral {
      * Streaming
      */
     public static boolean STOP_STREAM = false;
-    public static boolean SHOW_GRAPHIC = true;
+    public static boolean UPDATE_GUI = true;
     
     public static boolean P_UNKNOWN = true;
     public static boolean P_NOVEL = false;

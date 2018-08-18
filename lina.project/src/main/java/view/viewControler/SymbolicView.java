@@ -7,14 +7,18 @@ package view.viewControler;
 
 import algorithms.Features.DataFusion;
 import algorithms.NOHAR.BOP;
+import algorithms.NOHAR.EvaluationNohar;
 import algorithms.NOHAR.NOHAR;
+import algorithms.SAX.Params;
 import controle.constants.ConstGeneral;
 import controle.constants.Parameters;
 import datasets.memory.BufferStreaming;
 import datasets.memory.WordRecord;
 import datasets.timeseries.TimeSeries;
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.LinkedList;
+import net.seninp.jmotif.sax.NumerosityReductionStrategy;
 import view.manualviews.BarGraphic;
 import view.manualviews.LineGraphic;
 
@@ -29,21 +33,35 @@ public class SymbolicView {
 
     private final BufferStreaming bufferStreaming;
     private final NOHAR nohar;
+    private EvaluationNohar eval;
 
-    public SymbolicView(LineGraphic lineGraphic, BarGraphic barGraphic) {
+    public SymbolicView(String dataset, LineGraphic lineGraphic, BarGraphic barGraphic) {
         this.lineGraphic = lineGraphic;
         this.barGraphic = barGraphic;
         this.bufferStreaming = new BufferStreaming();
 
-        this.nohar = new NOHAR(this);
+        Params params = new Params(Parameters.WINDOW_SIZE, Parameters.WORD_LENGTH_PAA,
+                Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.EXACT);
+
+        this.nohar = new NOHAR(this, params);
+        this.eval = new EvaluationNohar();
+        eval.setDataset(dataset);
+        eval.setOffset(Parameters.OFFSET);
+        eval.setParams(params);
     }
 
     public void runDataset(TimeSeries[] data, boolean norm) {
+        eval.setStartTime(System.currentTimeMillis());
+
         //this.lineGraphic.prepareStream(data);
         this.lineGraphic.prepareStream();
 
         //Access each position from time series - streaming
         for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position++) {
+            if (ConstGeneral.STOP_STREAM) {
+                break;
+            }
+
             //Get array subsequence
             TimeSeries[] subsequences = getSubsequences(data, position, norm);
 
@@ -54,20 +72,17 @@ public class SymbolicView {
 
             //Get current value and process 
             double currentValue = subsequence.getData(subsequence.getLength() - 1);
-            //double label = classMoreFrequency(labels);
-            double label = labels.getData(labels.getLength() - 1);
-            ConstGeneral.TELA_PRINCIPAL.lb_label.setText(label + "");
+            double label = classMoreFrequency(labels);
+            //double label = labels.getData(labels.getLength() - 1);
             processStream(currentValue, position, label);
-
-            if (ConstGeneral.STOP_STREAM) {
-                break;
-            }
 
             //values to GUI
             double[] values = new double[1];
             values[0] = currentValue;
             addDataGraphLine(values);
+            updateLabel(label + "");
         }
+        eval.setEndTime(System.currentTimeMillis());
 
         printEvaluation();
     }
@@ -90,7 +105,6 @@ public class SymbolicView {
         return subsequences;
     }
 
-    /*
     public Double classMoreFrequency(TimeSeries labels) {
         HashMap<Double, Integer> frequency = new HashMap<>();
         for (int i = 0; i < labels.getLength(); i++) {
@@ -112,7 +126,7 @@ public class SymbolicView {
         }
         return classe;
     }
-     */
+
     private void processStream(double currentValue, int position, double label) {
         if (nohar != null) {
             //System.out.println(position + ") " + label);
@@ -124,50 +138,70 @@ public class SymbolicView {
      *   GUI
      */
     private void addDataGraphLine(double[] values) {
-        if (ConstGeneral.SHOW_GRAPHIC) {
+        if (ConstGeneral.UPDATE_GUI) {
             lineGraphic.addData(values);
             lineGraphic.espera(5);
         }
     }
 
     public void addMarkerGraphLine(int position, Color color) {
-        if (ConstGeneral.SHOW_GRAPHIC) {
+        if (ConstGeneral.UPDATE_GUI) {
             lineGraphic.addMarker(position, position, color);
         }
     }
 
-    public void updateCurrentHistogram(WordRecord word, String title) {
-        barGraphic.setTitle(title);
-        barGraphic.addUpdateData(word.getWord(), word.getFrequency());
-        ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, bufferStreaming.getBufferBOP().size());
+    private void updateLabel(String label) {
+        if (ConstGeneral.UPDATE_GUI) {
+            ConstGeneral.TELA_PRINCIPAL.lb_label.setText(label + "");
+        }
     }
-    
+
+    public void updateCurrentHistogram(WordRecord word, String title) {
+        if (ConstGeneral.UPDATE_GUI) {
+            barGraphic.setTitle(title);
+            barGraphic.addUpdateData(word.getWord(), word.getFrequency());
+            ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, bufferStreaming.getBufferBOP().size());
+        }
+    }
+
     public void addHistogramsNovel(LinkedList<BOP> BOP) {
-        ConstGeneral.TELA_PRINCIPAL.addHistograms(
-                ConstGeneral.TELA_PRINCIPAL.sc_novel, ConstGeneral.TELA_PRINCIPAL.pn_novel, BOP);
+        if (ConstGeneral.UPDATE_GUI) {
+            ConstGeneral.TELA_PRINCIPAL.addHistograms(
+                    ConstGeneral.TELA_PRINCIPAL.sc_novel, ConstGeneral.TELA_PRINCIPAL.pn_novel, BOP);
+        }
     }
 
     public void addHistogramsModel(LinkedList<BOP> BOP) {
-        ConstGeneral.TELA_PRINCIPAL.addHistograms(
-                ConstGeneral.TELA_PRINCIPAL.sc_model, ConstGeneral.TELA_PRINCIPAL.pn_model, BOP);
+        if (ConstGeneral.UPDATE_GUI) {
+            ConstGeneral.TELA_PRINCIPAL.addHistograms(
+                    ConstGeneral.TELA_PRINCIPAL.sc_model, ConstGeneral.TELA_PRINCIPAL.pn_model, BOP);
+        }
     }
 
-    public void clearCurrentHistogram() {  
-        ConstGeneral.TELA_PRINCIPAL.clearCurrentHistogram();
-        bufferStreaming.setBOP(new BOP());
-    }
-
-    private void printEvaluation() {
-        updateLog(nohar.getEval().toString());
-        ConstGeneral.STOP_STREAM = false;
+    public void clearCurrentHistogram() {
+        if (ConstGeneral.UPDATE_GUI) {
+            ConstGeneral.TELA_PRINCIPAL.clearCurrentHistogram();
+            bufferStreaming.setBOP(new BOP());
+        }
     }
 
     public void updateLog(String text) {
-        ConstGeneral.TELA_PRINCIPAL.updateSymbolicLog(text);
+        if (ConstGeneral.UPDATE_GUI) {
+            ConstGeneral.TELA_PRINCIPAL.updateSymbolicLog(text);
+        }
+    }
+
+    private void printEvaluation() {
+        ConstGeneral.TELA_PRINCIPAL.updateSymbolicLog(eval.toString());
+        ConstGeneral.STOP_STREAM = false;
     }
 
     public BufferStreaming getBuffer() {
         return bufferStreaming;
+    }
+
+    public EvaluationNohar getEval() {
+        return eval;
     }
 
 }

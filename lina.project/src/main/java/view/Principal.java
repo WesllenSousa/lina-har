@@ -263,7 +263,7 @@ public class Principal extends javax.swing.JFrame {
         pn_novel = new javax.swing.JPanel();
         sc_model = new javax.swing.JScrollPane();
         pn_model = new javax.swing.JPanel();
-        ck_showGraphic = new javax.swing.JCheckBox();
+        ck_updateGUI = new javax.swing.JCheckBox();
         lb_label = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
@@ -1533,7 +1533,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel26Layout.createSequentialGroup()
                         .addComponent(rd_normYes)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(td_normNo, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)))
+                        .addComponent(td_normNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(16, 16, 16))
         );
         jPanel26Layout.setVerticalGroup(
@@ -1606,7 +1606,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(rd_adwin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rd_pageHinkley)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel22Layout.setVerticalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1658,7 +1658,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane4.setViewportView(jPanel11);
@@ -1689,6 +1689,7 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 165, Short.MAX_VALUE)
         );
 
+        ta_symbolic.setEditable(false);
         ta_symbolic.setColumns(20);
         ta_symbolic.setRows(5);
         jScrollPane16.setViewportView(ta_symbolic);
@@ -1784,11 +1785,10 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Model", sc_model);
 
-        ck_showGraphic.setSelected(true);
-        ck_showGraphic.setText("Show graphic, atividade:");
-        ck_showGraphic.addActionListener(new java.awt.event.ActionListener() {
+        ck_updateGUI.setText("Update GUI, Atividade:");
+        ck_updateGUI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ck_showGraphicActionPerformed(evt);
+                ck_updateGUIActionPerformed(evt);
             }
         });
 
@@ -1803,7 +1803,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel33Layout.createSequentialGroup()
-                        .addComponent(ck_showGraphic)
+                        .addComponent(ck_updateGUI)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lb_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1814,7 +1814,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel33Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ck_showGraphic)
+                    .addComponent(ck_updateGUI)
                     .addComponent(lb_label))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2583,13 +2583,13 @@ public class Principal extends javax.swing.JFrame {
                 + "Manaus-AM");
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void ck_showGraphicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ck_showGraphicActionPerformed
-        if (ck_showGraphic.isSelected()) {
-            ConstGeneral.SHOW_GRAPHIC = true;
+    private void ck_updateGUIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ck_updateGUIActionPerformed
+        if (ck_updateGUI.isSelected()) {
+            ConstGeneral.UPDATE_GUI = true;
         } else {
-            ConstGeneral.SHOW_GRAPHIC = false;
+            ConstGeneral.UPDATE_GUI = false;
         }
-    }//GEN-LAST:event_ck_showGraphicActionPerformed
+    }//GEN-LAST:event_ck_updateGUIActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bg_graphic;
@@ -2629,8 +2629,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btt_pause;
     private javax.swing.JButton btt_reset;
     private javax.swing.JButton btt_stop;
-    private javax.swing.JCheckBox ck_showGraphic;
     private javax.swing.JCheckBox ck_trainUserTest;
+    private javax.swing.JCheckBox ck_updateGUI;
     private javax.swing.JDesktopPane dp_preprocessing;
     private javax.swing.ButtonGroup gp_alingment;
     private javax.swing.ButtonGroup gp_changeDetection;
@@ -3161,6 +3161,8 @@ public class Principal extends javax.swing.JFrame {
      *   Symbolic Representation
      */
     private void executeSymbolic() {
+        sx_busy.setBusy(true);
+        
         if (lt_timeSeriesData.getSelectedIndex() != -1) {
             clearTabStream();
 
@@ -3171,11 +3173,13 @@ public class Principal extends javax.swing.JFrame {
                     ConstDataset.DS_STREAM + lt_timeSeriesData.getSelectedValue(), false,
                     ConstDataset.SEPARATOR);
 
-            symbolicView = new SymbolicView(lineGraphic, currentHistogram);
+            symbolicView = new SymbolicView(lt_timeSeriesData.getSelectedValue(), lineGraphic, currentHistogram);
             symbolicView.runDataset(data, rd_normYes.isSelected());
         } else {
             messages.aviso("Select a signal!");
         }
+        
+        sx_busy.setBusy(false);
     }
 
     private void setParameters() {
@@ -3188,6 +3192,7 @@ public class Principal extends javax.swing.JFrame {
         Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symWordLength.getText());
         Parameters.SYMBOLS_ALPHABET_SIZE = Integer.parseInt(tf_symSymbolAlphabet.getText());
         Parameters.OFFSET = Integer.parseInt(tf_symOffset.getText());
+        ConstGeneral.UPDATE_GUI = ck_updateGUI.isSelected();
 
         Parameters.BOP_SIZE = Integer.parseInt(tf_bopSize.getText());
     }

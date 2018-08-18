@@ -9,12 +9,12 @@ import algorithms.NOHAR.ADWIN.Adwin;
 import algorithms.NOHAR.PageHinkley.PageHinkley;
 import algorithms.SAX.Params;
 import algorithms.SAX.SAX;
+import controle.constants.ConstGeneral;
 import controle.constants.Parameters;
 import datasets.memory.BufferStreaming;
 import datasets.memory.WordRecord;
 import java.awt.Color;
 import java.util.LinkedList;
-import net.seninp.jmotif.sax.NumerosityReductionStrategy;
 import util.Messages;
 import view.viewControler.SymbolicView;
 
@@ -34,20 +34,12 @@ public class NOHAR {
     private int contConsistentChunkValue = 0;
     private int COUNT_THRESHOLD_BOP = 5;
 
-    private EvaluationNohar eval;
-
-    public NOHAR(SymbolicView symbolicView) {
+    public NOHAR(SymbolicView symbolicView, Params params) {
         this.symbolicView = symbolicView;
 
         adwin = new Adwin(.002, Parameters.BOP_SIZE);
         pageHinkley = new PageHinkley();
-        params = new Params(Parameters.WINDOW_SIZE, Parameters.WORD_LENGTH_PAA,
-                Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD, NumerosityReductionStrategy.EXACT);
-        eval = new EvaluationNohar();
-    }
-
-    public EvaluationNohar getEval() {
-        return eval;
+        this.params = params;
     }
 
     public void runStream(double currentValue, int position, double label) {
@@ -70,10 +62,6 @@ public class NOHAR {
             //Add histogram to buffer
             symbolicView.getBuffer().getBOP().orderWordsHistogram(); //important!
             symbolicView.getBuffer().getBufferBOP().add(symbolicView.getBuffer().getBOP());
-            //Clean buffer excess
-            if (symbolicView.getBuffer().getBufferBOP().size() > 5) {
-                symbolicView.getBuffer().getBufferBOP().remove(0);
-            }
 
             //Classify
             if (!classify(symbolicView.getBuffer().getModel(), symbolicView.getBuffer().getBOP())) {
@@ -87,6 +75,7 @@ public class NOHAR {
             symbolicView.addHistogramsModel(symbolicView.getBuffer().getModel());
             symbolicView.clearCurrentHistogram();
             contConsistentChunkValue = 0;
+            clearBuffer();
         }
     }
 
@@ -153,11 +142,23 @@ public class NOHAR {
         return false;
     }
 
+    private boolean compareLabel(BOP bop, String origem) {
+        if (bop.getLabel() == currentLabel) {
+            symbolicView.getEval().incrementHists();
+            symbolicView.updateLog(">> Right: " + bop.getLabel() + " - " + origem);
+            return true;
+        } else if (bop.getLabel() != -1) {
+            symbolicView.getEval().incrementErrors();
+            symbolicView.updateLog(">> Wrong: " + bop.getLabel() + ", Right: " + currentLabel + " - " + origem);
+        }
+        return false;
+    }
+
     /*
      *   Learning
      */
     private void learning(BufferStreaming buffer, BOP bop) {
-        if (!update(buffer.getModel())) {
+        if (!update(buffer, bop)) {
             if (!checkNovel(buffer, bop)) {
                 checkUnknown(buffer, bop);
             }
@@ -165,11 +166,18 @@ public class NOHAR {
         checkForget(buffer);
     }
 
-    private boolean update(LinkedList<BOP> model) {
-        for (BOP bop : model) {
-            //symbolicView.updateLog("model");
+    private boolean update(BufferStreaming buffer, BOP newBop) {
+        boolean similar = false;
+        BOP bop = minDistanceBop(buffer.getModel(), newBop);
+        if (bop != null) {
+            int distance = calcDistanceBetweenBOPs(bop, newBop);
+            if (distance > 0) {
+                symbolicView.updateLog("BOP fusion: " + bop.getLabel());
+                fusionHistogram(bop, newBop, distance);
+                similar = true;
+            }
         }
-        return false;
+        return similar;
     }
 
     //After active learning
@@ -181,6 +189,8 @@ public class NOHAR {
             if (distance > 0) {
                 symbolicView.updateLog("Novel BOP fusion: " + novelBop.getLabel());
                 fusionHistogram(novelBop, newBop, distance);
+            } else {
+                symbolicView.updateLog("Novel BOP Similar: " + novelBop.getLabel() + " to " + currentLabel);
             }
             novelBop.incrementCountNovel();
             if (novelBop.getCountNovel() > COUNT_THRESHOLD_BOP) {
@@ -190,7 +200,6 @@ public class NOHAR {
                 symbolicView.updateLog("Added reference histogram!");
             }
             similar = true;
-            symbolicView.updateLog("Novel BOP similar: " + novelBop.getLabel());
         }
         return similar;
     }
@@ -208,10 +217,13 @@ public class NOHAR {
                 symbolicView.updateLog("uBOP Similar: " + uBOP.getLabel() + " to " + currentLabel);
             }
             uBOP.incrementCountUnk();
-            if (uBOP.getCountUnk() > COUNT_THRESHOLD_BOP) {//10 times to be novel
+            if (uBOP.getCountUnk() > COUNT_THRESHOLD_BOP) {
                 //Active learning
-                Messages msg = new Messages();
-                String label = msg.inserirDadosComValorInicial("Is it similar to " + uBOP.getLabel() + "?", uBOP.getLabel() + "");
+                String label = uBOP.getLabel() + "";
+                if (ConstGeneral.UPDATE_GUI) {
+                    Messages msg = new Messages();
+                    label = msg.inserirDadosComValorInicial("Is it similar to " + uBOP.getLabel() + "?", uBOP.getLabel() + "");
+                }
                 if (label != null) {
                     uBOP.setCountUnk(0);
                     uBOP.setLabel(Double.parseDouble(label));
@@ -235,6 +247,9 @@ public class NOHAR {
         }
     }
 
+    /*
+     *   Others
+     */
     private int totalDistance(BOP newBop) {
         // Distance if there is no matching word
         int totalDistance = 0;
@@ -265,8 +280,8 @@ public class NOHAR {
     private int calcDistanceBetweenBOPs(BOP bigBop, BOP smallBop) {
         int totalSmallBopDistance = totalDistance(smallBop);
         int totalBigBopDistance = totalDistance(bigBop);
-        int insideDistance = totalSmallBopDistance;
-        int outsideDistance = totalBigBopDistance;
+        int insideDistance = 0;
+        int outsideDistance = 0;
         boolean hasWord;
         for (WordRecord big : bigBop.getHistogram()) {
             hasWord = false;
@@ -278,18 +293,18 @@ public class NOHAR {
                     } else {
                         diff = small.getFrequency() - big.getFrequency();
                     }
-                    insideDistance -= small.getFrequency() - diff;
+                    insideDistance += diff;
                     hasWord = true;
                     break;
                 }
             }
             if (!hasWord) {
-                outsideDistance -= big.getFrequency();
+                outsideDistance += big.getFrequency();
             }
         }
         double percentSmall = (insideDistance * 100) / totalSmallBopDistance;
         double percentBig = (outsideDistance * 100) / totalBigBopDistance;
-        if (percentSmall > 30 && percentBig < 70) {
+        if (percentSmall > 30 || percentBig > 30) {
             return -1;
         } else {
             return insideDistance + outsideDistance;
@@ -299,27 +314,33 @@ public class NOHAR {
     private void fusionHistogram(BOP bop, BOP newBop, int distance) {
         if (distance > 0) {
             //symbolicView.updateLog("Fusion histogram - distance " + distance);
-            for (WordRecord wordBOP : bop.getHistogram()) {
-                for (WordRecord wordNewBOP : newBop.getHistogram()) {
-                    if (wordBOP.equals(wordNewBOP)) {
-                        float mean = (wordBOP.getFrequency() + wordNewBOP.getFrequency()) / 2;
-                        wordBOP.setFrequency(Math.round(mean));
+            BOP bigBop, smallBOP;
+            if (bop.getHistogram().size() > newBop.getHistogram().size()) {
+                bigBop = bop;
+                smallBOP = newBop;
+            } else {
+                bigBop = newBop;
+                smallBOP = bop;
+            }
+            for (WordRecord big : bigBop.getHistogram()) {
+                for (WordRecord small : smallBOP.getHistogram()) {
+                    if (big.equals(small)) {
+                        float mean = (big.getFrequency() + small.getFrequency()) / 2;
+                        big.setFrequency(Math.round(mean));
                     }
                 }
             }
         }
     }
 
-    private boolean compareLabel(BOP bop, String origem) {
-        if (bop.getLabel() == currentLabel) {
-            eval.incrementHists();
-            symbolicView.updateLog(">> Right: " + bop.getLabel() + " - " + origem);
-            return true;
-        } else if (bop.getLabel() != -1) {
-            eval.incrementErrors();
-            symbolicView.updateLog(">> Wrong: " + bop.getLabel() + ", Right: " + currentLabel + " - " + origem);
+    private void clearBuffer() {
+        //Clean buffer excess
+        if (symbolicView.getBuffer().getBufferBOP().size() > 5) {
+            symbolicView.getBuffer().getBufferBOP().remove(0);
         }
-        return false;
+        if (symbolicView.getBuffer().getListUBOP().size() > 10) {
+            symbolicView.getBuffer().getListUBOP().remove(0);
+        }
     }
 
 }

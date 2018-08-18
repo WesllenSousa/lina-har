@@ -2118,7 +2118,7 @@
                                       <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jPanel28" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="80" max="32767" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2203,7 +2203,7 @@
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="rd_normYes" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="td_normNo" pref="104" max="32767" attributes="0"/>
+                                                  <Component id="td_normNo" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
@@ -2371,7 +2371,7 @@
                                           <Component id="rd_adwin" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="rd_pageHinkley" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
+                                          <EmptySpace pref="79" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>
@@ -2493,7 +2493,7 @@
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jTabbedPane1" alignment="0" min="-2" pref="303" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Component id="ck_showGraphic" min="-2" max="-2" attributes="0"/>
+                                          <Component id="ck_updateGUI" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="lb_label" max="32767" attributes="0"/>
                                       </Group>
@@ -2508,7 +2508,7 @@
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="ck_showGraphic" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ck_updateGUI" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="lb_label" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -2542,6 +2542,7 @@
                               <SubComponents>
                                 <Component class="javax.swing.JTextArea" name="ta_symbolic">
                                   <Properties>
+                                    <Property name="editable" type="boolean" value="false"/>
                                     <Property name="columns" type="int" value="20"/>
                                     <Property name="rows" type="int" value="5"/>
                                   </Properties>
@@ -2711,13 +2712,12 @@
                             </Container>
                           </SubComponents>
                         </Container>
-                        <Component class="javax.swing.JCheckBox" name="ck_showGraphic">
+                        <Component class="javax.swing.JCheckBox" name="ck_updateGUI">
                           <Properties>
-                            <Property name="selected" type="boolean" value="true"/>
-                            <Property name="text" type="java.lang.String" value="Show graphic, atividade:"/>
+                            <Property name="text" type="java.lang.String" value="Update GUI, Atividade:"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ck_showGraphicActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ck_updateGUIActionPerformed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="lb_label">
