@@ -34,7 +34,12 @@ public class BOP {
         countNovel++;
     }
 
-    public void updateWeight() {
+    public void updateWeight(boolean direction) {
+        if(direction) { //true: aumenta, false: diminui
+            weight++;
+        } else {
+            weight--;
+        }
     }
 
     public void orderWordsHistogram() {
@@ -64,16 +69,32 @@ public class BOP {
         return countUnk;
     }
 
+    public void setCountUnk(int countUnk) {
+        this.countUnk = countUnk;
+    }
+
     public int getCountNovel() {
         return countNovel;
+    }
+
+    public void setCountNovel(int countNovel) {
+        this.countNovel = countNovel;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 
     public double getEntropy() {
         return entropy;
     }
 
-    public float getWeight() {
-        return weight;
+    public void setEntropy(double entropy) {
+        this.entropy = entropy;
     }
 
     @Override

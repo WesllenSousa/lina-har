@@ -81,7 +81,7 @@ public class SymbolicView {
             if (dataColumn < data.length - 1) {
                 TimeSeries subsequence = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, norm);
                 subsequences[dataColumn] = subsequence;
-            } else {//Because last column is label
+            } else {//Because last column is label, norm is false
                 TimeSeries subsequence = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
                 subsequences[dataColumn] = subsequence;
             }

@@ -68,7 +68,7 @@ public class NOHAR {
         //Handle model
         if (contConsistentChunkValue >= Parameters.BOP_SIZE) {
             //Add histogram to buffer
-            symbolicView.getBuffer().getBOP().orderWordsHistogram();
+            symbolicView.getBuffer().getBOP().orderWordsHistogram(); //important!
             symbolicView.getBuffer().getBufferBOP().add(symbolicView.getBuffer().getBOP());
             //Clean buffer excess
             if (symbolicView.getBuffer().getBufferBOP().size() > 5) {
@@ -145,8 +145,9 @@ public class NOHAR {
      *   Classification
      */
     private boolean classify(LinkedList<BOP> BOPs, BOP newBop) {
-        int minDistance = minDistanceValue(BOPs, newBop);
-        if (minDistance == 0) {
+        BOP bop = minDistanceBop(BOPs, newBop);
+        if (bop != null) {
+            newBop.setLabel(bop.getLabel());
             return compareLabel(newBop, "classify");
         }
         return false;
@@ -173,31 +174,25 @@ public class NOHAR {
 
     //After active learning
     private boolean checkNovel(BufferStreaming buffer, BOP newBop) {
-        boolean statusFusion = false;
+        boolean similar = false;
         BOP novelBop = minDistanceBop(buffer.getListNovelBOP(), newBop);
         if (novelBop != null) {
-
-            int totalDistance = totalDistance(newBop);
             int distance = calcDistanceBetweenBOPs(novelBop, newBop);
-            double percent = (distance * 100) / totalDistance;
-
-            if (distance != -1 && percent <= 1) {//5% equal=================================
-                symbolicView.updateLog("Novel BOP: " + novelBop.getLabel());
+            if (distance > 0) {
+                symbolicView.updateLog("Novel BOP fusion: " + novelBop.getLabel());
                 fusionHistogram(novelBop, newBop, distance);
-                novelBop.incrementCountNovel();
-
-                if (novelBop.getCountNovel() > COUNT_THRESHOLD_BOP) {
-                    newBop.setLabel(novelBop.getLabel());
-                    compareLabel(newBop, "checkNovel");
-
-                    buffer.getModel().add(novelBop);
-                    buffer.getListNovelBOP().remove(novelBop);
-                    symbolicView.updateLog("Added reference histogram!");
-                }
-                statusFusion = true;
             }
+            novelBop.incrementCountNovel();
+            if (novelBop.getCountNovel() > COUNT_THRESHOLD_BOP) {
+                novelBop.setCountNovel(0);
+                buffer.getModel().add(novelBop);
+                buffer.getListNovelBOP().remove(novelBop);
+                symbolicView.updateLog("Added reference histogram!");
+            }
+            similar = true;
+            symbolicView.updateLog("Novel BOP similar: " + novelBop.getLabel());
         }
-        return statusFusion;
+        return similar;
     }
 
     //Before active learnig
@@ -205,28 +200,27 @@ public class NOHAR {
         boolean similar = false;
         BOP uBOP = minDistanceBop(buffer.getListUBOP(), newBop);
         if (uBOP != null) {
-
-            int totalDistance = totalDistance(newBop);
             int distance = calcDistanceBetweenBOPs(uBOP, newBop);
-            double percent = (distance * 100) / totalDistance;
-
-            if (distance != -1 && percent <= 5) {//10% equal==========================
-                symbolicView.updateLog("uBOP Similar: " + uBOP.getLabel() + " to " + currentLabel);
+            if (distance > 0) {
+                symbolicView.updateLog("uBOP fusion: " + uBOP.getLabel() + " to " + currentLabel);
                 fusionHistogram(uBOP, newBop, distance);
-                uBOP.incrementCountUnk();
-                similar = true;
+            } else {
+                symbolicView.updateLog("uBOP Similar: " + uBOP.getLabel() + " to " + currentLabel);
             }
+            uBOP.incrementCountUnk();
             if (uBOP.getCountUnk() > COUNT_THRESHOLD_BOP) {//10 times to be novel
                 //Active learning
                 Messages msg = new Messages();
                 String label = msg.inserirDadosComValorInicial("Is it similar to " + uBOP.getLabel() + "?", uBOP.getLabel() + "");
                 if (label != null) {
+                    uBOP.setCountUnk(0);
                     uBOP.setLabel(Double.parseDouble(label));
                     buffer.getListNovelBOP().add(uBOP);
                     buffer.getListUBOP().remove(uBOP);
                     symbolicView.updateLog("Added novel BOP...");
                 }
             }
+            similar = true;
         }
         if (!similar) {
             newBop.setLabel(currentLabel);//Only by test, print Similar uBOP up
@@ -243,56 +237,68 @@ public class NOHAR {
 
     private int totalDistance(BOP newBop) {
         // Distance if there is no matching word
-        int noMatchDistance = -1;
+        int totalDistance = 0;
         for (WordRecord bop : newBop.getHistogram()) {
-            noMatchDistance += bop.getFrequency() * bop.getFrequency();
+            totalDistance += bop.getFrequency();
         }
-        return noMatchDistance;
-    }
-
-    private int calcDistanceBetweenBOPs(BOP bop, BOP newBop) {
-        int distance = -1;
-        for (WordRecord wordBOP : bop.getHistogram()) {
-            for (WordRecord wordNewBOP : newBop.getHistogram()) {
-                if (wordNewBOP.equals(wordBOP) && wordNewBOP.getFrequency() != 0) {
-                    int diff = wordNewBOP.getFrequency() - wordBOP.getFrequency();
-                    distance += diff * diff;
-                }
-            }
-        }
-        return distance;
-    }
-
-    private int minDistanceValue(LinkedList<BOP> BOPs, BOP newBop) {
-        int minDistance = Integer.MAX_VALUE;
-        for (BOP bop : BOPs) {
-            int distance = calcDistanceBetweenBOPs(bop, newBop);
-            if (distance != -1 && distance < minDistance) {
-                minDistance = distance;
-                newBop.setLabel(bop.getLabel());
-                //symbolicView.updateLog(">>> min: " + distance);
-            }
-        }
-        return minDistance;
+        return totalDistance;
     }
 
     private BOP minDistanceBop(LinkedList<BOP> BOPs, BOP newBop) {
         BOP b = null;
         int minDistance = Integer.MAX_VALUE;
         for (BOP bop : BOPs) {
-            int distance = calcDistanceBetweenBOPs(bop, newBop);
+            int distance = -1;
+            if (bop.getHistogram().size() > newBop.getHistogram().size()) {
+                distance = calcDistanceBetweenBOPs(bop, newBop);
+            } else {
+                distance = calcDistanceBetweenBOPs(newBop, bop);
+            }
             if (distance != -1 && distance < minDistance) {
                 minDistance = distance;
                 b = bop;
-                //symbolicView.updateLog(">>> min: " + distance);
             }
         }
         return b;
     }
 
+    private int calcDistanceBetweenBOPs(BOP bigBop, BOP smallBop) {
+        int totalSmallBopDistance = totalDistance(smallBop);
+        int totalBigBopDistance = totalDistance(bigBop);
+        int insideDistance = totalSmallBopDistance;
+        int outsideDistance = totalBigBopDistance;
+        boolean hasWord;
+        for (WordRecord big : bigBop.getHistogram()) {
+            hasWord = false;
+            for (WordRecord small : smallBop.getHistogram()) {
+                if (big.equals(small)) {
+                    int diff = 0;
+                    if (big.getFrequency() > small.getFrequency()) {
+                        diff = big.getFrequency() - small.getFrequency();
+                    } else {
+                        diff = small.getFrequency() - big.getFrequency();
+                    }
+                    insideDistance -= small.getFrequency() - diff;
+                    hasWord = true;
+                    break;
+                }
+            }
+            if (!hasWord) {
+                outsideDistance -= big.getFrequency();
+            }
+        }
+        double percentSmall = (insideDistance * 100) / totalSmallBopDistance;
+        double percentBig = (outsideDistance * 100) / totalBigBopDistance;
+        if (percentSmall > 30 && percentBig < 70) {
+            return -1;
+        } else {
+            return insideDistance + outsideDistance;
+        }
+    }
+
     private void fusionHistogram(BOP bop, BOP newBop, int distance) {
         if (distance > 0) {
-            symbolicView.updateLog("Fusion histogram - distance " + distance);
+            //symbolicView.updateLog("Fusion histogram - distance " + distance);
             for (WordRecord wordBOP : bop.getHistogram()) {
                 for (WordRecord wordNewBOP : newBop.getHistogram()) {
                     if (wordBOP.equals(wordNewBOP)) {
