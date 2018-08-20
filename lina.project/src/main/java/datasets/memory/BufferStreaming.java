@@ -94,4 +94,11 @@ public class BufferStreaming {
         return wordInterval;
     }
 
+    public void clearBuffer() {
+        bufferBOP.clear();
+        listUBOP.clear();
+        listNovelBOP.clear();
+        model.clear();
+    }
+
 }

@@ -48,9 +48,11 @@ public class SymbolicView {
         eval.setDataset(dataset);
         eval.setOffset(Parameters.OFFSET);
         eval.setParams(params);
+        eval.setBuffer(bufferStreaming);
     }
 
     public void runDataset(TimeSeries[] data, boolean norm) {
+        bufferStreaming.clearBuffer();
         eval.setStartTime(System.currentTimeMillis());
 
         //this.lineGraphic.prepareStream(data);
@@ -153,6 +155,14 @@ public class SymbolicView {
     private void updateLabel(String label) {
         if (ConstGeneral.UPDATE_GUI) {
             ConstGeneral.TELA_PRINCIPAL.lb_label.setText(label + "");
+        }
+    }
+
+    public void updateStatus() {
+        if (ConstGeneral.UPDATE_GUI) {
+            ConstGeneral.TELA_PRINCIPAL.lb_countuBOP.setText(bufferStreaming.getListUBOP().size() + "");
+            ConstGeneral.TELA_PRINCIPAL.lb_countNovelBop.setText(bufferStreaming.getListNovelBOP().size() + "");
+            ConstGeneral.TELA_PRINCIPAL.lb_model.setText(bufferStreaming.getModel().size() + "");
         }
     }
 

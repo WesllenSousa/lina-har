@@ -22,8 +22,9 @@ public class BOP {
 
     private int countUnk = 0;
     private int countNovel = 0;
-    private float weight = 0;
+    private EnumHistogram decision;
 
+    private float weight = 0;
     private double entropy;
 
     public void incrementCountUnk() {
@@ -35,7 +36,7 @@ public class BOP {
     }
 
     public void updateWeight(boolean direction) {
-        if(direction) { //true: aumenta, false: diminui
+        if (direction) { //true: aumenta, false: diminui
             weight++;
         } else {
             weight--;
@@ -95,6 +96,14 @@ public class BOP {
 
     public void setEntropy(double entropy) {
         this.entropy = entropy;
+    }
+
+    public EnumHistogram getDecision() {
+        return decision;
+    }
+
+    public void setDecision(EnumHistogram decision) {
+        this.decision = decision;
     }
 
     @Override

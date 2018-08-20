@@ -76,7 +76,7 @@ public class Principal extends javax.swing.JFrame {
         addCurrentHistogram();
         wordTableModel = new WordTableModel(new ArrayList<>());
         tb_words.setModel(wordTableModel);
-        
+
         tb_principal.setSelectedIndex(3);
     }
 
@@ -257,6 +257,15 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tb_words = new javax.swing.JTable();
         lb_tableInfo = new javax.swing.JLabel();
+        jPanel37 = new javax.swing.JPanel();
+        lb_label = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        lb_countuBOP = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        lb_countNovelBop = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        lb_model = new javax.swing.JLabel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         pn_currentHistogram = new javax.swing.JPanel();
         sc_novel = new javax.swing.JScrollPane();
@@ -264,7 +273,6 @@ public class Principal extends javax.swing.JFrame {
         sc_model = new javax.swing.JScrollPane();
         pn_model = new javax.swing.JPanel();
         ck_updateGUI = new javax.swing.JCheckBox();
-        lb_label = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btt_openRawData = new javax.swing.JButton();
@@ -1738,6 +1746,70 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Words", jPanel17);
 
+        lb_label.setText("andar");
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Atividade: ");
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Count uBOP:");
+
+        lb_countuBOP.setText("0");
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel8.setText("Count Novel BOP:");
+
+        lb_countNovelBop.setText("0");
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Count Model:");
+
+        lb_model.setText("0");
+
+        javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
+        jPanel37.setLayout(jPanel37Layout);
+        jPanel37Layout.setHorizontalGroup(
+            jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel37Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lb_countuBOP, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                        .addComponent(lb_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lb_countNovelBop, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                    .addComponent(lb_model, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel37Layout.setVerticalGroup(
+            jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel37Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(lb_label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(lb_countuBOP))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(lb_countNovelBop))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(lb_model))
+                .addContainerGap(293, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Status", jPanel37);
+
         jTabbedPane2.setAutoscrolls(true);
 
         javax.swing.GroupLayout pn_currentHistogramLayout = new javax.swing.GroupLayout(pn_currentHistogram);
@@ -1785,14 +1857,12 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Model", sc_model);
 
-        ck_updateGUI.setText("Update GUI, Atividade:");
+        ck_updateGUI.setText("Update GUI:");
         ck_updateGUI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ck_updateGUIActionPerformed(evt);
             }
         });
-
-        lb_label.setText("andar");
 
         javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
         jPanel33.setLayout(jPanel33Layout);
@@ -1800,12 +1870,9 @@ public class Principal extends javax.swing.JFrame {
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel33Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel33Layout.createSequentialGroup()
-                        .addComponent(ck_updateGUI)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lb_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(ck_updateGUI))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane2))
         );
@@ -1813,9 +1880,7 @@ public class Principal extends javax.swing.JFrame {
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel33Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ck_updateGUI)
-                    .addComponent(lb_label))
+                .addComponent(ck_updateGUI)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane2)
@@ -2511,13 +2576,14 @@ public class Principal extends javax.swing.JFrame {
                 case 0:
                     stopInternalFrameProcess();
                     break;
-                case 3:                    
+                case 3:
                     clearTabStream();
                     break;
                 default:
                     break;
             }
             play.stop();
+            sx_busy.setBusy(false);
         }
     }//GEN-LAST:event_btt_stopActionPerformed
 
@@ -2647,6 +2713,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
@@ -2681,6 +2751,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel34;
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel36;
+    private javax.swing.JPanel jPanel37;
     private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -2725,7 +2796,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JToolBar jToolBar1;
+    public javax.swing.JLabel lb_countNovelBop;
+    public javax.swing.JLabel lb_countuBOP;
     public javax.swing.JLabel lb_label;
+    public javax.swing.JLabel lb_model;
     private javax.swing.JLabel lb_tableInfo;
     private javax.swing.JList<String> lt_algorithms;
     private javax.swing.JList<String> lt_classifier;
@@ -3162,7 +3236,7 @@ public class Principal extends javax.swing.JFrame {
      */
     private void executeSymbolic() {
         sx_busy.setBusy(true);
-        
+
         if (lt_timeSeriesData.getSelectedIndex() != -1) {
             clearTabStream();
 
@@ -3178,7 +3252,7 @@ public class Principal extends javax.swing.JFrame {
         } else {
             messages.aviso("Select a signal!");
         }
-        
+
         sx_busy.setBusy(false);
     }
 
@@ -3252,6 +3326,10 @@ public class Principal extends javax.swing.JFrame {
         tb_words.clearSelection();
         wordTableModel.getLinhas().clear();
         tb_words.repaint();
+        lb_label.setText("");
+        lb_countuBOP.setText("");
+        lb_countNovelBop.setText("");
+        lb_model.setText("");
 
         pn_novel.removeAll();
         pn_novel.updateUI();

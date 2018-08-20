@@ -96,8 +96,12 @@ public class TimeSeriesLoader {
 
                 // we read only first column
                 for (int i = 0; i < colCount; i++) {
-                    double value = new BigDecimal(lineSplit[i]).doubleValue();
-                    dataset.get(i).add(value);
+                    try {
+                        double value = new BigDecimal(lineSplit[i]).doubleValue();
+                        dataset.get(i).add(value);
+                    } catch (NumberFormatException ex) {
+                        System.out.println("loadVerticalData " + ex + ", line file: " + lineCounter);
+                    }
                 }
 
                 lineCounter++;
