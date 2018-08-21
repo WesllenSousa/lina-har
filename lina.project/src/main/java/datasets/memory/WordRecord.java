@@ -67,7 +67,8 @@ public class WordRecord implements Comparable<WordRecord> {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.word);
+        hash = 89 * hash + Objects.hashCode(this.word);
+        hash = 89 * hash + this.frequency;
         return hash;
     }
 
@@ -83,7 +84,13 @@ public class WordRecord implements Comparable<WordRecord> {
             return false;
         }
         final WordRecord other = (WordRecord) obj;
-        return Objects.equals(this.word, other.word);
+        if (this.frequency != other.frequency) {
+            return false;
+        }
+        if (!Objects.equals(this.word, other.word)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

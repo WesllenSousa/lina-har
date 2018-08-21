@@ -202,6 +202,9 @@ public class SymbolicView {
     }
 
     private void printEvaluation() {
+        ConstGeneral.TELA_PRINCIPAL.lb_countuBOP.setText(bufferStreaming.getListUBOP().size() + "");
+        ConstGeneral.TELA_PRINCIPAL.lb_countNovelBop.setText(bufferStreaming.getListNovelBOP().size() + "");
+        ConstGeneral.TELA_PRINCIPAL.lb_model.setText(bufferStreaming.getModel().size() + "");
         ConstGeneral.TELA_PRINCIPAL.updateSymbolicLog(eval.toString());
         ConstGeneral.STOP_STREAM = false;
     }

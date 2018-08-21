@@ -3266,6 +3266,7 @@ public class Principal extends javax.swing.JFrame {
         Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symWordLength.getText());
         Parameters.SYMBOLS_ALPHABET_SIZE = Integer.parseInt(tf_symSymbolAlphabet.getText());
 
+        //Parameters.OFFSET = Integer.parseInt(tf_symOffset.getText());
         Parameters.OFFSET = Math.round(Parameters.WINDOW_SIZE / Parameters.WORD_LENGTH_PAA);
         tf_symOffset.setText(Parameters.OFFSET + "");
 
