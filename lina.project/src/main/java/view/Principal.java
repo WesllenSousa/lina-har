@@ -1571,9 +1571,9 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Histogram"));
 
-        jLabel17.setText("BOP Size:");
+        jLabel17.setText("Seconds:");
 
-        tf_bopSize.setText("250");
+        tf_bopSize.setText("5");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -3265,10 +3265,14 @@ public class Principal extends javax.swing.JFrame {
         Parameters.WINDOW_SIZE = Integer.parseInt(tf_symWindow.getText());
         Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symWordLength.getText());
         Parameters.SYMBOLS_ALPHABET_SIZE = Integer.parseInt(tf_symSymbolAlphabet.getText());
-        Parameters.OFFSET = Integer.parseInt(tf_symOffset.getText());
-        ConstGeneral.UPDATE_GUI = ck_updateGUI.isSelected();
 
-        Parameters.BOP_SIZE = Integer.parseInt(tf_bopSize.getText());
+        Parameters.OFFSET = Math.round(Parameters.WINDOW_SIZE / Parameters.WORD_LENGTH_PAA);
+        tf_symOffset.setText(Parameters.OFFSET + "");
+
+        float seconds = Float.parseFloat(tf_bopSize.getText());
+        Parameters.BOP_SIZE = Math.round(Parameters.WINDOW_SIZE * seconds);
+
+        ConstGeneral.UPDATE_GUI = ck_updateGUI.isSelected();
     }
 
     private void addLineGraphic() {

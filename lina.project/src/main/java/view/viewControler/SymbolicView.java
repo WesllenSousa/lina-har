@@ -49,6 +49,7 @@ public class SymbolicView {
         eval.setOffset(Parameters.OFFSET);
         eval.setParams(params);
         eval.setBuffer(bufferStreaming);
+        eval.setBopSize(Parameters.BOP_SIZE);
     }
 
     public void runDataset(TimeSeries[] data, boolean norm) {
@@ -191,7 +192,6 @@ public class SymbolicView {
     public void clearCurrentHistogram() {
         if (ConstGeneral.UPDATE_GUI) {
             ConstGeneral.TELA_PRINCIPAL.clearCurrentHistogram();
-            bufferStreaming.setBOP(new BOP());
         }
     }
 

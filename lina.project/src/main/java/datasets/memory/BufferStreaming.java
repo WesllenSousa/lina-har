@@ -95,6 +95,7 @@ public class BufferStreaming {
     }
 
     public void clearBuffer() {
+        BOP = new BOP();
         bufferBOP.clear();
         listUBOP.clear();
         listNovelBOP.clear();

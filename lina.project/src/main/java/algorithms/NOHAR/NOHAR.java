@@ -139,14 +139,16 @@ public class NOHAR {
      *   Classification
      */
     private boolean classify(BufferStreaming buffer, BOP newBop) {
-        LinkedList<BOP> BOPs = minDistanceBop(buffer.getModel(), newBop);
-        BOP similarBOP = isSimilarBOPsConsistent(BOPs, "classify");
-        if (similarBOP != null) {
-            newBop.setLabel(similarBOP.getLabel());
-            compareLabel(newBop, "classify");
-        }
+
+        LinkedList<BOP> BOPs = listSimilarBOPs(buffer.getModel(), newBop);
         if (BOPs.size() > 1) {
             update(BOPs, newBop);
+        }
+        BOP minBOP = minDistanceBOP(BOPs, newBop, "classify");
+
+        if (minBOP != null) {
+            newBop.setLabel(minBOP.getLabel());
+            compareLabel(newBop, "classify");
         }
         if (BOPs.isEmpty()) {
             return false;
@@ -158,7 +160,7 @@ public class NOHAR {
     private void update(LinkedList<BOP> BOPs, BOP newBop) {
         for (BOP bop : BOPs) {
             if (bop.getDecision() == EnumHistogram.SLACK) {
-                symbolicView.updateLog("Model BOP fusion: " + bop.getLabel());
+                symbolicView.updateLog("Fusion: model: " + bop.getLabel() + " to " + currentLabel);
                 fusionHistogram(bop, newBop);
             }
         }
@@ -186,62 +188,69 @@ public class NOHAR {
      *   Learning
      */
     private boolean checkNovel(BufferStreaming buffer, BOP newBop) {
-        LinkedList<BOP> novelBOPs = minDistanceBop(buffer.getListNovelBOP(), newBop);
-        BOP similarNovelBOP = isSimilarBOPsConsistent(novelBOPs, "novel");
-        if (similarNovelBOP != null) {
-            if (similarNovelBOP.getDecision() == EnumHistogram.SLACK) {
-                symbolicView.updateLog("Novel BOP fusion: " + similarNovelBOP.getLabel());
-                fusionHistogram(similarNovelBOP, newBop);
+
+        LinkedList<BOP> novelBOPs = listSimilarBOPs(buffer.getListNovelBOP(), newBop);
+        BOP minNovelBOP = minDistanceBOP(novelBOPs, newBop, "novel");
+
+        if (minNovelBOP != null) {
+            if (minNovelBOP.getDecision() == EnumHistogram.SLACK) {
+                symbolicView.updateLog("Fusion: novel: " + minNovelBOP.getLabel() + " to " + currentLabel);
+                fusionHistogram(minNovelBOP, newBop);
             } else {
-                symbolicView.updateLog("Novel BOP Similar: " + similarNovelBOP.getLabel() + " to " + currentLabel);
+                symbolicView.updateLog("Similar: novel: " + minNovelBOP.getLabel() + " to " + currentLabel);
             }
-            similarNovelBOP.incrementCountNovel();
-            if (similarNovelBOP.getCountNovel() > COUNT_THRESHOLD_BOP) {
-                similarNovelBOP.setCountNovel(0);
-                //Active learning
-                String label = similarNovelBOP.getLabel() + "";
-                if (ConstGeneral.UPDATE_GUI) {
-                    Messages msg = new Messages();
-                    label = msg.inserirDadosComValorInicial("Is it similar to " + similarNovelBOP.getLabel() + "?", similarNovelBOP.getLabel() + "");
-                }
-                similarNovelBOP.setLabel(Double.parseDouble(label));
-                buffer.getModel().add(similarNovelBOP);
-                buffer.getListNovelBOP().remove(similarNovelBOP);
+            minNovelBOP.incrementCountNovel();
+            if (minNovelBOP.getCountNovel() > COUNT_THRESHOLD_BOP) {
+                minNovelBOP.setCountNovel(0);
+                buffer.getModel().add(minNovelBOP);
+                buffer.getListNovelBOP().remove(minNovelBOP);
                 symbolicView.updateLog("Added reference histogram!");
             }
-            compareLabel(similarNovelBOP, "novel");
+            compareLabel(minNovelBOP, "novel");
         }
-        return similarNovelBOP != null;
+        return minNovelBOP != null;
     }
 
     //Before active learnig
     private void checkUnknown(BufferStreaming buffer, BOP newBop) {
-        LinkedList<BOP> uBOPs = minDistanceBop(buffer.getListUBOP(), newBop);
 
+        LinkedList<BOP> uBOPs = listSimilarBOPs(buffer.getListUBOP(), newBop);
         if (uBOPs.isEmpty()) {
             newBop.setLabel(currentLabel);//Only by test, print Similar uBOP up
             buffer.getListUBOP().add(newBop);
             symbolicView.updateLog("Added new unknown BOP...");
             return;
         }
-        BOP similaruBOP = isSimilarBOPsConsistent(uBOPs, "Unknown");
-        if (similaruBOP != null) {
-            if (similaruBOP.getDecision() == EnumHistogram.SLACK) {
-                symbolicView.updateLog("uBOP fusion: " + similaruBOP.getLabel() + " to " + currentLabel);
-                fusionHistogram(similaruBOP, newBop);
+        BOP minuBOP = minDistanceBOP(uBOPs, newBop, "Unknown");
+
+        if (minuBOP != null) {
+            if (minuBOP.getDecision() == EnumHistogram.SLACK) {
+                symbolicView.updateLog("Fusion: unknown: " + minuBOP.getLabel() + " to " + currentLabel);
+                fusionHistogram(minuBOP, newBop);
             } else {
-                symbolicView.updateLog("uBOP Similar: " + similaruBOP.getLabel() + " to " + currentLabel);
+                symbolicView.updateLog("Similar: unknown: " + minuBOP.getLabel() + " to " + currentLabel);
             }
-            similaruBOP.incrementCountUnk();
+            minuBOP.incrementCountUnk();
             //So entra aqui uma vez
-            if (similaruBOP.getCountUnk() > COUNT_THRESHOLD_BOP) {
-                similaruBOP.setCountUnk(0);
-                buffer.getListNovelBOP().add(similaruBOP);
-                buffer.getListUBOP().remove(similaruBOP);
-                symbolicView.getEval().incrementCountBOP();
+            if (minuBOP.getCountUnk() > COUNT_THRESHOLD_BOP) {
+                minuBOP.setCountUnk(0);
+                String label = activeLearning(minuBOP.getLabel() + "");
+                minuBOP.setLabel(Double.parseDouble(label));
+                buffer.getListNovelBOP().add(minuBOP);
+                buffer.getListUBOP().remove(minuBOP);
                 symbolicView.updateLog("Added novel BOP...");
             }
         }
+    }
+
+    private String activeLearning(String posssibleLabel) {
+        //Active learning
+        String label = posssibleLabel;
+        if (ConstGeneral.UPDATE_GUI) {
+            Messages msg = new Messages();
+            label = msg.inserirDadosComValorInicial("Is it similar to " + posssibleLabel + "?", posssibleLabel + "");
+        }
+        return label;
     }
 
     private void checkForget(BufferStreaming buffer) {
@@ -262,14 +271,14 @@ public class NOHAR {
         return totalDistance;
     }
 
-    private LinkedList<BOP> minDistanceBop(LinkedList<BOP> BOPs, BOP newBop) {
+    private LinkedList<BOP> listSimilarBOPs(LinkedList<BOP> BOPs, BOP newBop) {
         LinkedList<BOP> similarBOP = new LinkedList<>();
         for (BOP bop : BOPs) {
             EnumHistogram decision;
             if (bop.getHistogram().size() > newBop.getHistogram().size()) {
-                decision = calcDistanceBetweenBOP(bop, newBop);
+                decision = classifyDistance(bop, newBop);
             } else {
-                decision = calcDistanceBetweenBOP(newBop, bop);
+                decision = classifyDistance(newBop, bop);
             }
             if (decision == EnumHistogram.EQUAL || decision == EnumHistogram.INSIDE || decision == EnumHistogram.SLACK) {
                 bop.setDecision(decision);
@@ -279,9 +288,29 @@ public class NOHAR {
         return similarBOP;
     }
 
-    private EnumHistogram calcDistanceBetweenBOP(BOP bigBop, BOP smallBop) {
-        int totalSmallBopDistance = totalDistance(smallBop);
-        int totalBigBopDistance = totalDistance(bigBop);
+    private BOP minDistanceBOP(LinkedList<BOP> BOP, BOP newBop, String origem) {
+        BOP minBop = null;
+        if (BOP.size() == 1) {
+            minBop = BOP.get(0);
+        } else if (BOP.size() > 1) {
+            int[] distances;
+            int minDistance = Integer.MAX_VALUE;
+            for (BOP bop : BOP) {
+                if (bop.getHistogram().size() > newBop.getHistogram().size()) {
+                    distances = calcDistanceBetweenBOP(bop, newBop);
+                } else {
+                    distances = calcDistanceBetweenBOP(newBop, bop);
+                }
+                if (distances[0] != -1 && (distances[0] + distances[1]) < minDistance) {
+                    minDistance = distances[0] + distances[1];
+                    minBop = bop;
+                }
+            }
+        }
+        return minBop;
+    }
+
+    private int[] calcDistanceBetweenBOP(BOP bigBop, BOP smallBop) {
         int insideDistance = -1;
         int outsideDistance = 0;
         boolean hasWord;
@@ -307,11 +336,20 @@ public class NOHAR {
                 outsideDistance += big.getFrequency();
             }
         }
-        return analyseDistance(insideDistance, outsideDistance, totalSmallBopDistance, totalBigBopDistance);
+        int[] distances = new int[2];
+        distances[0] = insideDistance;
+        distances[1] = outsideDistance;
+        return distances;
     }
 
-    private EnumHistogram analyseDistance(int insideDistance, int outsideDistance,
-            int totalSmallBopDistance, int totalBigBopDistance) {
+    private EnumHistogram classifyDistance(BOP bigBop, BOP smallBop) {
+
+        int[] distances = calcDistanceBetweenBOP(bigBop, smallBop);
+        int insideDistance = distances[0];
+        int outsideDistance = distances[1];
+        int totalSmallBopDistance = totalDistance(smallBop);
+        int totalBigBopDistance = totalDistance(bigBop);
+
         if (insideDistance == -1) {
             return EnumHistogram.OUTSIDE;
         } else if (insideDistance == 0 && outsideDistance == 0) {
@@ -321,8 +359,7 @@ public class NOHAR {
             double percentBig = (outsideDistance * 100) / totalBigBopDistance;
             if (percentSmall < 25 && percentBig < 25) {
                 return EnumHistogram.INSIDE;
-            } else if (percentSmall > 25 && percentSmall < 50
-                    && percentBig > 25 && percentBig < 50) {
+            } else if (percentSmall < 50 && percentBig < 50) {
                 return EnumHistogram.SLACK;
             } else {
                 return EnumHistogram.OUTSIDE;
@@ -350,27 +387,16 @@ public class NOHAR {
         }
     }
 
-    private BOP isSimilarBOPsConsistent(LinkedList<BOP> uBOPs, String origem) {
-        BOP similaruBOP = null;
-        double lastLabel = -1;
-        for (BOP uBOP : uBOPs) {
-            similaruBOP = uBOP;
-            if (lastLabel != -1 && uBOP.getLabel() != lastLabel) {
-                symbolicView.updateLog("Similar BOP inconsistent! labels: " + uBOP.getLabel() + " and " + lastLabel + " - " + origem);
-            }
-            lastLabel = uBOP.getLabel();
-        }
-        return similaruBOP;
-    }
-
     private void cleanBuffer() {
         //Clean buffer excess
+        symbolicView.getBuffer().setBOP(new BOP());
         if (symbolicView.getBuffer().getBufferBOP().size() > 5) {
             symbolicView.getBuffer().getBufferBOP().remove(0);
         }
-        if (symbolicView.getBuffer().getListUBOP().size() > 20) {
-            symbolicView.getBuffer().getListUBOP().remove(0);
-        }
+        //É muito importante monitorar a quantidade do uBOP
+//        if (symbolicView.getBuffer().getListUBOP().size() > 20) {
+//            symbolicView.getBuffer().getListUBOP().remove(0);
+//        }
     }
 
 }

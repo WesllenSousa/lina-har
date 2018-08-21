@@ -2344,12 +2344,12 @@
                               <SubComponents>
                                 <Component class="javax.swing.JLabel" name="jLabel17">
                                   <Properties>
-                                    <Property name="text" type="java.lang.String" value="BOP Size:"/>
+                                    <Property name="text" type="java.lang.String" value="Seconds:"/>
                                   </Properties>
                                 </Component>
                                 <Component class="javax.swing.JTextField" name="tf_bopSize">
                                   <Properties>
-                                    <Property name="text" type="java.lang.String" value="250"/>
+                                    <Property name="text" type="java.lang.String" value="5"/>
                                   </Properties>
                                 </Component>
                               </SubComponents>

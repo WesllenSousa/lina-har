@@ -19,11 +19,11 @@ public class EvaluationNohar {
     private int hitsNovel = 0;
     private int errors = 0;
     private int errorsNovel = 0;
-    private int countBOP;
     private long startTime = 0;
     private long endTime = 0;
     private Params params;
     private int offset = 0;
+    private int bopSize = 0;
     private BufferStreaming buffer;
 
     public void setDataset(String dataset) {
@@ -46,10 +46,6 @@ public class EvaluationNohar {
         errorsNovel++;
     }
 
-    public void incrementCountBOP() {
-        countBOP++;
-    }
-
     public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
@@ -70,15 +66,24 @@ public class EvaluationNohar {
         this.buffer = buffer;
     }
 
+    public void setBopSize(int bopSize) {
+        this.bopSize = bopSize;
+    }
+
     @Override
     public String toString() {
         float seconds = (endTime - startTime) / 1000;
-        float accuracy = (hits + hitsNovel) / countBOP;
+
+        int totalInstances = hits + hitsNovel + errors + errorsNovel;
+        float accuracy = 0.f;
+        int tp = hits + hitsNovel;
+        if (totalInstances > 0) {
+            accuracy = (float) tp / (float) totalInstances;
+        }
         //float error = (errors + errorsNovel) / countBOP;
         return "EvaluationNohar{" + "\n"
                 + "  Dataset=" + dataset + "\n"
-                + "  Count BOPs=" + countBOP + "\n"
-                + "  Accuracy=" + accuracy + "%\n"
+                + "  Accuracy=" + (accuracy * 100) + "%\n"
                 + "  Hits=" + hits + "\n"
                 + "  Hits novel=" + hitsNovel + "\n"
                 //+ "  Errors=" + error + "%\n"
@@ -89,6 +94,7 @@ public class EvaluationNohar {
                 + "  Alphabet Size=" + params.alphabetSize + "\n"
                 + "  PAA Size=" + params.paaSize + "\n"
                 + "  Offset=" + offset + "\n"
+                + "  BOP Size=" + bopSize + "\n"
                 + "  uBOP=" + buffer.getListUBOP().size() + "\n"
                 + "  Novel BOP=" + buffer.getListNovelBOP().size() + "\n"
                 + "  Model=" + buffer.getModel().size() + "\n"
