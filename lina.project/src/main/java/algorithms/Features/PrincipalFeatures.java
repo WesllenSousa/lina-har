@@ -58,16 +58,6 @@ public class PrincipalFeatures {
         return horizontal;
     }
 
-    public static LinkedList<Float> forwardAxis(LinkedList<Float> N) {
-        LinkedList<Float> newBuffer = new LinkedList<>();
-        return newBuffer;
-    }
-
-    public static LinkedList<Float> sidewardAxis(LinkedList<Float> N) {
-        LinkedList<Float> newBuffer = new LinkedList<>();
-        return newBuffer;
-    }
-
     public static LinkedList<Float> FastFourierTransform(LinkedList<Float> N, boolean fwd) {
         //Long init = System.currentTimeMillis();
 

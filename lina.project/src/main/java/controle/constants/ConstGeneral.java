@@ -124,6 +124,7 @@ public class ConstGeneral {
      */
     public static boolean STOP_STREAM = false;
     public static boolean UPDATE_GUI = true;
+    public static boolean WITH_LABEL = true;
     
     public static boolean P_UNKNOWN = true;
     public static boolean P_NOVEL = false;

@@ -290,14 +290,6 @@ public class ProcessingFeatures {
             FiltersSignalProcessing.HighPass(window, frequency).stream().forEach((value) -> {
                 column.add(value.toString());
             });
-        } else if (nameMethod.equals(ConstGeneral.PF_ForwardAxis)) {
-            PrincipalFeatures.forwardAxis(window).stream().forEach((value) -> {
-                column.add(value.toString());
-            });
-        } else if (nameMethod.equals(ConstGeneral.PF_SidewardAxis)) {
-            PrincipalFeatures.sidewardAxis(window).stream().forEach((value) -> {
-                column.add(value.toString());
-            });
         } else if (nameMethod.equals(ConstGeneral.PF_FastFourierTrasform)) {
             PrincipalFeatures.FastFourierTransform(window, true).stream().forEach((value) -> {
                 column.add(value.toString());

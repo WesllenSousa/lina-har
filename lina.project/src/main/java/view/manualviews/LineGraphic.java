@@ -80,7 +80,6 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
                 break;
             }
             //Adiciona a time series a coleção de time series 
-            seriesCollection.removeAllSeries();
             for (XYSeries time : timeSeries) {
                 seriesCollection.addSeries(time);
             }
@@ -88,22 +87,14 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
         }
     }
 
-    public void prepareStream() {
-        //Adiciona a time series a coleção de time series 
-        seriesCollection.removeAllSeries();
-        seriesCollection.addSeries(new XYSeries(0));
-        fitAxis();
-    }
-
     public void prepareStream(TimeSeries[] data) {
         if (data.length > 0) {
             LinkedList<XYSeries> timeSeries = new LinkedList<>();
             //Cria timeseries vazias
-            for (TimeSeries ts : data) {
-                timeSeries.add(new XYSeries(ts.getData(0)));
+            for (int i = 0; i < data.length; i++) {
+                timeSeries.add(new XYSeries(i));
             }
             //Adiciona a time series a coleção de time series 
-            seriesCollection.removeAllSeries();
             for (XYSeries time : timeSeries) {
                 seriesCollection.addSeries(time);
             }
@@ -187,17 +178,22 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
         }
     }
 
-    public XYPlot getTimeseriesPlot() {
-        return timeseriesPlot;
+    public int getSeriesCount() {
+        return seriesCollection.getSeriesCount();
     }
 
-    public XYSeriesCollection getSeriesCollection() {
-        return seriesCollection;
-    }
-    
     public int getItemCount() {
         XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(0);
         return timeSerie.getItemCount();
+    }
+
+    public void clean() {
+        seriesCollection.removeAllSeries();
+        timeseriesPlot.clearDomainMarkers();
+    }
+    
+    public void cleanDomainMarkers() {
+        timeseriesPlot.clearDomainMarkers();
     }
 
 }

@@ -20,8 +20,8 @@ public class WordRecord implements Comparable<WordRecord> {
     private ArrayList<WordInterval> intervals = new ArrayList<>();
     private int frequency;
 
-    public void incrementFrequency() {
-        frequency += 1;
+    public void incrementFrequency(int peso) {
+        frequency += peso;
     }
 
     public String getWord() {

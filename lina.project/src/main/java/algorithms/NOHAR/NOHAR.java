@@ -25,43 +25,46 @@ import view.viewControler.SymbolicView;
 public class NOHAR {
 
     private final SymbolicView symbolicView;
-
-    private final Adwin adwin;
-    private final PageHinkley pageHinkley;
     private final Params params;
+    private final int COUNT_THRESHOLD_BOP = 5;
+
+    private Adwin adwin[];
+    private PageHinkley pageHinkley[];
 
     private double currentLabel = -1;
+    private int currentMean[];
     private int contConsistentChunkValue = 0;
-    private int COUNT_THRESHOLD_BOP = 5;
 
     public NOHAR(SymbolicView symbolicView, Params params) {
         this.symbolicView = symbolicView;
-
-        adwin = new Adwin(.002, Parameters.BOP_SIZE);
-        pageHinkley = new PageHinkley();
         this.params = params;
     }
 
-    public void runStream(double currentValue, int position, double label) {
+    public void runStream(double[] currentValues, int position, double label) {
         this.currentLabel = label;
         //Monitor change the data
-        if (changeDetected(currentValue, position)) {
+        if (changeDetected(currentValues, position)) {
             contConsistentChunkValue = 0; //Reset chunk
             symbolicView.clearCurrentHistogram();
             return;
         }
+
         contConsistentChunkValue++;
         if (contConsistentChunkValue % Parameters.OFFSET == 0) {
-            //Discretize
-            WordRecord word = discretize(symbolicView.getBuffer(), position);
-            //Update Histogram
-            updateBOP(symbolicView.getBuffer().getBOP(), word);
+            for (int index = 0; index < currentValues.length; index++) {
+                //Discretize
+                WordRecord word = discretize(symbolicView.getBuffer(), position, index);
+                //Update Histogram
+                //int peso = currentMean[index];
+                int peso = 1;
+                updateBOP(symbolicView.getBuffer().getBOP(), word, peso);
+            }
         }
+
         //Handle model
         if (contConsistentChunkValue >= Parameters.BOP_SIZE) {
             //Add histogram to buffer
             symbolicView.getBuffer().getBOP().orderWordsHistogram(); //important!
-            symbolicView.getBuffer().getBufferBOP().add(symbolicView.getBuffer().getBOP());
 
             //Classify
             if (!classify(symbolicView.getBuffer(), symbolicView.getBuffer().getBOP())) {
@@ -87,17 +90,36 @@ public class NOHAR {
     /*
      *   Detecção de mudança
      */
-    private boolean changeDetected(double currentValue, int position) {
-        if (Parameters.CHANGE_DETECTION == 0) {
-            if (adwin.setInput(currentValue)) {
-//                symbolicView.updateLog("Change Detected: " + position);
+    private boolean changeDetected(double[] currentValues, int position) {
+        if (adwin == null && pageHinkley == null) {
+            adwin = new Adwin[currentValues.length];
+            pageHinkley = new PageHinkley[currentValues.length];
+            currentMean = new int[currentValues.length];
+            for (int i = 0; i < currentValues.length; i++) {
+                adwin[i] = new Adwin(.002, Parameters.BOP_SIZE, Parameters.WINDOW_SIZE);
+                pageHinkley[i] = new PageHinkley();
+            }
+        }
+        for (int i = 0; i < currentValues.length; i++) {
+            double value = currentValues[i];
+            if (value < 0) {
+                value = currentValues[i] * currentValues[i]; //Because mean negative
+            }
+            if (Parameters.CHANGE_DETECTION == 0) {
+                if (adwin[i].setInput(value)) {
+                    symbolicView.addMarkerGraphLine(position, Color.RED);
+                    for (int w = 0; w < currentValues.length; w++) {
+                        currentMean[w] = (int) Math.round(adwin[w].getVariance());
+                    }
+                    return true;
+                }
+            } else if (pageHinkley[i].runStreaming(value, position)) {
                 symbolicView.addMarkerGraphLine(position, Color.RED);
+                for (int w = 0; w < currentValues.length; w++) {
+                    currentMean[w] = (int) Math.round(pageHinkley[w].getMean());
+                }
                 return true;
             }
-        } else if (pageHinkley.runStreaming(currentValue, position)) {
-//            symbolicView.updateLog("Change Detected: " + position);
-            symbolicView.addMarkerGraphLine(position, Color.RED);
-            return true;
         }
         return false;
     }
@@ -105,9 +127,9 @@ public class NOHAR {
     /*
      *   Discretização
      */
-    private WordRecord discretize(BufferStreaming buffer, int position) {
+    private WordRecord discretize(BufferStreaming buffer, int position, int index) {
         SAX sax = new SAX(params);
-        String word = sax.serieToWord(buffer.getSubSequence().getData());
+        String word = sax.serieToWord(buffer.getSubSequences()[index].getData());
         WordRecord wordRecord = buffer.populaWordRecord(word, position - Parameters.WINDOW_SIZE);
         return wordRecord;
     }
@@ -115,7 +137,7 @@ public class NOHAR {
     /*
      *   Criação de histogramas
      */
-    private void updateBOP(BOP bop, WordRecord word) {
+    private void updateBOP(BOP bop, WordRecord word, int peso) {
         if (word == null) {
             return;
         }
@@ -124,8 +146,9 @@ public class NOHAR {
             for (WordRecord wordRecord : bop.getHistogram()) {
                 if (wordRecord.getWord().equals(word.getWord())) {
                     wordRecord.getIntervals().add(word.getIntervals().get(0));
-                    wordRecord.incrementFrequency();
+                    wordRecord.incrementFrequency(peso);
                     symbolicView.updateCurrentHistogram(wordRecord, currentLabel + "");
+                    break;
                 }
             }
         } else {
@@ -392,13 +415,12 @@ public class NOHAR {
     private void cleanBuffer() {
         //Clean buffer excess
         symbolicView.getBuffer().setBOP(new BOP());
-        if (symbolicView.getBuffer().getBufferBOP().size() > 5) {
-            symbolicView.getBuffer().getBufferBOP().remove(0);
+        if (symbolicView.getBuffer().getListNovelBOP().size() > 50) {
+            symbolicView.getBuffer().getListNovelBOP().remove(0);
         }
-        //É muito importante monitorar a quantidade do uBOP
-        if (symbolicView.getBuffer().getListUBOP().size() > 100) {
-            symbolicView.getBuffer().getListUBOP().remove(0);
-        }
+//        if (symbolicView.getBuffer().getListUBOP().size() > 100) {
+//            symbolicView.getBuffer().getListUBOP().remove(0);
+//        }
     }
 
 }

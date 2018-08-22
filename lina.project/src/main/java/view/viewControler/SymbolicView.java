@@ -5,7 +5,7 @@
  */
 package view.viewControler;
 
-import algorithms.Features.DataFusion;
+import algorithms.Features.PrincipalFeatures;
 import algorithms.NOHAR.BOP;
 import algorithms.NOHAR.EvaluationNohar;
 import algorithms.NOHAR.NOHAR;
@@ -56,33 +56,32 @@ public class SymbolicView {
         bufferStreaming.clearBuffer();
         eval.setStartTime(System.currentTimeMillis());
 
-        //this.lineGraphic.prepareStream(data);
-        this.lineGraphic.prepareStream();
-
         //Access each position from time series - streaming
         for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position++) {
             if (ConstGeneral.STOP_STREAM) {
                 break;
             }
-
             //Get array subsequence
-            TimeSeries[] subsequences = getSubsequences(data, position, norm);
+            double label = 0;
+            if (ConstGeneral.WITH_LABEL) {
+                TimeSeries labels = getLabels(data, position);
+                label = classMoreFrequency(labels);
+                //double label = labels.getData(labels.getLength() - 1);
+            }
 
-            TimeSeries labels = subsequences[subsequences.length - 1];
-            TimeSeries subsequence = DataFusion.Magnitude(subsequences);//====== atencao! metodo alterado
+            TimeSeries[] subSequences = getSubsequences(data, position, norm);
+            //subSequences = DataFusion.Magnitude(subSequences);
+            double[] currentValues = new double[subSequences.length];
+            for (int i = 0; i < subSequences.length; i++) {
+                currentValues[i] = subSequences[i].getData(subSequences[i].getLength() - 1);
+            }
+            bufferStreaming.setSubSequences(subSequences);
 
-            bufferStreaming.setSubSequence(subsequence);
-
-            //Get current value and process 
-            double currentValue = subsequence.getData(subsequence.getLength() - 1);
-            double label = classMoreFrequency(labels);
-            //double label = labels.getData(labels.getLength() - 1);
-            processStream(currentValue, position, label);
+            //Process
+            processStream(currentValues, position, label);
 
             //values to GUI
-            double[] values = new double[1];
-            values[0] = currentValue;
-            addDataGraphLine(values);
+            addDataGraphLine(currentValues);
             updateLabel(label + "");
         }
         eval.setEndTime(System.currentTimeMillis());
@@ -91,21 +90,21 @@ public class SymbolicView {
     }
 
     private TimeSeries[] getSubsequences(TimeSeries[] data, int position, boolean norm) {
-        //Get array subsequence
-        TimeSeries[] subsequences = new TimeSeries[data.length];
-        int dataColumn = 0;
-        for (TimeSeries ts : data) {
-            //Get current window - windowing
-            if (dataColumn < data.length - 1) {
-                TimeSeries subsequence = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, norm);
-                subsequences[dataColumn] = subsequence;
-            } else {//Because last column is label, norm is false
-                TimeSeries subsequence = ts.getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
-                subsequences[dataColumn] = subsequence;
-            }
-            dataColumn++;
+        int n = data.length;
+        if (ConstGeneral.WITH_LABEL) {
+            n = data.length - 1;
+        }
+        TimeSeries[] subsequences = new TimeSeries[n];
+        for (int index = 0; index < n; index++) {
+            //Get array subsequence
+            TimeSeries subsequence = data[index].getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, norm);
+            subsequences[index] = subsequence;
         }
         return subsequences;
+    }
+
+    private TimeSeries getLabels(TimeSeries[] data, int position) {
+        return data[data.length - 1].getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
     }
 
     public Double classMoreFrequency(TimeSeries labels) {
@@ -130,10 +129,10 @@ public class SymbolicView {
         return classe;
     }
 
-    private void processStream(double currentValue, int position, double label) {
+    private void processStream(double[] currentValues, int position, double label) {
         if (nohar != null) {
             //System.out.println(position + ") " + label);
-            nohar.runStream(currentValue, position, label);
+            nohar.runStream(currentValues, position, label);
         }
     }
 
@@ -142,6 +141,9 @@ public class SymbolicView {
      */
     private void addDataGraphLine(double[] values) {
         if (ConstGeneral.UPDATE_GUI) {
+            if (lineGraphic.getSeriesCount() == 0) {
+                this.lineGraphic.prepareStream(new TimeSeries[values.length]);
+            }
             lineGraphic.addData(values);
             lineGraphic.espera(5);
         }
@@ -171,7 +173,7 @@ public class SymbolicView {
         if (ConstGeneral.UPDATE_GUI) {
             barGraphic.setTitle(title);
             barGraphic.addUpdateData(word.getWord(), word.getFrequency());
-            ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, bufferStreaming.getBufferBOP().size());
+            ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, bufferStreaming.getBOP().getHistogram().size());
         }
     }
 

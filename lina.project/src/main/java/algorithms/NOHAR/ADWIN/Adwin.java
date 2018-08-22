@@ -55,10 +55,11 @@ public class Adwin { //extends Estimator {
         mdbldelta = d;
     }
 
-    public Adwin(double d, int window) {
+    public Adwin(double d, int BOPsize, int hertz) {
         initBuckets();
         mdbldelta = d;
-        mintMinimWindow = window;
+        mintMinimWindow = BOPsize;
+        mintClock = hertz;
     }
 
     public boolean setInput(double intEntrada) {

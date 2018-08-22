@@ -81,5 +81,9 @@ public class PageHinkley {
         maxLT = Double.MIN_VALUE;
         PHl = 0.;
     }
+    
+    public double getMean() {
+        return mean;
+    }
 
 }

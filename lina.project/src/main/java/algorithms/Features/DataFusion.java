@@ -48,19 +48,22 @@ public class DataFusion {
         return Math.sqrt(sum);
     }
 
-    public static TimeSeries Magnitude(TimeSeries[] data) {
-        double[] magnitude = new double[data[0].getData().length];
-        for (int j = 0; j < data[0].getData().length; j++) {
-            double sum = 0.0;
-            //data.length - 1 = ganbiarra para o NOHAR = pq a classe é a ultima coluna, e o calculo da mag nao inclui a classe
-            for (int i = 0; i < data.length - 1; i++) {
-                sum += Math.pow(data[i].getData(j), 2);
+    public static TimeSeries[] Magnitude(TimeSeries[] data) {
+        if (data[0] != null) {
+            double[] magnitude = new double[data[0].getData().length];
+            for (int i = 0; i < data[0].getData().length; i++) {
+                double sum = 0.0;
+                for (int sequence = 0; sequence < data.length; sequence++) {
+                    sum += Math.pow(data[sequence].getData(i), 2);
+                }
+                magnitude[i] = Math.sqrt(sum);
             }
-            magnitude[j] = Math.sqrt(sum);
+            TimeSeries[] timeSeries = new TimeSeries[1];
+            timeSeries[0] = new TimeSeries(magnitude);
+            return timeSeries;
+        } else {
+            return null;
         }
-        TimeSeries timeSeries = new TimeSeries();
-        timeSeries.setData(magnitude);
-        return timeSeries;
     }
 
     public static LinkedList<Double> PCA(String dir, String nameFile) {

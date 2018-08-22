@@ -16,11 +16,9 @@ import java.util.LinkedList;
  */
 public class BufferStreaming {
 
-    private TimeSeries subSequence = new TimeSeries();
+    private TimeSeries[] subSequences;
 
     private BOP BOP = new BOP();
-    private LinkedList<BOP> bufferBOP = new LinkedList<>();
-
     private LinkedList<BOP> listUBOP = new LinkedList<>();
     private LinkedList<BOP> listNovelBOP = new LinkedList<>();
     private LinkedList<BOP> model = new LinkedList<>();
@@ -28,12 +26,12 @@ public class BufferStreaming {
     /*
      *   Geters Setters
      */
-    public TimeSeries getSubSequence() {
-        return subSequence;
+    public TimeSeries[] getSubSequences() {
+        return subSequences;
     }
 
-    public void setSubSequence(TimeSeries subSequence) {
-        this.subSequence = subSequence;
+    public void setSubSequences(TimeSeries[] subSequences) {
+        this.subSequences = subSequences;
     }
 
     public BOP getBOP() {
@@ -42,14 +40,6 @@ public class BufferStreaming {
 
     public void setBOP(BOP BOP) {
         this.BOP = BOP;
-    }
-
-    public LinkedList<BOP> getBufferBOP() {
-        return bufferBOP;
-    }
-
-    public void setBufferBOP(LinkedList<BOP> bufferBOP) {
-        this.bufferBOP = bufferBOP;
     }
 
     public LinkedList<BOP> getListUBOP() {
@@ -96,7 +86,6 @@ public class BufferStreaming {
 
     public void clearBuffer() {
         BOP = new BOP();
-        bufferBOP.clear();
         listUBOP.clear();
         listNovelBOP.clear();
         model.clear();
