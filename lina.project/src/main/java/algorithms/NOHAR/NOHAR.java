@@ -32,7 +32,6 @@ public class NOHAR {
     private PageHinkley pageHinkley[];
 
     private double currentLabel = -1;
-    private int currentMean[];
     private int contConsistentChunkValue = 0;
 
     public NOHAR(SymbolicView symbolicView, Params params) {
@@ -51,13 +50,24 @@ public class NOHAR {
 
         contConsistentChunkValue++;
         if (contConsistentChunkValue % Parameters.OFFSET == 0) {
+            //Frequency normalization where mean must be positive
+            int minMean = 1, peso = 0;
+            for (int index = 0; index < currentValues.length; index++) {
+                symbolicView.getBuffer().getSubSequences()[index].calculateMean();
+                int mean = (int) Math.round(symbolicView.getBuffer().getSubSequences()[index].getMean());
+                if (mean < minMean) {
+                    minMean = mean - 1;
+                    peso = minMean * -1;
+                }
+            }
+            //Discretization and update histogram
             for (int index = 0; index < currentValues.length; index++) {
                 //Discretize
                 WordRecord word = discretize(symbolicView.getBuffer(), position, index);
                 //Update Histogram
-                //int peso = currentMean[index];
-                int peso = 1;
-                updateBOP(symbolicView.getBuffer().getBOP(), word, peso);
+                int mean = (int) Math.round(symbolicView.getBuffer().getSubSequences()[index].getMean());
+                int frequency = mean + peso;
+                updateBOP(symbolicView.getBuffer().getBOP(), word, frequency);
             }
         }
 
@@ -94,7 +104,6 @@ public class NOHAR {
         if (adwin == null && pageHinkley == null) {
             adwin = new Adwin[currentValues.length];
             pageHinkley = new PageHinkley[currentValues.length];
-            currentMean = new int[currentValues.length];
             for (int i = 0; i < currentValues.length; i++) {
                 adwin[i] = new Adwin(.002, Parameters.BOP_SIZE, Parameters.WINDOW_SIZE);
                 pageHinkley[i] = new PageHinkley();
@@ -108,16 +117,10 @@ public class NOHAR {
             if (Parameters.CHANGE_DETECTION == 0) {
                 if (adwin[i].setInput(value)) {
                     symbolicView.addMarkerGraphLine(position, Color.RED);
-                    for (int w = 0; w < currentValues.length; w++) {
-                        currentMean[w] = (int) Math.round(adwin[w].getVariance());
-                    }
                     return true;
                 }
             } else if (pageHinkley[i].runStreaming(value, position)) {
                 symbolicView.addMarkerGraphLine(position, Color.RED);
-                for (int w = 0; w < currentValues.length; w++) {
-                    currentMean[w] = (int) Math.round(pageHinkley[w].getMean());
-                }
                 return true;
             }
         }
@@ -130,6 +133,7 @@ public class NOHAR {
     private WordRecord discretize(BufferStreaming buffer, int position, int index) {
         SAX sax = new SAX(params);
         String word = sax.serieToWord(buffer.getSubSequences()[index].getData());
+        word += index;
         WordRecord wordRecord = buffer.populaWordRecord(word, position - Parameters.WINDOW_SIZE);
         return wordRecord;
     }
@@ -137,7 +141,7 @@ public class NOHAR {
     /*
      *   Criação de histogramas
      */
-    private void updateBOP(BOP bop, WordRecord word, int peso) {
+    private void updateBOP(BOP bop, WordRecord word, int frequency) {
         if (word == null) {
             return;
         }
@@ -146,7 +150,7 @@ public class NOHAR {
             for (WordRecord wordRecord : bop.getHistogram()) {
                 if (wordRecord.getWord().equals(word.getWord())) {
                     wordRecord.getIntervals().add(word.getIntervals().get(0));
-                    wordRecord.incrementFrequency(peso);
+                    wordRecord.incrementFrequency(frequency);
                     symbolicView.updateCurrentHistogram(wordRecord, currentLabel + "");
                     break;
                 }
@@ -164,33 +168,19 @@ public class NOHAR {
     private boolean classify(BufferStreaming buffer, BOP newBop) {
         //Verificar se pode fazer fusão dos histogramas do modelo
         LinkedList<BOP> BOPs = listSimilarBOPs(buffer.getModel(), newBop);
-        BOP minBOP = minDistanceBOP(BOPs, newBop, "classify");
+        BOP minBOP = minDistanceBOP(BOPs, newBop, "Classify");
         if (minBOP != null) {
-            newBop.setLabel(minBOP.getLabel());
-            compareLabel(newBop, "classify");
+//            if (minBOP.getDecision() == EnumHistogram.SLACK) {
+//                symbolicView.updateLog("================================!");
+//            } else {
+                newBop.setLabel(minBOP.getLabel());
+                compareLabel(newBop, "classify");
+//            }
         }
         if (BOPs.isEmpty()) {
             return false;
         } else {
             return true;
-        }
-    }
-
-    private void compareLabel(BOP bop, String origem) {
-        if (bop.getLabel() == currentLabel) {
-            if (bop.getCountNovel() > 0) {
-                symbolicView.getEval().incrementHistsNovel();
-            } else {
-                symbolicView.getEval().incrementHists();
-            }
-            symbolicView.updateLog(">> Right: " + bop.getLabel() + " - " + origem);
-        } else if (bop.getLabel() != -1) {
-            if (bop.getCountNovel() > 0) {
-                symbolicView.getEval().incrementErrorsNovel();
-            } else {
-                symbolicView.getEval().incrementErrors();
-            }
-            symbolicView.updateLog(">> Wrong: " + bop.getLabel() + ", Right: " + currentLabel + " - " + origem);
         }
     }
 
@@ -228,6 +218,7 @@ public class NOHAR {
         if (uBOPs.isEmpty()) {
             newBop.setLabel(currentLabel);//Only by test, print Similar uBOP up
             buffer.getListUBOP().add(newBop);
+            symbolicView.getEval().incrementCountBOP();
             symbolicView.updateLog("Added new unknown BOP...");
             return;
         }
@@ -307,24 +298,26 @@ public class NOHAR {
             int minDistance = Integer.MAX_VALUE;
             double lastLabel = -1;
             for (BOP bop : BOP) {
+                
                 //If different label call active learning, it works like update component
                 if (lastLabel != -1 && lastLabel != bop.getLabel()) {
                     symbolicView.updateLog("Conflit labels! " + origem);
                     String label = activeLearning(bop.getLabel() + "", "Conflit labels! " + origem);
-                    minBop = bop;
-                    minBop.setLabel(Double.parseDouble(label));
+                    bop.setLabel(Double.parseDouble(label));
                     break;
                 }
+                lastLabel = bop.getLabel();
+                
                 if (bop.getHistogram().size() > newBop.getHistogram().size()) {
                     distances = calcDistanceBetweenBOP(bop, newBop);
                 } else {
                     distances = calcDistanceBetweenBOP(newBop, bop);
                 }
-                if (distances[0] != -1 && (distances[0] + distances[1]) < minDistance) {
-                    minDistance = distances[0] + distances[1];
+                int distance = distances[0] + distances[1];
+                if (distances[0] != -1 && distance < minDistance) {
+                    minDistance = distance;
                     minBop = bop;
-                }
-                lastLabel = bop.getLabel();
+                }                
             }
         }
         return minBop;
@@ -378,9 +371,9 @@ public class NOHAR {
         } else {
             double percentSmall = (insideDistance * 100) / totalSmallBopDistance;
             double percentBig = (outsideDistance * 100) / totalBigBopDistance;
-            if (percentSmall < 25 && percentBig < 25) {
+            if (percentSmall < 15 && percentBig < 15) {
                 return EnumHistogram.INSIDE;
-            } else if (percentSmall < 50 && percentBig < 50) {
+            } else if (percentSmall < 30 && percentBig < 30) {
                 return EnumHistogram.SLACK;
             } else {
                 return EnumHistogram.OUTSIDE;
@@ -412,15 +405,33 @@ public class NOHAR {
         }
     }
 
+    private void compareLabel(BOP bop, String origem) {
+        if (bop.getLabel() == currentLabel) {
+            if (bop.getCountNovel() > 0) {
+                symbolicView.getEval().incrementHistsNovel();
+            } else {
+                symbolicView.getEval().incrementHists();
+            }
+            symbolicView.updateLog(">> Right: " + bop.getLabel() + " - " + origem);
+        } else if (bop.getLabel() != -1) {
+            if (bop.getCountNovel() > 0) {
+                symbolicView.getEval().incrementErrorsNovel();
+            } else {
+                symbolicView.getEval().incrementErrors();
+            }
+            symbolicView.updateLog(">> Wrong: " + bop.getLabel() + ", Right: " + currentLabel + " - " + origem);
+        }
+    }
+
     private void cleanBuffer() {
         //Clean buffer excess
         symbolicView.getBuffer().setBOP(new BOP());
         if (symbolicView.getBuffer().getListNovelBOP().size() > 50) {
             symbolicView.getBuffer().getListNovelBOP().remove(0);
         }
-//        if (symbolicView.getBuffer().getListUBOP().size() > 100) {
-//            symbolicView.getBuffer().getListUBOP().remove(0);
-//        }
+        if (symbolicView.getBuffer().getListUBOP().size() > 100) {
+            symbolicView.getBuffer().getListUBOP().remove(0);
+        }
     }
 
 }

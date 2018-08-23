@@ -20,8 +20,8 @@ public class WordRecord implements Comparable<WordRecord> {
     private ArrayList<WordInterval> intervals = new ArrayList<>();
     private int frequency;
 
-    public void incrementFrequency(int peso) {
-        frequency += peso;
+    public void incrementFrequency(int frequency) {
+        this.frequency += frequency;
     }
 
     public String getWord() {
@@ -68,7 +68,6 @@ public class WordRecord implements Comparable<WordRecord> {
     public int hashCode() {
         int hash = 7;
         hash = 89 * hash + Objects.hashCode(this.word);
-        hash = 89 * hash + this.frequency;
         return hash;
     }
 
@@ -84,9 +83,6 @@ public class WordRecord implements Comparable<WordRecord> {
             return false;
         }
         final WordRecord other = (WordRecord) obj;
-        if (this.frequency != other.frequency) {
-            return false;
-        }
         if (!Objects.equals(this.word, other.word)) {
             return false;
         }
@@ -96,6 +92,11 @@ public class WordRecord implements Comparable<WordRecord> {
     @Override
     public int compareTo(WordRecord o) {
         return this.word.compareTo(o.word);
+    }
+
+    @Override
+    public String toString() {
+        return word;
     }
 
 }

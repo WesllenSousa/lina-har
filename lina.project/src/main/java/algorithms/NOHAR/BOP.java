@@ -25,7 +25,6 @@ public class BOP {
     private EnumHistogram decision;
 
     private float weight = 0;
-    private double entropy;
 
     public void incrementCountUnk() {
         countUnk++;
@@ -88,14 +87,6 @@ public class BOP {
 
     public void setWeight(float weight) {
         this.weight = weight;
-    }
-
-    public double getEntropy() {
-        return entropy;
-    }
-
-    public void setEntropy(double entropy) {
-        this.entropy = entropy;
     }
 
     public EnumHistogram getDecision() {

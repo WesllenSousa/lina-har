@@ -19,6 +19,7 @@ public class EvaluationNohar {
     private int hitsNovel = 0;
     private int errors = 0;
     private int errorsNovel = 0;
+    private int countBOPs = 0;
     private long startTime = 0;
     private long endTime = 0;
     private Params params;
@@ -44,6 +45,10 @@ public class EvaluationNohar {
 
     public void incrementErrorsNovel() {
         errorsNovel++;
+    }
+    
+    public void incrementCountBOP() {
+        countBOPs++;
     }
 
     public void setStartTime(long startTime) {
@@ -80,16 +85,14 @@ public class EvaluationNohar {
         if (totalInstances > 0) {
             accuracy = (float) tp / (float) totalInstances;
         }
-        //float error = (errors + errorsNovel) / countBOP;
         return "EvaluationNohar{" + "\n"
                 + "  Dataset=" + dataset + "\n"
                 + "  Accuracy=" + (accuracy * 100) + "%\n"
                 + "  Hits=" + hits + "\n"
                 + "  Hits novel=" + hitsNovel + "\n"
-                //+ "  Errors=" + error + "%\n"
                 + "  Errors=" + errors + "\n"
                 + "  Errors novel=" + errorsNovel + "\n"
-                + "  seconds=" + seconds + "s\n"
+                + "  Count BOPs=" + countBOPs + "\n"
                 + "  Window Size=" + params.windowSize + "\n"
                 + "  Alphabet Size=" + params.alphabetSize + "\n"
                 + "  PAA Size=" + params.paaSize + "\n"
@@ -98,6 +101,7 @@ public class EvaluationNohar {
                 + "  uBOP=" + buffer.getListUBOP().size() + "\n"
                 + "  Novel BOP=" + buffer.getListNovelBOP().size() + "\n"
                 + "  Model=" + buffer.getModel().size() + "\n"
+                + "  seconds=" + seconds + "s\n"
                 + '}';
     }
 
