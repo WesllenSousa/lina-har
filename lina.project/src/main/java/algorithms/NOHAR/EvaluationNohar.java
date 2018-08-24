@@ -27,10 +27,6 @@ public class EvaluationNohar {
     private int bopSize = 0;
     private BufferStreaming buffer;
 
-    public void setDataset(String dataset) {
-        this.dataset = dataset;
-    }
-
     public void incrementHists() {
         hits++;
     }
@@ -46,11 +42,30 @@ public class EvaluationNohar {
     public void incrementErrorsNovel() {
         errorsNovel++;
     }
-    
+
     public void incrementCountBOP() {
         countBOPs++;
+        //calculeAccuracy();
     }
 
+    public void setDataset(String dataset) {
+        this.dataset = dataset;
+    }
+    
+    private float calculeAccuracy() {
+        int totalInstances = hits + hitsNovel + errors + errorsNovel;
+        float accuracy = 0.f;
+        int tp = hits + hitsNovel;
+        if (totalInstances > 0) {
+            accuracy = (float) tp / (float) totalInstances;
+        }
+        System.out.println(accuracy);
+        return accuracy;
+    }
+
+    /*
+        Getters and Setters
+     */
     public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
@@ -78,13 +93,8 @@ public class EvaluationNohar {
     @Override
     public String toString() {
         float seconds = (endTime - startTime) / 1000;
+        float accuracy = calculeAccuracy();
 
-        int totalInstances = hits + hitsNovel + errors + errorsNovel;
-        float accuracy = 0.f;
-        int tp = hits + hitsNovel;
-        if (totalInstances > 0) {
-            accuracy = (float) tp / (float) totalInstances;
-        }
         return "EvaluationNohar{" + "\n"
                 + "  Dataset=" + dataset + "\n"
                 + "  Accuracy=" + (accuracy * 100) + "%\n"

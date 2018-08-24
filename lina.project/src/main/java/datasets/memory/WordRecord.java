@@ -23,7 +23,7 @@ public class WordRecord implements Comparable<WordRecord> {
     public void incrementFrequency(int frequency) {
         this.frequency += frequency;
     }
-
+    
     public String getWord() {
         return word;
     }

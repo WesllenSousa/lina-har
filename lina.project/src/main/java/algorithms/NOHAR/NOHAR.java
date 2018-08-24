@@ -111,8 +111,8 @@ public class NOHAR {
         }
         for (int i = 0; i < currentValues.length; i++) {
             double value = currentValues[i];
-            if (value < 0) {
-                value = currentValues[i] * currentValues[i]; //Because mean negative
+            if (value < 0) {//Because the mean can not be negative
+                value = currentValues[i] * currentValues[i];
             }
             if (Parameters.CHANGE_DETECTION == 0) {
                 if (adwin[i].setInput(value)) {
@@ -133,7 +133,7 @@ public class NOHAR {
     private WordRecord discretize(BufferStreaming buffer, int position, int index) {
         SAX sax = new SAX(params);
         String word = sax.serieToWord(buffer.getSubSequences()[index].getData());
-        word += index;
+        word += index; //Different word for different axis
         WordRecord wordRecord = buffer.populaWordRecord(word, position - Parameters.WINDOW_SIZE);
         return wordRecord;
     }
@@ -170,12 +170,12 @@ public class NOHAR {
         LinkedList<BOP> BOPs = listSimilarBOPs(buffer.getModel(), newBop);
         BOP minBOP = minDistanceBOP(BOPs, newBop, "Classify");
         if (minBOP != null) {
-//            if (minBOP.getDecision() == EnumHistogram.SLACK) {
-//                symbolicView.updateLog("================================!");
-//            } else {
-                newBop.setLabel(minBOP.getLabel());
-                compareLabel(newBop, "classify");
-//            }
+            if (minBOP.getDecision() == EnumHistogram.SLACK
+                    && fusionHistogram(buffer.getModel(), minBOP, newBop)) {
+                symbolicView.updateLog("Fusion model: " + minBOP.getLabel() + " to " + currentLabel);
+            }
+            newBop.setLabel(minBOP.getLabel());
+            compareLabel(newBop, "Classify");
         }
         if (BOPs.isEmpty()) {
             return false;
@@ -193,11 +193,11 @@ public class NOHAR {
         BOP minNovelBOP = minDistanceBOP(novelBOPs, newBop, "Novel");
 
         if (minNovelBOP != null) {
-            if (minNovelBOP.getDecision() == EnumHistogram.SLACK) {
-                symbolicView.updateLog("Fusion: novel: " + minNovelBOP.getLabel() + " to " + currentLabel);
-                fusionHistogram(buffer.getListNovelBOP(), minNovelBOP, newBop);
+            if (minNovelBOP.getDecision() == EnumHistogram.SLACK
+                    && fusionHistogram(buffer.getListNovelBOP(), minNovelBOP, newBop)) {
+                symbolicView.updateLog("Fusion novel: " + minNovelBOP.getLabel() + " to " + currentLabel);
             } else {
-                symbolicView.updateLog("Similar: novel: " + minNovelBOP.getLabel() + " to " + currentLabel);
+                symbolicView.updateLog("Similar novel: " + minNovelBOP.getLabel() + " to " + currentLabel);
             }
             minNovelBOP.incrementCountNovel();
             if (minNovelBOP.getCountNovel() > COUNT_THRESHOLD_BOP) {
@@ -206,7 +206,7 @@ public class NOHAR {
                 buffer.getListNovelBOP().remove(minNovelBOP);
                 symbolicView.updateLog("Added reference histogram!");
             }
-            compareLabel(minNovelBOP, "novel");
+            compareLabel(minNovelBOP, "Novel");
         }
         return minNovelBOP != null;
     }
@@ -225,11 +225,11 @@ public class NOHAR {
         BOP minuBOP = minDistanceBOP(uBOPs, newBop, "Unknown");
 
         if (minuBOP != null) {
-            if (minuBOP.getDecision() == EnumHistogram.SLACK) {
-                symbolicView.updateLog("Fusion: unknown: " + minuBOP.getLabel() + " to " + currentLabel);
-                fusionHistogram(buffer.getListUBOP(), minuBOP, newBop);
+            if (minuBOP.getDecision() == EnumHistogram.SLACK
+                    && fusionHistogram(buffer.getListUBOP(), minuBOP, newBop)) {
+                symbolicView.updateLog("Fusion unknown: " + minuBOP.getLabel() + " to " + currentLabel);
             } else {
-                symbolicView.updateLog("Similar: unknown: " + minuBOP.getLabel() + " to " + currentLabel);
+                symbolicView.updateLog("Similar unknown: " + minuBOP.getLabel() + " to " + currentLabel);
             }
             minuBOP.incrementCountUnk();
             //So entra aqui uma vez
@@ -291,35 +291,35 @@ public class NOHAR {
 
     private BOP minDistanceBOP(LinkedList<BOP> BOP, BOP newBop, String origem) {
         BOP minBop = null;
-        if (BOP.size() == 1) {
-            minBop = BOP.get(0);
-        } else if (BOP.size() > 1) {
-            int[] distances;
-            int minDistance = Integer.MAX_VALUE;
-            double lastLabel = -1;
-            for (BOP bop : BOP) {
-                
-                //If different label call active learning, it works like update component
-                if (lastLabel != -1 && lastLabel != bop.getLabel()) {
-                    symbolicView.updateLog("Conflit labels! " + origem);
-                    String label = activeLearning(bop.getLabel() + "", "Conflit labels! " + origem);
-                    bop.setLabel(Double.parseDouble(label));
-                    break;
-                }
-                lastLabel = bop.getLabel();
-                
-                if (bop.getHistogram().size() > newBop.getHistogram().size()) {
-                    distances = calcDistanceBetweenBOP(bop, newBop);
-                } else {
-                    distances = calcDistanceBetweenBOP(newBop, bop);
-                }
-                int distance = distances[0] + distances[1];
-                if (distances[0] != -1 && distance < minDistance) {
-                    minDistance = distance;
-                    minBop = bop;
-                }                
+
+        int[] distances;
+        int minDistance = Integer.MAX_VALUE;
+        double lastLabel = -1;
+        int conflited = 0;
+        for (BOP bop : BOP) {
+            if (lastLabel != -1 && lastLabel != bop.getLabel()) {
+                conflited++;
             }
+            if (bop.getHistogram().size() > newBop.getHistogram().size()) {
+                distances = calcDistanceBetweenBOP(bop, newBop);
+            } else {
+                distances = calcDistanceBetweenBOP(newBop, bop);
+            }
+            int distance = distances[0] + distances[1];
+            if (distances[0] != -1 && distance < minDistance) {
+                minDistance = distance;
+                minBop = bop;
+            }
+            lastLabel = bop.getLabel();
         }
+
+        //If different label call active learning, it works like update component
+        if (minBop != null && conflited > 1) {
+            symbolicView.updateLog("Conflit labels! " + origem);
+            String label = activeLearning(minBop.getLabel() + "", "Conflit labels! " + origem);
+            minBop.setLabel(Double.parseDouble(label));
+        }
+
         return minBop;
     }
 
@@ -381,28 +381,23 @@ public class NOHAR {
         }
     }
 
-    private void fusionHistogram(LinkedList<BOP> BOPs, BOP minBop, BOP newBop) {
+    private boolean fusionHistogram(LinkedList<BOP> BOPs, BOP minBop, BOP newBop) {
         for (BOP bop : BOPs) {
-            if (bop.equals(minBop)) {
-                BOP bigBop, smallBOP;
-                if (bop.getHistogram().size() > newBop.getHistogram().size()) {
-                    bigBop = bop;
-                    smallBOP = newBop;
-                } else {
-                    bigBop = newBop;
-                    smallBOP = bop;
-                }
-                for (WordRecord big : bigBop.getHistogram()) {
-                    for (WordRecord small : smallBOP.getHistogram()) {
+            if (bop.equals(minBop)
+                    && bop.getHistogram().size() > newBop.getHistogram().size()) {//Only if bop is greater
+                for (WordRecord big : bop.getHistogram()) {
+                    for (WordRecord small : newBop.getHistogram()) {
                         if (big.equals(small)) {
                             float mean = (big.getFrequency() + small.getFrequency()) / 2;
                             big.setFrequency(Math.round(mean));
+                            return true;
                         }
                     }
                 }
                 break;
             }
         }
+        return false;
     }
 
     private void compareLabel(BOP bop, String origem) {

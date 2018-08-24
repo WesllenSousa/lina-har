@@ -2099,8 +2099,8 @@
                                           <Component id="jPanel23" alignment="1" max="32767" attributes="0"/>
                                           <Component id="jPanel38" alignment="0" max="32767" attributes="0"/>
                                           <Component id="jPanel26" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
                                           <Component id="jPanel28" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
@@ -2121,7 +2121,7 @@
                                       <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jPanel28" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="31" max="32767" attributes="0"/>
+                                      <EmptySpace pref="21" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2195,7 +2195,6 @@
                                               <Component id="jLabel1" alignment="1" max="32767" attributes="0"/>
                                               <Component id="jLabel2" alignment="1" max="32767" attributes="0"/>
                                               <Component id="jLabel3" alignment="1" max="32767" attributes="0"/>
-                                              <Component id="jLabel12" alignment="1" min="-2" pref="75" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
@@ -2203,11 +2202,6 @@
                                               <Component id="tf_symSymbolAlphabet" alignment="0" max="32767" attributes="0"/>
                                               <Component id="tf_symWordLength" max="32767" attributes="0"/>
                                               <Component id="tf_symOffset" alignment="0" max="32767" attributes="0"/>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="rd_normYes" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="td_normNo" max="32767" attributes="0"/>
-                                              </Group>
                                           </Group>
                                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                                       </Group>
@@ -2235,12 +2229,7 @@
                                               <Component id="jLabel4" alignment="3" max="32767" attributes="0"/>
                                               <Component id="tf_symOffset" alignment="3" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="jLabel12" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
-                                              <Component id="rd_normYes" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="td_normNo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                          <EmptySpace min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>
@@ -2253,12 +2242,12 @@
                                 </Component>
                                 <Component class="javax.swing.JTextField" name="tf_symOffset">
                                   <Properties>
-                                    <Property name="text" type="java.lang.String" value="12"/>
+                                    <Property name="text" type="java.lang.String" value="10"/>
                                   </Properties>
                                 </Component>
                                 <Component class="javax.swing.JTextField" name="tf_symWordLength">
                                   <Properties>
-                                    <Property name="text" type="java.lang.String" value="4"/>
+                                    <Property name="text" type="java.lang.String" value="5"/>
                                   </Properties>
                                 </Component>
                                 <Component class="javax.swing.JLabel" name="jLabel3">
@@ -2284,28 +2273,6 @@
                                 <Component class="javax.swing.JLabel" name="jLabel1">
                                   <Properties>
                                     <Property name="text" type="java.lang.String" value="Windows:"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JLabel" name="jLabel12">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="Normalized:"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JRadioButton" name="rd_normYes">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_normalized"/>
-                                    </Property>
-                                    <Property name="text" type="java.lang.String" value="Yes"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JRadioButton" name="td_normNo">
-                                  <Properties>
-                                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="gp_normalized"/>
-                                    </Property>
-                                    <Property name="selected" type="boolean" value="true"/>
-                                    <Property name="text" type="java.lang.String" value="No"/>
                                   </Properties>
                                 </Component>
                               </SubComponents>

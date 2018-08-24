@@ -51,7 +51,7 @@ public class SymbolicView {
         eval.setBopSize(Parameters.BOP_SIZE);
     }
 
-    public void runDataset(TimeSeries[] data, boolean norm) {
+    public void runDataset(TimeSeries[] data) {
         bufferStreaming.clearBuffer();
         eval.setStartTime(System.currentTimeMillis());
 
@@ -69,7 +69,7 @@ public class SymbolicView {
                 //double label = labels.getData(labels.getLength() - 1);
             }
 
-            TimeSeries[] subSequences = getSubsequences(data, position, norm);
+            TimeSeries[] subSequences = getSubsequences(data, position);
             //subSequences = DataFusion.Magnitude(subSequences);
             double[] currentValues = new double[subSequences.length];
             for (int i = 0; i < subSequences.length; i++) {
@@ -89,7 +89,7 @@ public class SymbolicView {
         printEvaluation();
     }
 
-    private TimeSeries[] getSubsequences(TimeSeries[] data, int position, boolean norm) {
+    private TimeSeries[] getSubsequences(TimeSeries[] data, int position) {
         int n = data.length;
         if (ConstGeneral.WITH_LABEL) {
             n = data.length - 1;
@@ -97,7 +97,7 @@ public class SymbolicView {
         TimeSeries[] subsequences = new TimeSeries[n];
         for (int index = 0; index < n; index++) {
             //Get array subsequence
-            TimeSeries subsequence = data[index].getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, norm);
+            TimeSeries subsequence = data[index].getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
             subsequences[index] = subsequence;
         }
         return subsequences;
