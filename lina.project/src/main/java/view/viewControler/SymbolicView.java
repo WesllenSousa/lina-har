@@ -5,6 +5,7 @@
  */
 package view.viewControler;
 
+import algorithms.Features.FiltersSignalProcessing;
 import algorithms.NOHAR.BOP;
 import algorithms.NOHAR.EvaluationNohar;
 import algorithms.NOHAR.NOHAR;
@@ -58,7 +59,6 @@ public class SymbolicView {
         //Access each position from time series - streaming
         for (int position = Parameters.WINDOW_SIZE; position < (data[0].getLength() - Parameters.WINDOW_SIZE); position++) {
             if (ConstGeneral.STOP_STREAM) {
-                printEvaluation();
                 break;
             }
             //Get array subsequence
@@ -97,8 +97,11 @@ public class SymbolicView {
         TimeSeries[] subsequences = new TimeSeries[n];
         for (int index = 0; index < n; index++) {
             //Get array subsequence
-            TimeSeries subsequence = data[index].getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
-            subsequences[index] = subsequence;
+            TimeSeries subSequence = data[index].getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
+//            subsequences[index] = subSequence;
+            TimeSeries filtered = new TimeSeries(
+                    FiltersSignalProcessing.SingleLowPass(subSequence.getData(), Parameters.WINDOW_SIZE));
+            subsequences[index] = filtered;
         }
         return subsequences;
     }
@@ -209,10 +212,10 @@ public class SymbolicView {
         ConstGeneral.TELA_PRINCIPAL.lb_model.setText(bufferStreaming.getModel().size() + "");
         ConstGeneral.TELA_PRINCIPAL.updateSymbolicLog(eval.toString());
         ConstGeneral.TELA_PRINCIPAL.addHistograms(
-                ConstGeneral.TELA_PRINCIPAL.sc_novel, ConstGeneral.TELA_PRINCIPAL.pn_novel, 
+                ConstGeneral.TELA_PRINCIPAL.sc_novel, ConstGeneral.TELA_PRINCIPAL.pn_novel,
                 bufferStreaming.getListNovelBOP());
         ConstGeneral.TELA_PRINCIPAL.addHistograms(
-                ConstGeneral.TELA_PRINCIPAL.sc_model, ConstGeneral.TELA_PRINCIPAL.pn_model, 
+                ConstGeneral.TELA_PRINCIPAL.sc_model, ConstGeneral.TELA_PRINCIPAL.pn_model,
                 bufferStreaming.getModel());
         ConstGeneral.STOP_STREAM = false;
     }

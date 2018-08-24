@@ -266,12 +266,9 @@ public class ProcessingFeatures {
     }
 
     private void addLineColumnsVector(String nameMethod, LinkedList<Float> window, LinkedList<String> column, float frequency) {
-        if (nameMethod.equals(ConstGeneral.SP_GausianLowpass)) {
-            FiltersSignalProcessing.GausianLowpass(window).stream().forEach((value) -> {
-                column.add(value);
-            });
-        } else if (nameMethod.equals(ConstGeneral.SP_ButterworthLowpass)) {
-            FiltersSignalProcessing.ButterworthLowpass2(window).stream().forEach((value) -> {
+        if (nameMethod.equals(ConstGeneral.SP_ButterworthLowpass)) {
+            float GAIN = 1.165969038f;
+            FiltersSignalProcessing.ButterworthLowpass(window, GAIN).stream().forEach((value) -> {
                 column.add(value.toString());
             });
         } else if (nameMethod.equals(ConstGeneral.SP_SingleLowPass)) {
@@ -298,12 +295,7 @@ public class ProcessingFeatures {
             PrincipalFeatures.HaarWaveletTransform(window, true).stream().forEach((value) -> {
                 column.add(value.toString());
             });
-        } //        else if (nameMethod.equals(ConstGeneral.PF_TiltAngle)) {
-        //            PrincipalFeatures.tiltAngle(window).stream().forEach((value) -> {
-        //                column.add(value);
-        //            });
-        //        } 
-        else if (nameMethod.equals(ConstGeneral.SP_MovingAverageFilter)) {
+        } else if (nameMethod.equals(ConstGeneral.SP_MovingAverageFilter)) {
             FiltersSignalProcessing.MovingAverageFilter(window, 3).stream().forEach((value) -> {
                 column.add(value.toString());
             });

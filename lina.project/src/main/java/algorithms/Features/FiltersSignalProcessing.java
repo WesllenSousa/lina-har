@@ -8,54 +8,12 @@ import java.util.LinkedList;
  */
 public class FiltersSignalProcessing {
 
-    public static LinkedList<String> GausianLowpass(LinkedList<Float> N) {
-        LinkedList<String> newBuffer = new LinkedList<>();
-        return newBuffer;
-    }
-
-    public static LinkedList<Float> ButterworthLowpass(LinkedList<Float> N) {
+    public static LinkedList<Float> ButterworthLowpass(LinkedList<Float> N, float GAIN) {
         //Long init = System.currentTimeMillis();
 
         LinkedList<Float> dest = new LinkedList<>();
         int NZEROS = 6;
         int NPOLES = 6;
-        float GAIN = 2.936532839f;
-        float[] xv = new float[NZEROS + 1];
-        float[] yv = new float[NPOLES + 1];
-        for (Float k : N) {
-            xv[0] = xv[1];
-            xv[1] = xv[2];
-            xv[2] = xv[3];
-            xv[3] = xv[4];
-            xv[4] = xv[5];
-            xv[5] = xv[6];
-            xv[6] = k / GAIN;
-            yv[0] = yv[1];
-            yv[1] = yv[2];
-            yv[2] = yv[3];
-            yv[3] = yv[4];
-            yv[4] = yv[5];
-            yv[5] = yv[6];
-            yv[6] = (float) ((xv[0] + xv[6]) + 6.0 * (xv[1] + xv[5]) + 15.0 * (xv[2] + xv[4])
-                    + 20.0 * xv[3]
-                    + (-0.0837564796 * yv[0]) + (0.7052741145 * yv[1])
-                    + (-2.5294949058 * yv[2]) + (4.9654152288 * yv[3])
-                    + (-5.6586671659 * yv[4]) + (3.5794347983 * yv[5]));
-            dest.add(yv[6]);
-        }
-
-        //Long end = System.currentTimeMillis();
-        //System.out.println("ButterworthLowpass: " + DateUtil.timeInterval(init, end));
-        return dest;
-    }
-
-    public static LinkedList<Float> ButterworthLowpass2(LinkedList<Float> N) {
-        //Long init = System.currentTimeMillis();
-
-        LinkedList<Float> dest = new LinkedList<>();
-        int NZEROS = 6;
-        int NPOLES = 6;
-        float GAIN = 1.165969038f;
 
         float[] xv = new float[NZEROS + 1];
         float[] yv = new float[NPOLES + 1];
@@ -86,26 +44,25 @@ public class FiltersSignalProcessing {
         //System.out.println("ButterworthLowpass2: " + DateUtil.timeInterval(init, end));
         return dest;
     }
-
-    public static LinkedList<Float> ButterworthLowpass3(LinkedList<Float> N) {
+    
+    public static double[] ButterworthLowpass(double[] N, float GAIN) {
         //Long init = System.currentTimeMillis();
 
-        LinkedList<Float> dest = new LinkedList<>();
+        double[] dest = new double[N.length];
         int NZEROS = 6;
         int NPOLES = 6;
-        float GAIN = 9.339780497f;
 
-        float[] xv = new float[NZEROS + 1];
-        float[] yv = new float[NPOLES + 1];
+        double[] xv = new double[NZEROS + 1];
+        double[] yv = new double[NPOLES + 1];
 
-        for (Float k : N) {
+        for (int i = 0; i < N.length; i++) {
             xv[0] = xv[1];
             xv[1] = xv[2];
             xv[2] = xv[3];
             xv[3] = xv[4];
             xv[4] = xv[5];
             xv[5] = xv[6];
-            xv[6] = k / GAIN;
+            xv[6] = N[i] / GAIN;
             yv[0] = yv[1];
             yv[1] = yv[2];
             yv[2] = yv[3];
@@ -114,55 +71,18 @@ public class FiltersSignalProcessing {
             yv[5] = yv[6];
             yv[6] = (float) ((xv[0] + xv[6]) + 6.0 * (xv[1] + xv[5]) + 15.0 * (xv[2] + xv[4])
                     + 20.0 * xv[3]
-                    + (-0.1396600417 * yv[0]) + (1.1086708553 * yv[1])
-                    + (-3.7230194289 * yv[2]) + (6.7850160254 * yv[3])
-                    + (-7.0995038188 * yv[4]) + (4.0616439992 * yv[5]));
-            dest.add(yv[6]);
+                    + (-0.2951724313 * yv[0]) + (2.1290387500 * yv[1])
+                    + (-6.4411118810 * yv[2]) + (10.4690788930 * yv[3])
+                    + (-9.6495177287 * yv[4]) + (4.7871354989 * yv[5]));
+            dest[i] = yv[6];
         }
 
         //Long end = System.currentTimeMillis();
-        //System.out.println("ButterworthLowpass3: " + DateUtil.timeInterval(init, end));
+        //System.out.println("ButterworthLowpass2: " + DateUtil.timeInterval(init, end));
         return dest;
     }
 
-    public static LinkedList<Float> ButterworthLowpass4(LinkedList<Float> N) {
-        //Long init = System.currentTimeMillis();
-
-        LinkedList<Float> dest = new LinkedList<>();
-        int NZEROS = 6;
-        int NPOLES = 6;
-        float GAIN = 4.004448900f;
-        float[] xv = new float[NZEROS + 1];
-        float[] yv = new float[NPOLES + 1];
-
-        for (Float k : N) {
-            xv[0] = xv[1];
-            xv[1] = xv[2];
-            xv[2] = xv[3];
-            xv[3] = xv[4];
-            xv[4] = xv[5];
-            xv[5] = xv[6];
-            xv[6] = k / GAIN;
-            yv[0] = yv[1];
-            yv[1] = yv[2];
-            yv[2] = yv[3];
-            yv[3] = yv[4];
-            yv[4] = yv[5];
-            yv[5] = yv[6];
-            yv[6] = (float) ((xv[0] + xv[6]) + 6.0 * (xv[1] + xv[5]) + 15.0 * (xv[2] + xv[4])
-                    + 20.0 * xv[3]
-                    + (-0.3774523864 * yv[0]) + (2.6310551285 * yv[1])
-                    + (-7.6754745482 * yv[2]) + (11.9993158160 * yv[3])
-                    + (-10.6070421840 * yv[4]) + (5.0294383514 * yv[5]));
-            dest.add(yv[6]);
-        }
-
-        //Long end = System.currentTimeMillis();
-        //System.out.println("ButterworthLowpass4: " + DateUtil.timeInterval(init, end));
-        return dest;
-    }
-
-    public static LinkedList<Float> MovingAverageFilter(LinkedList<Float> N, int windowMean) { 
+    public static LinkedList<Float> MovingAverageFilter(LinkedList<Float> N, int windowMean) {
         //System.out.println("MovingAverageFilter: ");
         LinkedList<Float> newVector = new LinkedList<>();
         LinkedList<Float> meanVector = new LinkedList<>();
@@ -189,6 +109,21 @@ public class FiltersSignalProcessing {
         float[] a = new float[]{1 - x};
         float[] b = new float[]{x};
         LinkedList<Float> LIST = filter(N, a, b);
+
+        //Long end = System.currentTimeMillis();
+        //System.out.println("SingleLowPass: " + DateUtil.timeInterval(init, end));
+        return LIST;
+    }
+
+    public static double[] SingleLowPass(double[] N, float sampleRate) {
+        //Long init = System.currentTimeMillis();
+
+        float frequency = 1;
+        float fracFreq = frequency / sampleRate;
+        float x = (float) Math.exp(-2 * Math.PI * fracFreq);
+        float[] a = new float[]{1 - x};
+        float[] b = new float[]{x};
+        double[] LIST = filter(N, a, b);
 
         //Long end = System.currentTimeMillis();
         //System.out.println("SingleLowPass: " + DateUtil.timeInterval(init, end));
@@ -265,6 +200,30 @@ public class FiltersSignalProcessing {
             System.arraycopy(out, 0, out, 1, out.length - 1);
             out[0] = y;
             N.set(i, y);
+        }
+        return N;
+    }
+
+    private static double[] filter(double[] N, float[] a, float[] b) {
+        float[] in = new float[a.length];
+        float[] out = new float[b.length];
+        for (int i = 0; i < N.length; i++) {
+            //shift the in array
+            System.arraycopy(in, 0, in, 1, in.length - 1);
+            in[0] = (float) N[i];
+            //calculate y based on a and b coefficients
+            //and in and out.
+            float y = 0;
+            for (int j = 0; j < a.length; j++) {
+                y += a[j] * in[j];
+            }
+            for (int j = 0; j < b.length; j++) {
+                y += b[j] * out[j];
+            }
+            //shift the out array
+            System.arraycopy(out, 0, out, 1, out.length - 1);
+            out[0] = y;
+            N[i] = y;
         }
         return N;
     }

@@ -1496,9 +1496,9 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel4.setText("Offset:");
 
-        tf_symOffset.setText("10");
+        tf_symOffset.setText("5");
 
-        tf_symWordLength.setText("5");
+        tf_symWordLength.setText("4");
 
         jLabel3.setText("Word length:");
 
@@ -1506,7 +1506,7 @@ public class Principal extends javax.swing.JFrame {
 
         tf_symSymbolAlphabet.setText("4");
 
-        tf_symWindow.setText("50");
+        tf_symWindow.setText("20");
 
         jLabel1.setText("Windows:");
 

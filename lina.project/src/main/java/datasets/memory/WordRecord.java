@@ -16,7 +16,6 @@ public class WordRecord implements Comparable<WordRecord> {
 
     private String word;
     private short[] wordBit;
-    private String label;
     private ArrayList<WordInterval> intervals = new ArrayList<>();
     private int frequency;
 
@@ -42,14 +41,6 @@ public class WordRecord implements Comparable<WordRecord> {
 
     public ArrayList<WordInterval> getIntervals() {
         return intervals;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public void setIntervals(ArrayList<WordInterval> intervals) {

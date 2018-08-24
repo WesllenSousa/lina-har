@@ -27,6 +27,7 @@ public class NOHAR {
     private final SymbolicView symbolicView;
     private final Params params;
     private final int COUNT_THRESHOLD_BOP = 5;
+    private final int PESO = 10; //For frequency normalization where mean must be positive
 
     private Adwin adwin[];
     private PageHinkley pageHinkley[];
@@ -50,23 +51,14 @@ public class NOHAR {
 
         contConsistentChunkValue++;
         if (contConsistentChunkValue % Parameters.OFFSET == 0) {
-            //Frequency normalization where mean must be positive
-            int minMean = 1, peso = 0;
-            for (int index = 0; index < currentValues.length; index++) {
-                symbolicView.getBuffer().getSubSequences()[index].calculateMean();
-                int mean = (int) Math.round(symbolicView.getBuffer().getSubSequences()[index].getMean());
-                if (mean < minMean) {
-                    minMean = mean - 1;
-                    peso = minMean * -1;
-                }
-            }
             //Discretization and update histogram
             for (int index = 0; index < currentValues.length; index++) {
                 //Discretize
                 WordRecord word = discretize(symbolicView.getBuffer(), position, index);
                 //Update Histogram
+                symbolicView.getBuffer().getSubSequences()[index].calculateMean();
                 int mean = (int) Math.round(symbolicView.getBuffer().getSubSequences()[index].getMean());
-                int frequency = mean + peso;
+                int frequency = mean + PESO;
                 updateBOP(symbolicView.getBuffer().getBOP(), word, frequency);
             }
         }
@@ -106,7 +98,7 @@ public class NOHAR {
             pageHinkley = new PageHinkley[currentValues.length];
             for (int i = 0; i < currentValues.length; i++) {
                 adwin[i] = new Adwin(.002, Parameters.BOP_SIZE, Parameters.WINDOW_SIZE);
-                pageHinkley[i] = new PageHinkley();
+                pageHinkley[i] = new PageHinkley(0.30);
             }
         }
         for (int i = 0; i < currentValues.length; i++) {
@@ -141,24 +133,32 @@ public class NOHAR {
     /*
      *   Criação de histogramas
      */
-    private void updateBOP(BOP bop, WordRecord word, int frequency) {
-        if (word == null) {
+    private void updateBOP(BOP bop, WordRecord wordRecord, int frequency) {
+        if (wordRecord == null) {
             return;
         }
+        LinkedList<String> words = getWordsDictionary(wordRecord);
+        
         //Verify if word is in the buffer BOP
-        if (bop.getHistogram().contains(word)) {
-            for (WordRecord wordRecord : bop.getHistogram()) {
-                if (wordRecord.getWord().equals(word.getWord())) {
-                    wordRecord.getIntervals().add(word.getIntervals().get(0));
-                    wordRecord.incrementFrequency(frequency);
-                    symbolicView.updateCurrentHistogram(wordRecord, currentLabel + "");
+        boolean existed = false;
+        for (WordRecord wordBop : bop.getHistogram()) {
+            for (String word : words) {
+                if (wordBop.getWord().equals(word)) {
+                    wordBop.getIntervals().add(wordRecord.getIntervals().get(0));
+                    wordBop.incrementFrequency(frequency);
+                    symbolicView.updateCurrentHistogram(wordBop, currentLabel + "");
+                    existed = true;
                     break;
                 }
             }
-        } else {
+            if (existed) {
+                break;
+            }
+        }
+        if (!existed) {
             //Add word in buffer
-            bop.getHistogram().add(word);
-            symbolicView.updateCurrentHistogram(word, currentLabel + "");
+            bop.getHistogram().add(wordRecord);
+            symbolicView.updateCurrentHistogram(wordRecord, currentLabel + "");
         }
     }
 
@@ -239,6 +239,7 @@ public class NOHAR {
                 minuBOP.setLabel(Double.parseDouble(label));
                 buffer.getListNovelBOP().add(minuBOP);
                 buffer.getListUBOP().remove(minuBOP);
+                compareLabel(minuBOP, "Novel");
                 symbolicView.updateLog("Added novel BOP...");
             }
         }
@@ -398,6 +399,25 @@ public class NOHAR {
             }
         }
         return false;
+    }
+
+    //Verify aligned words
+    private LinkedList<String> getWordsDictionary(WordRecord wordRecord) {
+        LinkedList<String> words = new LinkedList<>();
+        String word = wordRecord.getWord();
+        String newWord = "";
+        for (int i = 0; i < word.length() - 1; i++) {
+            String firstLetter = word.charAt(0) + "";
+            for (int j = 1; j < word.length() - 1; j++) {
+                newWord += word.charAt(j);
+            }
+            String lastLetter = word.charAt(word.length() - 1) + "";//Axis identification
+            newWord += firstLetter + lastLetter;
+            words.add(newWord);
+            word = newWord;
+            newWord = "";
+        }
+        return words;
     }
 
     private void compareLabel(BOP bop, String origem) {

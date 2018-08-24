@@ -19,7 +19,7 @@ public class PageHinkleyTest {
         //0 = all lines
         TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_STREAM + "215218.csv", false, ",");
 
-        PageHinkley pageHinkley = new PageHinkley();
+        PageHinkley pageHinkley = new PageHinkley(0.25);
         pageHinkley.runTs(timeSeries[0].getData());
     }
 

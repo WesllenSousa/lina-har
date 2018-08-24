@@ -25,7 +25,6 @@ public class ConstGeneral {
     public static String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
 
     //Signal Processing
-    public static String SP_GausianLowpass = "GaussianLowpass";
     public static String SP_ButterworthLowpass = "ButterWorthLowpass";
     public static String SP_SingleLowPass = "SimpleLowPass";
     public static String SP_FourStageLowPass = "FourStageLowpass";
@@ -37,8 +36,6 @@ public class ConstGeneral {
     public static String PF_MAGNITUDE = "Magnitude";
     public static String PF_VerticalAxis = "Vertical";
     public static String PF_HorizontalAxis = "Horizontal";
-    public static String PF_ForwardAxis = "Forward";
-    public static String PF_SidewardAxis = "Sideward";
     public static String PF_FastFourierTrasform = "FFT";
     public static String PF_HaarWavelet = "HaarWavelet";
     public static String PF_TiltAngle = "TiltAngle";

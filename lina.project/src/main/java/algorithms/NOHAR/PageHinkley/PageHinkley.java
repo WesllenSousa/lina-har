@@ -11,12 +11,16 @@ package algorithms.NOHAR.PageHinkley;
  */
 public class PageHinkley {
 
-    final double PERCENT_ALPHA = 0.25;
+    private double PERCENT_ALPHA = 0.25;
 
     private double UT = 0., lastUT = 0., minUT = Double.MAX_VALUE, PHu = 0.;
     private double LT = 0., lastLT = 0., maxLT = Double.MIN_VALUE, PHl = 0.;
     private double threshold = 0., mean = 0., alpha = 0., sum = 0., maxValueTS = Double.MIN_VALUE;
     private int countChange = 0;
+    
+    public PageHinkley(double alpha) {
+        PERCENT_ALPHA = alpha;
+    }
 
     public void runTs(double[] ts) {
         for (int position = 1; position < ts.length; position++) {
