@@ -376,9 +376,9 @@ public class EditDataset extends javax.swing.JDialog {
     private javax.swing.JTextField tf_word;
     // End of variables declaration//GEN-END:variables
 
-    private void populaTabela(LinkedList<GenericRowBean> data) {
-        GenericTableModel model = new GenericTableModel(data);
+    private void populaTabela(LinkedList<GenericRowBean> data) {        
         if (!data.isEmpty()) {
+            GenericTableModel model = new GenericTableModel(data);
             model.setColunas(HandleGenericDataset.extractNamesColumnFromBuffer(data));
             TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
             tb_data.setRowSorter(sorter);

@@ -41,7 +41,11 @@ public class NOHAR {
     }
 
     public void runStream(double[] currentValues, int position, double label) {
-        this.currentLabel = label;
+        this.currentLabel = label;    
+        if(currentLabel == 2.0) {
+            //ConstGeneral.UPDATE_GUI = true;
+        }
+        
         //Monitor change the data
         if (changeDetected(currentValues, position)) {
             contConsistentChunkValue = 0; //Reset chunk
@@ -166,9 +170,10 @@ public class NOHAR {
      *   Classification
      */
     private boolean classify(BufferStreaming buffer, BOP newBop) {
-        //Verificar se pode fazer fusão dos histogramas do modelo
+
         LinkedList<BOP> BOPs = listSimilarBOPs(buffer.getModel(), newBop);
         BOP minBOP = minDistanceBOP(BOPs, newBop, "Classify");
+        
         if (minBOP != null) {
             if (minBOP.getDecision() == EnumHistogram.SLACK
                     && fusionHistogram(buffer.getModel(), minBOP, newBop)) {

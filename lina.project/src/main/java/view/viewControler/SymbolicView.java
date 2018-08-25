@@ -98,7 +98,6 @@ public class SymbolicView {
         for (int index = 0; index < n; index++) {
             //Get array subsequence
             TimeSeries subSequence = data[index].getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
-//            subsequences[index] = subSequence;
             TimeSeries filtered = new TimeSeries(
                     FiltersSignalProcessing.SingleLowPass(subSequence.getData(), Parameters.WINDOW_SIZE));
             subsequences[index] = filtered;

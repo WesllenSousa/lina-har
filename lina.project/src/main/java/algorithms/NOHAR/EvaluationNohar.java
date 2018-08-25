@@ -51,23 +51,19 @@ public class EvaluationNohar {
     }
 
     public void incrementCountBOP(double label) {
-        populaConfusionMatrix(label, -9.);
+        populaConfusionMatrix(label, 0);
         countBOPs++;
-        //calculeAccuracy();
     }
 
     public void setDataset(String dataset) {
         this.dataset = dataset;
     }
 
-    private float calculeAccuracy() {
-        int totalInstances = hits + hitsNovel + errors + errorsNovel;
+    private float calculeAccuracy(int TP, int totalInstances) {
         float accuracy = 0.f;
-        int TP = hits + hitsNovel;
         if (totalInstances > 0) {
             accuracy = (float) TP / (float) totalInstances;
         }
-//        System.out.println(accuracy);
         return accuracy;
     }
 
@@ -78,7 +74,7 @@ public class EvaluationNohar {
             confusionMatrix.put(label1, item);
         } else {
             HashMap<Double, Integer> item = confusionMatrix.get(label1);
-            if (confusionMatrix.get(label1).containsKey(label2)) {
+            if (item.containsKey(label2)) {
                 int value = item.get(label2);
                 item.put(label2, ++value);
             } else {
@@ -89,13 +85,23 @@ public class EvaluationNohar {
 
     private String confusionMatrix() {
         String matriz = "";
-        for (Double label : confusionMatrix.keySet()) {
-            matriz += "> " + label + "\n";
-            HashMap<Double, Integer> item = confusionMatrix.get(label);
+        for (Double label1 : confusionMatrix.keySet()) {
+            matriz += "> " + label1 + "\n";
+            HashMap<Double, Integer> item = confusionMatrix.get(label1);
+            int contTotal = 0;
+            int contRight = 0;
             for (Double label2 : item.keySet()) {
                 Integer value = item.get(label2);
-                matriz += "  >> " + label + " and " + label2 + " = " + value + "\n";
+                if (label2 != 0) {
+                    contTotal += value;
+                }
+                if (label1.equals(label2)) {
+                    contRight += value;
+                }
+                matriz += "  >> " + label1 + " and " + label2 + " = " + value + "\n";
             }
+            float accuracy = calculeAccuracy(contRight, contTotal);
+            matriz += "  >>> " + (accuracy * 100) + "%\n";
         }
         return matriz;
     }
@@ -130,7 +136,11 @@ public class EvaluationNohar {
     @Override
     public String toString() {
         float seconds = (endTime - startTime) / 1000;
-        float accuracy = calculeAccuracy();
+        
+        int TP = hits + hitsNovel;
+        int totalInstances = hits + hitsNovel + errors + errorsNovel;
+        float accuracy = calculeAccuracy(TP, totalInstances);
+        
         String matriz = confusionMatrix();
 
         return "EvaluationNohar{" + "\n"
