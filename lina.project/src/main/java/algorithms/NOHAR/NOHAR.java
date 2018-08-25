@@ -138,7 +138,7 @@ public class NOHAR {
             return;
         }
         LinkedList<String> words = getWordsDictionary(wordRecord);
-        
+
         //Verify if word is in the buffer BOP
         boolean existed = false;
         for (WordRecord wordBop : bop.getHistogram()) {
@@ -218,7 +218,7 @@ public class NOHAR {
         if (uBOPs.isEmpty()) {
             newBop.setLabel(currentLabel);//Only by test, print Similar uBOP up
             buffer.getListUBOP().add(newBop);
-            symbolicView.getEval().incrementCountBOP();
+            symbolicView.getEval().incrementCountBOP(currentLabel);
             symbolicView.updateLog("Added new unknown BOP...");
             return;
         }
@@ -290,6 +290,32 @@ public class NOHAR {
         return similarBOP;
     }
 
+    private EnumHistogram classifyDistance(BOP bigBop, BOP smallBop) {
+
+        int[] distances = calcDistanceBetweenBOP(bigBop, smallBop);
+        int insideDistance = distances[0];
+        int outsideDistance = distances[1];
+        int totalSmallBopDistance = totalDistance(smallBop);
+        int totalBigBopDistance = totalDistance(bigBop);
+
+        //Confidence Level
+        if (insideDistance == -1) {
+            return EnumHistogram.OUTSIDE;
+        } else if (insideDistance == 0 && outsideDistance == 0) {
+            return EnumHistogram.EQUAL;
+        } else {
+            double percentInside = (insideDistance * 100) / totalSmallBopDistance;
+            double percentOutside = (outsideDistance * 100) / totalBigBopDistance;
+            if (percentInside < 15 && percentOutside < 15) {
+                return EnumHistogram.INSIDE;
+            } else if (percentInside < 30 && percentOutside < 30) {
+                return EnumHistogram.SLACK;
+            } else {
+                return EnumHistogram.OUTSIDE;
+            }
+        }
+    }
+
     private BOP minDistanceBOP(LinkedList<BOP> BOP, BOP newBop, String origem) {
         BOP minBop = null;
 
@@ -356,32 +382,6 @@ public class NOHAR {
         return distances;
     }
 
-    private EnumHistogram classifyDistance(BOP bigBop, BOP smallBop) {
-
-        int[] distances = calcDistanceBetweenBOP(bigBop, smallBop);
-        int insideDistance = distances[0];
-        int outsideDistance = distances[1];
-        int totalSmallBopDistance = totalDistance(smallBop);
-        int totalBigBopDistance = totalDistance(bigBop);
-
-        //Confidence Level
-        if (insideDistance == -1) {
-            return EnumHistogram.OUTSIDE;
-        } else if (insideDistance == 0 && outsideDistance == 0) {
-            return EnumHistogram.EQUAL;
-        } else {
-            double percentSmall = (insideDistance * 100) / totalSmallBopDistance;
-            double percentBig = (outsideDistance * 100) / totalBigBopDistance;
-            if (percentSmall < 15 && percentBig < 15) {
-                return EnumHistogram.INSIDE;
-            } else if (percentSmall < 30 && percentBig < 30) {
-                return EnumHistogram.SLACK;
-            } else {
-                return EnumHistogram.OUTSIDE;
-            }
-        }
-    }
-
     private boolean fusionHistogram(LinkedList<BOP> BOPs, BOP minBop, BOP newBop) {
         for (BOP bop : BOPs) {
             if (bop.equals(minBop)
@@ -423,16 +423,16 @@ public class NOHAR {
     private void compareLabel(BOP bop, String origem) {
         if (bop.getLabel() == currentLabel) {
             if (bop.getCountNovel() > 0) {
-                symbolicView.getEval().incrementHistsNovel();
+                symbolicView.getEval().incrementHistsNovel(currentLabel);
             } else {
-                symbolicView.getEval().incrementHists();
+                symbolicView.getEval().incrementHists(currentLabel);
             }
             symbolicView.updateLog(">> Right: " + bop.getLabel() + " - " + origem);
-        } else if (bop.getLabel() != -1) {
+        } else {
             if (bop.getCountNovel() > 0) {
-                symbolicView.getEval().incrementErrorsNovel();
+                symbolicView.getEval().incrementErrorsNovel(currentLabel, bop.getLabel());
             } else {
-                symbolicView.getEval().incrementErrors();
+                symbolicView.getEval().incrementErrors(currentLabel, bop.getLabel());
             }
             symbolicView.updateLog(">> Wrong: " + bop.getLabel() + ", Right: " + currentLabel + " - " + origem);
         }

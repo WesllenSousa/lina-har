@@ -7,12 +7,15 @@ package algorithms.NOHAR;
 
 import algorithms.SAX.Params;
 import datasets.memory.BufferStreaming;
+import java.util.HashMap;
 
 /**
  *
  * @author Wesllen Sousa
  */
 public class EvaluationNohar {
+
+    private HashMap<Double, HashMap<Double, Integer>> confusionMatrix = new HashMap<>();
 
     private String dataset;
     private int hits = 0;
@@ -27,23 +30,28 @@ public class EvaluationNohar {
     private int bopSize = 0;
     private BufferStreaming buffer;
 
-    public void incrementHists() {
+    public void incrementHists(double label) {
+        populaConfusionMatrix(label, label);
         hits++;
     }
 
-    public void incrementHistsNovel() {
+    public void incrementHistsNovel(double label) {
+        populaConfusionMatrix(label, label);
         hitsNovel++;
     }
 
-    public void incrementErrors() {
+    public void incrementErrors(double labelRight, double labelWrong) {
+        populaConfusionMatrix(labelRight, labelWrong);
         errors++;
     }
 
-    public void incrementErrorsNovel() {
+    public void incrementErrorsNovel(double labelRight, double labelWrong) {
+        populaConfusionMatrix(labelRight, labelWrong);
         errorsNovel++;
     }
 
-    public void incrementCountBOP() {
+    public void incrementCountBOP(double label) {
+        populaConfusionMatrix(label, -9.);
         countBOPs++;
         //calculeAccuracy();
     }
@@ -51,16 +59,45 @@ public class EvaluationNohar {
     public void setDataset(String dataset) {
         this.dataset = dataset;
     }
-    
+
     private float calculeAccuracy() {
         int totalInstances = hits + hitsNovel + errors + errorsNovel;
         float accuracy = 0.f;
-        int tp = hits + hitsNovel;
+        int TP = hits + hitsNovel;
         if (totalInstances > 0) {
-            accuracy = (float) tp / (float) totalInstances;
+            accuracy = (float) TP / (float) totalInstances;
         }
-        System.out.println(accuracy);
+//        System.out.println(accuracy);
         return accuracy;
+    }
+
+    private void populaConfusionMatrix(double label1, double label2) {
+        if (confusionMatrix.get(label1) == null) {
+            HashMap<Double, Integer> item = new HashMap<>();
+            item.put(label2, 1);
+            confusionMatrix.put(label1, item);
+        } else {
+            HashMap<Double, Integer> item = confusionMatrix.get(label1);
+            if (confusionMatrix.get(label1).containsKey(label2)) {
+                int value = item.get(label2);
+                item.put(label2, ++value);
+            } else {
+                item.put(label2, 1);
+            }
+        }
+    }
+
+    private String confusionMatrix() {
+        String matriz = "";
+        for (Double label : confusionMatrix.keySet()) {
+            matriz += "> " + label + "\n";
+            HashMap<Double, Integer> item = confusionMatrix.get(label);
+            for (Double label2 : item.keySet()) {
+                Integer value = item.get(label2);
+                matriz += "  >> " + label + " and " + label2 + " = " + value + "\n";
+            }
+        }
+        return matriz;
     }
 
     /*
@@ -94,6 +131,7 @@ public class EvaluationNohar {
     public String toString() {
         float seconds = (endTime - startTime) / 1000;
         float accuracy = calculeAccuracy();
+        String matriz = confusionMatrix();
 
         return "EvaluationNohar{" + "\n"
                 + "  Dataset=" + dataset + "\n"
@@ -112,6 +150,7 @@ public class EvaluationNohar {
                 + "  Novel BOP=" + buffer.getListNovelBOP().size() + "\n"
                 + "  Model=" + buffer.getModel().size() + "\n"
                 + "  seconds=" + seconds + "s\n"
+                + "  " + matriz + "\n"
                 + '}';
     }
 
