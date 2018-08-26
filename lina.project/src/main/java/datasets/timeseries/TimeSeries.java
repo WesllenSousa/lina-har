@@ -13,6 +13,7 @@ public class TimeSeries implements Serializable {
 
     protected double mean = 0;
     protected double stddev = 1;
+    protected double variance = 0;
 
     protected boolean normed = false;
     protected Double label = null;
@@ -102,6 +103,18 @@ public class TimeSeries implements Serializable {
         }
     }
 
+    public double calculateVariance() {
+        this.mean = calculateMean();
+
+        double sum = 0;
+        for (int i = 0; i < data.length; i++) {
+            sum += Math.pow(data[i] - mean, 2);
+        }
+        variance = sum / (double) this.data.length;
+        
+        return this.variance;
+    }
+
     public double calculateStddev() {
         this.stddev = 0;
 
@@ -138,6 +151,10 @@ public class TimeSeries implements Serializable {
 
     public double getMean() {
         return this.mean;
+    }
+
+    public double getVariance() {
+        return this.variance;
     }
 
     @Override

@@ -69,10 +69,10 @@ public class BufferStreaming {
     /*
      *   Handle Word Record
      */
-    public WordRecord populaWordRecord(String word, int initialPosition) {
+    public WordRecord populaWordRecord(String word, int initialPosition, int frequency) {
         WordRecord wordRecord = new WordRecord();
         wordRecord.setWord(word);
-        wordRecord.setFrequency(1);
+        wordRecord.setFrequency(frequency);
         wordRecord.getIntervals().add(getWordInterval(initialPosition));
         return wordRecord;
     }

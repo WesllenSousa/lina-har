@@ -48,6 +48,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
     }
 
     private void addData() {
+        ((LineGraphic) graphic).clean();
         ((LineGraphic) graphic).prepareStream(data);
         int row = 0;
         for (GenericRowBean bean : data) {

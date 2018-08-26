@@ -84,6 +84,20 @@ public class TimeFeature {
         return mean;
     }
 
+    public static float Mean(double[] N) {
+        //Long init = System.currentTimeMillis();
+
+        float sum = 0;
+        for (int i = 0; i < N.length; i++) {
+            sum += N[i];
+        }
+        float mean = sum / N.length;
+
+        //Long end = System.currentTimeMillis();
+        //System.out.println("Mean: " + DateUtil.timeInterval(init, end));
+        return mean;
+    }
+
     public static float AbsoluteMean(LinkedList<Float> N) {
         //Long init = System.currentTimeMillis();
 
@@ -133,6 +147,20 @@ public class TimeFeature {
             sum += Math.pow(k - meanN, 2);
         }
         float variance = (float) sum / N.size();
+
+        //Long end = System.currentTimeMillis();
+        //System.out.println("Variance: " + DateUtil.timeInterval(init, end));
+        return variance;
+    }
+
+    public static float Variance(double[] N, float meanN) {
+        //Long init = System.currentTimeMillis();
+
+        double sum = 0;
+        for (int i = 0; i < N.length; i++) {
+            sum += Math.pow(N[i] - meanN, 2);
+        }
+        float variance = (float) sum / N.length;
 
         //Long end = System.currentTimeMillis();
         //System.out.println("Variance: " + DateUtil.timeInterval(init, end));

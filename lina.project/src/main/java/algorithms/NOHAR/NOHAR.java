@@ -13,6 +13,7 @@ import controle.constants.ConstGeneral;
 import controle.constants.Parameters;
 import datasets.memory.BufferStreaming;
 import datasets.memory.WordRecord;
+import datasets.timeseries.TimeSeries;
 import java.awt.Color;
 import java.util.LinkedList;
 import util.Messages;
@@ -27,7 +28,7 @@ public class NOHAR {
     private final SymbolicView symbolicView;
     private final Params params;
     private final int COUNT_THRESHOLD_BOP = 5;
-    private final int PESO = 10; //For frequency normalization where mean must be positive
+    private final int PESO = 20; //For frequency normalization where mean must be positive
 
     private Adwin adwin[];
     private PageHinkley pageHinkley[];
@@ -41,11 +42,13 @@ public class NOHAR {
     }
 
     public void runStream(double[] currentValues, int position, double label) {
-        this.currentLabel = label;    
-        if(currentLabel == 2.0) {
-            //ConstGeneral.UPDATE_GUI = true;
-        }
-        
+        this.currentLabel = label;
+//        if(currentLabel == 1.0) {
+//            ConstGeneral.UPDATE_GUI = true;
+//        } else {
+//            ConstGeneral.UPDATE_GUI = false;
+//        }
+
         //Monitor change the data
         if (changeDetected(currentValues, position)) {
             contConsistentChunkValue = 0; //Reset chunk
@@ -55,14 +58,20 @@ public class NOHAR {
 
         contConsistentChunkValue++;
         if (contConsistentChunkValue % Parameters.OFFSET == 0) {
+            TimeSeries[] subSequences = symbolicView.getBuffer().getSubSequences();
             //Discretization and update histogram
             for (int index = 0; index < currentValues.length; index++) {
+                //Calcule frequency
+                double mean = subSequences[index].calculateMean();
+                //double std = subSequences[index].calculateStddev();
+                double variance = subSequences[index].calculateVariance();
+                int frequency = (int) Math.round(mean + variance + PESO);
+//                if(frequency < 0) {
+//                    System.out.println("");
+//                }
                 //Discretize
-                WordRecord word = discretize(symbolicView.getBuffer(), position, index);
-                //Update Histogram
-                symbolicView.getBuffer().getSubSequences()[index].calculateMean();
-                int mean = (int) Math.round(symbolicView.getBuffer().getSubSequences()[index].getMean());
-                int frequency = mean + PESO;
+                WordRecord word = discretize(symbolicView.getBuffer(), position, index, frequency);
+                //Update BOP
                 updateBOP(symbolicView.getBuffer().getBOP(), word, frequency);
             }
         }
@@ -126,11 +135,11 @@ public class NOHAR {
     /*
      *   Discretização
      */
-    private WordRecord discretize(BufferStreaming buffer, int position, int index) {
+    private WordRecord discretize(BufferStreaming buffer, int position, int index, int frequency) {
         SAX sax = new SAX(params);
         String word = sax.serieToWord(buffer.getSubSequences()[index].getData());
         word += index; //Different word for different axis
-        WordRecord wordRecord = buffer.populaWordRecord(word, position - Parameters.WINDOW_SIZE);
+        WordRecord wordRecord = buffer.populaWordRecord(word, position - Parameters.WINDOW_SIZE, frequency);
         return wordRecord;
     }
 
@@ -173,7 +182,7 @@ public class NOHAR {
 
         LinkedList<BOP> BOPs = listSimilarBOPs(buffer.getModel(), newBop);
         BOP minBOP = minDistanceBOP(BOPs, newBop, "Classify");
-        
+
         if (minBOP != null) {
             if (minBOP.getDecision() == EnumHistogram.SLACK
                     && fusionHistogram(buffer.getModel(), minBOP, newBop)) {
@@ -311,9 +320,9 @@ public class NOHAR {
         } else {
             double percentInside = (insideDistance * 100) / totalSmallBopDistance;
             double percentOutside = (outsideDistance * 100) / totalBigBopDistance;
-            if (percentInside < 15 && percentOutside < 15) {
+            if (percentInside < 20 && percentOutside < 20) {
                 return EnumHistogram.INSIDE;
-            } else if (percentInside < 30 && percentOutside < 30) {
+            } else if (percentInside < 35 && percentOutside < 35) {
                 return EnumHistogram.SLACK;
             } else {
                 return EnumHistogram.OUTSIDE;

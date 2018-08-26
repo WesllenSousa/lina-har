@@ -70,7 +70,6 @@ public class SymbolicView {
             }
 
             TimeSeries[] subSequences = getSubsequences(data, position);
-            //subSequences = DataFusion.Magnitude(subSequences);
             double[] currentValues = new double[subSequences.length];
             for (int i = 0; i < subSequences.length; i++) {
                 currentValues[i] = subSequences[i].getData(subSequences[i].getLength() - 1);
