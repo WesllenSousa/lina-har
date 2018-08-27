@@ -47,20 +47,7 @@ public class ExtraAlgorithms {
         return verticalProjection;
     }
 
-    public static LinkedList<LinkedList<Float>> verticalProjection(TimeSeries vertical, LinkedList<Float> gravity) {
-        LinkedList<LinkedList<Float>> verticalProjection = new LinkedList<>();
-        for (int i = 0; i < vertical.getLength(); i++) {
-            LinkedList<Float> mult = new LinkedList<>();
-            for (Float g : gravity) {
-                mult.add(((float) vertical.getData(i)) * g);
-            }
-            verticalProjection.add(mult);
-        }
-        return verticalProjection;
-    }
-
-    public static LinkedList<LinkedList<Float>> horizontalProjection(LinkedList<LinkedList<Float>> vectors,
-            LinkedList<LinkedList<Float>> verticalProjection) {
+    public static LinkedList<LinkedList<Float>> horizontalProjection(LinkedList<LinkedList<Float>> vectors, LinkedList<LinkedList<Float>> verticalProjection) {
         LinkedList<LinkedList<Float>> horizontalProjection = new LinkedList<>();
         for (int i = 0; i < vectors.get(0).size() - 1; i++) {
             LinkedList<Float> v = new LinkedList<>();

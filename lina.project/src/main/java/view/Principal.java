@@ -3320,7 +3320,7 @@ public class Principal extends javax.swing.JFrame {
             BarGraphic barGraphic = new BarGraphic(bop.getLabel() + "", false);
             Dimension d = new Dimension(300, 200);
             barGraphic.setPreferredSize(d);
-            for (WordRecord word : bop.getRealHistogram()) {
+            for (WordRecord word : bop.getHistogram()) {
                 barGraphic.addUpdateData(word.getWord(), word.getFrequency());
             }
             panel.add(barGraphic);

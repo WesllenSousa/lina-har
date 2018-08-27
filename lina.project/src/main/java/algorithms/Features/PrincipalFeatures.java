@@ -1,6 +1,5 @@
 package algorithms.Features;
 
-import datasets.timeseries.TimeSeries;
 import java.util.LinkedList;
 
 /**
@@ -43,24 +42,6 @@ public class PrincipalFeatures {
         return vertical;
     }
 
-    public static TimeSeries VerticalAxis(TimeSeries[] data, LinkedList<Float> gravity) {
-        //Long init = System.currentTimeMillis();
-
-        double[] vertical = new double[data[0].getLength()];
-        for (int i = 0; i < data[0].getLength(); i++) {
-            LinkedList<Double> a = new LinkedList<>();
-            for (TimeSeries column : data) {
-                a.add(column.getData(i));
-            }
-            vertical[i] = ExtraAlgorithms.vectorProductInternDouble(a, gravity);
-        }
-
-        //Long end = System.currentTimeMillis();
-        //System.out.println("VerticalAxis: " + DateUtil.timeInterval(init, end));
-        TimeSeries timeSeries = new TimeSeries(vertical);
-        return timeSeries;
-    }
-
     public static LinkedList<Float> HorizontalAxis(LinkedList<LinkedList<Float>> vectors, LinkedList<Float> gravity) {
         //Long init = System.currentTimeMillis();
 
@@ -75,25 +56,6 @@ public class PrincipalFeatures {
         //Long end = System.currentTimeMillis();
         //System.out.println("HorizontalAxis: " + DateUtil.timeInterval(init, end));
         return horizontal;
-    }
-
-    public static TimeSeries HorizontalAxis(TimeSeries[] data, LinkedList<Float> gravity) {
-        //Long init = System.currentTimeMillis();
-
-        TimeSeries vertical = VerticalAxis(data, gravity);
-        LinkedList<LinkedList<Float>> verticalProjection = ExtraAlgorithms.verticalProjection(vertical, gravity);
-        LinkedList<LinkedList<Float>> horizontalProjection = ExtraAlgorithms.horizontalProjection(data, verticalProjection);
-        double[] horizontal = new double[data[0].getLength()];
-        int i = 0;
-        for (LinkedList<Float> horiz : horizontalProjection) {
-            horizontal[i] = ExtraAlgorithms.vectorNorma(horiz);
-            i++;
-        }
-
-        //Long end = System.currentTimeMillis();
-        //System.out.println("HorizontalAxis: " + DateUtil.timeInterval(init, end));
-        TimeSeries timeSeries = new TimeSeries(horizontal);
-        return timeSeries;
     }
 
     public static LinkedList<Float> FastFourierTransform(LinkedList<Float> N, boolean fwd) {
@@ -192,6 +154,11 @@ public class PrincipalFeatures {
         //Long end = System.currentTimeMillis();
         //System.out.println("HaarWaveletTransform: " + DateUtil.timeInterval(init, end));
         return N;
+    }
+
+    public static LinkedList<String> tiltAngle(LinkedList<Float> N) {
+        LinkedList<String> newBuffer = new LinkedList<>();
+        return newBuffer;
     }
 
 }
