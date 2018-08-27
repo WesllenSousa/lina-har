@@ -18,6 +18,7 @@ import datasets.timeseries.TimeSeries;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import net.seninp.jmotif.sax.NumerosityReductionStrategy;
 import view.manualviews.BarGraphic;
 import view.manualviews.LineGraphic;
@@ -66,9 +67,8 @@ public class SymbolicView {
             if (ConstGeneral.WITH_LABEL) {
                 TimeSeries labels = getLabels(data, position);
                 label = classMoreFrequency(labels);
-                //double label = labels.getData(labels.getLength() - 1);
             }
-
+            //Get sub sequences
             TimeSeries[] subSequences = getSubsequences(data, position);
             double[] currentValues = new double[subSequences.length];
             for (int i = 0; i < subSequences.length; i++) {
@@ -76,7 +76,7 @@ public class SymbolicView {
             }
             bufferStreaming.setSubSequences(subSequences);
 
-            //Process
+            //Process subsequences
             processStream(currentValues, position, label);
 
             //values to GUI
@@ -170,11 +170,11 @@ public class SymbolicView {
         }
     }
 
-    public void updateCurrentHistogram(WordRecord word, String title) {
+    public void updateCurrentHistogram(List<WordRecord> histogram, WordRecord word, String title) {
         if (ConstGeneral.UPDATE_GUI) {
             barGraphic.setTitle(title);
             barGraphic.addUpdateData(word.getWord(), word.getFrequency());
-            ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, bufferStreaming.getBOP().getHistogram().size());
+            ConstGeneral.TELA_PRINCIPAL.updateSymbolicTab(word, histogram.size());
         }
     }
 

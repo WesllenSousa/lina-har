@@ -12,10 +12,13 @@ import algorithms.SAX.SAX;
 import controle.constants.ConstGeneral;
 import controle.constants.Parameters;
 import datasets.memory.BufferStreaming;
+import datasets.memory.WordInterval;
 import datasets.memory.WordRecord;
 import datasets.timeseries.TimeSeries;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import util.Messages;
 import view.viewControler.SymbolicView;
 
@@ -43,7 +46,7 @@ public class NOHAR {
 
     public void runStream(double[] currentValues, int position, double label) {
         this.currentLabel = label;
-//        if(currentLabel == 1.0) {
+//        if (currentLabel == 2.0) { //shoaib: currentLabel == 3.0 || currentLabel == 5.0
 //            ConstGeneral.UPDATE_GUI = true;
 //        } else {
 //            ConstGeneral.UPDATE_GUI = false;
@@ -70,16 +73,16 @@ public class NOHAR {
 //                    System.out.println("");
 //                }
                 //Discretize
-                WordRecord word = discretize(symbolicView.getBuffer(), position, index, frequency);
+                WordRecord word = discretize(subSequences[index], position, index, frequency);
                 //Update BOP
-                updateBOP(symbolicView.getBuffer().getBOP(), word, frequency);
+                updateBOP(symbolicView.getBuffer().getBOP(), word, index);
             }
         }
 
         //Handle model
         if (contConsistentChunkValue >= Parameters.BOP_SIZE) {
             //Add histogram to buffer
-            symbolicView.getBuffer().getBOP().orderWordsHistogram(); //important!
+            symbolicView.getBuffer().getBOP().orderWordsHistograms(); //important!
 
             //Classify
             if (!classify(symbolicView.getBuffer(), symbolicView.getBuffer().getBOP())) {
@@ -135,44 +138,69 @@ public class NOHAR {
     /*
      *   Discretização
      */
-    private WordRecord discretize(BufferStreaming buffer, int position, int index, int frequency) {
+    private WordRecord discretize(TimeSeries subSequence, int position, int index, int frequency) {
         SAX sax = new SAX(params);
-        String word = sax.serieToWord(buffer.getSubSequences()[index].getData());
+        String word = sax.serieToWord(subSequence.getData());
         word += index; //Different word for different axis
-        WordRecord wordRecord = buffer.populaWordRecord(word, position - Parameters.WINDOW_SIZE, frequency);
+        WordRecord wordRecord = populaWordRecord(word, position - Parameters.WINDOW_SIZE, frequency);
         return wordRecord;
+    }
+
+    private WordRecord populaWordRecord(String word, int initialPosition, int frequency) {
+        WordRecord wordRecord = new WordRecord();
+        wordRecord.setWord(word);
+        wordRecord.setFrequency(frequency);
+        wordRecord.getIntervals().add(getWordInterval(initialPosition));
+        return wordRecord;
+    }
+
+    private WordInterval getWordInterval(int initialPosition) {
+        WordInterval wordInterval = new WordInterval();
+        wordInterval.setPositionInit(initialPosition);
+        wordInterval.setPositionEnd(initialPosition + Parameters.WINDOW_SIZE);
+        return wordInterval;
     }
 
     /*
      *   Criação de histogramas
      */
-    private void updateBOP(BOP bop, WordRecord wordRecord, int frequency) {
+    private void updateBOP(BOP bop, WordRecord wordRecord, int index) {
         if (wordRecord == null) {
             return;
         }
-        LinkedList<String> words = getWordsDictionary(wordRecord);
-
         //Verify if word is in the buffer BOP
         boolean existed = false;
-        for (WordRecord wordBop : bop.getHistogram()) {
-            for (String word : words) {
-                if (wordBop.getWord().equals(word)) {
-                    wordBop.getIntervals().add(wordRecord.getIntervals().get(0));
-                    wordBop.incrementFrequency(frequency);
-                    symbolicView.updateCurrentHistogram(wordBop, currentLabel + "");
-                    existed = true;
-                    break;
-                }
-            }
-            if (existed) {
-                break;
-            }
+        List<WordRecord> histogram = bop.getHistograms().get(index);
+        if (histogram != null) {
+            updateWordFrequency(histogram, wordRecord);
+            existed = updateWordFrequency(bop.getRealHistogram(), wordRecord);
         }
         if (!existed) {
             //Add word in buffer
-            bop.getHistogram().add(wordRecord);
-            symbolicView.updateCurrentHistogram(wordRecord, currentLabel + "");
+            if (bop.getHistograms().get(index) == null) {
+                List<WordRecord> hist = new ArrayList<>();
+                hist.add(wordRecord);
+                bop.getHistograms().put(index, hist);
+            } else {
+                bop.getHistograms().get(index).add(wordRecord);
+            }
+            bop.getRealHistogram().add(wordRecord);
         }
+        symbolicView.updateCurrentHistogram(bop.getRealHistogram(), wordRecord, currentLabel + "");
+    }
+
+    private boolean updateWordFrequency(List<WordRecord> histogram, WordRecord wordRecord) {
+        LinkedList<String> words = getWordsDictionary(wordRecord);
+        for (WordRecord wordBop : histogram) {
+            for (String word : words) {
+                if (wordBop.getWord().equals(word)) {
+                    wordBop.getIntervals().add(wordRecord.getIntervals().get(0));
+                    wordBop.incrementFrequency(wordRecord.getFrequency());
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /*
@@ -184,8 +212,7 @@ public class NOHAR {
         BOP minBOP = minDistanceBOP(BOPs, newBop, "Classify");
 
         if (minBOP != null) {
-            if (minBOP.getDecision() == EnumHistogram.SLACK
-                    && fusionHistogram(buffer.getModel(), minBOP, newBop)) {
+            if (fusionHistogram(buffer.getModel(), minBOP, newBop)) {
                 symbolicView.updateLog("Fusion model: " + minBOP.getLabel() + " to " + currentLabel);
             }
             newBop.setLabel(minBOP.getLabel());
@@ -207,8 +234,7 @@ public class NOHAR {
         BOP minNovelBOP = minDistanceBOP(novelBOPs, newBop, "Novel");
 
         if (minNovelBOP != null) {
-            if (minNovelBOP.getDecision() == EnumHistogram.SLACK
-                    && fusionHistogram(buffer.getListNovelBOP(), minNovelBOP, newBop)) {
+            if (fusionHistogram(buffer.getListNovelBOP(), minNovelBOP, newBop)) {
                 symbolicView.updateLog("Fusion novel: " + minNovelBOP.getLabel() + " to " + currentLabel);
             } else {
                 symbolicView.updateLog("Similar novel: " + minNovelBOP.getLabel() + " to " + currentLabel);
@@ -239,8 +265,7 @@ public class NOHAR {
         BOP minuBOP = minDistanceBOP(uBOPs, newBop, "Unknown");
 
         if (minuBOP != null) {
-            if (minuBOP.getDecision() == EnumHistogram.SLACK
-                    && fusionHistogram(buffer.getListUBOP(), minuBOP, newBop)) {
+            if (fusionHistogram(buffer.getListUBOP(), minuBOP, newBop)) {
                 symbolicView.updateLog("Fusion unknown: " + minuBOP.getLabel() + " to " + currentLabel);
             } else {
                 symbolicView.updateLog("Similar unknown: " + minuBOP.getLabel() + " to " + currentLabel);
@@ -278,10 +303,10 @@ public class NOHAR {
     /*
      *   Others
      */
-    private int totalDistance(BOP newBop) {
+    private int totalDistance(List<WordRecord> BOP) {
         // Distance if there is no matching word
         int totalDistance = 0;
-        for (WordRecord bop : newBop.getHistogram()) {
+        for (WordRecord bop : BOP) {
             totalDistance += bop.getFrequency();
         }
         return totalDistance;
@@ -289,22 +314,55 @@ public class NOHAR {
 
     private LinkedList<BOP> listSimilarBOPs(LinkedList<BOP> BOPs, BOP newBop) {
         LinkedList<BOP> similarBOP = new LinkedList<>();
+
         for (BOP bop : BOPs) {
+            //bop.setDecision(EnumHistogram.OUTSIDE);
+            //bop.getComparableHistogram().clear();
+//            boolean similar = false;
+            //for (Integer index : bop.getHistograms().keySet()) {
+
+            List<WordRecord> bopHistogram = bop.getRealHistogram();
+            List<WordRecord> newHistogram = newBop.getRealHistogram();
+
             EnumHistogram decision;
-            if (bop.getHistogram().size() > newBop.getHistogram().size()) {
-                decision = classifyDistance(bop, newBop);
+            if (bopHistogram.size() > newHistogram.size()) {
+                decision = classifyDistance(bopHistogram, newHistogram);
             } else {
-                decision = classifyDistance(newBop, bop);
+                decision = classifyDistance(newHistogram, bopHistogram);
             }
-            if (decision == EnumHistogram.EQUAL || decision == EnumHistogram.INSIDE || decision == EnumHistogram.SLACK) {
+            if (decision == EnumHistogram.INSIDE || decision == EnumHistogram.SLACK || decision == EnumHistogram.EQUAL) {
+//                    if (bop.getCountUnk() != -1 || bop.getCountNovel() != -1) {
+//                        bop.getQtdeHistSimilar().put(index, true);
+//                    } else if (!bop.getQtdeHistSimilar().get(index)) {
+//                        similar = false;
+//                        break;
+//                    }
+//                    bop.addComparableHistogram(bopHistogram);
+//                    newBop.addComparableHistogram(newHistogram);
+//                    if (bop.getDecision() != EnumHistogram.SLACK) {
                 bop.setDecision(decision);
+//                    }
+//                    similar = true;
+
                 similarBOP.add(bop);
             }
+//                else if (bop.getCountUnk() != -1 || bop.getCountNovel() != -1) {
+//                    if (bop.getQtdeHistSimilar().get(index) == null) {
+//                        bop.getQtdeHistSimilar().put(index, false);
+//                    } else if (bop.getQtdeHistSimilar().get(index)) {
+//                        similar = false;
+//                        break;
+//                    }
+//                }
+            //}
+//            if (similar) {
+//                similarBOP.add(bop);
+//            }
         }
         return similarBOP;
     }
 
-    private EnumHistogram classifyDistance(BOP bigBop, BOP smallBop) {
+    private EnumHistogram classifyDistance(List<WordRecord> bigBop, List<WordRecord> smallBop) {
 
         int[] distances = calcDistanceBetweenBOP(bigBop, smallBop);
         int insideDistance = distances[0];
@@ -330,10 +388,9 @@ public class NOHAR {
         }
     }
 
-    private BOP minDistanceBOP(LinkedList<BOP> BOP, BOP newBop, String origem) {
+    private BOP minDistanceBOP(List<BOP> BOP, BOP newBop, String origem) {
         BOP minBop = null;
 
-        int[] distances;
         int minDistance = Integer.MAX_VALUE;
         double lastLabel = -1;
         int conflited = 0;
@@ -341,11 +398,22 @@ public class NOHAR {
             if (lastLabel != -1 && lastLabel != bop.getLabel()) {
                 conflited++;
             }
-            if (bop.getHistogram().size() > newBop.getHistogram().size()) {
-                distances = calcDistanceBetweenBOP(bop, newBop);
+            //int distance = -1;
+            //for (Integer index : bop.getHistograms().keySet()) {
+            List<WordRecord> bopHistogram = bop.getRealHistogram();
+            List<WordRecord> newHistogram = newBop.getRealHistogram();
+
+            int[] distances;
+            if (bopHistogram.size() > newHistogram.size()) {
+                distances = calcDistanceBetweenBOP(bopHistogram, newHistogram);
             } else {
-                distances = calcDistanceBetweenBOP(newBop, bop);
+                distances = calcDistanceBetweenBOP(newHistogram, bopHistogram);
             }
+//            int dist = distances[0] + distances[1];
+//            if (distances[0] != -1) {
+//                distance += dist;
+//            }
+            //}
             int distance = distances[0] + distances[1];
             if (distances[0] != -1 && distance < minDistance) {
                 minDistance = distance;
@@ -364,13 +432,13 @@ public class NOHAR {
         return minBop;
     }
 
-    private int[] calcDistanceBetweenBOP(BOP bigBop, BOP smallBop) {
+    private int[] calcDistanceBetweenBOP(List<WordRecord> bigBop, List<WordRecord> smallBop) {
         int insideDistance = -1;
         int outsideDistance = 0;
         boolean hasWord;
-        for (WordRecord big : bigBop.getHistogram()) {
+        for (WordRecord big : bigBop) {
             hasWord = false;
-            for (WordRecord small : smallBop.getHistogram()) {
+            for (WordRecord small : smallBop) {
                 if (big.equals(small)) {
                     if (insideDistance == -1) {
                         insideDistance = 0;
@@ -397,22 +465,34 @@ public class NOHAR {
     }
 
     private boolean fusionHistogram(LinkedList<BOP> BOPs, BOP minBop, BOP newBop) {
+        boolean fused = false;
         for (BOP bop : BOPs) {
-            if (bop.equals(minBop)
-                    && bop.getHistogram().size() > newBop.getHistogram().size()) {//Only if bop is greater
-                for (WordRecord big : bop.getHistogram()) {
-                    for (WordRecord small : newBop.getHistogram()) {
-                        if (big.equals(small)) {
-                            float mean = (big.getFrequency() + small.getFrequency()) / 2;
-                            big.setFrequency(Math.round(mean));
-                            return true;
+            if (bop.equals(minBop)) {
+
+                //for (Integer index : bop.getHistograms().keySet()) {
+                //EnumHistogram decision = minBop.getDecisions().get(index);
+                if (bop.getDecision() == EnumHistogram.SLACK) {
+
+                    List<WordRecord> bopHistogram = bop.getRealHistogram();
+                    List<WordRecord> newHistogram = newBop.getRealHistogram();
+
+                    if (bopHistogram.size() > newHistogram.size()) { //Only if bop is greater
+
+                        for (WordRecord big : bopHistogram) {
+                            for (WordRecord small : newHistogram) {
+                                if (big.equals(small)) {
+                                    float mean = (big.getFrequency() + small.getFrequency()) / 2;
+                                    big.setFrequency(Math.round(mean));
+                                    fused = true;
+                                }
+                            }
                         }
                     }
                 }
-                break;
+                //}
             }
         }
-        return false;
+        return fused;
     }
 
     //Verify aligned words

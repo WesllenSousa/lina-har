@@ -6,7 +6,6 @@
 package datasets.memory;
 
 import algorithms.NOHAR.BOP;
-import controle.constants.Parameters;
 import datasets.timeseries.TimeSeries;
 import java.util.LinkedList;
 
@@ -64,24 +63,6 @@ public class BufferStreaming {
 
     public void setModel(LinkedList<BOP> model) {
         this.model = model;
-    }
-
-    /*
-     *   Handle Word Record
-     */
-    public WordRecord populaWordRecord(String word, int initialPosition, int frequency) {
-        WordRecord wordRecord = new WordRecord();
-        wordRecord.setWord(word);
-        wordRecord.setFrequency(frequency);
-        wordRecord.getIntervals().add(getWordInterval(initialPosition));
-        return wordRecord;
-    }
-
-    public WordInterval getWordInterval(int initialPosition) {
-        WordInterval wordInterval = new WordInterval();
-        wordInterval.setPositionInit(initialPosition);
-        wordInterval.setPositionEnd(initialPosition + Parameters.WINDOW_SIZE);
-        return wordInterval;
     }
 
     public void clearBuffer() {
