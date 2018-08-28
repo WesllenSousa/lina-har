@@ -22,3 +22,5 @@
 hs_err_pid*
 /lina.project/build/
 /lina.project/.nb-gradle/
+*.lock
+*.bin

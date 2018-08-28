@@ -26,7 +26,7 @@ public class Parameters {
      * iSAX Parameters
      */
     public static int INITIAL_CARDINALITY = 4;
-    public static int MAX_CARDINALITY = 32;
+    public static int MAX_CARDINALITY = 6;
     public static int TOP_K = 10;
 
     /**

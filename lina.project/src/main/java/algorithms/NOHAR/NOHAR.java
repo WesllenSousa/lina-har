@@ -29,7 +29,7 @@ public class NOHAR {
 
     private final SymbolicView symbolicView;
     private final Params params;
-    private final int COUNT_THRESHOLD_BOP = 5;
+    private final int COUNT_THRESHOLD_BOP = 3;
     private final int PESO = 20; //For frequency normalization where mean must be positive
 
     private Adwin adwin[];
@@ -45,7 +45,7 @@ public class NOHAR {
 
     public void runStream(double[] currentValues, int position, double label) {
         this.currentLabel = label;
-//        if(currentLabel == 1.0) {
+//        if(currentLabel == 5.0 || currentLabel == 3.0) {
 //            ConstGeneral.UPDATE_GUI = true;
 //        } else {
 //            ConstGeneral.UPDATE_GUI = false;
@@ -67,13 +67,15 @@ public class NOHAR {
                 double mean = subSequences[index].calculateMean();
                 double variance = subSequences[index].calculateVariance();
                 int frequency = (int) Math.round(mean + variance + PESO);
-//                if(frequency < 0) {
-//                    System.out.println("");
-//                }
+
+//              params.paaSize = Parameters.WORD_LENGTH_PAA;
+//              for (int i = 1; i <= 1; i++) {
                 //Discretize
                 WordRecord word = discretize(symbolicView.getBuffer(), position, index, frequency);
                 //Update BOP
                 updateBOP(symbolicView.getBuffer().getBOP(), word);
+//              params.paaSize += 1;
+//              }
             }
         }
 
@@ -112,7 +114,7 @@ public class NOHAR {
             pageHinkley = new PageHinkley[currentValues.length];
             for (int i = 0; i < currentValues.length; i++) {
                 adwin[i] = new Adwin(.002, Parameters.BOP_SIZE, Parameters.WINDOW_SIZE);
-                pageHinkley[i] = new PageHinkley(0.30);
+                pageHinkley[i] = new PageHinkley(0.3);
             }
         }
         for (int i = 0; i < currentValues.length; i++) {
@@ -169,7 +171,6 @@ public class NOHAR {
         //Verify if word is in the buffer BOP
         boolean existed = updateWordFrequency(bop.getHistogram(), wordRecord);
         if (!existed) {
-            //Add word in buffer
             bop.getHistogram().add(wordRecord);
         }
         symbolicView.updateCurrentHistogram(bop.getHistogram(), wordRecord, currentLabel + "");
@@ -187,6 +188,25 @@ public class NOHAR {
             }
         }
         return false;
+    }
+
+    //Verify aligned words
+    private LinkedList<String> getWordsDictionary(WordRecord wordRecord) {
+        LinkedList<String> words = new LinkedList<>();
+        String word = wordRecord.getWord();
+        String newWord = "";
+        for (int i = 0; i < word.length() - 1; i++) {
+            String firstLetter = word.charAt(0) + "";
+            for (int j = 1; j < word.length() - 1; j++) {
+                newWord += word.charAt(j);
+            }
+            String lastLetter = word.charAt(word.length() - 1) + "";//Axis identification
+            newWord += firstLetter + lastLetter;
+            words.add(newWord);
+            word = newWord;
+            newWord = "";
+        }
+        return words;
     }
 
     /*
@@ -226,7 +246,7 @@ public class NOHAR {
                 symbolicView.updateLog("Similar novel: " + minNovelBOP.getLabel() + " to " + currentLabel);
             }
             minNovelBOP.incrementCountNovel();
-            if (minNovelBOP.getCountNovel() > COUNT_THRESHOLD_BOP) {
+            if (minNovelBOP.getCountNovel() > (COUNT_THRESHOLD_BOP * 2)) {
                 minNovelBOP.setCountNovel(0);
                 buffer.getModel().add(minNovelBOP);
                 buffer.getListNovelBOP().remove(minNovelBOP);
@@ -335,7 +355,7 @@ public class NOHAR {
             double percentOutside = (outsideDistance * 100) / totalBigBopDistance;
             if (percentInside < 20 && percentOutside < 20) {
                 return EnumHistogram.INSIDE;
-            } else if (percentInside < 35 && percentOutside < 35) {
+            } else if (percentInside < 30 && percentOutside < 30) {
                 return EnumHistogram.SLACK;
             } else {
                 return EnumHistogram.OUTSIDE;
@@ -425,30 +445,13 @@ public class NOHAR {
                             }
                         }
                     }
+                } else {
+                    break;
                 }
             }
 
         }
         return false;
-    }
-    
-    //Verify aligned words
-    private LinkedList<String> getWordsDictionary(WordRecord wordRecord) {
-        LinkedList<String> words = new LinkedList<>();
-        String word = wordRecord.getWord();
-        String newWord = "";
-        for (int i = 0; i < word.length() - 1; i++) {
-            String firstLetter = word.charAt(0) + "";
-            for (int j = 1; j < word.length() - 1; j++) {
-                newWord += word.charAt(j);
-            }
-            String lastLetter = word.charAt(word.length() - 1) + "";//Axis identification
-            newWord += firstLetter + lastLetter;
-            words.add(newWord);
-            word = newWord;
-            newWord = "";
-        }
-        return words;
     }
 
     private void compareLabel(BOP bop, String origem) {

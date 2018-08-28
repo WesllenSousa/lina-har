@@ -44,7 +44,7 @@ public class FiltersSignalProcessing {
         //System.out.println("ButterworthLowpass2: " + DateUtil.timeInterval(init, end));
         return dest;
     }
-    
+
     public static double[] ButterworthLowpass(double[] N, float GAIN) {
         //Long init = System.currentTimeMillis();
 
@@ -146,6 +146,22 @@ public class FiltersSignalProcessing {
         return LIST;
     }
 
+    public static double[] FourStageLowPass(double[] N, float sampleRate) {
+        //Long init = System.currentTimeMillis();
+
+        //frequency = frequency > 10 ? frequency : 10;
+        float frequency = 1;
+        float freqFrac = frequency / sampleRate;
+        float x = (float) Math.exp(-14.445 * freqFrac);
+        float[] a = new float[]{(float) Math.pow(1 - x, 4)};
+        float[] b = new float[]{4 * x, -6 * x * x, 4 * x * x * x, -x * x * x * x};
+        double[] LIST = filter(N, a, b);
+
+        //Long end = System.currentTimeMillis();
+        //System.out.println("FourStageLowPass: " + DateUtil.timeInterval(init, end));
+        return LIST;
+    }
+
     public static LinkedList<Float> BandPass(LinkedList<Float> N, float sampleRate) {
         //Long init = System.currentTimeMillis();
 
@@ -165,6 +181,25 @@ public class FiltersSignalProcessing {
         return LIST;
     }
 
+    public static double[] BandPass(double[] N, float sampleRate) {
+        //Long init = System.currentTimeMillis();
+
+        float frequency = 1;
+        float bandWidth = (sampleRate * 30) / 100; //30% da taxa de frequencia
+        float bw = bandWidth / sampleRate;
+        float R = 1 - 3 * bw;
+        float fracFreq = frequency / sampleRate;
+        float T = 2 * (float) Math.cos(2 * Math.PI * fracFreq);
+        float K = (1 - R * T + R * R) / (2 - T);
+        float[] a = new float[]{1 - K, (K - R) * T, R * R - K};
+        float[] b = new float[]{R * T, -R * R};
+        double[] LIST = filter(N, a, b);
+
+        //Long end = System.currentTimeMillis();
+        //System.out.println("BandPass: " + DateUtil.timeInterval(init, end));
+        return LIST;
+    }
+
     public static LinkedList<Float> HighPass(LinkedList<Float> N, float sampleRate) {
         //Long init = System.currentTimeMillis();
 
@@ -174,6 +209,21 @@ public class FiltersSignalProcessing {
         float[] a = new float[]{(1 + x) / 2, -(1 + x) / 2};
         float[] b = new float[]{x};
         LinkedList<Float> LIST = filter(N, a, b);
+
+        //Long end = System.currentTimeMillis();
+        //System.out.println("HighPass: " + DateUtil.timeInterval(init, end));
+        return LIST;
+    }
+
+    public static double[] HighPass(double[] N, float sampleRate) {
+        //Long init = System.currentTimeMillis();
+
+        float frequency = 1;
+        float fracFreq = frequency / sampleRate;
+        float x = (float) Math.exp(-2 * Math.PI * fracFreq);
+        float[] a = new float[]{(1 + x) / 2, -(1 + x) / 2};
+        float[] b = new float[]{x};
+        double[] LIST = filter(N, a, b);
 
         //Long end = System.currentTimeMillis();
         //System.out.println("HighPass: " + DateUtil.timeInterval(init, end));
@@ -226,6 +276,17 @@ public class FiltersSignalProcessing {
             N[i] = y;
         }
         return N;
+    }
+
+    public static double[] SingleExponential(double[] data, double alpha) {
+        double[] y = new double[data.length];
+        y[0] = 0;
+        y[1] = data[0];
+        int i = 2;
+        for (i = 2; i < data.length; i++) {
+            y[i] = alpha * data[i - 1] + (1 - alpha) * y[i - 1];
+        }
+        return y;
     }
 
 }
