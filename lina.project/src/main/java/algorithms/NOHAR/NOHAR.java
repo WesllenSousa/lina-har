@@ -45,7 +45,7 @@ public class NOHAR {
 
     public void runStream(double[] currentValues, int position, double label) {
         this.currentLabel = label;
-//        if(currentLabel == 5.0 || currentLabel == 3.0) {
+//        if(currentLabel == 5.0) {
 //            ConstGeneral.UPDATE_GUI = true;
 //        } else {
 //            ConstGeneral.UPDATE_GUI = false;
@@ -67,15 +67,10 @@ public class NOHAR {
                 double mean = subSequences[index].calculateMean();
                 double variance = subSequences[index].calculateVariance();
                 int frequency = (int) Math.round(mean + variance + PESO);
-
-//              params.paaSize = Parameters.WORD_LENGTH_PAA;
-//              for (int i = 1; i <= 1; i++) {
                 //Discretize
                 WordRecord word = discretize(symbolicView.getBuffer(), position, index, frequency);
                 //Update BOP
                 updateBOP(symbolicView.getBuffer().getBOP(), word);
-//              params.paaSize += 1;
-//              }
             }
         }
 
@@ -290,6 +285,38 @@ public class NOHAR {
         }
     }
 
+    private void checkForget(BufferStreaming buffer) {
+        //100: millisegundos, 1000: segundos, 1000000: minutos
+        long time = System.currentTimeMillis() / 100;
+        if (time % 100 == 0) {
+            for (BOP bop : buffer.getListNovelBOP()) {
+                bop.updateWeight();
+                if (bop.getKlinkenberg() < 0.001) {
+                    if (confirmForget(bop)) {
+                        buffer.getListNovelBOP().remove(bop);
+                        break;
+                    } else {
+                        bop.resetWeight();
+                    }
+                }
+            }
+            for (BOP bop : buffer.getModel()) {
+                bop.updateWeight();
+                if (bop.getKlinkenberg() < 0.001) {
+                    if (confirmForget(bop)) {
+                        buffer.getModel().remove(bop);
+                        break;
+                    } else {
+                        bop.resetWeight();
+                    }
+                }
+            }
+        }
+    }
+
+    /*
+     *   User interaction
+     */
     private String activeLearning(String posssibleLabel, String description) {
         //Active learning
         String label = posssibleLabel;
@@ -300,9 +327,12 @@ public class NOHAR {
         return label;
     }
 
-    private void checkForget(BufferStreaming buffer) {
-        for (BOP bop : buffer.getModel()) {
-            //update weight bop
+    private boolean confirmForget(BOP bop) {
+        Messages msg = new Messages();
+        if (msg.confirmacao("Forget BOP " + bop.getLabel() + "?")) {
+            return true;
+        } else {
+            return false;
         }
     }
 

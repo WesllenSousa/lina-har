@@ -24,7 +24,8 @@ public class BOP {
     private int countNovel = 0;
     private EnumHistogram decision;
 
-    private float weight = 0;
+    private int countTime = 0;
+    private double klinkenberg;
 
     public void incrementCountUnk() {
         countUnk++;
@@ -34,12 +35,15 @@ public class BOP {
         countNovel++;
     }
 
-    public void updateWeight(boolean direction) {
-        if (direction) { //true: aumenta, false: diminui
-            weight++;
-        } else {
-            weight--;
-        }
+    public void updateWeight() {
+        double y = 0.1;
+        klinkenberg = Math.exp((y * -1) * countTime);
+        countTime++;
+    }
+
+    public void resetWeight() {
+        countTime = 0;
+        updateWeight();
     }
 
     public void orderWordsHistogram() {
@@ -81,12 +85,12 @@ public class BOP {
         this.countNovel = countNovel;
     }
 
-    public float getWeight() {
-        return weight;
+    public double getKlinkenberg() {
+        return klinkenberg;
     }
 
-    public void setWeight(float weight) {
-        this.weight = weight;
+    public void setKlinkenberg(double klinkenberg) {
+        this.klinkenberg = klinkenberg;
     }
 
     public EnumHistogram getDecision() {

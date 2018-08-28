@@ -80,7 +80,7 @@ public class SymbolicView {
             processStream(currentValues, position, label);
 
             //values to GUI
-            addDataGraphLine(currentValues);
+            addDataGraphLine(currentValues, label + "");
             updateLabel(label + "");
         }
         eval.setEndTime(System.currentTimeMillis());
@@ -142,12 +142,12 @@ public class SymbolicView {
     /*
      *   GUI
      */
-    private void addDataGraphLine(double[] values) {
+    private void addDataGraphLine(double[] values, String label) {
         if (ConstGeneral.UPDATE_GUI) {
             if (lineGraphic.getSeriesCount() == 0) {
                 this.lineGraphic.prepareStream(new TimeSeries[values.length]);
             }
-            lineGraphic.addData(values);
+            lineGraphic.addData(values, label);
             lineGraphic.espera(5);
         }
     }

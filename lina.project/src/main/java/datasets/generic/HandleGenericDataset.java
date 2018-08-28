@@ -185,7 +185,7 @@ public class HandleGenericDataset {
                 if (bean.getTimestamp() != null && bean.getClasse() != null) {
                     linha += bean.getTimestamp() + separador + bean.getClasse();
                 } else if (bean.getClasse() != null) {
-                    linha += bean.getClasse();
+                        linha += bean.getClasse();
                 } else if (bean.getTimestamp() != null) {
                     linha += bean.getTimestamp();
                 }

@@ -47,10 +47,12 @@ public class ConfigSaveFile extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Save File");
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Where:");
 
         cb_where.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Raw", "Train", "Test", "Stream" }));
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Name:");
 
         bt_save.setText("Save");
@@ -60,6 +62,7 @@ public class ConfigSaveFile extends javax.swing.JDialog {
             }
         });
 
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Format: ");
 
         cb_format.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "csv", "arff" }));
@@ -82,7 +85,7 @@ public class ConfigSaveFile extends javax.swing.JDialog {
                                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cb_where, 0, 174, Short.MAX_VALUE)
+                            .addComponent(cb_where, 0, 184, Short.MAX_VALUE)
                             .addComponent(tf_name)
                             .addComponent(cb_format, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())

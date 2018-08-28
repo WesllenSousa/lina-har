@@ -129,7 +129,7 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
         timeseriesPlot.addDomainMarker(markEnd, Layer.BACKGROUND);
     }
 
-    public void addData(GenericRowBean bean) {
+    public void addData(GenericRowBean bean, String title) {
         for (int i = 0; i < seriesCollection.getSeriesCount(); i++) {
             if (bean.getTupla().size() == seriesCollection.getSeriesCount()) {
                 XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(i);
@@ -141,25 +141,34 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
                 msg.bug("Missing value!");
             }
         }
+        if (title != null) {
+            chart.setTitle(title);
+        }
     }
 
-    public void addData(double[] values) {
+    public void addData(double[] values, String title) {
         for (int i = 0; i < seriesCollection.getSeriesCount(); i++) {
             XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(i);
             int nextItem = timeSerie.getItemCount() + 1;
             timeSerie.add(nextItem, values[i]);
         }
+        if (title != null) {
+            chart.setTitle(title);
+        }
     }
 
-    public void addData(double[] values, int axi) {
+    public void addData(double[] values, int axi, String title) {
         XYSeries timeSerie = (XYSeries) seriesCollection.getSeries().get(axi);
         int nextItem = timeSerie.getItemCount() + 1;
         for (int i = 0; i < values.length; i++) {
             timeSerie.add(nextItem, values[i]);
         }
+        if (title != null) {
+            chart.setTitle(title);
+        }
     }
 
-    public void addSubsequenceData(TimeSeries[] subTs) {
+    public void addSubsequenceData(TimeSeries[] subTs, String title) {
         for (int position = 0; position < subTs[0].getLength(); position++) {
             double[] values = new double[subTs.length];
             int col = 0;
@@ -167,7 +176,7 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
                 values[col] = ts.getData(position);
                 col++;
             }
-            addData(values);
+            addData(values, title);
         }
     }
 
@@ -191,7 +200,7 @@ public class LineGraphic extends JPanel implements ChartProgressListener {
         seriesCollection.removeAllSeries();
         timeseriesPlot.clearDomainMarkers();
     }
-    
+
     public void cleanDomainMarkers() {
         timeseriesPlot.clearDomainMarkers();
     }

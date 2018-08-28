@@ -32,7 +32,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
     private LinkedList<String> classes = new LinkedList<>();
 
     private String nameDataset;
-    private List<String> signalSelection, filters, dataFusion, principalFeatures, 
+    private List<String> signalSelection, filters, dataFusion, principalFeatures,
             timeFeatures, frequencyFeatures;
 
     public InternalFrame(DesktopView desktopView, String nameDataset) {
@@ -55,7 +55,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
                 row++;
                 continue;
             } else {
-                ((LineGraphic) graphic).addData(bean);
+                ((LineGraphic) graphic).addData(bean, bean.getClasse());
             }
             row++;
         }
@@ -69,7 +69,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener, Int
                 row++;
                 continue;
             } else {
-                ((LineGraphic) graphic).addData(bean);
+                ((LineGraphic) graphic).addData(bean, bean.getClasse());
             }
             row++;
         }

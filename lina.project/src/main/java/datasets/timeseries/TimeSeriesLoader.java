@@ -87,7 +87,7 @@ public class TimeSeriesLoader {
                     }
                 }
 
-                //check if data os consistent
+                //check if data is consistent
                 if (lineSplit.length != colCount) {
                     lineCounter++;
                     System.out.println("Data inconsistent, line: " + lineCounter);
