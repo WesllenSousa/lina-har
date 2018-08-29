@@ -97,10 +97,10 @@ public class SymbolicView {
         for (int index = 0; index < n; index++) {
             //Get array subsequence
             TimeSeries subSequence = data[index].getSubsequence(position - Parameters.WINDOW_SIZE, Parameters.WINDOW_SIZE, false);
-//            TimeSeries exponencial = new TimeSeries(
-//                    FiltersSignalProcessing.SingleExponential(subSequence.getData(), 0.5));
+            TimeSeries exponencial = new TimeSeries(
+                    FiltersSignalProcessing.SingleExponential(subSequence.getData(), 0.6)); // maior que 0.5 aumenta a variacia, menor 0.5 diminui a variacia
             TimeSeries lowpass = new TimeSeries(
-                    FiltersSignalProcessing.SingleLowPass(subSequence.getData(), Parameters.WINDOW_SIZE));
+                    FiltersSignalProcessing.SingleLowPass(exponencial.getData(), Parameters.WINDOW_SIZE));
             subsequences[index] = lowpass;
         }
         return subsequences;

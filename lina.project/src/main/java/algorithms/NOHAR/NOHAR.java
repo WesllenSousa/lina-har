@@ -66,7 +66,7 @@ public class NOHAR {
                 //Calcule frequency
                 double mean = subSequences[index].calculateMean();
                 double variance = subSequences[index].calculateVariance();
-                int frequency = (int) Math.round(mean + variance + PESO);
+                int frequency = (int) Math.round(mean + (variance * 2) + PESO);
                 //Discretize
                 WordRecord word = discretize(symbolicView.getBuffer(), position, index, frequency);
                 //Update BOP
@@ -109,7 +109,7 @@ public class NOHAR {
             pageHinkley = new PageHinkley[currentValues.length];
             for (int i = 0; i < currentValues.length; i++) {
                 adwin[i] = new Adwin(.002, Parameters.BOP_SIZE, Parameters.WINDOW_SIZE);
-                pageHinkley[i] = new PageHinkley(0.3);
+                pageHinkley[i] = new PageHinkley(0.4);
             }
         }
         for (int i = 0; i < currentValues.length; i++) {
@@ -288,7 +288,7 @@ public class NOHAR {
     private void checkForget(BufferStreaming buffer) {
         //100: millisegundos, 1000: segundos, 1000000: minutos
         long time = System.currentTimeMillis() / 100;
-        if (time % 100 == 0) {
+        if (time % 1000 == 0) {
             for (BOP bop : buffer.getListNovelBOP()) {
                 bop.updateWeight();
                 if (bop.getKlinkenberg() < 0.001) {
