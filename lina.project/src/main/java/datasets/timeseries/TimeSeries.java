@@ -111,7 +111,7 @@ public class TimeSeries implements Serializable {
             sum += Math.pow(data[i] - mean, 2);
         }
         variance = sum / (double) this.data.length;
-        
+
         return this.variance;
     }
 

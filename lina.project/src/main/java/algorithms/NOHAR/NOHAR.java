@@ -36,6 +36,7 @@ public class NOHAR {
     private PageHinkley pageHinkley[];
 
     private double currentLabel = -1;
+    private int position;
     private int contConsistentChunkValue = 0;
 
     public NOHAR(SymbolicView symbolicView, Params params) {
@@ -45,6 +46,7 @@ public class NOHAR {
 
     public void runStream(double[] currentValues, int position, double label) {
         this.currentLabel = label;
+        this.position = position;
 //        if(currentLabel == 5.0) {
 //            ConstGeneral.UPDATE_GUI = true;
 //        } else {
@@ -218,6 +220,7 @@ public class NOHAR {
             }
             newBop.setLabel(minBOP.getLabel());
             compareLabel(newBop, "Classify");
+            //symbolicView.getEval().printActiveLearning(false);
         }
         if (BOPs.isEmpty()) {
             return false;
@@ -248,6 +251,7 @@ public class NOHAR {
                 symbolicView.updateLog("Added reference histogram!");
             }
             compareLabel(minNovelBOP, "Novel");
+            //symbolicView.getEval().printActiveLearning(false);
         }
         return minNovelBOP != null;
     }
@@ -281,6 +285,7 @@ public class NOHAR {
                 buffer.getListUBOP().remove(minuBOP);
                 compareLabel(minuBOP, "Novel");
                 symbolicView.updateLog("Added novel BOP...");
+                //symbolicView.getEval().printActiveLearning(true);
             }
         }
     }

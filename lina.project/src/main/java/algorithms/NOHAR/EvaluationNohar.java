@@ -7,6 +7,7 @@ package algorithms.NOHAR;
 
 import algorithms.SAX.Params;
 import datasets.memory.BufferStreaming;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -16,6 +17,7 @@ import java.util.HashMap;
 public class EvaluationNohar {
 
     private HashMap<Double, HashMap<Double, Integer>> confusionMatrix = new HashMap<>();
+    private ArrayList<Long> timeElapsed = new ArrayList<>();
 
     private String dataset;
     private int hits = 0;
@@ -31,28 +33,46 @@ public class EvaluationNohar {
     private BufferStreaming buffer;
 
     public void incrementHists(double label) {
+        //updateTime();
         populaConfusionMatrix(label, label);
         hits++;
+        //printCurrentAccuracy();
+        //printCurrentError();
     }
 
     public void incrementHistsNovel(double label) {
+        //updateTime();
         populaConfusionMatrix(label, label);
         hitsNovel++;
+        //printCurrentAccuracy();
+        //printCurrentError();
     }
 
     public void incrementErrors(double labelRight, double labelWrong) {
+        //updateTime();
         populaConfusionMatrix(labelRight, labelWrong);
         errors++;
+        //printCurrentAccuracy();
+        //printCurrentError();
     }
 
     public void incrementErrorsNovel(double labelRight, double labelWrong) {
+        //updateTime();
         populaConfusionMatrix(labelRight, labelWrong);
         errorsNovel++;
+        //printCurrentAccuracy();
+        //printCurrentError();
     }
 
     public void incrementCountBOP(double label) {
         populaConfusionMatrix(label, 0);
         countBOPs++;
+    }
+
+    private void updateTime() {
+        endTime = System.currentTimeMillis();
+        long time = (endTime - startTime);
+        timeElapsed.add(time);
     }
 
     public void setDataset(String dataset) {
@@ -65,6 +85,14 @@ public class EvaluationNohar {
             accuracy = (float) TP / (float) totalInstances;
         }
         return accuracy;
+    }
+
+    private float calculeError(int FP, int totalInstances) {
+        float error = 0.f;
+        if (totalInstances > 0) {
+            error = (float) FP / (float) totalInstances;
+        }
+        return error;
     }
 
     private void populaConfusionMatrix(double label1, double label2) {
@@ -135,12 +163,13 @@ public class EvaluationNohar {
 
     @Override
     public String toString() {
-        float seconds = (endTime - startTime) / 1000;
-        
+        //printTime();
+        float time = (endTime - startTime);
+
         int TP = hits + hitsNovel;
         int totalInstances = hits + hitsNovel + errors + errorsNovel;
         float accuracy = calculeAccuracy(TP, totalInstances);
-        
+
         String matriz = confusionMatrix();
 
         return "EvaluationNohar{" + "\n"
@@ -159,9 +188,38 @@ public class EvaluationNohar {
                 + "  uBOP=" + buffer.getListUBOP().size() + "\n"
                 + "  Novel BOP=" + buffer.getListNovelBOP().size() + "\n"
                 + "  Model=" + buffer.getModel().size() + "\n"
-                + "  seconds=" + seconds + "s\n"
+                + "  Seconds=" + (time / 1000) + "s\n"
+                + "  Times Millis=" + time + "ms\n"
                 + "  " + matriz + "\n"
                 + '}';
+    }
+
+    private void printCurrentAccuracy() {
+        int TP = hits + hitsNovel;
+        int totalInstances = hits + hitsNovel + errors + errorsNovel;
+        float accuracy = calculeAccuracy(TP, totalInstances);
+        System.out.println(accuracy);
+    }
+
+    private void printCurrentError() {
+        int ERR = errors + errorsNovel;
+        int totalInstances = hits + hitsNovel + errors + errorsNovel;
+        float error = calculeError(ERR, totalInstances);
+        System.out.println(error);
+    }
+
+    private void printTime() {
+        for (Long t : timeElapsed) {
+            System.out.println(t);
+        }
+    }
+
+    public void printActiveLearning(boolean status) {
+        float n = 0f;
+        if (status) {
+            n = 0.8f;
+        }
+        System.out.println(n);
     }
 
 }
