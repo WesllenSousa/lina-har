@@ -36,7 +36,6 @@ public class NOHAR {
     private PageHinkley pageHinkley[];
 
     private double currentLabel = -1;
-    private int position;
     private int contConsistentChunkValue = 0;
 
     public NOHAR(SymbolicView symbolicView, Params params) {
@@ -46,7 +45,6 @@ public class NOHAR {
 
     public void runStream(double[] currentValues, int position, double label) {
         this.currentLabel = label;
-        this.position = position;
 //        if(currentLabel == 5.0) {
 //            ConstGeneral.UPDATE_GUI = true;
 //        } else {
@@ -70,7 +68,7 @@ public class NOHAR {
                 double variance = subSequences[index].calculateVariance();
                 int frequency = (int) Math.round(mean + (variance * 2) + PESO);
                 //Discretize
-                WordRecord word = discretize(symbolicView.getBuffer(), position, index, frequency);
+                WordRecord word = discretize(subSequences[index], position, index, frequency);
                 //Update BOP
                 updateBOP(symbolicView.getBuffer().getBOP(), word);
             }
@@ -135,9 +133,9 @@ public class NOHAR {
     /*
      *   Discretização
      */
-    private WordRecord discretize(BufferStreaming buffer, int position, int index, int frequency) {
+    private WordRecord discretize(TimeSeries subSequence, int position, int index, int frequency) {
         SAX sax = new SAX(params);
-        String word = sax.serieToWord(buffer.getSubSequences()[index].getData());
+        String word = sax.serieToWord(subSequence.getData());
         word += index; //Different word for different axis
         WordRecord wordRecord = populaWordRecord(word, position - Parameters.WINDOW_SIZE, frequency);
         return wordRecord;
@@ -251,7 +249,6 @@ public class NOHAR {
                 symbolicView.updateLog("Added reference histogram!");
             }
             compareLabel(minNovelBOP, "Novel");
-            //symbolicView.getEval().printActiveLearning(false);
         }
         return minNovelBOP != null;
     }
@@ -285,7 +282,6 @@ public class NOHAR {
                 buffer.getListUBOP().remove(minuBOP);
                 compareLabel(minuBOP, "Novel");
                 symbolicView.updateLog("Added novel BOP...");
-                //symbolicView.getEval().printActiveLearning(true);
             }
         }
     }
@@ -329,6 +325,7 @@ public class NOHAR {
             Messages msg = new Messages();
             label = msg.inserirDadosComValorInicial("Is it similar to " + posssibleLabel + "? " + description, posssibleLabel);
         }
+        symbolicView.getEval().setActiveLearning(true);
         return label;
     }
 

@@ -31,37 +31,26 @@ public class EvaluationNohar {
     private int offset = 0;
     private int bopSize = 0;
     private BufferStreaming buffer;
+    private boolean activeLearning = false;
 
     public void incrementHists(double label) {
-        //updateTime();
         populaConfusionMatrix(label, label);
         hits++;
-        //printCurrentAccuracy();
-        //printCurrentError();
     }
 
     public void incrementHistsNovel(double label) {
-        //updateTime();
         populaConfusionMatrix(label, label);
         hitsNovel++;
-        //printCurrentAccuracy();
-        //printCurrentError();
     }
 
     public void incrementErrors(double labelRight, double labelWrong) {
-        //updateTime();
         populaConfusionMatrix(labelRight, labelWrong);
         errors++;
-        //printCurrentAccuracy();
-        //printCurrentError();
     }
 
     public void incrementErrorsNovel(double labelRight, double labelWrong) {
-        //updateTime();
         populaConfusionMatrix(labelRight, labelWrong);
         errorsNovel++;
-        //printCurrentAccuracy();
-        //printCurrentError();
     }
 
     public void incrementCountBOP(double label) {
@@ -69,7 +58,7 @@ public class EvaluationNohar {
         countBOPs++;
     }
 
-    private void updateTime() {
+    public void updateTime() {
         endTime = System.currentTimeMillis();
         long time = (endTime - startTime);
         timeElapsed.add(time);
@@ -84,7 +73,7 @@ public class EvaluationNohar {
         if (totalInstances > 0) {
             accuracy = (float) TP / (float) totalInstances;
         }
-        return accuracy;
+        return accuracy * 100;
     }
 
     private float calculeError(int FP, int totalInstances) {
@@ -92,7 +81,7 @@ public class EvaluationNohar {
         if (totalInstances > 0) {
             error = (float) FP / (float) totalInstances;
         }
-        return error;
+        return error * 100;
     }
 
     private void populaConfusionMatrix(double label1, double label2) {
@@ -129,7 +118,7 @@ public class EvaluationNohar {
                 matriz += "  >> " + label1 + " and " + label2 + " = " + value + "\n";
             }
             float accuracy = calculeAccuracy(contRight, contTotal);
-            matriz += "  >>> " + (accuracy * 100) + "%\n";
+            matriz += "  >>> " + accuracy + "%\n";
         }
         return matriz;
     }
@@ -161,9 +150,13 @@ public class EvaluationNohar {
         this.bopSize = bopSize;
     }
 
+    public void setActiveLearning(boolean activeLearning) {
+        this.activeLearning = activeLearning;
+    }
+
     @Override
     public String toString() {
-        //printTime();
+        printTime();
         float time = (endTime - startTime);
 
         int TP = hits + hitsNovel;
@@ -174,7 +167,7 @@ public class EvaluationNohar {
 
         return "EvaluationNohar{" + "\n"
                 + "  Dataset=" + dataset + "\n"
-                + "  Accuracy=" + (accuracy * 100) + "%\n"
+                + "  Accuracy=" + accuracy + "%\n"
                 + "  Hits=" + hits + "\n"
                 + "  Hits novel=" + hitsNovel + "\n"
                 + "  Errors=" + errors + "\n"
@@ -194,14 +187,14 @@ public class EvaluationNohar {
                 + '}';
     }
 
-    private void printCurrentAccuracy() {
+    public void printCurrentAccuracy() {
         int TP = hits + hitsNovel;
         int totalInstances = hits + hitsNovel + errors + errorsNovel;
         float accuracy = calculeAccuracy(TP, totalInstances);
         System.out.println(accuracy);
     }
 
-    private void printCurrentError() {
+    public void printCurrentError() {
         int ERR = errors + errorsNovel;
         int totalInstances = hits + hitsNovel + errors + errorsNovel;
         float error = calculeError(ERR, totalInstances);
@@ -214,10 +207,11 @@ public class EvaluationNohar {
         }
     }
 
-    public void printActiveLearning(boolean status) {
+    public void printActiveLearning() {
         float n = 0f;
-        if (status) {
-            n = 0.8f;
+        if (activeLearning) {
+            n = 60f;
+            activeLearning = false;
         }
         System.out.println(n);
     }

@@ -82,6 +82,12 @@ public class SymbolicView {
             //values to GUI
             addDataGraphLine(currentValues, label + "");
             updateLabel(label + "");
+            //if (position % 125 == 0) {
+            //eval.updateTime();
+            //eval.printCurrentAccuracy();
+            //eval.printCurrentError();
+            //eval.printActiveLearning();
+            //}
         }
         eval.setEndTime(System.currentTimeMillis());
 

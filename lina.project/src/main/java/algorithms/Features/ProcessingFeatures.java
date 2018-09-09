@@ -24,6 +24,9 @@ public class ProcessingFeatures {
     public LinkedList<LinkedList<String>> applyPreprocessing(LinkedList<GenericRowBean> data, LinkedList<String> methods,
             Float windowsSize, int offset, int hertz) {
         System.out.println("Applying preprocessing...");
+
+        long init = System.currentTimeMillis();
+
         Iterator<GenericRowBean> beanIter = data.iterator();
         if (beanIter.hasNext()) {
             GenericRowBean beanFirst = beanIter.next();
@@ -33,6 +36,11 @@ public class ProcessingFeatures {
             }
             LinkedList<LinkedList<String>> lineColumns = createNewColumns(methods, columnsNames);
             populaLineColumns(data, lineColumns, windowsSize, offset, hertz);
+
+            long end = System.currentTimeMillis();
+            long time = end - init;
+            System.out.println("Time: " + time);
+
             return lineColumns;
         }
         return null;
