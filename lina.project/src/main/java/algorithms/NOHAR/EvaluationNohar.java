@@ -32,6 +32,7 @@ public class EvaluationNohar {
     private int bopSize = 0;
     private BufferStreaming buffer;
     private boolean activeLearning = false;
+    private int countChangeDetected = 0;
 
     public void incrementHists(double label) {
         populaConfusionMatrix(label, label);
@@ -56,6 +57,10 @@ public class EvaluationNohar {
     public void incrementCountBOP(double label) {
         populaConfusionMatrix(label, 0);
         countBOPs++;
+    }
+
+    public void incrementChangeDetected() {
+        countChangeDetected++;
     }
 
     public void updateTime() {
@@ -160,8 +165,8 @@ public class EvaluationNohar {
         float time = (endTime - startTime);
 
         int TP = hits + hitsNovel;
-        int totalInstances = hits + hitsNovel + errors + errorsNovel;
-        float accuracy = calculeAccuracy(TP, totalInstances);
+        int totalBOPs = hits + hitsNovel + errors + errorsNovel;
+        float accuracy = calculeAccuracy(TP, totalBOPs);
 
         String matriz = confusionMatrix();
 
@@ -173,6 +178,8 @@ public class EvaluationNohar {
                 + "  Errors=" + errors + "\n"
                 + "  Errors novel=" + errorsNovel + "\n"
                 + "  Count BOPs=" + countBOPs + "\n"
+                + "  Total predicted BOPs=" + totalBOPs + "\n"
+                + "  Count change detected=" + countChangeDetected + "\n"
                 + "  Window Size=" + params.windowSize + "\n"
                 + "  Alphabet Size=" + params.alphabetSize + "\n"
                 + "  PAA Size=" + params.paaSize + "\n"

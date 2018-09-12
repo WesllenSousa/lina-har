@@ -120,10 +120,12 @@ public class NOHAR {
             if (Parameters.CHANGE_DETECTION == 0) {
                 if (adwin[i].setInput(value)) {
                     symbolicView.addMarkerGraphLine(position, Color.RED);
+                    symbolicView.getEval().incrementChangeDetected();
                     return true;
                 }
             } else if (pageHinkley[i].runStreaming(value, position)) {
                 symbolicView.addMarkerGraphLine(position, Color.RED);
+                symbolicView.getEval().incrementChangeDetected();
                 return true;
             }
         }
