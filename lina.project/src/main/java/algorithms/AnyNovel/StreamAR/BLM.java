@@ -873,6 +873,9 @@ public class BLM implements Serializable {
         // this.CWSCModelOld);
 
         String[] newLabel2 = getMajorityLabel(this.dataWarehouse);
+        if (newLabel2 == null) {
+            return null;
+        }
         String newLabel = newLabel2[0];
 
         // Tp for already new born novel class
@@ -1012,12 +1015,14 @@ public class BLM implements Serializable {
                 max = counter[i];
             }
         }
-        String[] clusterLabel = new String[2];
-        clusterLabel[0] = clusterLabels[s];
-        clusterLabel[1] = Integer.toString(max);
+        if (s != -1) {
+            String[] clusterLabel = new String[2];
+            clusterLabel[0] = clusterLabels[s];
+            clusterLabel[1] = Integer.toString(max);
+            return clusterLabel;
+        }
 
-        return clusterLabel;
-
+        return null;
     }
 
     private boolean voteForNovelty(boolean b1, boolean b2, boolean b3, boolean b4) {

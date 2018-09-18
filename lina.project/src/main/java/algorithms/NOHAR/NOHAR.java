@@ -220,7 +220,6 @@ public class NOHAR {
             }
             newBop.setLabel(minBOP.getLabel());
             compareLabel(newBop, "Classify");
-            //symbolicView.getEval().printActiveLearning(false);
         }
         if (BOPs.isEmpty()) {
             return false;

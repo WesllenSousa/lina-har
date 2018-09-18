@@ -20,21 +20,23 @@ public class AnyNovelMain {
 
     public static void main(String[] args) {
 
-        String trainDataset = "train_shoaib_anynovel.arff"; //shoaib_sub1, train_shoaib_stream, train_shoaib_anynovel
+        //shoaib_anynovel_train2 e shoaib_sub1w: subject 1 sem atividade andar.
+        String trainDataset = "uci_anynovel_train2.arff"; //train_shoaib_anynovel, train_shoaib_tf_anynovel_overlap2
         String dirTrain = ConstDataset.DS_STREAM + trainDataset;
         int numberOfColumns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR, dirTrain).size();
         WekaUtil wekaTrain = new WekaUtil(dirTrain, numberOfColumns);
         Instances trainData = wekaTrain.getData();
 
-        String testDataset = "test_shoaib_anynovel.arff"; //test_shoaib_stream, test_shoaib_anynovel
+        //uci_anynovel_test
+        String testDataset = "uci_anynovel_test.arff"; //shoaib_anynovel_test, shoaib_tf_anynovel_overlap_test
         String dirTest = ConstDataset.DS_STREAM + testDataset;
         numberOfColumns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR, dirTest).size();
         WekaUtil wekaTest = new WekaUtil(dirTest, numberOfColumns);
         Instances testData = wekaTest.getData();
 
         HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("Segment_Size", "250");
-        parameters.put("Stable_Size", "50");
+        parameters.put("Segment_Size", "250");//250
+        parameters.put("Stable_Size", "250");//250
         parameters.put("Slacks", "0.1");
         parameters.put("Novel_Slack", "0.1");
         parameters.put("Movement", "1");
@@ -45,21 +47,30 @@ public class AnyNovelMain {
         parameters.put("Validate_Flag", "true");
 
         long startTime = System.currentTimeMillis();
+
         TrainingLauncher training = new TrainingLauncher();
         BLM BLModel = training.buildCWSCModel(trainData, "", "");
+
         long endTime = System.currentTimeMillis();
         long time = (endTime - startTime);
         System.out.println("Train time: " + time);
+
         //training.writeModelToFile(BLModel, ConstDataset.DS_MODEL, fileName);
-        
 //        ExpLauncher expLauncher = new ExpLauncher();
 //        try {
 //            BLModel = expLauncher.readModel("diretorio modelo");
 //        } catch (Exception ex) {
 //            System.out.println(ex);
 //        }
+        startTime = System.currentTimeMillis();
+
         AnyNovelLauncher any = new AnyNovelLauncher();
         BLM newModel = any.AnyNovel(BLModel, testData, parameters);
+
+        endTime = System.currentTimeMillis();
+        time = (endTime - startTime);
+        System.out.println("Test time: " + time);
+
         System.out.println(newModel.modelStatistics());
 
         //Descobrir valores para gerar os graficos

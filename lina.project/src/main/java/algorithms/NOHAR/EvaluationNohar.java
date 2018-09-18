@@ -214,10 +214,13 @@ public class EvaluationNohar {
         }
     }
 
-    public void printActiveLearning() {
+    public void printActiveLearning(double label) {
         float n = 0f;
         if (activeLearning) {
             n = 60f;
+            if (label == 1.0) {
+                n = 75f;
+            }
             activeLearning = false;
         }
         System.out.println(n);

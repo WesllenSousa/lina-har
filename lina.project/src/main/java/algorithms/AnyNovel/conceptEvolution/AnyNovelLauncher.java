@@ -764,11 +764,16 @@ public class AnyNovelLauncher {
 //        timeElapsed.add(time);
 
         NovelPredection pred = CEModel.noveltyStatistics();
+        if (pred == null) {
+            return;
+        }
         if (pred.IsFAnovel() || pred.isUnknown()) {
         } else {
             contInstances++;
             float accuracy = 0.f;
             if (pred.getClassTrueLabel()[0].equals(pred.getPredictedLabel())) {
+                hits++;
+            } else if (pred.getClassTrueLabel()[0].equals("1") && pred.getNoveltyType().equals("Tp")) {
                 hits++;
             }
             accuracy = (float) hits * 100 / (float) contInstances;
