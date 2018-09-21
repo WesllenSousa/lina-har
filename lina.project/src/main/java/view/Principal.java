@@ -243,6 +243,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel22 = new javax.swing.JPanel();
         rd_adwin = new javax.swing.JRadioButton();
         rd_pageHinkley = new javax.swing.JRadioButton();
+        rd_none = new javax.swing.JRadioButton();
         jPanel28 = new javax.swing.JPanel();
         jPanel38 = new javax.swing.JPanel();
         ck_updateGUI = new javax.swing.JCheckBox();
@@ -1586,16 +1587,22 @@ public class Principal extends javax.swing.JFrame {
         rd_pageHinkley.setSelected(true);
         rd_pageHinkley.setText("Page Hinkley");
 
+        gp_changeDetection.add(rd_none);
+        rd_none.setText("None");
+
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
         jPanel22.setLayout(jPanel22Layout);
         jPanel22Layout.setHorizontalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel22Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(rd_adwin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(rd_pageHinkley)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel22Layout.createSequentialGroup()
+                        .addComponent(rd_adwin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rd_pageHinkley))
+                    .addComponent(rd_none))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel22Layout.setVerticalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1604,6 +1611,8 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rd_adwin)
                     .addComponent(rd_pageHinkley))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rd_none)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -2867,6 +2876,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem ppi_sideBySide;
     private javax.swing.JMenuItem ppi_viewDatasetBox;
     private javax.swing.JRadioButton rd_adwin;
+    private javax.swing.JRadioButton rd_none;
     private javax.swing.JRadioButton rd_pageHinkley;
     public javax.swing.JScrollPane sc_model;
     public javax.swing.JScrollPane sc_novel;
@@ -3275,11 +3285,14 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void setParameters() {
-        if (rd_adwin.isSelected()) {
+        if (rd_none.isSelected()) {
             Parameters.CHANGE_DETECTION = 0;
-        } else {
+        } else if (rd_adwin.isSelected()) {
             Parameters.CHANGE_DETECTION = 1;
+        } else if (rd_pageHinkley.isSelected()) {
+            Parameters.CHANGE_DETECTION = 2;
         }
+
         Parameters.WINDOW_SIZE = Integer.parseInt(tf_symWindow.getText());
         Parameters.WORD_LENGTH_PAA = Integer.parseInt(tf_symWordLength.getText());
         Parameters.SYMBOLS_ALPHABET_SIZE = Integer.parseInt(tf_symSymbolAlphabet.getText());

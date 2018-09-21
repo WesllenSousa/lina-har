@@ -21,22 +21,22 @@ public class AnyNovelMain {
     public static void main(String[] args) {
 
         //shoaib_anynovel_train2 e shoaib_sub1w: subject 1 sem atividade andar.
-        String trainDataset = "uci_anynovel_train2.arff"; //train_shoaib_anynovel, train_shoaib_tf_anynovel_overlap2
+        String trainDataset = "shoaib_anynovel_train2.arff"; //train_shoaib_anynovel, train_shoaib_tf_anynovel_overlap2
         String dirTrain = ConstDataset.DS_STREAM + trainDataset;
         int numberOfColumns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR, dirTrain).size();
         WekaUtil wekaTrain = new WekaUtil(dirTrain, numberOfColumns);
         Instances trainData = wekaTrain.getData();
 
         //uci_anynovel_test
-        String testDataset = "uci_anynovel_test.arff"; //shoaib_anynovel_test, shoaib_tf_anynovel_overlap_test
+        String testDataset = "shoaib_anynovel_test.arff"; //shoaib_anynovel_test, shoaib_tf_anynovel_overlap_test
         String dirTest = ConstDataset.DS_STREAM + testDataset;
         numberOfColumns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR, dirTest).size();
         WekaUtil wekaTest = new WekaUtil(dirTest, numberOfColumns);
         Instances testData = wekaTest.getData();
 
         HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("Segment_Size", "250");//250
-        parameters.put("Stable_Size", "250");//250
+        parameters.put("Segment_Size", "100");//250
+        parameters.put("Stable_Size", "100");//250
         parameters.put("Slacks", "0.1");
         parameters.put("Novel_Slack", "0.1");
         parameters.put("Movement", "1");

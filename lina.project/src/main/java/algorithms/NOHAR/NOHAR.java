@@ -52,7 +52,8 @@ public class NOHAR {
 //        }
 
         //Monitor change the data
-        if (changeDetected(currentValues, position)) {
+        if (Parameters.CHANGE_DETECTION > 0
+                && changeDetected(currentValues, position)) {
             contConsistentChunkValue = 0; //Reset chunk
             symbolicView.clearCurrentHistogram();
             return;
@@ -117,13 +118,14 @@ public class NOHAR {
             if (value < 0) {//Because the mean can not be negative
                 value = currentValues[i] * currentValues[i];
             }
-            if (Parameters.CHANGE_DETECTION == 0) {
+            if (Parameters.CHANGE_DETECTION == 1) {
                 if (adwin[i].setInput(value)) {
                     symbolicView.addMarkerGraphLine(position, Color.RED);
                     symbolicView.getEval().incrementChangeDetected();
                     return true;
                 }
-            } else if (pageHinkley[i].runStreaming(value, position)) {
+            } else if (Parameters.CHANGE_DETECTION == 2
+                    && pageHinkley[i].runStreaming(value, position)) {
                 symbolicView.addMarkerGraphLine(position, Color.RED);
                 symbolicView.getEval().incrementChangeDetected();
                 return true;
@@ -332,11 +334,14 @@ public class NOHAR {
 
     private boolean confirmForget(BOP bop) {
         Messages msg = new Messages();
-        if (msg.confirmacao("Forget BOP " + bop.getLabel() + "?")) {
-            return true;
-        } else {
-            return false;
+        if (ConstGeneral.UPDATE_GUI) {
+            if (msg.confirmacao("Forget BOP " + bop.getLabel() + "?")) {
+                return true;
+            } else {
+                return false;
+            }
         }
+        return true;
     }
 
     /*

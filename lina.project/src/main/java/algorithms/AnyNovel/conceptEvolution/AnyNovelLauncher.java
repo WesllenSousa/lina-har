@@ -777,7 +777,7 @@ public class AnyNovelLauncher {
                 hits++;
             }
             accuracy = (float) hits * 100 / (float) contInstances;
-            //System.out.println(accuracy);
+//            System.out.println(accuracy);
         }
         if (CEModel.actLearningRate() != lastActive) {
             lastActive = CEModel.actLearningRate();
