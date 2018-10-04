@@ -1,4 +1,12 @@
 
+import algorithms.SAX.Params;
+import algorithms.SAX.SAXVSM;
+import controle.constants.ConstDataset;
+import controle.constants.Parameters;
+import java.util.List;
+import java.util.Map;
+import net.seninp.jmotif.sax.NumerosityReductionStrategy;
+import net.seninp.util.UCRUtils;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,20 +20,20 @@
 public class Test {
 
     public static void main(String[] args) throws Exception {
-        
-        double y = 0.2;
-        double lR = 0;
-        for (int t = 0; t < 30; t++) {
-            double r = Math.exp((y * -1) * t);
-            System.out.println(t + ")" + r);
-            if(lR < r) {
-                System.out.println("s");
-            } else {
-                System.out.println("n");
-            }
-            lR = r;
-        }
-        
-        System.out.println(System.currentTimeMillis() / 100);
+
+        int window = (int) (Parameters.MIN_WINDOW_LENGTH);
+        Params params = new Params(window, Parameters.MAX_WORD_LENGTH,
+                Parameters.SYMBOLS_ALPHABET_SIZE, Parameters.NORMALIZATION_THRESHOLD,
+                NumerosityReductionStrategy.EXACT);
+
+        String train = ConstDataset.DS_TRAIN + "uci_symbolic_all.csv";
+        String test = ConstDataset.DS_TEST + "uci_symbolic.csv";
+        System.out.println(train);
+
+        Map<String, List<double[]>> trainData = UCRUtils.readUCRData(train);
+        Map<String, List<double[]>> testData = UCRUtils.readUCRData(test);
+
+        SAXVSM sax_vsm = new SAXVSM();
+        sax_vsm.eval(trainData, testData, params);
     }
 }

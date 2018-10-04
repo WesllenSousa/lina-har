@@ -81,6 +81,7 @@ public class BOSS {
      * @return returns an array of words for each time series
      */
     public int[][] createWords(final TimeSeries[] samples) {
+        long init = System.currentTimeMillis();
 
         final int[][] words = new int[samples.length][];
 
@@ -105,6 +106,10 @@ public class BOSS {
             }
         });
 
+        long end = System.currentTimeMillis();
+        long time = end - init;
+        System.out.println("Create words time: " + time);
+
         return words;
     }
 
@@ -121,6 +126,8 @@ public class BOSS {
             final int[][] words,
             final TimeSeries[] samples,
             final int wordLength) {
+        long init = System.currentTimeMillis();
+
         BagOfPattern[] bagOfPatterns = new BagOfPattern[words.length];
 
         final byte usedBits = (byte) Words.binlog(this.symbols);
@@ -144,6 +151,10 @@ public class BOSS {
                 lastWord = word;
             }
         }
+
+        long end = System.currentTimeMillis();
+        long time = end - init;
+        System.out.println("Bag of pattern time: " + time);
 
         return bagOfPatterns;
     }

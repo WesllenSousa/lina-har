@@ -150,17 +150,31 @@ public class WEASELClassifier extends Classifier {
 
             optimize:
             for (final boolean mean : NORMALIZATION) {
+                
+                long init = System.currentTimeMillis();
+
                 WEASEL model = new WEASEL(maxWordLength, maxSymbol, windowLengths, mean, false);
                 int[][][] words = model.createWords(samples);
 
+                long end = System.currentTimeMillis();
+                long time = end - init;
+                System.out.println("Create words time: " + time);
+
                 for (int f = minWordLenth; f <= maxWordLength; f += 2) {
+                    init = System.currentTimeMillis();
+                    
                     model.dict.reset();
                     BagOfBigrams[] bop = model.createBagOfPatterns(words, samples, f);
                     model.filterChiSquared(bop, chi);
 
                     // train liblinear
                     final Problem problem = initLibLinearProblem(bop, model.dict, bias);
+
                     int correct = trainLibLinear(problem, solverType, c, iterations, p, folds);
+
+                    end = System.currentTimeMillis();
+                    time = end - init;
+                    System.out.println("Train time: " + time);
 
                     if (correct > maxCorrect) {
                         // System.out.println(correct + "\t" + f);

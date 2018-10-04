@@ -1,4 +1,4 @@
-package controle.weka;
+package algorithms.weka;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

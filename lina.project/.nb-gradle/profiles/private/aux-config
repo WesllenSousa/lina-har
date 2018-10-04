@@ -6,27 +6,34 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/NOHAR.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/TrainView.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/EvaluationNohar.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/AnyNovel/conceptEvolution/AnyNovelMain.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/AnyNovel/StreamAR/BLM.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/datasets/timeseries/TimeSeries.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/util/FileUtil.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/AnyNovel/conceptEvolution/AnyNovelLauncher.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/SAX/SAXVSMTest.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/SymbolicView.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/Test.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/Principal.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/SAX/SAXVSM.java</file>
       </group>
     </open-files>
     <editor-bookmarks lastBookmarkId="0" xmlns="http://www.netbeans.org/ns/editor-bookmarks/2"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/NOHAR.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/EvaluationNohar.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/AnyNovel/conceptEvolution/AnyNovelMain.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/AnyNovel/StreamAR/BLM.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/datasets/timeseries/TimeSeries.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/controle/constants/Parameters.java</file>
-        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/AnyNovel/conceptEvolution/AnyNovelLauncher.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/TrainView.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/SFA/classification/BOSSVSClassifier.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/util/FileUtil.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/viewControler/SymbolicView.java</file>
         <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/view/Principal.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/NOHAR/EvaluationNohar.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/AnyNovel/conceptEvolution/AnyNovelMain.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/SFA/transformation/BOSSVS.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/AnyNovel/conceptEvolution/AnyNovelLauncher.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/SAX/SAXVSMTest.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/Test.java</file>
+        <file>file:/E:/Documentos/Projetos%20Gerais/Pos-graduacao/lina-har/lina.project/src/main/java/algorithms/SAX/SAXVSM.java</file>
       </group>
     </open-files>
   </auxiliary>

@@ -6,7 +6,7 @@
 package algorithms.Features;
 
 import controle.constants.ConstDataset;
-import controle.weka.WekaUtil;
+import algorithms.weka.WekaUtil;
 import datasets.generic.GenericRowBean;
 import datasets.timeseries.TimeSeries;
 import java.util.LinkedList;

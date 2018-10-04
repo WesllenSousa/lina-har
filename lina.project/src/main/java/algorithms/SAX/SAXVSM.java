@@ -24,11 +24,26 @@ public class SAXVSM {
 
     public String eval(Map<String, List<double[]>> trainData, Map<String, List<double[]>> testData, Params params) {
         try {
+            long init = System.currentTimeMillis();
+
             TextProcessor tp = new TextProcessor();
             // making training bags collection
             List<WordBag> bags = tp.labeledSeriesToWordBags(trainData, params);
+
+            long end = System.currentTimeMillis();
+            long time = end - init;
+            System.out.println("Create words time: " + time);
+
+            //printWordsBytes(bags);
+            init = System.currentTimeMillis();
             // getting TFIDF done
             HashMap<String, HashMap<String, Double>> tfidf = tp.computeTFIDF(bags);
+
+            end = System.currentTimeMillis();
+            time = end - init;
+            System.out.println("Train time: " + time);
+
+            init = System.currentTimeMillis();
 
             // classifying train
             int testSampleSize = 0;
@@ -41,13 +56,17 @@ public class SAXVSM {
                     testSampleSize++;
                 }
             }
+
+            end = System.currentTimeMillis();
+            time = end - init;
+            System.out.println("Test time: " + time);
+
             // accuracy and error
             double accuracyTrain = (double) positiveTestCounter / (double) testSampleSize;
             double errorTrain = 1.0d - accuracyTrain;
 
             // report results
             String results = "SAX-VSM: \n " + toLogStr(params, accuracyTrain, errorTrain) + "\n";
-            System.out.println(results);
 
             // classifying test
             testSampleSize = 0;
@@ -122,6 +141,18 @@ public class SAXVSM {
             Messages msg = new Messages();
             msg.bug("SAX - SAX_VSM: " + ex.toString());
         }
+    }
+
+    public void printWordsBytes(List<WordBag> bags) {
+        String dataset = "";
+        for (WordBag word : bags) {
+            for (String w : word.getWordSet()) {
+                dataset += w + "," + word.getWordFrequency(w) + ",";
+            }
+        }
+        System.out.println(dataset);
+        System.out.println(dataset.getBytes().length);
+        FileUtil.saveFile("E:\\dataset.txt", dataset);
     }
 
     private String toLogStr(Params params, double accuracy, double error) {

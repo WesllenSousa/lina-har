@@ -5,7 +5,7 @@
  */
 package view.viewControler;
 
-import controle.weka.WekaUtil;
+import algorithms.weka.WekaUtil;
 import java.util.HashMap;
 import java.util.LinkedList;
 import controle.constants.ConstDataset;
@@ -98,6 +98,8 @@ public class TrainView {
             key = FileUtil.extractNameFile(train) + "_" + algorithm;
         }
 
+        long init = System.currentTimeMillis();
+
         Classifier classifier = null;
         if (algorithm.equals(ConstGeneral.AL_DecisionTable)) {
             classifier = wekaUtil.buildClassify(new DecisionTable());
@@ -122,12 +124,22 @@ public class TrainView {
         } else if (algorithm.equals(ConstGeneral.AL_AdaBoost)) {
             classifier = wekaUtil.buildClassify(new AdaBoostM1());
         }
+        
+        long end = System.currentTimeMillis();
+        long time = end - init;
+        System.out.println("Train time: " + time);
+        
+        init = System.currentTimeMillis();
 
         if (classifier != null) {
             String result = wekaUtil.evaluation(classifier);
             wekaClassifier.put(key, classifier);
             listEvaluation.put(key, result);
         }
+        
+        end = System.currentTimeMillis();
+        time = end - init;
+        System.out.println("Test time: " + time);
     }
 
     private void executeTrainBoss(String train, String test, String algorithm) {

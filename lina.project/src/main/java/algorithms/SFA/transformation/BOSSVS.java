@@ -59,6 +59,7 @@ public class BOSSVS extends BOSS {
             final BagOfPattern[] bagOfPatterns,
             final int[] sampleIndices,
             final Double[] uniqueLabels) {
+        long init = System.currentTimeMillis();
 
         ObjectObjectHashMap<Double, IntFloatHashMap> matrix = new ObjectObjectHashMap<>(
                 uniqueLabels.length);
@@ -105,6 +106,10 @@ public class BOSSVS extends BOSS {
 
         // norm the tf-idf-matrix
         normalizeTfIdf(matrix);
+        
+        long end = System.currentTimeMillis();
+        long time = end - init;
+        System.out.println("Matriz TFIDF time: " + time);
 
         return matrix;
     }

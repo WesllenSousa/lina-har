@@ -7,7 +7,7 @@ package algorithms.AnyNovel.conceptEvolution;
 
 import algorithms.AnyNovel.StreamAR.BLM;
 import controle.constants.ConstDataset;
-import controle.weka.WekaUtil;
+import algorithms.weka.WekaUtil;
 import java.util.HashMap;
 import util.FileUtil;
 import weka.core.Instances;

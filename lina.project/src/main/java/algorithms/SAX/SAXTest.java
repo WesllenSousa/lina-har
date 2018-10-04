@@ -46,7 +46,7 @@ public class SAXTest {
 
         //0 = all lines
         //double[] ts = HandleData.loadData("0", "samples/TimeSeries/sinusoid.csv");
-        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_STREAM + "sinusoid.csv", ",");
+        TimeSeries[] timeSeries = TimeSeriesLoader.loadVerticalData("0", ConstDataset.DS_TRAIN + "shoaib_tf.arff", ",");
 
         SAXRecords sAXRecords = sax.slideWindow(timeSeries[0].getData());
         System.out.println(">> " + sAXRecords.getIndexes().size());

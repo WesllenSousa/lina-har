@@ -90,6 +90,7 @@ public class BOSSEnsembleClassifier extends Classifier {
         for (boolean normMean : NORMALIZATION) {
             // train the shotgun models for different window lengths
             Ensemble<BOSSModel> m = fitEnsemble(windows, normMean, trainSamples);
+            System.out.println("Predicting...");
             Double[] labels = predict(m, trainSamples);
             Predictions pred = evalLabels(trainSamples, labels);
 
@@ -136,7 +137,7 @@ public class BOSSEnsembleClassifier extends Classifier {
                             for (int f = minWordLenth; f <= maxWordLength; f += 2) {
 
                                 BagOfPattern[] bag = boss.createBagOfPattern(words, samples, f);
-
+                                
                                 Predictions p = predict(bag, bag);
 
                                 if (p.correct.get() > model.score.training) {
@@ -183,6 +184,8 @@ public class BOSSEnsembleClassifier extends Classifier {
         ParallelFor.withIndex(BLOCKS, new ParallelFor.Each() {
             @Override
             public void run(int id, AtomicInteger processed) {
+                long init = System.currentTimeMillis();
+
                 // iterate each sample to classify
                 for (int i = 0; i < bagOfPatternsTestSamples.length; i++) {
                     if (i % BLOCKS == id) {
@@ -222,6 +225,10 @@ public class BOSSEnsembleClassifier extends Classifier {
                         }
                     }
                 }
+
+                long end = System.currentTimeMillis();
+                long time = end - init;
+                System.out.println("Predict time: " + time);
             }
         });
 

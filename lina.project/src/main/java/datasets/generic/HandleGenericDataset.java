@@ -1,7 +1,7 @@
 package datasets.generic;
 
-import controle.weka.DataToARFF;
-import controle.weka.FilePatternARFF;
+import algorithms.weka.DataToARFF;
+import algorithms.weka.FilePatternARFF;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

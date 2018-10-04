@@ -94,7 +94,9 @@ public class BOSSVSClassifier extends Classifier {
         ArrayList<Integer> windows = new ArrayList<>();
         double count = Math.sqrt(max);
         int distance = (int) Math.round(((maxWindowLength - minWindowLength) / count));
-        if(distance == 0) distance = 1;
+        if (distance == 0) {
+            distance = 1;
+        }
         for (int c = min; c <= max; c += Math.round(distance)) {
             windows.add(c);
         }
@@ -211,6 +213,8 @@ public class BOSSVSClassifier extends Classifier {
         ParallelFor.withIndex(BLOCKS, new ParallelFor.Each() {
             @Override
             public void run(int id, AtomicInteger processed) {
+                long init = System.currentTimeMillis();
+
                 // iterate each sample to classify
                 for (int i : indices) {
                     if (i % BLOCKS == id) {
@@ -248,6 +252,10 @@ public class BOSSVSClassifier extends Classifier {
                         }
                     }
                 }
+
+                long end = System.currentTimeMillis();
+                long time = end - init;
+                System.out.println("Predict time: " + time);
             }
         });
 
@@ -298,7 +306,7 @@ public class BOSSVSClassifier extends Classifier {
     @Override
     public String toString() {
         BOSSVS bossvs = model.getHighestScoringModel().bossvs;
-        
+
         return "Name: " + model.getHighestScoringModel().name + "\n"
                 //+ "Score - " + score.toString() + "\n"
                 + "Word: " + bossvs.maxF + "\n"

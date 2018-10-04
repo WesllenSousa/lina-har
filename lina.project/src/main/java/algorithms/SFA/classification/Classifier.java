@@ -30,7 +30,7 @@ public abstract class Classifier {
 
     transient ExecutorService exec;
 
-    public static boolean[] NORMALIZATION = new boolean[]{true, false};
+    public static boolean[] NORMALIZATION = new boolean[]{true}; //false
 
     public static boolean DEBUG = true;
     public static boolean ENSEMBLE_WEIGHTS = true;
@@ -39,7 +39,7 @@ public abstract class Classifier {
 
     protected int[][] testIndices;
     protected int[][] trainIndices;
-    public static int folds = 10;
+    public static int folds = 2;
 
     public static int maxWordLength = 8; // 12
     public static int minWordLenth = 4;  // 4

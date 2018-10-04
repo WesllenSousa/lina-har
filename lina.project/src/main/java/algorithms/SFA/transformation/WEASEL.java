@@ -130,10 +130,11 @@ public class WEASEL {
 
     /**
      * Create words and bi-grams for all window lengths
+     *
      * @param words
      * @param samples
      * @param wordLength
-     * @return 
+     * @return
      */
     public BagOfBigrams[] createBagOfPatterns(
             final int[][][] words,

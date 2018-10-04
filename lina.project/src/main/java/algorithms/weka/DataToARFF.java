@@ -1,4 +1,4 @@
-package controle.weka;
+package algorithms.weka;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

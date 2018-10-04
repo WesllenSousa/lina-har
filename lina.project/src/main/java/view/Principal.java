@@ -1,7 +1,7 @@
 package view;
 
 import algorithms.NOHAR.BOP;
-import controle.weka.WekaUtil;
+import algorithms.weka.WekaUtil;
 import datasets.generic.HandleGenericDataset;
 import datasets.generic.GenericRowBean;
 import java.awt.Dimension;
@@ -47,9 +47,9 @@ public class Principal extends javax.swing.JFrame {
 
     private final ComponentView componentView = new ComponentView();
     private final DesktopView desktopView = new DesktopView();
-    private final TrainView trainView = new TrainView();
     private final Messages messages = new Messages();
-
+    private final TrainView trainView = new TrainView();
+    
     private SymbolicView symbolicView;
     private WordTableModel wordTableModel;
     private LineGraphic lineGraphic;
@@ -3041,8 +3041,10 @@ public class Principal extends javax.swing.JFrame {
 
     public void updateClassifierList() {
         LinkedList<String> list = new LinkedList<>();
-        for (String classif : trainView.getListEvaluation().keySet()) {
-            list.add(classif);
+        if (trainView != null) {
+            for (String classif : trainView.getListEvaluation().keySet()) {
+                list.add(classif);
+            }
         }
         SwingUtil.fillList(lt_classifier, list);
     }
