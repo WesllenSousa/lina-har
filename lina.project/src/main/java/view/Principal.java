@@ -1584,10 +1584,10 @@ public class Principal extends javax.swing.JFrame {
         rd_adwin.setText("ADWIN");
 
         gp_changeDetection.add(rd_pageHinkley);
-        rd_pageHinkley.setSelected(true);
         rd_pageHinkley.setText("Page Hinkley");
 
         gp_changeDetection.add(rd_none);
+        rd_none.setSelected(true);
         rd_none.setText("None");
 
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);

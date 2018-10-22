@@ -87,7 +87,9 @@ public class NOHAR {
                     checkUnknown(symbolicView.getBuffer(), symbolicView.getBuffer().getBOP());
                 }
                 //Forget
-                checkForget(symbolicView.getBuffer());
+                //100: millisegundos, 1000: segundos, 1000000: minutos
+                long time = System.currentTimeMillis() / 100;
+                checkForget(symbolicView.getBuffer(), time, 1000);
             }
 
             //*********View Updates*******************
@@ -289,10 +291,8 @@ public class NOHAR {
         }
     }
 
-    private void checkForget(BufferStreaming buffer) {
-        //100: millisegundos, 1000: segundos, 1000000: minutos
-        long time = System.currentTimeMillis() / 100;
-        if (time % 1000 == 0) {
+    private void checkForget(BufferStreaming buffer, long time, long toleranceTime) {
+        if (time % toleranceTime == 0) {
             for (BOP bop : buffer.getListNovelBOP()) {
                 bop.updateWeight();
                 if (bop.getKlinkenberg() < 0.001) {
@@ -487,7 +487,6 @@ public class NOHAR {
                     break;
                 }
             }
-
         }
         return false;
     }
