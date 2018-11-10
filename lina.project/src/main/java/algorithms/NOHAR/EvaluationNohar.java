@@ -54,8 +54,8 @@ public class EvaluationNohar {
         errorsNovel++;
     }
 
-    public void incrementCountBOP(double label) {
-        populaConfusionMatrix(label, 0);
+    public void incrementCountBOP(double label, int index) {
+        populaConfusionMatrix(label, index);
         countBOPs++;
     }
 
@@ -114,7 +114,7 @@ public class EvaluationNohar {
             int contRight = 0;
             for (Double label2 : item.keySet()) {
                 Integer value = item.get(label2);
-                if (label2 != 0) {
+                if (label2 != -1 && label2 != 0) {
                     contTotal += value;
                 }
                 if (label1.equals(label2)) {

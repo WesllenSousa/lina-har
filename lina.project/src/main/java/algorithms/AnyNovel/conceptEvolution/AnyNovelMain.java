@@ -21,14 +21,14 @@ public class AnyNovelMain {
     public static void main(String[] args) {
 
         //shoaib_anynovel_train2 e shoaib_sub1w: subject 1 sem atividade andar.
-        String trainDataset = "shoaib_anynovel_train2.arff"; //train_shoaib_anynovel, train_shoaib_tf_anynovel_overlap2
+        String trainDataset = "shoaib_sub1w.arff"; //train_shoaib_anynovel, train_shoaib_tf_anynovel_overlap2
         String dirTrain = ConstDataset.DS_STREAM + trainDataset;
         int numberOfColumns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR, dirTrain).size();
         WekaUtil wekaTrain = new WekaUtil(dirTrain, numberOfColumns);
         Instances trainData = wekaTrain.getData();
 
         //uci_anynovel_test
-        String testDataset = "shoaib_anynovel_test.arff"; //shoaib_anynovel_test, shoaib_tf_anynovel_overlap_test
+        String testDataset = "shoaib_sub2.arff"; //shoaib_anynovel_test, shoaib_tf_anynovel_overlap_test
         String dirTest = ConstDataset.DS_STREAM + testDataset;
         numberOfColumns = FileUtil.extractNamesColumnFromFile(ConstDataset.SEPARATOR, dirTest).size();
         WekaUtil wekaTest = new WekaUtil(dirTest, numberOfColumns);

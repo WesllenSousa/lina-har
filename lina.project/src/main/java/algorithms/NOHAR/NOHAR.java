@@ -265,7 +265,7 @@ public class NOHAR {
         if (uBOPs.isEmpty()) {
             newBop.setLabel(currentLabel);//Only by test, print Similar uBOP up
             buffer.getListUBOP().add(newBop);
-            symbolicView.getEval().incrementCountBOP(currentLabel);
+            symbolicView.getEval().incrementCountBOP(currentLabel, -1);
             symbolicView.updateLog("Added new unknown BOP...");
             return;
         }
@@ -285,6 +285,7 @@ public class NOHAR {
                 minuBOP.setLabel(Double.parseDouble(label));
                 buffer.getListNovelBOP().add(minuBOP);
                 buffer.getListUBOP().remove(minuBOP);
+                symbolicView.getEval().incrementCountBOP(currentLabel, 0);
                 compareLabel(minuBOP, "Novel");
                 symbolicView.updateLog("Added novel BOP...");
             }
@@ -406,12 +407,7 @@ public class NOHAR {
 
         int[] distances;
         int minDistance = Integer.MAX_VALUE;
-        double lastLabel = -1;
-        int conflited = 0;
-        for (BOP bop : BOP) {
-            if (lastLabel != -1 && lastLabel != bop.getLabel()) {
-                conflited++;
-            }
+        for (BOP bop : BOP) {            
             List<WordRecord> bopHistogram = bop.getHistogram();
             List<WordRecord> newHistogram = newBop.getHistogram();
             if (bop.getHistogram().size() > newBop.getHistogram().size()) {
@@ -424,14 +420,6 @@ public class NOHAR {
                 minDistance = distance;
                 minBop = bop;
             }
-            lastLabel = bop.getLabel();
-        }
-
-        //If different label call active learning, it works like update component
-        if (minBop != null && conflited > 1) {
-            symbolicView.updateLog("Conflit labels! " + origem);
-            String label = activeLearning(minBop.getLabel() + "", "Conflit labels! " + origem);
-            minBop.setLabel(Double.parseDouble(label));
         }
 
         return minBop;
